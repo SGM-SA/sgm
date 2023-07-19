@@ -15,9 +15,9 @@
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
+			"@sgm/components": ["libs/components/src/index.ts"],
 			"@sgm/storybook": ["libs/storybook/src/index.ts"],
 			"@sgm/theme": ["libs/theme/src/index.ts"],
-			"@sgm/ui": ["libs/ui/src/index.ts"],
 			"@web/*": ["apps/web/src/*"]
 		}
 	},
