@@ -1,5 +1,7 @@
-import { RootRoute, Route, Router } from '@tanstack/router'
-import HomePage from '@sgm/web/pages/home/HomePage'
+import { RootRoute, Router } from '@tanstack/router'
+
+// Import all routes
+import indexRoute from '@web/modules/home/HomePage'
 
 /**
  * Root route
@@ -7,20 +9,20 @@ import HomePage from '@sgm/web/pages/home/HomePage'
 export const rootRoute = new RootRoute()
 
 /**
- * 
+ * Route tree from all routes
  */
-const indexRoute = new Route({
-    getParentRoute: () => rootRoute,
-    path: '/',
-    component: HomePage
-})
-
 const routeTree = rootRoute.addChildren([
     indexRoute,
 ])
 
+/**
+ * Router instance
+ */
 export const router = new Router({ routeTree })
 
+/**
+ * For more typesafety 
+ */
 declare module '@tanstack/router' {
     interface Register {
         router: typeof router
