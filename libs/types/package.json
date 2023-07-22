@@ -1,0 +1,10 @@
+{
+	"name": "@sgm/types",
+	"version": "0.0.1",
+	"main": "./index.js",
+	"types": "./index.d.ts",
+    "scripts": {
+        "generate": "pnpm run clean && openapi -i http://localhost:8000/api/schema -o src/generated",
+        "clean": "rimraf src/generated"
+    }
+}
