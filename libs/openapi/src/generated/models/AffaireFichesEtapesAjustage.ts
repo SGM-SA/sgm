@@ -3,15 +3,16 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { FicheEtEtapesAjustage } from './FicheEtEtapesAjustage'
+import type { FicheEtEtapesAjustage } from './FicheEtEtapesAjustage';
 
 /**
  * Serializer pour récupérer une affaire avec ses fiches et ses étapes ajustage
  */
 export type AffaireFichesEtapesAjustage = {
-	readonly id: number
-	num_affaire?: number | null
-	description?: string | null
-	readonly fiches: Array<FicheEtEtapesAjustage>
-	readonly charge_affaire: string
-}
+    readonly id: number;
+    num_affaire?: number | null;
+    description?: string | null;
+    readonly fiches: Array<FicheEtEtapesAjustage>;
+    readonly charge_affaire: string;
+};
+

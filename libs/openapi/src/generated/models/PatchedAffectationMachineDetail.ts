@@ -4,9 +4,10 @@
 /* eslint-disable */
 
 export type PatchedAffectationMachineDetail = {
-	readonly id?: number
-	semaine_affectation?: string
-	etape?: number
-	machine?: number
-	salarie?: number | null
-}
+    readonly id?: number;
+    semaine_affectation?: string;
+    etape?: number;
+    machine?: number;
+    salarie?: number | null;
+};
+

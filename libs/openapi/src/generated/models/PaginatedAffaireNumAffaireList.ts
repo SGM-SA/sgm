@@ -3,11 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { AffaireNumAffaire } from './AffaireNumAffaire'
+import type { AffaireNumAffaire } from './AffaireNumAffaire';
 
 export type PaginatedAffaireNumAffaireList = {
-	count?: number
-	next?: string | null
-	previous?: string | null
-	results?: Array<AffaireNumAffaire>
-}
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AffaireNumAffaire>;
+};
+

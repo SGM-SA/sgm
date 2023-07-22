@@ -4,7 +4,8 @@
 /* eslint-disable */
 
 export type SalarieFormOptions = {
-	readonly id: number
-	nom: string
-	prenom: string
-}
+    readonly id: number;
+    nom: string;
+    prenom: string;
+};
+

@@ -4,7 +4,8 @@
 /* eslint-disable */
 
 export type ListZone = {
-	readonly id: number
-	nom: string
-	description: string
-}
+    readonly id: number;
+    nom: string;
+    description: string;
+};
+

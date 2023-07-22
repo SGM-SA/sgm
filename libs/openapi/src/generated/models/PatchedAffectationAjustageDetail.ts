@@ -4,8 +4,9 @@
 /* eslint-disable */
 
 export type PatchedAffectationAjustageDetail = {
-	readonly id?: number
-	semaine_affectation?: string
-	etape?: number
-	zone?: number
-}
+    readonly id?: number;
+    semaine_affectation?: string;
+    etape?: number;
+    zone?: number;
+};
+

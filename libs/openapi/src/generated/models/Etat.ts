@@ -4,6 +4,7 @@
 /* eslint-disable */
 
 export type Etat = {
-	readonly id: number
-	designation: string
-}
+    readonly id: number;
+    designation: string;
+};
+

@@ -4,9 +4,10 @@
 /* eslint-disable */
 
 export type FicheModeleDetail = {
-	readonly id: number
-	readonly date_creation: string
-	titre?: string
-	description?: string | null
-	fourniture?: boolean
-}
+    readonly id: number;
+    readonly date_creation: string;
+    titre?: string;
+    description?: string | null;
+    fourniture?: boolean;
+};
+

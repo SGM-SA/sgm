@@ -3,19 +3,20 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { MachineDetail } from './MachineDetail'
+import type { MachineDetail } from './MachineDetail';
 
 export type PatchedEtapeModeleDetail = {
-	readonly id?: number
-	readonly machine?: MachineDetail
-	num_etape?: number
-	quantite?: number
-	temps?: number
-	plan?: string | null
-	rep?: string | null
-	terminee?: boolean
-	description?: string | null
-	readonly date_creation?: string
-	readonly date_modification?: string
-	fiche_modele?: number
-}
+    readonly id?: number;
+    readonly machine?: MachineDetail;
+    num_etape?: number;
+    quantite?: number;
+    temps?: number;
+    plan?: string | null;
+    rep?: string | null;
+    terminee?: boolean;
+    description?: string | null;
+    readonly date_creation?: string;
+    readonly date_modification?: string;
+    fiche_modele?: number;
+};
+

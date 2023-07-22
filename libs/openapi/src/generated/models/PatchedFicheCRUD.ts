@@ -4,16 +4,17 @@
 /* eslint-disable */
 
 export type PatchedFicheCRUD = {
-	readonly id?: number
-	readonly avancement_fiche?: number
-	titre?: string
-	description?: string | null
-	observation?: string | null
-	ref_doc?: string | null
-	terminee?: boolean
-	fourniture?: boolean
-	readonly date_creation?: string
-	readonly date_modification?: string
-	date_cloture?: string | null
-	affaire?: number
-}
+    readonly id?: number;
+    readonly avancement_fiche?: number;
+    titre?: string;
+    description?: string | null;
+    observation?: string | null;
+    ref_doc?: string | null;
+    terminee?: boolean;
+    fourniture?: boolean;
+    readonly date_creation?: string;
+    readonly date_modification?: string;
+    date_cloture?: string | null;
+    affaire?: number;
+};
+

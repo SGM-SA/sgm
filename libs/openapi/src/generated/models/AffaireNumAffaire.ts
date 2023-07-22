@@ -7,6 +7,7 @@
  * Serializer permettant de récuper uniquement l'id et le numéro d'affaire
  */
 export type AffaireNumAffaire = {
-	readonly id: number
-	num_affaire?: number | null
-}
+    readonly id: number;
+    num_affaire?: number | null;
+};
+

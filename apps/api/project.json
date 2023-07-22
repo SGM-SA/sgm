@@ -68,10 +68,17 @@
 				"cwd": "apps/api"
 			}
 		},
+		"dev": {
+			"executor": "@nxlv/python:run-commands",
+			"options": {
+				"command": "poetry run ./manage.py devserver",
+				"cwd": "apps/api"
+			}
+		},
 		"generate:spec": {
 			"executor": "@nxlv/python:run-commands",
 			"options": {
-				"command": "poetry run ./manage.py spectacular --file ../../libs/types/src/spec.yml",
+				"command": "poetry run ./manage.py spectacular --file ../../libs/openapi/src/spec.yml",
 				"cwd": "apps/api"
 			}
 		}

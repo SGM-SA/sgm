@@ -3,14 +3,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { AffaireFichesEtapesAjustage } from './AffaireFichesEtapesAjustage'
+import type { AffaireFichesEtapesAjustage } from './AffaireFichesEtapesAjustage';
 
 /**
  * Serializer pour la planification d'une zone.
  */
 export type PlanningZone = {
-	readonly id: number
-	nom: string
-	description: string
-	readonly affaires: Array<AffaireFichesEtapesAjustage>
-}
+    readonly id: number;
+    nom: string;
+    description: string;
+    readonly affaires: Array<AffaireFichesEtapesAjustage>;
+};
+

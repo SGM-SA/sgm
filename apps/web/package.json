@@ -1,0 +1,8 @@
+{
+	"name": "web",
+	"version": "0.0.1",
+	"scripts": {
+		"generate": "pnpm run clean && openapi -i src/spec.yml -o src/generated",
+		"clean": "rimraf src/generated"
+	}
+}

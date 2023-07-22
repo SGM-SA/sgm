@@ -3,11 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { FicheModeleDetail } from './FicheModeleDetail'
+import type { FicheModeleDetail } from './FicheModeleDetail';
 
 export type PaginatedFicheModeleDetailList = {
-	count?: number
-	next?: string | null
-	previous?: string | null
-	results?: Array<FicheModeleDetail>
-}
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<FicheModeleDetail>;
+};
+

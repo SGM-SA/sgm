@@ -4,19 +4,20 @@
 /* eslint-disable */
 
 export type Client = {
-	readonly id: number
-	raison: string
-	type?: string | null
-	adresse1: string
-	adresse2?: string | null
-	adresse3?: string | null
-	zip_code: string
-	ville: string
-	pays: string
-	tel1: string
-	tel2?: string | null
-	email: string
-	correspondant: string
-	memo?: string | null
-	compte?: string | null
-}
+    readonly id: number;
+    raison: string;
+    type?: string | null;
+    adresse1: string;
+    adresse2?: string | null;
+    adresse3?: string | null;
+    zip_code: string;
+    ville: string;
+    pays: string;
+    tel1: string;
+    tel2?: string | null;
+    email: string;
+    correspondant: string;
+    memo?: string | null;
+    compte?: string | null;
+};
+

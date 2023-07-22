@@ -3,11 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { SalarieFormOptions } from './SalarieFormOptions'
+import type { SalarieFormOptions } from './SalarieFormOptions';
 
 export type PaginatedSalarieFormOptionsList = {
-	count?: number
-	next?: string | null
-	previous?: string | null
-	results?: Array<SalarieFormOptions>
-}
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<SalarieFormOptions>;
+};
+

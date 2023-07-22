@@ -3,11 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { AffectationMachineDetail } from './AffectationMachineDetail'
+import type { AffectationMachineDetail } from './AffectationMachineDetail';
 
 export type PaginatedAffectationMachineDetailList = {
-	count?: number
-	next?: string | null
-	previous?: string | null
-	results?: Array<AffectationMachineDetail>
-}
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AffectationMachineDetail>;
+};
+

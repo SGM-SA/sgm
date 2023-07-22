@@ -4,9 +4,10 @@
 /* eslint-disable */
 
 export type MachineDetail = {
-	readonly id: number
-	nom_machine: string
-	description?: string | null
-	fonctionnelle?: boolean
-	est_active?: boolean
-}
+    readonly id: number;
+    nom_machine: string;
+    description?: string | null;
+    fonctionnelle?: boolean;
+    est_active?: boolean;
+};
+

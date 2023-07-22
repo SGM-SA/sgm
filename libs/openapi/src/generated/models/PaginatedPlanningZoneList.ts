@@ -3,11 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { PlanningZone } from './PlanningZone'
+import type { PlanningZone } from './PlanningZone';
 
 export type PaginatedPlanningZoneList = {
-	count?: number
-	next?: string | null
-	previous?: string | null
-	results?: Array<PlanningZone>
-}
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<PlanningZone>;
+};
+

@@ -4,6 +4,7 @@
 /* eslint-disable */
 
 export type FicheModeleOptions = {
-	value: string
-	name: string
-}
+    value: string;
+    name: string;
+};
+

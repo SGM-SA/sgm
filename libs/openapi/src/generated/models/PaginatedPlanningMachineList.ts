@@ -3,11 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { PlanningMachine } from './PlanningMachine'
+import type { PlanningMachine } from './PlanningMachine';
 
 export type PaginatedPlanningMachineList = {
-	count?: number
-	next?: string | null
-	previous?: string | null
-	results?: Array<PlanningMachine>
-}
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<PlanningMachine>;
+};
+

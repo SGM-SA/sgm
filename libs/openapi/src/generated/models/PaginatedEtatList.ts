@@ -3,11 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Etat } from './Etat'
+import type { Etat } from './Etat';
 
 export type PaginatedEtatList = {
-	count?: number
-	next?: string | null
-	previous?: string | null
-	results?: Array<Etat>
-}
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<Etat>;
+};
+
