@@ -81,6 +81,13 @@
 				"command": "poetry run ./manage.py spectacular --file ../../libs/openapi/src/spec.yml",
 				"cwd": "apps/api"
 			}
+		},
+		"migrate": {
+			"executor": "@nxlv/python:run-commands",
+			"options": {
+				"command": "poetry run ./manage.py migrate",
+				"cwd": "apps/api"
+			}
 		}
 	},
 	"tags": []
