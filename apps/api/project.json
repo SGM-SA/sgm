@@ -67,6 +67,13 @@
 				"command": "poetry run ./manage.py runserver",
 				"cwd": "apps/api"
 			}
+		},
+		"generate:spec": {
+			"executor": "@nxlv/python:run-commands",
+			"options": {
+				"command": "poetry run ./manage.py spectacular --file ../../libs/types/src/spec.yml",
+				"cwd": "apps/api"
+			}
 		}
 	},
 	"tags": []

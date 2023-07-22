@@ -1,0 +1,29 @@
+{
+	"name": "openapi",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/openapi/src",
+	"projectType": "library",
+	"targets": {
+		"lint": {
+			"executor": "@nx/linter:eslint",
+			"outputs": ["{options.outputFile}"],
+			"options": {
+				"lintFilePatterns": ["libs/openapi/**/*.ts"]
+			}
+		},
+		"generate": {
+			"executor": "nx:run-script",
+			"options": {
+				"script": "generate"
+			},
+			"dependsOn": ["generate:spec"]
+		},
+		"generate:spec": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "nx run api:generate:spec"
+			}
+		}
+	},
+	"tags": []
+}

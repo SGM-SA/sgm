@@ -16,9 +16,9 @@
 		"baseUrl": ".",
 		"paths": {
 			"@sgm/components": ["libs/components/src/index.ts"],
+			"@sgm/openapi": ["libs/openapi/src/index.ts"],
 			"@sgm/storybook": ["libs/storybook/src/index.ts"],
 			"@sgm/theme": ["libs/theme/src/index.ts"],
-			"@sgm/types": ["libs/types/src/index.ts"],
 			"@web/*": ["apps/web/src/*"]
 		}
 	},
