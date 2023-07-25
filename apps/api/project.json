@@ -82,6 +82,13 @@
 				"cwd": "apps/api"
 			}
 		},
+    "makemigrations": {
+			"executor": "@nxlv/python:run-commands",
+			"options": {
+				"command": "poetry run ./manage.py makemigrations",
+				"cwd": "apps/api"
+			}
+		},
 		"migrate": {
 			"executor": "@nxlv/python:run-commands",
 			"options": {
