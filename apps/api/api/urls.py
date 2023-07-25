@@ -16,9 +16,11 @@ from api.etape_modele.urls import urlpatterns as etape_modele_patterns
 from api.fiche_modele.urls import urlpatterns as fiche_modele_patterns
 from api.salarie.urls import urlpatterns as salarie_patterns
 from api.synchro.view import resync_data_sgm
+from api.note.urls import urlpatterns as note_patterns
 
 urlpatterns = [
     path("affaires/", include(affaire_patters)),
+    path("notes/", include(note_patterns)),
     path("fiches/", include(fiche_patterns)),
     path("etapes/", include(etape_patterns)),
     path("zones/", include(zone_patterns)),
