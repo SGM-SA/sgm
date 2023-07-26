@@ -57,7 +57,7 @@
 				"{workspaceRoot}/coverage/apps/api"
 			],
 			"options": {
-				"command": "poetry run pytest tests/",
+				"command": "poetry run python manage.py test",
 				"cwd": "apps/api"
 			}
 		},
