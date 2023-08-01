@@ -1,9 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AuthService } from '@sgm/openapi'
+import { fetchAuthTokenCreate } from '@sgm/openapi'
+import { useToken } from '@sgm/web/auth'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { redirect } from 'react-router-dom'
 import { z } from 'zod'
-import { setToken } from '../../core/utils/auth'
 
 const authFormSchema = z.object({
     username: z.string(),
@@ -14,6 +15,8 @@ type AuthFormSchema = z.infer<typeof authFormSchema>
 
 const Login: React.FC = () => {
 
+    const { setToken } = useToken()
+
     const {
         register,
         handleSubmit,
@@ -21,11 +24,17 @@ const Login: React.FC = () => {
         resolver: zodResolver(authFormSchema)
     })
 
-    const onSubmit: SubmitHandler<AuthFormSchema> = async ({ username, password }) => {
+    const onSubmit: SubmitHandler<AuthFormSchema> = ({ username, password }) => {
 
         // @ts-ignore
-        const res = await AuthService.authTokenCreate({ username, password })
-        setToken(res.access)
+        fetchAuthTokenCreate({ body: { username, password } })
+            .then(res => {
+                setToken(res.access)
+                return redirect('/')
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
 	return <>

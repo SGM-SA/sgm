@@ -4,7 +4,6 @@
 	"main": "./index.js",
 	"types": "./index.d.ts",
 	"scripts": {
-		"generate": "pnpm run clean && openapi -i src/spec.yml -o src/generated --client axios",
-		"clean": "rimraf src/generated"
+		"generate": "openapi-codegen gen api"
 	}
 }
