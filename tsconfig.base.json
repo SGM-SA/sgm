@@ -19,8 +19,7 @@
 			"@sgm/openapi": ["libs/openapi/src/index.ts"],
 			"@sgm/storybook": ["libs/storybook/src/index.ts"],
 			"@sgm/theme": ["libs/theme/src/index.ts"],
-			"@sgm/ui": ["libs/ui/src/index.ts"],
-			"@web/*": ["apps/web/src/*"]
+			"@sgm/ui": ["libs/ui/src/index.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

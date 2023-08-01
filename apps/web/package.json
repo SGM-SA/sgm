@@ -1,7 +1,0 @@
-{
-	"name": "web",
-	"version": "0.0.1",
-	"scripts": {
-		"generate": "plop --plopfile ./cli/plopfile.js"
-	}
-}

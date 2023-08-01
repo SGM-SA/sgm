@@ -34,6 +34,7 @@ module.exports = (plop) => {
                 when: (answers) => answers.type !== 'layouts',
                 choices: (answers) => {
 
+                    console.log(`${basePath.web}/src/components/${answers.type}`)
                     const categories = fs.readdirSync(`${basePath.web}/src/components/${answers.type}`).filter(file => fs.statSync(`${basePath.web}/src/components/${answers.type}/${file}`).isDirectory())
                     
                     return [
@@ -46,28 +47,17 @@ module.exports = (plop) => {
             }
         ],
 
-        actions: (answers) => {
-
-            const actions = [
-                {
-                    type: 'add',
-                    path: `${basePath.web}/src/components/{{camelCase type}}/{{#ifNotEquals category "No Category" }}{{category}}/{{/ifNotEquals}}{{pascalCase name}}.tsx`,
-                    templateFile: 'templates/component.hbs',
-                }
-            ]
-
-            if (answers.type !== 'modules') actions.push({
+        actions: [
+            {
+                type: 'add',
+                path: `${basePath.web}/src/components/{{camelCase type}}/{{#ifNotEquals category "No Category" }}{{category}}/{{/ifNotEquals}}{{pascalCase name}}.tsx`,
+                templateFile: 'templates/component.hbs',
+            },
+            {
                 type: 'append',
                 path: `${basePath.web}/src/components/{{camelCase type}}/index.ts`,
-                template: 'export * from \'./{{#ifNotEquals category "No Category" }}/{{category}}{{/ifNotEquals}}{{pascalCase name}}\'',
-            }) 
-            else actions.push({
-                type: 'append',
-                path: `${basePath.web}/src/components/{{camelCase type}}/{{camelCase category}}/index.ts`,
-                template: 'export * from \'./{{pascalCase name}}\'',
-            })
-
-            return actions
-        }
+                template: 'export * from \'./{{#ifNotEquals category "No Category" }}{{category}}/{{/ifNotEquals}}{{pascalCase name}}\'',
+            }
+        ]
     })
 }

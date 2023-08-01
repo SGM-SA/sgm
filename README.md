@@ -139,7 +139,6 @@ nx run openapi:generate
 
 ## Todo
 
-- [ ] Tester `generouted` (qui permet d'auto-gen les routes à partir du file system)
 - [ ] Devops
     - [ ] Docker
     - [ ] Github actions

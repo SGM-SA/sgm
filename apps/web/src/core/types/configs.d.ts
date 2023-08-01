@@ -1,0 +1,3 @@
+type EnvironmentConfig = {
+    apiBaseUrl: string
+}
