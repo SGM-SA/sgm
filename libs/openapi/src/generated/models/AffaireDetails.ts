@@ -3,8 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { BlankEnum } from './BlankEnum';
-import type { NullEnum } from './NullEnum';
 import type { Salarie } from './Salarie';
 import type { StatutEnum } from './StatutEnum';
 
@@ -19,7 +17,7 @@ export type AffaireDetails = {
     observation?: string | null;
     client?: string | null;
     montant?: string | null;
-    statut?: (StatutEnum | BlankEnum | NullEnum) | null;
+    statut?: StatutEnum;
     date_rendu?: string | null;
     readonly date_modification: string;
     date_cloture?: string | null;

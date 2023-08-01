@@ -15,8 +15,12 @@ export type { AffaireFichesEtapesMachine } from './models/AffaireFichesEtapesMac
 export type { AffaireNumAffaire } from './models/AffaireNumAffaire';
 export type { AffectationAjustageDetail } from './models/AffectationAjustageDetail';
 export type { AffectationMachineDetail } from './models/AffectationMachineDetail';
+<<<<<<< HEAD
 export { BlankEnum } from './models/BlankEnum';
 export type { BulkDelete } from './models/BulkDelete';
+=======
+export type { Client } from './models/Client';
+>>>>>>> ed40f7f (fix(api): blank enum invalid ts openapi generation)
 export type { EtapeCreate } from './models/EtapeCreate';
 export type { EtapeDetail } from './models/EtapeDetail';
 export type { EtapeDetailAjustage } from './models/EtapeDetailAjustage';
@@ -34,9 +38,12 @@ export type { FicheModeleOptions } from './models/FicheModeleOptions';
 export type { GroupeMachine } from './models/GroupeMachine';
 export type { ListZone } from './models/ListZone';
 export type { MachineDetail } from './models/MachineDetail';
+<<<<<<< HEAD
 export type { NoteCreate } from './models/NoteCreate';
 export type { NoteDetail } from './models/NoteDetail';
 export type { NullEnum } from './models/NullEnum';
+=======
+>>>>>>> ed40f7f (fix(api): blank enum invalid ts openapi generation)
 export type { PaginatedAffaireDetailsList } from './models/PaginatedAffaireDetailsList';
 export type { PaginatedAffaireFichesEtapesList } from './models/PaginatedAffaireFichesEtapesList';
 export type { PaginatedAffaireNumAffaireList } from './models/PaginatedAffaireNumAffaireList';

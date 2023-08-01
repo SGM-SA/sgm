@@ -1962,12 +1962,9 @@ components:
           nullable: true
           title: Montant de l'affaire
         statut:
-          nullable: true
-          title: Statut de l'affaire
-          oneOf:
+          allOf:
           - $ref: '#/components/schemas/StatutEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
+          title: Statut de l'affaire
         date_rendu:
           type: string
           format: date
@@ -2182,10 +2179,14 @@ components:
       required:
       - id
       - semaine_affectation
+<<<<<<< HEAD
     BlankEnum:
       enum:
       - ''
     BulkDelete:
+=======
+    Client:
+>>>>>>> ed40f7f (fix(api): blank enum invalid ts openapi generation)
       type: object
       properties:
         ids:
@@ -3100,6 +3101,7 @@ components:
       required:
       - id
       - nom_machine
+<<<<<<< HEAD
     NoteCreate:
       type: object
       properties:
@@ -3142,6 +3144,8 @@ components:
     NullEnum:
       enum:
       - null
+=======
+>>>>>>> ed40f7f (fix(api): blank enum invalid ts openapi generation)
     PaginatedAffaireDetailsList:
       type: object
       properties:
