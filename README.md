@@ -43,7 +43,7 @@ Monorepo for the SGM project.
 
 ### API auto-generated client
 
-The API client is auto-generated from the OpenAPI schema using [openapi-typescript-codegen](https://github.com/ferdikoomen/openapi-typescript-codegen).
+The front-end http client is auto-generated from the API OpenAPI schema using [openapi-codegen](https://github.com/fabien0102/openapi-codegen).
 The codegen is run in 3 different situations :
 - Each time a `.py` file is modified and saved in the `api` app source code.
 - Each time the `web` app is build.
@@ -54,8 +54,9 @@ This ensures that the client is always up to date with the API.
 The output of the codegen is located in `libs/openapi/src/generated` and the openapi specification is located in `libs/openapi/src/openapi.yaml`.
 
 Concretly, the codegen generates :
-- A `services` folder containing all the API client services, which are full typesafe functions that calls the different endpoints of the API (kind of like RPC).
-- A `models` folder containing all the typescript models synced on the request input and response data output of the api controllers.
+- `apiSchemas.ts`: all the typescript models synced on the request input and response data output of the api controllers.
+- `apiComponents.ts`: `@tanstack/query` (previously `react-query`) hooks for each API endpoint their associated fetch functions for classic async/await calls.
+- `apiFetcher.ts`: the `fetcher` function used by `@tanstack/query` to make the actual http calls, which is completely customizable and won't be overwritten by the codegen.
 
 ### CLI commands
 

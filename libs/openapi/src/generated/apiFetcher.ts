@@ -1,4 +1,5 @@
-import { environment } from '@sgm/web/environments';
+import { useToken } from '@sgm/web/auth'
+import { environment } from '@sgm/web/environments'
 import { ApiContext } from './apiContext'
 
 const baseUrl = environment.apiBaseUrl
@@ -71,6 +72,7 @@ export async function apiFetch<
 				headers: requestHeaders,
 			}
 		)
+
 		if (!response.ok) {
 			let error: ErrorWrapper<TError>
 			try {
@@ -85,6 +87,11 @@ export async function apiFetch<
 				}
 			}
 
+			if ([401, 403].includes(response.status)) {
+				const { setToken } = useToken()
+				setToken(null)
+			}
+
 			throw error
 		}
 
@@ -95,7 +102,7 @@ export async function apiFetch<
 			return (await response.blob()) as unknown as TData
 		}
 	} catch (e) {
-		let errorObject: Error = {
+		const errorObject: Error = {
 			name: 'unknown' as const,
 			message:
 				e instanceof Error
