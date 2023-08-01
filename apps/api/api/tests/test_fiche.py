@@ -1,11 +1,8 @@
-from django.urls import reverse
 from rest_framework import status
 from django.test import TestCase
 from api.fiche.models import Fiche
-from api.etape.models import Etape
 from api.affaire.models import Affaire
 from api.machine.models import Machine
-from api.salarie.models import Salarie
 
 
 class FicheCreateViewTestCase(TestCase):

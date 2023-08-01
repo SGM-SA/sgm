@@ -23,6 +23,7 @@ from api.fiche_modele.models import FicheModele
 from api.etape_modele.models import EtapeModele
 from api.affectation_etape_machine.models import AffectationMachine
 from api.affectation_etape_machine.admin import AffectationMachineModelAdmin
+from api.note.models import Note
 admin.site.register(AffectationMachine, AffectationMachineModelAdmin)
 admin.site.register(Machine)
 admin.site.register(Affaire)
@@ -43,3 +44,4 @@ admin.site.register(TypeFourniture)
 admin.site.register(AchatFourniture)
 admin.site.register(AffectationAjustage)
 admin.site.register(Salarie)
+admin.site.register(Note)

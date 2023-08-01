@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from api.models.client import Client
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MinValueValidator
 
 
 class Affaire(models.Model):

@@ -1,13 +1,7 @@
 from rest_framework import serializers
 from api.zone.models import Zone
-from api.fiche.models import Fiche
-from api.etape.models import Etape
-from api.affaire.models import Affaire
 from api.fiche.serializer import FicheDetailSerializer
-from api.affaire.serializer import AffaireFichesEtapesSerializer
-from django.db.models import Prefetch, Count
 from datetime import datetime, timedelta
-from drf_spectacular.utils import extend_schema_field
 
 
 class ListZoneSerializer(serializers.ModelSerializer):

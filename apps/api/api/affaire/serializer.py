@@ -1,9 +1,7 @@
 from rest_framework import serializers
 from api.fiche.models import Fiche
 from api.affaire.models import Affaire
-from api.serializers.client import ClientSerializer
 from api.salarie.serializer import SalarieSerializer
-from api.serializers.statut import StatutSerializer
 from api.fiche.serializer import (
     FicheEtEtapesMachineSerializer,
     FicheDetailSerializer,

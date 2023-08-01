@@ -57,7 +57,7 @@
 				"{workspaceRoot}/coverage/apps/api"
 			],
 			"options": {
-				"command": "poetry run pytest tests/",
+				"command": "poetry run python manage.py test",
 				"cwd": "apps/api"
 			}
 		},
@@ -79,6 +79,13 @@
 			"executor": "@nxlv/python:run-commands",
 			"options": {
 				"command": "poetry run ./manage.py spectacular --file ../../libs/openapi/src/spec.yml",
+				"cwd": "apps/api"
+			}
+		},
+    "makemigrations": {
+			"executor": "@nxlv/python:run-commands",
+			"options": {
+				"command": "poetry run ./manage.py makemigrations",
 				"cwd": "apps/api"
 			}
 		},
