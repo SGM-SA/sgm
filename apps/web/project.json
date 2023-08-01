@@ -30,15 +30,15 @@
 			"executor": "@nx/vite:dev-server",
 			"defaultConfiguration": "development",
 			"options": {
-				"buildTarget": "web:build"
+				"buildTarget": "web:build:vite"
 			},
 			"configurations": {
 				"development": {
-					"buildTarget": "web:build:development",
+					"buildTarget": "web:build:vite:development",
 					"hmr": true
 				},
 				"production": {
-					"buildTarget": "web:build:production",
+					"buildTarget": "web:build:vite:production",
 					"hmr": false
 				}
 			}
@@ -54,14 +54,14 @@
 			"executor": "@nx/vite:preview-server",
 			"defaultConfiguration": "development",
 			"options": {
-				"buildTarget": "web:build"
+				"buildTarget": "web:build:vite"
 			},
 			"configurations": {
 				"development": {
-					"buildTarget": "web:build:development"
+					"buildTarget": "web:build:vite:development"
 				},
 				"production": {
-					"buildTarget": "web:build:production"
+					"buildTarget": "web:build:vite:production"
 				}
 			}
 		},
@@ -83,7 +83,7 @@
 		"serve-static": {
 			"executor": "@nx/web:file-server",
 			"options": {
-				"buildTarget": "web:build"
+				"buildTarget": "web:build:vite"
 			}
 		}
 	},
