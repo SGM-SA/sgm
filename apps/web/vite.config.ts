@@ -1,7 +1,8 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite';
+import { defineConfig, searchForWorkspaceRoot } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
+import generouted from '@generouted/react-router/plugin'
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/web',
@@ -9,6 +10,12 @@ export default defineConfig({
   server: {
     port: 4200,
     host: 'localhost',
+    fs: {
+      allow: [
+        // to fix this error: https://stackoverflow.com/questions/74902697/error-the-request-url-is-outside-of-vite-serving-allow-list-after-git-init
+        searchForWorkspaceRoot(process.cwd() + '/apps/web/src'),
+      ],
+    }
   },
 
   preview: {
@@ -21,16 +28,14 @@ export default defineConfig({
     viteTsConfigPaths({
       root: '../../',
     }),
+    generouted({
+      source: {
+        routes: './src/pages/**/[\\w[-]*.{jsx,tsx}',
+        modals: './src/modals/**/[+]*.{jsx,tsx}',
+      },
+      output: './src/router.ts',
+    })
   ],
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [
-  //    viteTsConfigPaths({
-  //      root: '../../',
-  //    }),
-  //  ],
-  // },
 
   test: {
     globals: true,
@@ -40,4 +45,6 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
+
+  
 });

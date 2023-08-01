@@ -30,7 +30,8 @@
 			"executor": "@nx/vite:dev-server",
 			"defaultConfiguration": "development",
 			"options": {
-				"buildTarget": "web:build:vite"
+				"buildTarget": "web:build:vite",
+				"cwd": "apps/web"
 			},
 			"configurations": {
 				"development": {
@@ -84,6 +85,13 @@
 			"executor": "@nx/web:file-server",
 			"options": {
 				"buildTarget": "web:build:vite"
+			}
+		},
+		"generate": {
+			"executor": "nx:run-script",
+			"options": {
+				"script": "generate",
+				"cwd": "apps/web"
 			}
 		}
 	},

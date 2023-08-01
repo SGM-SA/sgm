@@ -1,30 +1,17 @@
-import { RootRoute, Router } from '@tanstack/router'
+// Generouted, changes to this file will be overriden
+/* eslint-disable */
 
-// Import all routes
-import indexRoute from '@web/modules/home/HomePage'
+import { components, hooks, utils } from '@generouted/react-router/client'
 
-/**
- * Root route
- */
-export const rootRoute = new RootRoute()
+export type Path =
+  | `/`
 
-/**
- * Route tree from all routes
- */
-const routeTree = rootRoute.addChildren([
-    indexRoute,
-])
-
-/**
- * Router instance
- */
-export const router = new Router({ routeTree })
-
-/**
- * For more typesafety 
- */
-declare module '@tanstack/router' {
-    interface Register {
-        router: typeof router
-    }
+export type Params = {
+  
 }
+
+export type ModalPath = never
+
+export const { Link, Navigate } = components<Path, Params>()
+export const { useModals, useNavigate, useParams } = hooks<Path, Params, ModalPath>()
+export const { redirect } = utils<Path, Params>()

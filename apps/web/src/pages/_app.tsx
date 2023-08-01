@@ -1,6 +1,5 @@
-import { RouterProvider } from '@tanstack/router'
 import React, { StrictMode } from 'react'
-import { router } from './router'
+import { Outlet } from 'react-router-dom'
 
 type AppProps = {}
 
@@ -8,7 +7,7 @@ export const App: React.FC<AppProps> = (props) => {
         
     return (
         <StrictMode>
-            <RouterProvider router={router} />
+            <Outlet />
         </StrictMode>
     )
 }
