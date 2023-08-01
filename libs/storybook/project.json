@@ -5,7 +5,7 @@
 	"projectType": "library",
 	"tags": [],
 	"targets": {
-		"storybook": {
+		"start": {
 			"executor": "@nx/storybook:storybook",
 			"options": {
 				"port": 4400,
@@ -17,7 +17,7 @@
 				}
 			}
 		},
-		"build-storybook": {
+		"build": {
 			"executor": "@nx/storybook:build",
 			"outputs": ["{options.outputDir}"],
 			"options": {
