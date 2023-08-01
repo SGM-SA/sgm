@@ -4,6 +4,7 @@
 - [Project structure](#project-structure)
 - [Understanding the project](#understanding-the-project)
   - [API auto-generated client](#api-auto-generated-client)
+  - [CLI commands](#cli-commands)
 - [Requirements](#requirements)
   - [Initialize the project](#initialize-the-project)
 - [Usage](#usage)
@@ -32,7 +33,7 @@ Monorepo for the SGM project.
 │   ├── api # Django API
 │   └── web # React web app powered by vite
 └── libs
-    ├── components # React UI components library
+    ├── ui # Common UI components, hooks and utils
     ├── theme # Centralized Chakra-UI theme for all components
     ├── storybook # Storybook for components
     └── openapi # OpenAPI schema for API and auto-generated client services and typescript models
@@ -55,6 +56,15 @@ The output of the codegen is located in `libs/openapi/src/generated` and the ope
 Concretly, the codegen generates :
 - A `services` folder containing all the API client services, which are full typesafe functions that calls the different endpoints of the API (kind of like RPC).
 - A `models` folder containing all the typescript models synced on the request input and response data output of the api controllers.
+
+### CLI commands
+
+In addition to classic `nx` generators commands, the project have additionnal commands to help with development by generating different type of files:
+- `pnpm g:web`: Generate files for `apps/web`. It can generate following types of files dynamically:
+    - `component`: Generate a component.
+    - `page`: Generate a page.
+- `pnpm g:ui`: Generate files for `libs/ui`. It can generate following types of files dynamically:
+    - `component`: Generate a component with a storybook story.
 
 ## Requirements
 
