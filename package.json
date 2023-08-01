@@ -13,6 +13,7 @@
 		"@chakra-ui/react": "^2.8.0",
 		"@emotion/react": "^11.11.1",
 		"@emotion/styled": "^11.11.0",
+		"@fontsource-variable/montserrat": "^5.0.6",
 		"@generouted/react-router": "^1.15.2",
 		"@hookform/resolvers": "^3.1.1",
 		"@swc/helpers": "~0.5.1",

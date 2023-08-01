@@ -34,7 +34,6 @@ module.exports = (plop) => {
                 when: (answers) => answers.type !== 'layouts',
                 choices: (answers) => {
 
-                    console.log(`${basePath.web}/src/components/${answers.type}`)
                     const categories = fs.readdirSync(`${basePath.web}/src/components/${answers.type}`).filter(file => fs.statSync(`${basePath.web}/src/components/${answers.type}/${file}`).isDirectory())
                     
                     return [
@@ -56,7 +55,7 @@ module.exports = (plop) => {
             {
                 type: 'append',
                 path: `${basePath.web}/src/components/{{camelCase type}}/index.ts`,
-                template: 'export * from \'./{{#ifNotEquals category "No Category" }}{{category}}/{{/ifNotEquals}}{{pascalCase name}}\'',
+                template: 'export * from \'./{{#ifNotEquals type "layouts"}}{{#ifNotEquals category "No Category" }}{{category}}/{{/ifNotEquals}}{{/ifNotEquals}}{{pascalCase name}}\'',
             }
         ]
     })

@@ -24,7 +24,7 @@ module.exports = (plop) => {
                 when: (answers) => answers.type !== 'layouts',
                 choices: (answers) => {
 
-                    const categories = fs.readdirSync(`${basePath.ui}/src/ui`).filter(file => fs.statSync(`${basePath.ui}/src/ui/${file}`).isDirectory())
+                    const categories = fs.readdirSync(`${basePath.ui}/src/components`).filter(file => fs.statSync(`${basePath.ui}/src/components/${file}`).isDirectory())
                     
                     return [
                         ...categories
@@ -36,17 +36,17 @@ module.exports = (plop) => {
         actions: [
             {
                 type: 'add',
-                path: `${basePath.ui}/src/ui/{{camelCase category}}/{{pascalCase name}}/{{pascalCase name}}.tsx`,
+                path: `${basePath.ui}/src/components/{{camelCase category}}/{{pascalCase name}}/{{pascalCase name}}.tsx`,
                 templateFile: 'templates/component.hbs',
             },
             {
                 type: 'add',
-                path: `${basePath.ui}/src/ui/{{camelCase category}}/{{pascalCase name}}/{{pascalCase name}}.stories.tsx`,
+                path: `${basePath.ui}/src/components/{{camelCase category}}/{{pascalCase name}}/{{pascalCase name}}.stories.tsx`,
                 templateFile: 'templates/stories.hbs',
             },
             {
                 type: 'append',
-                path: `${basePath.ui}/src/ui/index.ts`,
+                path: `${basePath.ui}/src/components/index.ts`,
                 template: 'export * from \'./{{camelCase category}}/{{pascalCase name}}/{{pascalCase name}}\'',
             }
         ]

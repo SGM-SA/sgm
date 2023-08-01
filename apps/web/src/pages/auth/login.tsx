@@ -1,10 +1,12 @@
+import { Button, Flex, FormControl, FormLabel, Heading, Input } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { fetchAuthTokenCreate } from '@sgm/openapi'
+import { Card } from '@sgm/ui'
 import { useToken } from '@sgm/web/auth'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { redirect } from 'react-router-dom'
 import { z } from 'zod'
+import { useNavigate } from '../../router'
 
 const authFormSchema = z.object({
     username: z.string(),
@@ -15,6 +17,7 @@ type AuthFormSchema = z.infer<typeof authFormSchema>
 
 const Login: React.FC = () => {
 
+    const navigate = useNavigate()
     const { setToken } = useToken()
 
     const {
@@ -30,7 +33,7 @@ const Login: React.FC = () => {
         fetchAuthTokenCreate({ body: { username, password } })
             .then(res => {
                 setToken(res.access)
-                return redirect('/')
+                navigate('/')
             })
             .catch(err => {
                 console.log(err)
@@ -38,13 +41,46 @@ const Login: React.FC = () => {
     }
 
 	return <>
-        <label htmlFor="username"><b>Username</b></label>
-        <input {...register('username', { required: true })}/>
 
-        <label htmlFor="password"><b>Password</b></label>
-        <input type="password" {...register('password', { required: true })}/>
+        <Flex
+            width='100vw'
+            height='100vh'
+            justifyContent='center'
+            alignItems='center'
+            backgroundColor='#0f172a'
+        >
+            <Card
+                center={true}
+                width='40vw'
+                mt='-25vh'
+            >
 
-        <button type="submit" onClick={handleSubmit(onSubmit)}>Login</button>
+                <Heading as='h1'
+                    fontSize='1.5rem'
+                >
+                    Se connecter
+                </Heading>
+
+                <FormControl>
+                    <FormLabel>Nom d'utilisateur</FormLabel>
+                    <Input placeholder="Nom d'utilisateur" {...register('username', { required: true })}/>
+                </FormControl>
+
+                <FormControl>
+                    <FormLabel>Mot de passe</FormLabel>
+                    <Input type='password' placeholder="Mot de passe" {...register('password', { required: true })} />
+                </FormControl>
+
+                <Button
+                    w='100%'
+                    variant='primary'
+                    mt='1rem'
+                    onClick={handleSubmit(onSubmit)}
+                >
+                    Se connecter
+                </Button>
+            </Card>
+        </Flex>
     </>
 }
 
