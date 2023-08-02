@@ -15,7 +15,7 @@ const authFormSchema = z.object({
 
 type AuthFormSchema = z.infer<typeof authFormSchema>
 
-const Login: React.FC = () => {
+const LoginPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { setToken } = useToken()
@@ -84,4 +84,4 @@ const Login: React.FC = () => {
     </>
 }
 
-export default Login
+export default LoginPage
