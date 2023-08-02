@@ -3,10 +3,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { fetchAuthTokenCreate } from '@sgm/openapi'
 import { Card } from '@sgm/ui'
 import { useToken } from '@sgm/web/auth'
+import { useNavigate } from '@sgm/web/router'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { useNavigate } from '../../router'
 
 const authFormSchema = z.object({
     username: z.string(),

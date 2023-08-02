@@ -33,7 +33,7 @@ export default defineConfig({
         routes: './src/pages/**/[\\w[-]*.{jsx,tsx}',
         modals: './src/modals/**/[+]*.{jsx,tsx}',
       },
-      output: './src/router.ts',
+      output: '../../libs/web/router/src/router.ts',
     })
   ],
 
