@@ -1,6 +1,12 @@
 from rest_framework import serializers
-from api.affectation_etape_zone.serializer import AffectationAjustageDetailSerializer
-from api.etape.serializer import EtapeDetailAjustage, EtapeDetailMachine, EtapeDetail
+from api.affectation_etape_zone.serializer import (
+    AffectationAjustageDetailSerializer,
+)
+from api.etape.serializer import (
+    EtapeDetailAjustage,
+    EtapeDetailMachine,
+    EtapeDetail,
+)
 from api.etape.models import Etape
 from api.fiche.models import Fiche
 

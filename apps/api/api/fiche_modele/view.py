@@ -9,8 +9,12 @@ from api.fiche_modele.serializer import (
     FicheModeleEtEtapes,
     FicheModeleOptionsSerializer,
 )
-from rest_framework import generics, filters, status, pagination
-from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter
+from rest_framework import generics, status, pagination
+from drf_spectacular.utils import (
+    extend_schema_view,
+    extend_schema,
+    OpenApiParameter,
+)
 
 
 @extend_schema_view(

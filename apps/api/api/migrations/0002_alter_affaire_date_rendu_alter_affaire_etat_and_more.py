@@ -14,7 +14,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="affaire",
             name="date_rendu",
-            field=models.DateField(blank=True, null=True, verbose_name="date rendu"),
+            field=models.DateField(
+                blank=True, null=True, verbose_name="date rendu"
+            ),
         ),
         migrations.AlterField(
             model_name="affaire",

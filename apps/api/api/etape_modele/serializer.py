@@ -5,10 +5,11 @@ from api.machine.serializer import MachineDetailSerializer
 
 class EtapeModeleDetail(serializers.ModelSerializer):
     machine = MachineDetailSerializer(read_only=True)
-    
+
     class Meta:
         model = EtapeModele
         fields = "__all__"
+
 
 class EtapeModeleListCreate(serializers.ModelSerializer):
     class Meta:

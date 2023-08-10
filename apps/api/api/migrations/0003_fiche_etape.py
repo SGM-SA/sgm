@@ -31,7 +31,10 @@ class Migration(migrations.Migration):
                     "observation",
                     models.CharField(blank=True, max_length=1000, null=True),
                 ),
-                ("ref_doc", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "ref_doc",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
                 (
                     "date_creation",
                     models.DateField(
@@ -53,7 +56,8 @@ class Migration(migrations.Migration):
                 (
                     "affaire",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="api.affaire"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="api.affaire",
                     ),
                 ),
             ],
@@ -79,7 +83,10 @@ class Migration(migrations.Migration):
                     "observation",
                     models.CharField(blank=True, max_length=1000, null=True),
                 ),
-                ("ref_doc", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "ref_doc",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
                 (
                     "date_creation",
                     models.DateField(
@@ -101,7 +108,8 @@ class Migration(migrations.Migration):
                 (
                     "fiche",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="api.fiche"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="api.fiche",
                     ),
                 ),
             ],

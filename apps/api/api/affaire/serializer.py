@@ -92,7 +92,9 @@ class AffaireFichesEtapesMachineSerializer(serializers.ModelSerializer):
     """
 
     fiches = FicheEtEtapesMachineSerializer(Fiche, many=True, read_only=True)
-    charge_affaire = serializers.SlugRelatedField(read_only=True, slug_field="nom")
+    charge_affaire = serializers.SlugRelatedField(
+        read_only=True, slug_field="nom"
+    )
 
     class Meta:
         model = Affaire
@@ -111,7 +113,9 @@ class AffaireFichesEtapesAjustageSerializer(serializers.ModelSerializer):
     """
 
     fiches = FicheEtEtapesAjustageSerializer(Fiche, many=True, read_only=True)
-    charge_affaire = serializers.SlugRelatedField(read_only=True, slug_field="nom")
+    charge_affaire = serializers.SlugRelatedField(
+        read_only=True, slug_field="nom"
+    )
 
     class Meta:
         model = Affaire

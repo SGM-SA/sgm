@@ -23,7 +23,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("nom_modele", models.CharField(max_length=255)),
-                ("description_modele", models.TextField(blank=True, null=True)),
+                (
+                    "description_modele",
+                    models.TextField(blank=True, null=True),
+                ),
                 (
                     "date_creation_modele",
                     models.DateField(
@@ -32,7 +35,10 @@ class Migration(migrations.Migration):
                 ),
                 ("titre", models.CharField(default="", max_length=100)),
                 ("description", models.TextField(blank=True, null=True)),
-                ("ref_doc", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "ref_doc",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
                 (
                     "fourniture",
                     models.BooleanField(

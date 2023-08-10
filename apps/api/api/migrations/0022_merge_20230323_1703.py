@@ -6,7 +6,10 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("api", "0020_remove_affectationajustage_fiche_remove_zone_fiches_and_more"),
+        (
+            "api",
+            "0020_remove_affectationajustage_fiche_remove_zone_fiches_and_more",
+        ),
         ("api", "0021_alter_etape_machine"),
     ]
 

@@ -1,5 +1,7 @@
 from api.affectation_etape_machine.models import AffectationMachine
-from api.affectation_etape_machine.serializer import AffectationMachineDetailSerializer
+from api.affectation_etape_machine.serializer import (
+    AffectationMachineDetailSerializer,
+)
 from rest_framework import generics
 
 

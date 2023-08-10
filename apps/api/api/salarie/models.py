@@ -24,7 +24,9 @@ class Salarie(models.Model):
     )
 
     # Affectation d'une fiche à une zone
-    zone = models.ForeignKey(Zone, on_delete=models.PROTECT, null=True, blank=True)
+    zone = models.ForeignKey(
+        Zone, on_delete=models.PROTECT, null=True, blank=True
+    )
 
     def __str__(self):
         return f"{self.num_secu} - {self.nom} - {self.prenom}"

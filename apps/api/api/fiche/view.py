@@ -8,16 +8,10 @@ from api.affaire.serializer import AffaireFichesEtapesSerializer
 from api.fiche.serializer import (
     FicheEtEtapesAjustageSerializer,
     FicheCRUDSerializer,
-    FicheBulkDeleteRequestSerializer,
 )
-from rest_framework import generics, filters, status, serializers
-from drf_spectacular.utils import (
-    extend_schema_view,
-    extend_schema,
-    OpenApiParameter,
-    OpenApiExample,
-    inline_serializer,
-)
+from api.commun.views import BulkDeleteView
+from rest_framework import generics, filters
+from drf_spectacular.utils import extend_schema_view, extend_schema
 from django.db.models import Prefetch, Count
 from constance import config
 
@@ -40,7 +34,8 @@ class EtapeAjustagePlanifierFilter(filters.BaseFilterBackend):
         fiche_avec_etapes = (
             Etape.objects.all()
             .filter(
-                affectationajustage__isnull=True, machine=config.MACHINE_AJUSTAGE_ID
+                affectationajustage__isnull=True,
+                groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID,
             )
             .values("fiche")
             .alias(total=Count("id"))
@@ -64,7 +59,7 @@ class EtapeAjustagePlanifierFilter(filters.BaseFilterBackend):
                         "etapes",
                         queryset=Etape.objects.filter(
                             affectationajustage__isnull=True,
-                            machine=config.MACHINE_AJUSTAGE_ID,
+                            groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID,
                         ),
                     )
                 ),
@@ -90,7 +85,7 @@ class EtapeMachinePlanifierFilter(filters.BaseFilterBackend):
         fiche_avec_etapes_machine = (
             Etape.objects.all()
             .filter(affectationmachine__isnull=True)
-            .exclude(machine=config.MACHINE_AJUSTAGE_ID)
+            .exclude(groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID)
             .values("fiche")
             .alias(total=Count("id"))
             .filter(total__gt=0)
@@ -114,7 +109,7 @@ class EtapeMachinePlanifierFilter(filters.BaseFilterBackend):
                         queryset=Etape.objects.filter(
                             affectationmachine__isnull=True,
                         ).exclude(
-                            machine=config.MACHINE_AJUSTAGE_ID,
+                            groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID
                         ),
                     )
                 ),
@@ -193,32 +188,9 @@ class FicheRUDView(generics.RetrieveUpdateDestroyAPIView):
 
 
 @extend_schema(
-    summary="Suppression bulk de fiches",
-    description="Bulk delete des fiches",
+    summary="Bulk delete de fiches",
+    description="Permet de supprimer plusieurs fiches en même temps",
     tags=["Fiche"],
-    responses={status.HTTP_204_NO_CONTENT: None},
-    request=inline_serializer(
-        name="FicheBulkDelete",
-        fields={
-            "ids": serializers.ListField(
-                child=serializers.IntegerField(), required=True
-            ),
-        },
-    ),
-)  # TODO : fix swagger
-class FicheBulkDelete(generics.DestroyAPIView):
+)
+class FicheBulkDelete(BulkDeleteView):
     queryset = Fiche.objects.all()
-    serializer_class = FicheCRUDSerializer
-
-    def delete(self, request, *args, **kwargs):
-        try:
-            ids = request.data.get("ids", None)
-            if ids is None:
-                return Response(status=status.HTTP_400_BAD_REQUEST)
-            objs = self.get_queryset().filter(id__in=ids)
-            objs.delete()
-
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except Exception as e:
-            print(e)
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"error": str(e)})

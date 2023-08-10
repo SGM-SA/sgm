@@ -1,5 +1,7 @@
 from api.models import AffectationAjustage
-from api.affectation_etape_zone.serializer import AffectationAjustageDetailSerializer
+from api.affectation_etape_zone.serializer import (
+    AffectationAjustageDetailSerializer,
+)
 from rest_framework import generics
 
 

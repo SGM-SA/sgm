@@ -35,7 +35,10 @@ class Migration(migrations.Migration):
                     "observation",
                     models.CharField(blank=True, max_length=1000, null=True),
                 ),
-                ("ref_doc", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "ref_doc",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
                 (
                     "date_creation",
                     models.DateField(
@@ -55,7 +58,10 @@ class Migration(migrations.Migration):
                         blank=True, null=True, verbose_name="date de clôture"
                     ),
                 ),
-                ("montant", models.DecimalField(decimal_places=2, max_digits=10)),
+                (
+                    "montant",
+                    models.DecimalField(decimal_places=2, max_digits=10),
+                ),
                 ("devis", models.BooleanField(default=False)),
             ],
         ),
@@ -72,7 +78,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("designation", models.CharField(max_length=200)),
-                ("taux_horaire", models.DecimalField(decimal_places=2, max_digits=10)),
+                (
+                    "taux_horaire",
+                    models.DecimalField(decimal_places=2, max_digits=10),
+                ),
             ],
         ),
         migrations.CreateModel(
@@ -88,19 +97,37 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("raison", models.CharField(max_length=200)),
-                ("type", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "type",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
                 ("adresse1", models.CharField(max_length=200)),
-                ("adresse2", models.CharField(blank=True, max_length=200, null=True)),
-                ("adresse3", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "adresse2",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                (
+                    "adresse3",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
                 ("zip_code", models.CharField(max_length=200)),
                 ("ville", models.CharField(max_length=200)),
                 ("pays", models.CharField(max_length=200)),
                 ("tel1", models.CharField(max_length=200)),
-                ("tel2", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "tel2",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
                 ("email", models.CharField(max_length=200)),
                 ("correspondant", models.CharField(max_length=200)),
-                ("memo", models.CharField(blank=True, max_length=200, null=True)),
-                ("compte", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "memo",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                (
+                    "compte",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
             ],
         ),
         migrations.CreateModel(
@@ -132,7 +159,10 @@ class Migration(migrations.Migration):
                 ),
                 ("raison", models.CharField(max_length=200)),
                 ("adresse1", models.CharField(max_length=200)),
-                ("adresse2", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "adresse2",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
                 ("code_postal", models.CharField(max_length=200)),
                 ("ville", models.CharField(max_length=200)),
                 ("pays", models.CharField(max_length=200)),
@@ -141,21 +171,34 @@ class Migration(migrations.Migration):
                 (
                     "correspondant",
                     models.CharField(
-                        max_length=200, verbose_name="Correspondant de l'entreprise"
+                        max_length=200,
+                        verbose_name="Correspondant de l'entreprise",
                     ),
                 ),
-                ("siret", models.CharField(blank=True, max_length=200, null=True)),
-                ("tva", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "siret",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                (
+                    "tva",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
                 (
                     "iban",
                     models.CharField(
-                        blank=True, max_length=200, null=True, verbose_name="iban"
+                        blank=True,
+                        max_length=200,
+                        null=True,
+                        verbose_name="iban",
                     ),
                 ),
                 (
                     "bic",
                     models.CharField(
-                        blank=True, max_length=200, null=True, verbose_name="bic"
+                        blank=True,
+                        max_length=200,
+                        null=True,
+                        verbose_name="bic",
                     ),
                 ),
                 (
@@ -166,7 +209,12 @@ class Migration(migrations.Migration):
                         verbose_name="délais de livraison (jours)",
                     ),
                 ),
-                ("memo", models.TextField(blank=True, null=True, verbose_name="mémo")),
+                (
+                    "memo",
+                    models.TextField(
+                        blank=True, null=True, verbose_name="mémo"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
@@ -204,7 +252,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "description",
-                    models.TextField(verbose_name="Description du type de fourniture"),
+                    models.TextField(
+                        verbose_name="Description du type de fourniture"
+                    ),
                 ),
             ],
             options={
@@ -228,7 +278,10 @@ class Migration(migrations.Migration):
                 ("nom", models.CharField(max_length=200)),
                 ("prenom", models.CharField(max_length=200)),
                 ("adresse1", models.CharField(max_length=200)),
-                ("adresse2", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "adresse2",
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
                 ("zip_code", models.CharField(max_length=200)),
                 ("ville", models.CharField(max_length=200)),
                 ("pays", models.CharField(max_length=200)),
@@ -266,18 +319,26 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("date_debut", models.DateTimeField(verbose_name="Pointage debut")),
-                ("date_fin", models.DateTimeField(verbose_name="Pointage fin")),
+                (
+                    "date_debut",
+                    models.DateTimeField(verbose_name="Pointage debut"),
+                ),
+                (
+                    "date_fin",
+                    models.DateTimeField(verbose_name="Pointage fin"),
+                ),
                 (
                     "affaire",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="api.affaire"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="api.affaire",
                     ),
                 ),
                 (
                     "salarie",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="api.salarie"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="api.salarie",
                     ),
                 ),
             ],
@@ -297,12 +358,16 @@ class Migration(migrations.Migration):
                 ("code_fourniture", models.CharField(max_length=200)),
                 (
                     "description",
-                    models.TextField(verbose_name="Description de la fourniture"),
+                    models.TextField(
+                        verbose_name="Description de la fourniture"
+                    ),
                 ),
                 (
                     "prix_ht",
                     models.DecimalField(
-                        decimal_places=2, max_digits=100, verbose_name="Prix HT"
+                        decimal_places=2,
+                        max_digits=100,
+                        verbose_name="Prix HT",
                     ),
                 ),
                 (
@@ -374,7 +439,8 @@ class Migration(migrations.Migration):
                 (
                     "affaire",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="api.affaire"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="api.affaire",
                     ),
                 ),
             ],
@@ -425,7 +491,10 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("quantite", models.IntegerField(default=1, verbose_name="Quantité")),
+                (
+                    "quantite",
+                    models.IntegerField(default=1, verbose_name="Quantité"),
+                ),
                 (
                     "date_demande",
                     models.DateField(
@@ -447,13 +516,15 @@ class Migration(migrations.Migration):
                 (
                     "affaire",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="api.affaire"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="api.affaire",
                     ),
                 ),
                 (
                     "fourniture",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="api.fourniture"
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="api.fourniture",
                     ),
                 ),
             ],

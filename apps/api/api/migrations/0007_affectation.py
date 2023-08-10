@@ -25,7 +25,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "semaine_affectation",
-                    models.DateField(verbose_name="Semaine d'affectation de la fiche"),
+                    models.DateField(
+                        verbose_name="Semaine d'affectation de la fiche"
+                    ),
                 ),
                 (
                     "fiche",

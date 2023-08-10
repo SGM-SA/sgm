@@ -1,14 +1,16 @@
 from rest_framework import serializers
 from .models import Note
 
+
 class NoteDetail(serializers.ModelSerializer):
-    user = serializers.CharField(source='user.username', read_only=True)
+    user = serializers.CharField(source="user.username", read_only=True)
 
     class Meta:
         model = Note
-        fields = ['id', 'user', 'contenu', 'date_creation']
+        fields = ["id", "user", "contenu", "date_creation"]
+
 
 class NoteCreate(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ['id', 'contenu', 'date_creation', 'affaire']
+        fields = ["id", "contenu", "date_creation", "affaire"]

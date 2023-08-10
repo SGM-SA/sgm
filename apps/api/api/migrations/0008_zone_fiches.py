@@ -13,6 +13,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="zone",
             name="fiches",
-            field=models.ManyToManyField(through="api.Affectation", to="api.fiche"),
+            field=models.ManyToManyField(
+                through="api.Affectation", to="api.fiche"
+            ),
         ),
     ]

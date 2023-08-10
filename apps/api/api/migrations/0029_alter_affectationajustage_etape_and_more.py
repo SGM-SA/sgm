@@ -43,7 +43,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "semaine_affectation",
-                    models.DateField(verbose_name="Semaine d'affectation de l'étape"),
+                    models.DateField(
+                        verbose_name="Semaine d'affectation de l'étape"
+                    ),
                 ),
                 (
                     "etape",

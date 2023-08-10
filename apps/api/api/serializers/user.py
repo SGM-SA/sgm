@@ -10,7 +10,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     groups = serializers.SerializerMethodField()
 
-    @extend_schema_field(serializers.ListSerializer(child=serializers.CharField()))
+    @extend_schema_field(
+        serializers.ListSerializer(child=serializers.CharField())
+    )
     def get_groups(self, obj):
         return obj.groups.values_list("name", flat=True)
 

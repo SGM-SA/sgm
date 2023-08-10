@@ -6,7 +6,9 @@ class FicheModele(models.Model):
     date_creation = models.DateField("date de création", auto_now_add=True)
 
     # fiche infos
-    titre = models.CharField(max_length=100, null=False, blank=False, default="")
+    titre = models.CharField(
+        max_length=100, null=False, blank=False, default=""
+    )
     description = models.TextField(null=True, blank=True)
 
     fourniture = models.BooleanField(
@@ -17,7 +19,5 @@ class FicheModele(models.Model):
         verbose_name = "Fiche modèle"
         verbose_name_plural = "Fiches modèle"
 
-
     def __str__(self):
         return f"Fiche : {self.description}"
-

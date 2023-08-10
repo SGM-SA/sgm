@@ -364,9 +364,9 @@ def sgm_data_to_local(data):
             if date_rendu == "":
                 date_rendu = None
             else:
-                date_rendu = datetime.strptime(date_rendu, "%d/%m/%Y").strftime(
-                    "%Y-%m-%d"
-                )
+                date_rendu = datetime.strptime(
+                    date_rendu, "%d/%m/%Y"
+                ).strftime("%Y-%m-%d")
             affaires.append(
                 {
                     "num_affaire": data[str(affaire)]["NUMAFR"],
@@ -394,7 +394,9 @@ def compare_affaires_sgm_local(affaires_sgm):
     compteur_affaires_crees = 0
 
     for affaire_sgm in affaires_sgm:
-        affaire = Affaire.objects.filter(num_affaire=affaire_sgm["num_affaire"])
+        affaire = Affaire.objects.filter(
+            num_affaire=affaire_sgm["num_affaire"]
+        )
         if affaire:
             affaire_first = affaire.first()
             hash_sgm_bd = dict_to_hash(affaire_sgm)
@@ -405,7 +407,9 @@ def compare_affaires_sgm_local(affaires_sgm):
                 affaire.update(**affaire_sgm, hash_sgm_bd=hash_sgm_bd)
                 compteur_affaires_modifiees += 1
         else:
-            Affaire.objects.create(**affaire_sgm, hash_sgm_bd=dict_to_hash(affaire_sgm))
+            Affaire.objects.create(
+                **affaire_sgm, hash_sgm_bd=dict_to_hash(affaire_sgm)
+            )
             compteur_affaires_crees += 1
 
     print(f"{compteur_affaires_modifiees} affaires modifiées")
