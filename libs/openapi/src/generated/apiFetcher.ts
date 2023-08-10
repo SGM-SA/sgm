@@ -1,6 +1,7 @@
-import { useToken } from '@sgm/web/auth'
 import { environment } from '@sgm/web/environments'
 import { ApiContext } from './apiContext'
+import { AuthService } from '@sgm/web/auth';
+import { fetchAuthTokenRefreshCreate } from './apiComponents';
 
 const baseUrl = environment.apiBaseUrl
 
@@ -39,6 +40,7 @@ export async function apiFetch<
 	TQueryParams,
 	TPathParams
 >): Promise<TData> {
+
 	try {
 		const requestHeaders: HeadersInit = {
 			'Content-Type': 'application/json',
@@ -73,8 +75,15 @@ export async function apiFetch<
 			}
 		)
 
+		if ([401, 403].includes(response.status)) {
+
+			// fetchAuthTokenRefreshCreate({ body: {refresh:  }})
+			AuthService.logout()
+		}
+
 		if (!response.ok) {
 			let error: ErrorWrapper<TError>
+			
 			try {
 				error = await response.json()
 			} catch (e) {
@@ -85,11 +94,6 @@ export async function apiFetch<
 							? `Unexpected error (${e.message})`
 							: 'Unexpected error',
 				}
-			}
-
-			if ([401, 403].includes(response.status)) {
-				const { setToken } = useToken()
-				setToken(null)
 			}
 
 			throw error

@@ -2,7 +2,7 @@ import { Button, Flex, FormControl, FormLabel, Heading, Input } from '@chakra-ui
 import { zodResolver } from '@hookform/resolvers/zod'
 import { fetchAuthTokenCreate } from '@sgm/openapi'
 import { Card } from '@sgm/ui'
-import { useToken } from '@sgm/web/auth'
+import { AuthService, useToken } from '@sgm/web/auth'
 import { useNavigate } from '@sgm/web/router'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -18,7 +18,6 @@ type AuthFormSchema = z.infer<typeof authFormSchema>
 const LoginPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { setToken } = useToken()
 
     const {
         register,
@@ -32,12 +31,10 @@ const LoginPage: React.FC = () => {
         // @ts-ignore
         fetchAuthTokenCreate({ body: { username, password } })
             .then(res => {
-                setToken(res.access)
+                AuthService.login(res.access)
                 navigate('/')
             })
-            .catch(err => {
-                console.log(err)
-            })
+            .catch(err => console.log(err))
     }
 
 	return <>

@@ -3,8 +3,10 @@
 ## Todo
 
 - [ ] Authentication
-  - [ ] Logout
+  - [ ] Test token expiration
+  - [ ] Switch from username to mail (with confirmation mail)
   - [ ] *Refresh token?* (or expire token after much longer time)
+  - [x] Logout
   - [x] Login
 - [ ] Error handling
   - [ ] Page/components (Catch & 404)
