@@ -6,6 +6,6 @@ def trigger_error(request):
 
 
 urlpatterns = [
-    path('sentry-debug/', trigger_error),
+    path("sentry-debug/", trigger_error),
     # ...
 ]

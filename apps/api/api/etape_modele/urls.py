@@ -1,5 +1,8 @@
 from django.urls import path
-from api.etape_modele.view import EtapeModeleListCreate, EtapeModeleRetrieveUpdateDestroy
+from api.etape_modele.view import (
+    EtapeModeleListCreate,
+    EtapeModeleRetrieveUpdateDestroy,
+)
 
 urlpatterns = [
     path("etapes/", EtapeModeleListCreate.as_view()),

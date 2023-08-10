@@ -6,7 +6,11 @@ from api.affaire.serializer import (
 )
 from rest_framework import generics, pagination
 from rest_framework import filters
-from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
+from drf_spectacular.utils import (
+    extend_schema,
+    extend_schema_view,
+    OpenApiParameter,
+)
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -51,14 +55,9 @@ class LargeResultsSetPagination(pagination.PageNumberPagination):
                 description="Nombre d'affaires par page",
             ),
         ],
-    ),
-    post=extend_schema(
-        summary="Affaire",
-        description="Création affaire",
-        tags=["Affaire"],
-    ),
+    )
 )
-class AffaireList(generics.ListCreateAPIView):
+class AffaireList(generics.ListAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireDetailsSerializer
     pagination_class = LargeResultsSetPagination

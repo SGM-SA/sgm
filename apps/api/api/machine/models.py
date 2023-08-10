@@ -7,6 +7,9 @@ class Machine(models.Model):
     description = models.CharField(max_length=1000, null=True, blank=True)
     fonctionnelle = models.BooleanField(default=True, null=False, blank=False)
     est_active = models.BooleanField(default=True, null=False, blank=False)
+    groupe_machine = models.ForeignKey(
+        "GroupeMachine", on_delete=models.PROTECT, null=True, blank=True
+    )
 
     def __str__(self):
         etat = self.fonctionnelle

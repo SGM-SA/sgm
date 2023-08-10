@@ -44,7 +44,10 @@ class Affaire(models.Model):
     )
 
     observation = models.CharField(
-        "Observation faite sur l'affaire", max_length=1000, null=True, blank=True
+        "Observation faite sur l'affaire",
+        max_length=1000,
+        null=True,
+        blank=True,
     )
 
     ref_doc = models.CharField(
@@ -54,10 +57,16 @@ class Affaire(models.Model):
         blank=True,
     )
 
-    client = models.CharField("nom du client", max_length=200, null=True, blank=True)
+    client = models.CharField(
+        "nom du client", max_length=200, null=True, blank=True
+    )
 
     montant = models.DecimalField(
-        "montant de l'affaire", max_digits=10, decimal_places=2, null=True, blank=True
+        "montant de l'affaire",
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
     )
 
     statut = models.CharField(
@@ -76,7 +85,9 @@ class Affaire(models.Model):
         "date à laquelle l'affaire doit être terminée", null=True, blank=True
     )
 
-    date_modification = models.DateTimeField("date de modification", auto_now=True)
+    date_modification = models.DateTimeField(
+        "date de modification", auto_now=True
+    )
 
     date_cloture = models.DateField(
         "date de clôture de l'affaire (terminée)", null=True, blank=True

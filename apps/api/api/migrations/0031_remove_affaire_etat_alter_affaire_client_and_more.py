@@ -19,7 +19,10 @@ class Migration(migrations.Migration):
             model_name="affaire",
             name="client",
             field=models.CharField(
-                blank=True, max_length=200, null=True, verbose_name="nom du client"
+                blank=True,
+                max_length=200,
+                null=True,
+                verbose_name="nom du client",
             ),
         ),
         migrations.AlterField(

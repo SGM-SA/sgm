@@ -68,7 +68,7 @@ INSTALLED_APPS = [
 # constance
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 CONSTANCE_CONFIG = {
-    "MACHINE_AJUSTAGE_ID": (1, "ID de la machine ajustage"),
+    "GROUPE_MACHINE_AJUSTAGE_ID": (1, "ID du groupe machine ajustage"),
 }
 
 

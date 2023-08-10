@@ -3,6 +3,8 @@ from .models import Note
 from api.affaire.models import Affaire
 from .serializer import NoteDetail, NoteCreate
 from drf_spectacular.utils import extend_schema
+from rest_framework.views import APIView
+
 
 @extend_schema(
     summary="Créer une Note",
@@ -17,6 +19,7 @@ class NoteCreateAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+
 @extend_schema(
     summary="Détails et Modification de la Note",
     description="Permet de récupérer, modifier ou supprimer une note existante",
@@ -26,21 +29,27 @@ class NoteRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Note.objects.all()
     serializer_class = NoteDetail
 
+
 @extend_schema(
     summary="Liste des Notes par Affaire",
     description="Récupère toutes les notes associées à une affaire donnée, ordonnées par date de création. La première note est la description de l'affaire.",
     tags=["Note"],
+    # affaire_id as path parameter
+    responses={200: NoteDetail(many=True)},
 )
-class AffaireNotesListView(generics.ListAPIView):
-    serializer_class = NoteDetail
-    #permission_classes = [permissions.IsAuthenticated]
+class AffaireNotesListView(APIView):
+    serializer_class = NoteDetail(many=True)
 
     def get_queryset(self):
-        affaire_id = self.kwargs['affaire_id']
+        affaire_id = self.kwargs["affaire_id"]
         affaire = Affaire.objects.get(pk=affaire_id)
 
-        notes = Note.objects.filter(affaire=affaire).order_by('date_creation')
+        notes = Note.objects.filter(affaire=affaire).order_by("date_creation")
 
         # ajout de la description de l'affaire en première note
-        description_as_note = Note(contenu=affaire.description, date_creation=affaire.date_creation, user=None)
-        return [description_as_note] + list(notes)
+        description_as_note = Note(
+            contenu=affaire.description,
+            date_creation=affaire.date_creation,
+            user=None,
+        )
+        return NoteDetail([description_as_note] + list(notes), many=True).data

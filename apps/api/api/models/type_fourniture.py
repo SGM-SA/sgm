@@ -3,7 +3,9 @@ from django.db import models
 
 class TypeFourniture(models.Model):
 
-    code_type_fourniture = models.CharField("Code type fourniture", max_length=200)
+    code_type_fourniture = models.CharField(
+        "Code type fourniture", max_length=200
+    )
     description = models.TextField("Description du type de fourniture")
 
     def __str__(self):

@@ -4,7 +4,7 @@ from api.fiche_modele.view import (
     FicheModeleListCreateView,
     FicheModeleDetailView,
     CopieModeleToAffaire,
-    FicheModeleOptionsView
+    FicheModeleOptionsView,
 )
 
 urlpatterns = [

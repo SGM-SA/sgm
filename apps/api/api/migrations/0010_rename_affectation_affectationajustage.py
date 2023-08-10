@@ -6,7 +6,10 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("api", "0009_fiche_groupe_machine_alter_affaire_charge_affaire_and_more"),
+        (
+            "api",
+            "0009_fiche_groupe_machine_alter_affaire_charge_affaire_and_more",
+        ),
     ]
 
     operations = [

@@ -15,7 +15,8 @@ class Migration(migrations.Migration):
             model_name="affaire",
             name="num_affaire",
             field=models.IntegerField(
-                unique=True, validators=[django.core.validators.MinValueValidator(0)]
+                unique=True,
+                validators=[django.core.validators.MinValueValidator(0)],
             ),
         ),
     ]

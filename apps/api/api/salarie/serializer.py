@@ -7,6 +7,7 @@ class SalarieSerializer(serializers.ModelSerializer):
         model = Salarie
         fields = "__all__"
 
+
 class SalarieFormOptionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Salarie

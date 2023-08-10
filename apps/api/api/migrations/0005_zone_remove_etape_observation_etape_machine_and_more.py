@@ -52,7 +52,10 @@ class Migration(migrations.Migration):
             model_name="etape",
             name="nom_piece",
             field=models.CharField(
-                blank=True, max_length=2000, null=True, verbose_name="Nom de la pièce"
+                blank=True,
+                max_length=2000,
+                null=True,
+                verbose_name="Nom de la pièce",
             ),
         ),
         migrations.AddField(
@@ -63,12 +66,16 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="etape",
             name="temps",
-            field=models.IntegerField(default=0, verbose_name="Temps nécessaire"),
+            field=models.IntegerField(
+                default=0, verbose_name="Temps nécessaire"
+            ),
         ),
         migrations.AddField(
             model_name="etape",
             name="terminee",
-            field=models.BooleanField(default=False, verbose_name="Terminée ?"),
+            field=models.BooleanField(
+                default=False, verbose_name="Terminée ?"
+            ),
         ),
         migrations.AddField(
             model_name="fiche",
@@ -80,13 +87,18 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="fiche",
             name="terminee",
-            field=models.BooleanField(default=False, verbose_name="Fiche terminée"),
+            field=models.BooleanField(
+                default=False, verbose_name="Fiche terminée"
+            ),
         ),
         migrations.AlterField(
             model_name="etape",
             name="description",
             field=models.TextField(
-                blank=True, max_length=10000, null=True, verbose_name="Description"
+                blank=True,
+                max_length=10000,
+                null=True,
+                verbose_name="Description",
             ),
         ),
         migrations.AlterField(

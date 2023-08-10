@@ -2,7 +2,11 @@ from api.machine.models import Machine
 from api.planning_machine.serializer import PlanningMachineSerializer
 from rest_framework import generics
 from constance import config
-from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter
+from drf_spectacular.utils import (
+    extend_schema_view,
+    extend_schema,
+    OpenApiParameter,
+)
 
 
 @extend_schema_view(
@@ -15,12 +19,15 @@ from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiPara
                 name="annee", description="annee", type=int, required=True
             ),
             OpenApiParameter(
-                name="semaine", description="numero semaine", type=int, required=True
+                name="semaine",
+                description="numero semaine",
+                type=int,
+                required=True,
             ),
         ],
         tags=["Planning"],
     ),
 )
 class PlanningMachineAvecFiches(generics.ListAPIView):
-    queryset = Machine.objects.exclude(id=config.MACHINE_AJUSTAGE_ID)
+    queryset = Machine.objects.exclude(id=config.GROUPE_MACHINE_AJUSTAGE_ID)
     serializer_class = PlanningMachineSerializer

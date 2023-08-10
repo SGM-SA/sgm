@@ -24,16 +24,29 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("num_etape", models.IntegerField(verbose_name="N°Étape")),
-                ("quantite", models.IntegerField(default=0, verbose_name="Quantité")),
+                (
+                    "quantite",
+                    models.IntegerField(default=0, verbose_name="Quantité"),
+                ),
                 (
                     "temps",
-                    models.IntegerField(default=0, verbose_name="Temps nécessaire"),
+                    models.IntegerField(
+                        default=0, verbose_name="Temps nécessaire"
+                    ),
                 ),
-                ("plan", models.CharField(blank=True, max_length=2000, null=True)),
-                ("rep", models.CharField(blank=True, max_length=2000, null=True)),
+                (
+                    "plan",
+                    models.CharField(blank=True, max_length=2000, null=True),
+                ),
+                (
+                    "rep",
+                    models.CharField(blank=True, max_length=2000, null=True),
+                ),
                 (
                     "terminee",
-                    models.BooleanField(default=False, verbose_name="Terminée ?"),
+                    models.BooleanField(
+                        default=False, verbose_name="Terminée ?"
+                    ),
                 ),
                 (
                     "description",
@@ -67,7 +80,8 @@ class Migration(migrations.Migration):
                 (
                     "machine",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.PROTECT, to="api.machine"
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="api.machine",
                     ),
                 ),
             ],

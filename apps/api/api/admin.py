@@ -24,7 +24,10 @@ from api.etape_modele.models import EtapeModele
 from api.affectation_etape_machine.models import AffectationMachine
 from api.affectation_etape_machine.admin import AffectationMachineModelAdmin
 from api.note.models import Note
+from api.groupe_machine.models import GroupeMachine
+
 admin.site.register(AffectationMachine, AffectationMachineModelAdmin)
+admin.site.register(GroupeMachine)
 admin.site.register(Machine)
 admin.site.register(Affaire)
 admin.site.register(Fiche)

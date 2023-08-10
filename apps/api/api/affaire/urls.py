@@ -1,5 +1,10 @@
 from django.urls import path
-from api.affaire.view import AffaireList, AffaireDetail, AffaireDetailFiches, AffaireNumAffaire
+from api.affaire.view import (
+    AffaireList,
+    AffaireDetail,
+    AffaireDetailFiches,
+    AffaireNumAffaire,
+)
 
 urlpatterns = [
     path("", AffaireList.as_view()),

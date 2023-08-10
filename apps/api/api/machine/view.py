@@ -2,7 +2,11 @@ from api.models import Machine
 from api.machine.serializer import MachineDetailSerializer
 from rest_framework import generics, status
 from rest_framework.response import Response
-from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter
+from drf_spectacular.utils import (
+    extend_schema_view,
+    extend_schema,
+    OpenApiParameter,
+)
 
 
 @extend_schema_view(
@@ -37,7 +41,7 @@ class MachineListCreate(generics.ListCreateAPIView):
         summary="Modification",
         description="Modification d'une machine",
         tags=["Machine"],
-    )
+    ),
 )
 class MachineDetail(generics.RetrieveUpdateAPIView):
     queryset = Machine.objects.all()
@@ -67,14 +71,16 @@ class MachineDelete(generics.DestroyAPIView):
     def delete(self, request, *args, **kwargs):
         try:
             # delete all the objects
-            pk_ids = request.query_params.get('ids', None)
+            pk_ids = request.query_params.get("ids", None)
             if pk_ids is None:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
-            pk_ids = pk_ids.split(',')
+            pk_ids = pk_ids.split(",")
             objs = self.get_queryset().filter(id__in=pk_ids)
             print(objs)
             objs.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
             print(e)
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"error": str(e)})
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST, data={"error": str(e)}
+            )
