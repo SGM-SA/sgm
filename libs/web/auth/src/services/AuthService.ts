@@ -1,4 +1,5 @@
 import mitt from 'mitt'
+import { toast } from 'react-toastify'
 
 export type AuthEvents = {
     login: string
@@ -17,12 +18,14 @@ export class AuthService {
     public static login(token: string, refreshToken: string) {
         localStorage.setItem(Items.Token, token)
         localStorage.setItem(Items.RefreshToken, refreshToken)
+        toast.success('Vous êtes connecté', { toastId: 'login' })
         this.emitter.emit('login', token)
     }
 
     public static logout() {
         localStorage.removeItem(Items.Token)
         localStorage.removeItem(Items.RefreshToken)
+        toast.error('Vous avez été déconnecté', { toastId: 'logout' })
         this.emitter.emit('logout')
     }
 

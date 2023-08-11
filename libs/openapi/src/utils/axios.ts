@@ -3,6 +3,7 @@ import { environment } from '@sgm/web/environments'
 import defaultAxios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { ErrorWrapper } from '../generated/apiFetcher'
 import { fetchAuthTokenRefreshCreate } from '../generated/apiComponents'
+import { toast } from 'react-toastify'
 
 export const axiosInstance = defaultAxios.create({
 	baseURL: environment.apiBaseUrl, // Replace with your base URL
@@ -57,20 +58,25 @@ axiosInstance.interceptors.response.use(
 		}
 	},
 	async (error: AxiosError) => {
+
 		if (error.response) {
 
 			const originalConfig = error.config as (InternalAxiosRequestConfig<any> & { _retry: boolean }) | undefined
 			if (!originalConfig) return Promise.reject(error)
 
 			// Handle response errors
-			const errorWrapper: ErrorWrapper<unknown> = {
+			const errorWrapper: ErrorWrapper<any> = {
 				status: error.response.status, // Set your status based on error.response
 				payload: error.response.data,
 			}
 
+			console.warn(errorWrapper.payload)
+
 			if (error.response.status === 401) {
 
-				if (!originalConfig._retry) AuthService.logout()
+				if (!originalConfig._retry) {
+					AuthService.logout()
+				}
 				else {
 			
 					originalConfig._retry = true
@@ -83,17 +89,24 @@ axiosInstance.interceptors.response.use(
 					originalConfig.headers.Authorization = `Bearer ${newToken}`
 					return axiosInstance.request(originalConfig)
 				}
+			} else if (error.response.status === 400) {
+				for (const [key, value] of Object.entries(errorWrapper.payload)) {
+					toast.error(`${key}: ${(value as any[]).join(', ')}`, { toastId: key })
+				}
 			}
 
 			return Promise.reject(errorWrapper)
 		} else if (error.request) {
 			// Handle request errors
-			const errorObject: Error = {
+			const errorWrapper: Error = {
 				name: 'unknown',
 				message: `Network error (${error.message})`,
 				stack: error.stack || '',
 			}
-			return Promise.reject(errorObject)
+			toast.error(errorWrapper.message, {
+				toastId: 'network-error',
+			})
+			return Promise.reject(errorWrapper)
 		} else {
 			// Handle other errors
 			const errorObject: Error = {
