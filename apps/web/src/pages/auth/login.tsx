@@ -30,8 +30,8 @@ const LoginPage: React.FC = () => {
 
         // @ts-ignore
         fetchAuthTokenCreate({ body: { username, password } })
-            .then(res => {
-                AuthService.login(res.access)
+            .then(data => {
+                AuthService.login(data.access, data.refresh)
                 navigate('/')
             })
             .catch(err => console.log(err))

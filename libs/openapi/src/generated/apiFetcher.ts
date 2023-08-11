@@ -2,6 +2,8 @@ import { environment } from '@sgm/web/environments'
 import { ApiContext } from './apiContext'
 import { AuthService } from '@sgm/web/auth';
 import { fetchAuthTokenRefreshCreate } from './apiComponents';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import { axiosInstance } from '../utils/axios';
 
 const baseUrl = environment.apiBaseUrl
 
@@ -41,81 +43,29 @@ export async function apiFetch<
 	TPathParams
 >): Promise<TData> {
 
-	try {
-		const requestHeaders: HeadersInit = {
-			'Content-Type': 'application/json',
-			...headers,
-		}
-
-		/**
-		 * As the fetch API is being used, when multipart/form-data is specified
-		 * the Content-Type header must be deleted so that the browser can set
-		 * the correct boundary.
-		 * https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects#sending_files_using_a_formdata_object
-		 */
-		if (
-			requestHeaders['Content-Type']
-				.toLowerCase()
-				.includes('multipart/form-data')
-		) {
-			delete requestHeaders['Content-Type']
-		}
-
-		const response = await window.fetch(
-			`${baseUrl}${resolveUrl(url, queryParams, pathParams)}`,
-			{
-				signal,
-				method: method.toUpperCase(),
-				body: body
-					? body instanceof FormData
-						? body
-						: JSON.stringify(body)
-					: undefined,
-				headers: requestHeaders,
-			}
-		)
-
-		if ([401, 403].includes(response.status)) {
-
-			// fetchAuthTokenRefreshCreate({ body: {refresh:  }})
-			AuthService.logout()
-		}
-
-		if (!response.ok) {
-			let error: ErrorWrapper<TError>
-			
-			try {
-				error = await response.json()
-			} catch (e) {
-				error = {
-					status: 'unknown' as const,
-					payload:
-						e instanceof Error
-							? `Unexpected error (${e.message})`
-							: 'Unexpected error',
-				}
-			}
-
-			throw error
-		}
-
-		if (response.headers.get('content-type')?.includes('json')) {
-			return await response.json()
-		} else {
-			// if it is not a json response, assume it is a blob and cast it to TData
-			return (await response.blob()) as unknown as TData
-		}
-	} catch (e) {
-		const errorObject: Error = {
-			name: 'unknown' as const,
-			message:
-				e instanceof Error
-					? `Network error (${e.message})`
-					: 'Network error',
-			stack: e as string,
-		}
-		throw errorObject
+	const processedHeaders: HeadersInit = {
+		...axiosInstance.head,
+		...headers,
 	}
+
+	// TODO: useful with the js fetch API, check if it is still needed with axios
+	if (
+		processedHeaders['Content-Type']
+			?.toLowerCase()
+			.includes('multipart/form-data')
+	) {
+		delete processedHeaders['Content-Type']
+	}
+
+	const config: AxiosRequestConfig = {
+		method: method.toUpperCase(),
+		url: resolveUrl(url, queryParams, pathParams),
+		data: body instanceof FormData ? body : JSON.stringify(body),
+		signal: signal,
+		headers: processedHeaders
+	}
+
+	return axiosInstance.request(config)
 }
 
 const resolveUrl = (
