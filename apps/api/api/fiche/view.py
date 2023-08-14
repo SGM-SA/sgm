@@ -1,5 +1,4 @@
-from rest_framework.parsers import JSONParser
-from rest_framework.response import Response
+from datetime import datetime
 from typing import List
 from api.fiche.models import Fiche
 from api.etape.models import Etape
@@ -9,6 +8,7 @@ from api.fiche.serializer import (
     FicheEtEtapesAjustageSerializer,
     FicheCRUDSerializer,
 )
+from api.utils.dates import week_to_date_range
 from api.commun.views import BulkDeleteView
 from rest_framework import generics, filters
 from drf_spectacular.utils import extend_schema_view, extend_schema
@@ -90,6 +90,12 @@ class EtapeMachinePlanifierFilter(filters.BaseFilterBackend):
             .alias(total=Count("id"))
             .filter(total__gt=0)
         )
+
+        # recupere etape dont la date d'affection est dépassée par rapport à la date du jour
+        etape_avec_date_affectation_depasse = Etape.objects.all().filter(
+            affectationmachine__date_affectation__lt=datetime.date.today()
+        )
+
         affaire_avec_fiches_non_vide = (
             Fiche.objects.all()
             .filter(id__in=fiche_avec_etapes_machine)
@@ -108,9 +114,7 @@ class EtapeMachinePlanifierFilter(filters.BaseFilterBackend):
                         "etapes",
                         queryset=Etape.objects.filter(
                             affectationmachine__isnull=True,
-                        ).exclude(
-                            groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID
-                        ),
+                        ).exclude(groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID),
                     )
                 ),
             )

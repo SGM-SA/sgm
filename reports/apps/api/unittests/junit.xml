@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="5" failures="0" skipped="0" tests="5" time="1.063" timestamp="2023-07-26T21:08:07.826776" hostname="UwUwU"><testcase classname="" name="api.tests.test_affaire" time="0.000"><error message="collection failure">api/tests/test_affaire.py:2: in &lt;module&gt;
+    from rest_framework.test import APITestCase
+.venv/lib/python3.11/site-packages/rest_framework/test.py:139: in &lt;module&gt;
+    class APIRequestFactory(DjangoRequestFactory):
+.venv/lib/python3.11/site-packages/rest_framework/test.py:140: in APIRequestFactory
+    renderer_classes_list = api_settings.TEST_REQUEST_RENDERER_CLASSES
+.venv/lib/python3.11/site-packages/rest_framework/settings.py:218: in __getattr__
+    val = self.user_settings[attr]
+.venv/lib/python3.11/site-packages/rest_framework/settings.py:209: in user_settings
+    self._user_settings = getattr(settings, 'REST_FRAMEWORK', {})
+.venv/lib/python3.11/site-packages/django/conf/__init__.py:92: in __getattr__
+    self._setup(name)
+.venv/lib/python3.11/site-packages/django/conf/__init__.py:72: in _setup
+    raise ImproperlyConfigured(
+E   django.core.exceptions.ImproperlyConfigured: Requested setting REST_FRAMEWORK, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.</error></testcase><testcase classname="" name="api.tests.test_affectation_etape_zone" time="0.000"><error message="collection failure">api/tests/test_affectation_etape_zone.py:4: in &lt;module&gt;
+    from rest_framework.test import APITestCase
+.venv/lib/python3.11/site-packages/rest_framework/test.py:139: in &lt;module&gt;
+    class APIRequestFactory(DjangoRequestFactory):
+.venv/lib/python3.11/site-packages/rest_framework/test.py:140: in APIRequestFactory
+    renderer_classes_list = api_settings.TEST_REQUEST_RENDERER_CLASSES
+.venv/lib/python3.11/site-packages/rest_framework/settings.py:218: in __getattr__
+    val = self.user_settings[attr]
+.venv/lib/python3.11/site-packages/rest_framework/settings.py:209: in user_settings
+    self._user_settings = getattr(settings, 'REST_FRAMEWORK', {})
+.venv/lib/python3.11/site-packages/django/conf/__init__.py:92: in __getattr__
+    self._setup(name)
+.venv/lib/python3.11/site-packages/django/conf/__init__.py:72: in _setup
+    raise ImproperlyConfigured(
+E   django.core.exceptions.ImproperlyConfigured: Requested setting REST_FRAMEWORK, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.</error></testcase><testcase classname="" name="api.tests.test_fiche" time="0.000"><error message="collection failure">api/tests/test_fiche.py:3: in &lt;module&gt;
+    from api.fiche.models import Fiche
+api/fiche/models.py:4: in &lt;module&gt;
+    class Fiche(models.Model):
+.venv/lib/python3.11/site-packages/django/db/models/base.py:127: in __new__
+    app_config = apps.get_containing_app_config(module)
+.venv/lib/python3.11/site-packages/django/apps/registry.py:260: in get_containing_app_config
+    self.check_apps_ready()
+.venv/lib/python3.11/site-packages/django/apps/registry.py:137: in check_apps_ready
+    settings.INSTALLED_APPS
+.venv/lib/python3.11/site-packages/django/conf/__init__.py:92: in __getattr__
+    self._setup(name)
+.venv/lib/python3.11/site-packages/django/conf/__init__.py:72: in _setup
+    raise ImproperlyConfigured(
+E   django.core.exceptions.ImproperlyConfigured: Requested setting INSTALLED_APPS, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.</error></testcase><testcase classname="" name="api.tests.test_note" time="0.000"><error message="collection failure">api/tests/test_note.py:3: in &lt;module&gt;
+    from django.contrib.auth.models import User
+.venv/lib/python3.11/site-packages/django/contrib/auth/models.py:3: in &lt;module&gt;
+    from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+.venv/lib/python3.11/site-packages/django/contrib/auth/base_user.py:49: in &lt;module&gt;
+    class AbstractBaseUser(models.Model):
+.venv/lib/python3.11/site-packages/django/db/models/base.py:127: in __new__
+    app_config = apps.get_containing_app_config(module)
+.venv/lib/python3.11/site-packages/django/apps/registry.py:260: in get_containing_app_config
+    self.check_apps_ready()
+.venv/lib/python3.11/site-packages/django/apps/registry.py:137: in check_apps_ready
+    settings.INSTALLED_APPS
+.venv/lib/python3.11/site-packages/django/conf/__init__.py:92: in __getattr__
+    self._setup(name)
+.venv/lib/python3.11/site-packages/django/conf/__init__.py:72: in _setup
+    raise ImproperlyConfigured(
+E   django.core.exceptions.ImproperlyConfigured: Requested setting INSTALLED_APPS, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.</error></testcase><testcase classname="" name="tests.test_hello" time="0.000"><error message="collection failure">ImportError while importing test module '/Users/erisson/Documents/DEV/TRAVAIL/CloudFlow/MISSIONS/SGM/sgm/apps/api/tests/test_hello.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/opt/homebrew/Cellar/python@3.11/3.11.4_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/test_hello.py:3: in &lt;module&gt;
+    from api.hello import hello
+E   ModuleNotFoundError: No module named 'api.hello'</error></testcase></testsuite></testsuites>

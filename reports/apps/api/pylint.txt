@@ -1,0 +1,101 @@
+[1m./api/affectation_etape_machine/admin.py[m[36m:[m12[36m:[m15[36m:[m [1m[31mE127[m continuation line over-indented for visual indent
+[1m./api/affectation_etape_machine/models.py[m[36m:[m20[36m:[m121[36m:[m [1m[31mE501[m line too long (126 > 120 characters)
+[1m./api/affectation_etape_machine/serializer.py[m[36m:[m4[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/affectation_etape_zone/models.py[m[36m:[m17[36m:[m121[36m:[m [1m[31mE501[m line too long (171 > 120 characters)
+[1m./api/etape/serializer.py[m[36m:[m16[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/etape/serializer.py[m[36m:[m26[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/etape/view.py[m[36m:[m8[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/etape/view.py[m[36m:[m53[36m:[m88[36m:[m [1m[31mW292[m no newline at end of file
+[1m./api/etape_modele/serializer.py[m[36m:[m8[36m:[m1[36m:[m [1m[31mW293[m blank line contains whitespace
+[1m./api/etape_modele/serializer.py[m[36m:[m13[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/etape_modele/view.py[m[36m:[m6[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/etape_modele/view.py[m[36m:[m15[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/etape_modele/view.py[m[36m:[m22[36m:[m41[36m:[m [1m[31mW292[m no newline at end of file
+[1m./api/fiche/view.py[m[36m:[m1[36m:[m1[36m:[m [1m[31mF401[m 'rest_framework.parsers.JSONParser' imported but unused
+[1m./api/fiche/view.py[m[36m:[m3[36m:[m1[36m:[m [1m[31mF401[m 'typing.List' imported but unused
+[1m./api/fiche/view.py[m[36m:[m8[36m:[m1[36m:[m [1m[31mF401[m 'api.fiche.serializer.FicheBulkDeleteRequestSerializer' imported but unused
+[1m./api/fiche/view.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mF401[m 'drf_spectacular.utils.OpenApiParameter' imported but unused
+[1m./api/fiche/view.py[m[36m:[m14[36m:[m1[36m:[m [1m[31mF401[m 'drf_spectacular.utils.OpenApiExample' imported but unused
+[1m./api/fiche_modele/models.py[m[36m:[m21[36m:[m5[36m:[m [1m[31mE303[m too many blank lines (2)
+[1m./api/fiche_modele/models.py[m[36m:[m23[36m:[m1[36m:[m [1m[31mW391[m blank line at end of file
+[1m./api/fiche_modele/serializer.py[m[36m:[m15[36m:[m5[36m:[m [1m[31mE301[m expected 1 blank line, found 0
+[1m./api/fiche_modele/serializer.py[m[36m:[m23[36m:[m5[36m:[m [1m[31mE301[m expected 1 blank line, found 0
+[1m./api/fiche_modele/urls.py[m[36m:[m15[36m:[m2[36m:[m [1m[31mW292[m no newline at end of file
+[1m./api/fiche_modele/view.py[m[36m:[m12[36m:[m1[36m:[m [1m[31mF401[m 'rest_framework.filters' imported but unused
+[1m./api/fiche_modele/view.py[m[36m:[m114[36m:[m9[36m:[m [1m[31mF841[m local variable 'e' is assigned to but never used
+[1m./api/machine/admin.py[m[36m:[m1[36m:[m1[36m:[m [1m[31mF401[m 'django.contrib.admin' imported but unused
+[1m./api/machine/admin.py[m[36m:[m2[36m:[m1[36m:[m [1m[31mF401[m 'api.machine.models.Machine' imported but unused
+[1m./api/machine/admin.py[m[36m:[m4[36m:[m1[36m:[m [1m[31mE265[m block comment should start with '# '
+[1m./api/machine/view.py[m[36m:[m50[36m:[m121[36m:[m [1m[31mE501[m line too long (139 > 120 characters)
+[1m./api/machine/view.py[m[36m:[m80[36m:[m88[36m:[m [1m[31mW292[m no newline at end of file
+[1m./api/models/__init__.py[m[36m:[m1[36m:[m1[36m:[m [1m[31mF401[m '.statut.Statut' imported but unused
+[1m./api/models/__init__.py[m[36m:[m2[36m:[m1[36m:[m [1m[31mF401[m '.client.Client' imported but unused
+[1m./api/models/__init__.py[m[36m:[m3[36m:[m1[36m:[m [1m[31mF401[m 'api.salarie.models.Salarie' imported but unused
+[1m./api/models/__init__.py[m[36m:[m4[36m:[m1[36m:[m [1m[31mF401[m '.aptitude.Aptitude' imported but unused
+[1m./api/models/__init__.py[m[36m:[m5[36m:[m1[36m:[m [1m[31mF401[m '.etat_affaire.Etat' imported but unused
+[1m./api/models/__init__.py[m[36m:[m6[36m:[m1[36m:[m [1m[31mF401[m '.pointage.Pointage' imported but unused
+[1m./api/models/__init__.py[m[36m:[m7[36m:[m1[36m:[m [1m[31mF401[m '.facture.Facture' imported but unused
+[1m./api/models/__init__.py[m[36m:[m8[36m:[m1[36m:[m [1m[31mF401[m '.fournisseur.Fournisseur' imported but unused
+[1m./api/models/__init__.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mF401[m '.fourniture.Fourniture' imported but unused
+[1m./api/models/__init__.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mF401[m '.type_fourniture.TypeFourniture' imported but unused
+[1m./api/models/__init__.py[m[36m:[m11[36m:[m1[36m:[m [1m[31mF401[m '.achat_fourniture.AchatFourniture' imported but unused
+[1m./api/models/__init__.py[m[36m:[m12[36m:[m1[36m:[m [1m[31mF401[m 'api.machine.models.Machine' imported but unused
+[1m./api/models/__init__.py[m[36m:[m13[36m:[m1[36m:[m [1m[31mF401[m 'api.affectation_etape_zone.models.AffectationAjustage' imported but unused
+[1m./api/models/facture.py[m[36m:[m2[36m:[m1[36m:[m [1m[31mF401[m 'django.db.models.Value' imported but unused
+[1m./api/note/models.py[m[36m:[m5[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/note/serializer.py[m[36m:[m4[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/note/serializer.py[m[36m:[m11[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/note/view.py[m[36m:[m7[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/note/view.py[m[36m:[m20[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/note/view.py[m[36m:[m29[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/note/view.py[m[36m:[m31[36m:[m121[36m:[m [1m[31mE501[m line too long (158 > 120 characters)
+[1m./api/note/view.py[m[36m:[m36[36m:[m5[36m:[m [1m[31mE265[m block comment should start with '# '
+[1m./api/planning_machine/serializer.py[m[36m:[m90[36m:[m51[36m:[m [1m[31mW292[m no newline at end of file
+[1m./api/planning_zone/admin.py[m[36m:[m1[36m:[m1[36m:[m [1m[31mW391[m blank line at end of file
+[1m./api/salarie/serializer.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/salarie/serializer.py[m[36m:[m14[36m:[m18[36m:[m [1m[31mW292[m no newline at end of file
+[1m./api/salarie/view.py[m[36m:[m6[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/salarie/view.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/salarie/view.py[m[36m:[m21[36m:[m1[36m:[m [1m[31mE302[m expected 2 blank lines, found 1
+[1m./api/serializers/__init__.py[m[36m:[m1[36m:[m1[36m:[m [1m[31mF401[m '.client.ClientSerializer' imported but unused
+[1m./api/serializers/__init__.py[m[36m:[m2[36m:[m1[36m:[m [1m[31mF401[m '.aptitude.AptitudeSerializer' imported but unused
+[1m./api/serializers/__init__.py[m[36m:[m3[36m:[m1[36m:[m [1m[31mF401[m '.etat_affaire.EtatSerializer' imported but unused
+[1m./api/serializers/__init__.py[m[36m:[m4[36m:[m1[36m:[m [1m[31mF401[m '.pointage.PointageSerializer' imported but unused
+[1m./api/serializers/__init__.py[m[36m:[m5[36m:[m1[36m:[m [1m[31mF401[m '.fournisseur.FournisseurSerializer' imported but unused
+[1m./api/serializers/__init__.py[m[36m:[m6[36m:[m1[36m:[m [1m[31mF401[m '.facture.FactureSerializer' imported but unused
+[1m./api/serializers/__init__.py[m[36m:[m7[36m:[m1[36m:[m [1m[31mF401[m '.fourniture.FournitureSerializer' imported but unused
+[1m./api/serializers/__init__.py[m[36m:[m8[36m:[m1[36m:[m [1m[31mF401[m '.type_fourniture.TypeFournitureSerializer' imported but unused
+[1m./api/serializers/__init__.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mF401[m '.achat_fourniture.AchatFournitureSerializer' imported but unused
+[1m./api/serializers/__init__.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mF401[m '.user.UserSerializer' imported but unused
+[1m./api/serializers/__init__.py[m[36m:[m11[36m:[m1[36m:[m [1m[31mF401[m '.statut.StatutSerializer' imported but unused
+[1m./api/synchro/view.py[m[36m:[m4[36m:[m1[36m:[m [1m[31mF401[m 'background_task.background' imported but unused
+[1m./api/tests/test_affectation_etape_zone.py[m[36m:[m1[36m:[m1[36m:[m [1m[31mF401[m 'django.test.TestCase' imported but unused
+[1m./api/tests/test_affectation_etape_zone.py[m[36m:[m1[36m:[m1[36m:[m [1m[31mF401[m 'django.test.Client' imported but unused
+[1m./api/tests/test_affectation_etape_zone.py[m[36m:[m2[36m:[m1[36m:[m [1m[31mF401[m 'django.urls.reverse' imported but unused
+[1m./api/tests/test_affectation_etape_zone.py[m[36m:[m3[36m:[m1[36m:[m [1m[31mF401[m 'rest_framework.status' imported but unused
+[1m./api/tests/test_affectation_etape_zone.py[m[36m:[m4[36m:[m1[36m:[m [1m[31mF401[m 'rest_framework.test.APITestCase' imported but unused
+[1m./api/tests/test_affectation_etape_zone.py[m[36m:[m5[36m:[m1[36m:[m [1m[31mF401[m 'api.affectation_etape_zone.models.AffectationAjustage' imported but unused
+[1m./api/tests/test_affectation_etape_zone.py[m[36m:[m6[36m:[m1[36m:[m [1m[31mF401[m 'api.etape.models.Etape' imported but unused
+[1m./api/tests/test_affectation_etape_zone.py[m[36m:[m7[36m:[m1[36m:[m [1m[31mF401[m 'api.zone.models.Zone' imported but unused
+[1m./api/tests/test_affectation_etape_zone.py[m[36m:[m8[36m:[m1[36m:[m [1m[31mF401[m 'api.machine.models.Machine' imported but unused
+[1m./api/tests/test_affectation_etape_zone.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mF401[m 'api.fiche.models.Fiche' imported but unused
+[1m./api/tests/test_affectation_etape_zone.py[m[36m:[m10[36m:[m1[36m:[m [1m[31mF401[m 'api.affectation_etape_zone.serializer.AffectationAjustageDetailSerializer' imported but unused
+[1m./api/tests/test_affectation_etape_zone.py[m[36m:[m12[36m:[m1[36m:[m [1m[31mW391[m blank line at end of file
+[1m./api/views/__init__.py[m[36m:[m1[36m:[m1[36m:[m [1m[31mF401[m '.client.ClientList' imported but unused
+[1m./api/views/__init__.py[m[36m:[m1[36m:[m1[36m:[m [1m[31mF401[m '.client.ClientDetail' imported but unused
+[1m./api/views/__init__.py[m[36m:[m2[36m:[m1[36m:[m [1m[31mF401[m '.aptitude.AptitudeList' imported but unused
+[1m./api/views/__init__.py[m[36m:[m2[36m:[m1[36m:[m [1m[31mF401[m '.aptitude.AptitudeDetail' imported but unused
+[1m./api/views/__init__.py[m[36m:[m3[36m:[m1[36m:[m [1m[31mF401[m '.etat_affaire.EtatList' imported but unused
+[1m./api/views/__init__.py[m[36m:[m3[36m:[m1[36m:[m [1m[31mF401[m '.etat_affaire.EtatDetail' imported but unused
+[1m./api/views/__init__.py[m[36m:[m4[36m:[m1[36m:[m [1m[31mF401[m '.pointage.PointageList' imported but unused
+[1m./api/views/__init__.py[m[36m:[m4[36m:[m1[36m:[m [1m[31mF401[m '.pointage.PointageDetail' imported but unused
+[1m./api/views/__init__.py[m[36m:[m5[36m:[m1[36m:[m [1m[31mF401[m '.fournisseur.FournisseurList' imported but unused
+[1m./api/views/__init__.py[m[36m:[m5[36m:[m1[36m:[m [1m[31mF401[m '.fournisseur.FournisseurDetail' imported but unused
+[1m./api/views/__init__.py[m[36m:[m6[36m:[m1[36m:[m [1m[31mF401[m '.facture.FactureList' imported but unused
+[1m./api/views/__init__.py[m[36m:[m6[36m:[m1[36m:[m [1m[31mF401[m '.facture.FactureDetail' imported but unused
+[1m./api/views/__init__.py[m[36m:[m7[36m:[m1[36m:[m [1m[31mF401[m '.fourniture.FournitureList' imported but unused
+[1m./api/views/__init__.py[m[36m:[m7[36m:[m1[36m:[m [1m[31mF401[m '.fourniture.FournitureDetail' imported but unused
+[1m./api/views/__init__.py[m[36m:[m8[36m:[m1[36m:[m [1m[31mF401[m '.type_fourniture.TypeFournitureList' imported but unused
+[1m./api/views/__init__.py[m[36m:[m8[36m:[m1[36m:[m [1m[31mF401[m '.type_fourniture.TypeFournitureDetail' imported but unused
+[1m./api/views/__init__.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mF401[m '.achat_fourniture.AchatFournitureList' imported but unused
+[1m./api/views/__init__.py[m[36m:[m9[36m:[m1[36m:[m [1m[31mF401[m '.achat_fourniture.AchatFournitureDetail' imported but unused
