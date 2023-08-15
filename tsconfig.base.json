@@ -20,6 +20,7 @@
 			"@sgm/storybook": ["libs/storybook/src/index.ts"],
 			"@sgm/theme": ["libs/theme/src/index.ts"],
 			"@sgm/ui": ["libs/ui/src/index.ts"],
+			"@sgm/utils": ["libs/utils/src/index.ts"],
 			"@sgm/web/auth": ["libs/web/auth/src/index.ts"],
 			"@sgm/web/environments": ["libs/web/environments/src/index.ts"],
 			"@sgm/web/router": ["libs/web/router/src/index.ts"]

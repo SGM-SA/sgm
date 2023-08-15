@@ -22,6 +22,7 @@ const LoginPage: React.FC = () => {
     const {
         register,
         handleSubmit,
+        formState: { isSubmitting }
     } = useForm<AuthFormSchema>({
         resolver: zodResolver(authFormSchema)
     })
@@ -46,37 +47,41 @@ const LoginPage: React.FC = () => {
             alignItems='center'
             backgroundColor='#0f172a'
         >
-            <Card
-                center={true}
-                width='40vw'
-                mt='-25vh'
-            >
+            <form onSubmit={handleSubmit(onSubmit)}>
 
-                <Heading as='h1'
-                    fontSize='1.5rem'
+                <Card
+                    center={true}
+                    width='40vw'
+                    mt='-25vh'
                 >
-                    Se connecter
-                </Heading>
 
-                <FormControl>
-                    <FormLabel>Nom d'utilisateur</FormLabel>
-                    <Input placeholder="Nom d'utilisateur" {...register('username', { required: true })}/>
-                </FormControl>
+                    <Heading as='h1'
+                        fontSize='1.5rem'
+                    >
+                        Se connecter
+                    </Heading>
 
-                <FormControl>
-                    <FormLabel>Mot de passe</FormLabel>
-                    <Input type='password' placeholder="Mot de passe" {...register('password', { required: true })} />
-                </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel>Nom d'utilisateur</FormLabel>
+                        <Input placeholder="Nom d'utilisateur" {...register('username', { required: true })}/>
+                    </FormControl>
 
-                <Button
-                    w='100%'
-                    variant='primary'
-                    mt='1rem'
-                    onClick={handleSubmit(onSubmit)}
-                >
-                    Se connecter
-                </Button>
-            </Card>
+                    <FormControl isRequired>
+                        <FormLabel>Mot de passe</FormLabel>
+                        <Input type='password' placeholder="Mot de passe" {...register('password', { required: true })} />
+                    </FormControl>
+
+                    <Button
+                        w='100%'
+                        variant='primary'
+                        mt='1rem'
+                        isLoading={isSubmitting}
+                        type='submit'
+                    >
+                        Se connecter
+                    </Button>
+                </Card>
+            </form>
         </Flex>
     </>
 }

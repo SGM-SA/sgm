@@ -4,6 +4,7 @@ import defaultAxios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAx
 import { ErrorWrapper } from '../generated/apiFetcher'
 import { fetchAuthTokenRefreshCreate } from '../generated/apiComponents'
 import { toast } from 'react-toastify'
+import { log } from 'console'
 
 export const axiosInstance = defaultAxios.create({
 	baseURL: environment.apiBaseUrl, // Replace with your base URL
@@ -15,25 +16,41 @@ export const axiosInstance = defaultAxios.create({
 
 const refreshAuthLogic = async () => {
 
+	
 	const token = AuthService.getToken()
 	const refreshToken = AuthService.getRefreshToken()
-
+	
 	if (!refreshToken || !token) {
 		return Promise.reject()
 	}
+	
+	try {
 
-	const { access: newToken } = await fetchAuthTokenRefreshCreate({
-		body: {
-			access: token,
-			refresh: refreshToken,
-		},
-	})
+		// We need to use the default Fetch API here to not trigger the interceptor
+		const response = await window.fetch(`${environment.apiBaseUrl}/auth/token/refresh`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				access: token,
+				refresh: refreshToken,
+			}),
+		})
 
-	console.warn('refreshed token', newToken)
+		const { access: newToken } = await response.json()
+		
+		console.warn('refreshed token', newToken)
+	
+		AuthService.login(newToken, refreshToken, false)
+	
+		return newToken
 
-	AuthService.login(newToken, refreshToken)
+	} catch (e) {
+		console.error('error refreshing token', e)
+		return Promise.reject()
+	}
 
-	return newToken
 }
 
 // Request interceptor to handle multipart/form-data and set headers
@@ -70,28 +87,32 @@ axiosInstance.interceptors.response.use(
 				payload: error.response.data,
 			}
 
-			console.warn(errorWrapper.payload)
-
 			if (error.response.status === 401) {
 
-				if (!originalConfig._retry) {
+				console.log(originalConfig._retry)
+
+				if (originalConfig._retry) {
 					AuthService.logout()
 				}
 				else {
 			
 					originalConfig._retry = true
 
-					const newToken = await refreshAuthLogic().catch(() => {
-						AuthService.logout()
-						return Promise.reject(errorWrapper)
-					})
+					return refreshAuthLogic()
+						.then(newToken => {
 
-					originalConfig.headers.Authorization = `Bearer ${newToken}`
-					return axiosInstance.request(originalConfig)
+							originalConfig.headers.Authorization = `Bearer ${newToken}`
+							console.log('retrying request')
+							return axiosInstance.request(originalConfig)
+						})
+						.catch(() => {
+							AuthService.logout()
+							return Promise.reject(errorWrapper)
+						})
 				}
 			} else if (error.response.status === 400) {
 				for (const [key, value] of Object.entries(errorWrapper.payload)) {
-					toast.error(`${key}: ${(value as any[]).join(', ')}`, { toastId: key })
+					toast.error(`${key}: ${(value as Array<any>).join(', ')}`, { toastId: key })
 				}
 			}
 

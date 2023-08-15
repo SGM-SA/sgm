@@ -1,19 +1,5 @@
-import { useApiClientsList } from "@sgm/openapi"
-import { DashboardLayout } from "../components/layouts"
+import { Navigate } from "@sgm/web/router"
 
-const HomePage = () => {
-
-	const { data } = useApiClientsList({})
-
-	return <>
-		<DashboardLayout 
-			title="Homepage"
-		>
-			<h1>Home - Basic</h1>
-			<p>{JSON.stringify(data)}</p>
-
-		</DashboardLayout>
-	</>
-}
+const HomePage = () => <Navigate to='/dashboard/affaires'/>
 
 export default HomePage

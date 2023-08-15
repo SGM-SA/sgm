@@ -1,8 +1,10 @@
+import { Box, Progress } from '@chakra-ui/react'
 import { AffaireDetails, useApiAffairesList } from '@sgm/openapi'
+import { Table, createMeta } from '@sgm/ui'
+import { Err, Ok } from '@sgm/utils'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { DashboardLayout } from '../../components/layouts'
-import { Table } from '@sgm/ui'
 
 const columnHelper = createColumnHelper<AffaireDetails>()
 
@@ -10,24 +12,42 @@ const columns = [
     columnHelper.accessor('num_affaire', {
         id: 'numero',
         header: 'Numéro',
-        cell: value => value.getValue(),
+        meta: createMeta({
+            editable: true,
+            type: 'number',
+            customValidation: (value) => value < 1000 ? Err('Le numéro d\'affaire doit être supérieur à 1000') : Ok(true)
+        })
     }),
     columnHelper.accessor('description', {
         id: 'description',
         header: 'Description',
-        cell: value => value.getValue(),
+        meta: createMeta({
+            editable: true,
+            type: 'text'
+        })
     }),
     columnHelper.accessor('avancement_affaire', {
         id: 'avancement',
         header: 'Avancement',
-        cell: value => value.getValue(),
+        cell: value => <Box>
+            <span color='#c7d2fe'>{value.getValue()}%</span>
+            <Progress value={value.getValue()} 
+                background='#c7d2fe'
+                borderRadius='10px'
+                size='sm'
+                mt='.5em'
+            />
+        </Box>,
     }),
     columnHelper.accessor('client', {
         id: 'client',
         header: 'Client',
-        cell: value => value.getValue(),
+        meta: createMeta({
+            editable: true,
+            type: 'text'
+        })
     }),
-    columnHelper.accessor(row => `${row.charge_affaire_detail.prenom} ${row.charge_affaire_detail.nom}`, {
+    columnHelper.accessor(row => row.charge_affaire_detail ? `${row.charge_affaire_detail.prenom} ${row.charge_affaire_detail.nom}` : null, {
         id: 'charge_affaire',
         header: 'Chargé d\'affaire',
     }),
@@ -35,18 +55,43 @@ const columns = [
     columnHelper.accessor('date_rendu', { // TODO: date_rendu ou date_cloture ?
         id: 'delais',
         header: 'Délais',
-        cell: value => value.getValue(),
+        meta: createMeta({
+            editable: true,
+            type: 'date'
+        })
     }),
     columnHelper.accessor('statut', {
         id: 'statut',
         header: 'Statut',
-        cell: value => value.getValue(),
-    }),
+        meta: createMeta({
+            editable: true,
+            type: 'select',
+            choices: [
+                'S00',
+                'A00',
+                'EHA',
+                'EAA',
+                'EAC',
+                'P00',
+                'T00',
+                'E00',
+                'ECC',
+                'INT',
+                'ECA',
+                'ED',
+                'D00',
+                'G00',
+                'SV0',
+                'EST',
+                'ECH',
+            ]
+        }),
+    })
 ]
 
 const AffairesPage: React.FC = () => {
 
-    const { data } = useApiAffairesList({ queryParams: { page: '1', per_page: '10' } })
+    const { data } = useApiAffairesList({ queryParams: { page: '1', per_page: '100' } })
 
 	return <>
     	<DashboardLayout 
@@ -55,6 +100,9 @@ const AffairesPage: React.FC = () => {
             <Table<AffaireDetails>
                 data={data?.results}
                 columns={columns}
+                rowCanExpand={true}
+                renderSubComponent={({ row }) => <p>Hello world</p>}
+                editable={true}
             />
         </DashboardLayout>
     </>

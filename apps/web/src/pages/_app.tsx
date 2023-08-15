@@ -28,7 +28,6 @@ const App: React.FC = () => {
             </AuthContext.Provider>
             <ToastContainer 
                 position="bottom-center"
-                
             />
         </StrictMode>
     )

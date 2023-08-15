@@ -38,8 +38,8 @@ export const SideBar: React.FC<SideBarProps> = () => {
                         <Image src='/logo.jpg' alt='Logo' />
                     </SideBarSection>
 
-                    <SideBarSection title='Affaire'>
-                        <SideBarLink icon={TfiMenuAlt} text='Liste' to='/' />
+                    <SideBarSection title='Affaires'>
+                        <SideBarLink icon={TfiMenuAlt} text='Liste' to='/dashboard/affaires' />
                     </SideBarSection>
 
                     <SideBarSection title='Machines'>

@@ -8,6 +8,10 @@ export const styles = {
             backgroundColor: 'secondary'
         },
 
+        'table': {
+            fontSize: 'xs'
+        },
+
         /**
          * Resets
          */

@@ -15,17 +15,17 @@ export class AuthService {
 
     static emitter = mitt<AuthEvents>()
 
-    public static login(token: string, refreshToken: string) {
+    public static login(token: string, refreshToken: string, showToast = true) {
         localStorage.setItem(Items.Token, token)
         localStorage.setItem(Items.RefreshToken, refreshToken)
-        toast.success('Vous êtes connecté', { toastId: 'login' })
+        if (showToast) toast.success('Vous êtes connecté', { toastId: 'login' })
         this.emitter.emit('login', token)
     }
 
-    public static logout() {
+    public static logout(showToast = true) {
         localStorage.removeItem(Items.Token)
         localStorage.removeItem(Items.RefreshToken)
-        toast.error('Vous avez été déconnecté', { toastId: 'logout' })
+        if (showToast) toast.error('Vous avez été déconnecté', { toastId: 'logout' })
         this.emitter.emit('logout')
     }
 
