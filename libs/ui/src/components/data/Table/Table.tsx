@@ -1,8 +1,11 @@
 import { ChakraProps, Table as ChakraTable, Icon, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
-import { ColumnDef, Row, RowData, flexRender, getCoreRowModel, getExpandedRowModel, useReactTable } from '@tanstack/react-table'
-import React, { Fragment } from 'react'
+import { Paginated } from '@sgm/utils'
+import { ColumnDef, PaginationState, Row, RowData, flexRender, getCoreRowModel, getExpandedRowModel, useReactTable } from '@tanstack/react-table'
+import React, { Fragment, createContext, useMemo, useState } from 'react'
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa'
 import { DefaultTableCell } from '../DefaultTableCell/DefaultTableCell'
+import { Pagination } from '../Pagination/Pagination'
+import { table } from 'console'
 
 declare module '@tanstack/react-table' {
     interface TableMeta<TData extends RowData> {
@@ -32,21 +35,54 @@ const useSkipper = () => {
     return [shouldSkip, skip] as const
 }
 
+enum RowsPerPage {
+    Ten = 10,
+    TwentyFive = 25,
+    Fifty = 50,
+    OneHundred = 100
+}
+
 type TableProps<TData> = {
-    data?: TData[]
-    columns: any
+    columns: Array<any>
+    data?: Paginated<TData>
+    pagination: PaginationState,
+    setPagination: React.Dispatch<React.SetStateAction<PaginationState>>
+    pageChangeHandler?: (page: number, rowsPerPage: RowsPerPage) => void
     rowCanExpand?: boolean
     renderSubComponent?: React.FC<{ row: Row<TData> }>
     editable?: boolean
 } & ChakraProps
 
-export function Table<TData>({ data, columns, rowCanExpand, renderSubComponent, editable, ...props }: TableProps<TData>) {
+export function Table<TData>({
+    columns, 
+    data,
+    pagination,
+    setPagination,
+    rowCanExpand, 
+    renderSubComponent, 
+    editable, 
+    ...props 
+}: TableProps<TData>) {
 
     const [_, skipAutoResetPageIndex] = useSkipper()
 
+    // link the pagination react state to the table internal state
+    const tablePagination = useMemo(
+        () => ({
+            ...pagination,
+        }),
+        [pagination]
+    )
+
     const table = useReactTable({
-        data: data || [],
+        data: data?.results || [],
         columns,
+        state: {
+            pagination: tablePagination,
+        },
+        manualPagination: true,
+        onPaginationChange: setPagination,
+        pageCount: data?.count ? Math.ceil(data.count / tablePagination.pageSize) : 0,
         getCoreRowModel: getCoreRowModel(),
         getRowCanExpand: () => !!rowCanExpand,
         getExpandedRowModel: getExpandedRowModel(),
@@ -116,6 +152,9 @@ export function Table<TData>({ data, columns, rowCanExpand, renderSubComponent, 
                     </Fragment>))}
                 </Tbody>
             </ChakraTable>
+            <Pagination
+                table={table}
+            />
         </TableContainer>
     </>
 }

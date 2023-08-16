@@ -1,7 +1,6 @@
 import { Box, Progress } from '@chakra-ui/react'
 import { AffaireDetails, useApiAffairesList } from '@sgm/openapi'
-import { Table, createMeta } from '@sgm/ui'
-import { Err, Ok } from '@sgm/utils'
+import { Table, createMeta, usePagination } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { DashboardLayout } from '../../components/layouts'
@@ -15,7 +14,7 @@ const columns = [
         meta: createMeta({
             editable: true,
             type: 'number',
-            customValidation: (value) => value < 1000 ? Err('Le numéro d\'affaire doit être supérieur à 1000') : Ok(true)
+            // customValidation: (value) => value < 1000 ? Err('Le numéro d\'affaire doit être supérieur à 1000') : Ok(true)
         })
     }),
     columnHelper.accessor('description', {
@@ -89,21 +88,26 @@ const columns = [
     })
 ]
 
+
 const AffairesPage: React.FC = () => {
 
-    const { data } = useApiAffairesList({ queryParams: { page: '1', per_page: '100' } })
+    const { pagination, setPagination, fetchDataOptions } = usePagination()
+
+    const { data } = useApiAffairesList(fetchDataOptions)
 
 	return <>
     	<DashboardLayout 
 			title="Liste affaires"
 		>
-            <Table<AffaireDetails>
-                data={data?.results}
-                columns={columns}
-                rowCanExpand={true}
-                renderSubComponent={({ row }) => <p>Hello world</p>}
-                editable={true}
-            />
+                <Table<AffaireDetails>
+                    columns={columns}
+                    data={data}
+                    pagination={pagination}
+                    setPagination={setPagination}
+                    rowCanExpand={true}
+                    renderSubComponent={({ row }) => <p>Hello world</p>}
+                    editable={true}
+                />
         </DashboardLayout>
     </>
 }

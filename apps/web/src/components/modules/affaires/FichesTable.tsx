@@ -9,6 +9,7 @@ type FichesTableProps = {
 
 const columnHelper = createColumnHelper<FicheDetail>()
 
+const columns = []
 
 export const FichesTable: React.FC<FichesTableProps> = (props) => {
 

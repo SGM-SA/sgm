@@ -58,7 +58,7 @@ export const DefaultTableCell: React.FC<DefaultTableCellProps> = ({ getValue, ro
             return (
                 <Select fontSize='sm'>
                     <option value={''}></option>
-                    {meta.choices?.map((choice: string) => <option value={choice}>{choice}</option>)}
+                    {meta.choices?.map((choice: string) => <option key={choice} value={choice}>{choice}</option>)}
                 </Select>
             )
             break
