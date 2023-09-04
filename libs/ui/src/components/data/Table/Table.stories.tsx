@@ -1,12 +1,23 @@
-import type { Meta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Table } from './Table'
 
-const Story: Meta<typeof Table> = {
+/**
+ * Meta
+ */
+export default {
 	component: Table,
 	title: 'UI/Data/Table',
-}
-export default Story
+} as Meta<typeof Table>
 
-export const Primary = {
+/**
+ * Stories
+ */
+type Story = StoryObj<typeof Table>
+
+export const Primary: Story = {
 	args: {},
 }
+
+/**
+ * Mock data
+ */

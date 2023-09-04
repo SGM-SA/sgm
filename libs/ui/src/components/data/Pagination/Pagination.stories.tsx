@@ -1,12 +1,23 @@
-import type { Meta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Pagination } from './Pagination'
 
-const Story: Meta<typeof Pagination> = {
+/**
+ * Meta
+ */
+export default {
 	component: Pagination,
 	title: 'UI/Data/Pagination',
-}
-export default Story
+} as Meta<typeof Pagination>
 
-export const Primary = {
+/**
+ * Stories
+ */
+type Story = StoryObj<typeof Pagination>
+
+export const Primary: Story = {
 	args: {},
 }
+
+/**
+ * Mock data
+ */

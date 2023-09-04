@@ -1,11 +1,10 @@
-import { ChakraProps, Table as ChakraTable, Icon, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import { ChakraProps, Table as ChakraTable, TableProps as ChakraTableProps, Icon, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { Paginated } from '@sgm/utils'
 import { ColumnDef, PaginationState, Row, RowData, flexRender, getCoreRowModel, getExpandedRowModel, useReactTable } from '@tanstack/react-table'
-import React, { Fragment, createContext, useMemo, useState } from 'react'
+import React, { Fragment, useMemo } from 'react'
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa'
 import { DefaultTableCell } from '../DefaultTableCell/DefaultTableCell'
 import { Pagination } from '../Pagination/Pagination'
-import { table } from 'console'
 
 declare module '@tanstack/react-table' {
     interface TableMeta<TData extends RowData> {
@@ -45,48 +44,51 @@ enum RowsPerPage {
 type TableProps<TData> = {
     columns: Array<any>
     data?: Paginated<TData>
+    /**
+     * Pagination
+     */
     pagination: PaginationState,
     setPagination: React.Dispatch<React.SetStateAction<PaginationState>>
-    pageChangeHandler?: (page: number, rowsPerPage: RowsPerPage) => void
+    /**
+     * Row expansion
+     */
     rowCanExpand?: boolean
     renderSubComponent?: React.FC<{ row: Row<TData> }>
+    /**
+     * Editable
+     */
     editable?: boolean
-} & ChakraProps
+    /**
+     * Styling
+     */
+    chakraProps?: ChakraTableProps
+}
 
-export function Table<TData>({
-    columns, 
-    data,
-    pagination,
-    setPagination,
-    rowCanExpand, 
-    renderSubComponent, 
-    editable, 
-    ...props 
-}: TableProps<TData>) {
+export function Table<TData>(props: TableProps<TData>) {
 
     const [_, skipAutoResetPageIndex] = useSkipper()
 
     // link the pagination react state to the table internal state
     const tablePagination = useMemo(
         () => ({
-            ...pagination,
+            ...props.pagination,
         }),
-        [pagination]
+        [props.pagination]
     )
 
     const table = useReactTable({
-        data: data?.results || [],
-        columns,
+        data: props.data?.results?.slice(0, 2) || [],
+        columns: props.columns,
         state: {
             pagination: tablePagination,
         },
         manualPagination: true,
-        onPaginationChange: setPagination,
-        pageCount: data?.count ? Math.ceil(data.count / tablePagination.pageSize) : 0,
+        onPaginationChange: props.setPagination,
+        pageCount: props.data?.count ? Math.ceil(props.data.count / tablePagination.pageSize) : 0,
         getCoreRowModel: getCoreRowModel(),
-        getRowCanExpand: () => !!rowCanExpand,
+        getRowCanExpand: () => !!props.rowCanExpand,
         getExpandedRowModel: getExpandedRowModel(),
-        ...(editable ? {
+        ...(props.editable ? {
             defaultColumn,
             meta: {
                 updateData: (rowIndex, columnId, value) => {
@@ -99,12 +101,15 @@ export function Table<TData>({
     })
 
 	return <>
-        <TableContainer w='100%' {...props}>
-            <ChakraTable>    
+        <TableContainer w='100%' minH='70vh' display='flex' flexDirection='column' justifyContent='space-between'>
+            <ChakraTable
+                size='sm'
+                {...props.chakraProps}
+            >
                 <Thead>
                     {table.getHeaderGroups().map(headerGroup => (
                         <Tr key={headerGroup.id}>
-                            {rowCanExpand && <Th></Th>}
+                            {props.rowCanExpand && <Th></Th>}
                             {headerGroup.headers.map(header => (
                                 <Th key={header.id}>
                                 {header.isPlaceholder
@@ -122,7 +127,7 @@ export function Table<TData>({
                     {table.getRowModel().rows.map(row => (<Fragment key={row.id}>
                     
                         <Tr>
-                            {rowCanExpand && 
+                            {props.rowCanExpand && 
                                 <Td onClick={row.getCanExpand() ? row.getToggleExpandedHandler() : undefined}
                                     _hover={{ cursor: row.getCanExpand() ? 'pointer' : undefined }}
                                 >
@@ -142,10 +147,10 @@ export function Table<TData>({
                                 </Td>
                             ))}
                         </Tr>
-                        {(row.getIsExpanded() && renderSubComponent) && (
+                        {(row.getIsExpanded() && props.renderSubComponent) && (
                             <Tr>
                                 <Td colSpan={row.getVisibleCells().length}>
-                                    {renderSubComponent({ row })}
+                                    {props.renderSubComponent({ row })}
                                 </Td>
                             </Tr>
                         )}

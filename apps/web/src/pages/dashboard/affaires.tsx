@@ -107,6 +107,9 @@ const AffairesPage: React.FC = () => {
                     rowCanExpand={true}
                     renderSubComponent={({ row }) => <p>Hello world</p>}
                     editable={true}
+                    chakraProps={{
+                        variant: 'striped',
+                    }}
                 />
         </DashboardLayout>
     </>

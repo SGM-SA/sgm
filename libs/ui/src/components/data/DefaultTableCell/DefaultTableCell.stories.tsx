@@ -1,12 +1,23 @@
-import type { Meta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { DefaultTableCell } from './DefaultTableCell'
 
-const Story: Meta<typeof DefaultTableCell> = {
+/**
+ * Meta
+ */
+export default {
 	component: DefaultTableCell,
 	title: 'UI/Data/DefaultTableCell',
-}
-export default Story
+} as Meta<typeof DefaultTableCell>
 
-export const Primary = {
+/**
+ * Stories
+ */
+type Story = StoryObj<typeof DefaultTableCell>
+
+export const Primary: Story = {
 	args: {},
 }
+
+/**
+ * Mock data
+ */

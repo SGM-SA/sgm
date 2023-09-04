@@ -1,12 +1,23 @@
-import type { Meta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Card } from './Card'
 
-const Story: Meta<typeof Card> = {
+/**
+ * Meta
+ */
+export default {
 	component: Card,
 	title: 'UI/Layout/Card',
-}
-export default Story
+} as Meta<typeof Card>
 
-export const Primary = {
+/**
+ * Stories
+ */
+type Story = StoryObj<typeof Card>
+
+export const Primary: Story = {
 	args: {},
 }
+
+/**
+ * Mock data
+ */
