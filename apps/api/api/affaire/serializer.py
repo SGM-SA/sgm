@@ -29,6 +29,7 @@ class AffaireDetailsSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "num_affaire",
+            "validation_ingenieur",
             "description",
             "observation",
             "client",
@@ -59,6 +60,7 @@ class AffaireFichesSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "num_affaire",
+            "validation_ingenieur",
             "fiches",
             "charge_affaire_detail",
         ]
@@ -80,6 +82,7 @@ class AffaireFichesEtapesSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "num_affaire",
+            "validation_ingenieur",
             "description",
             "fiches",
             "charge_affaire_detail",
@@ -99,6 +102,7 @@ class AffaireFichesEtapesMachineSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "num_affaire",
+            "validation_ingenieur",
             "description",
             "fiches",
             "charge_affaire",
@@ -118,6 +122,7 @@ class AffaireFichesEtapesAjustageSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "num_affaire",
+            "validation_ingenieur",
             "description",
             "fiches",
             "charge_affaire",

@@ -128,9 +128,14 @@ class FichesAjustageAPlanifierTest(TestCase):
     def setUp(self):
         self.zone = Zone.objects.create(nom="Zone 1", description="Description")
 
-        self.affaire = Affaire.objects.create(num_affaire=1)
-        self.affaire2 = Affaire.objects.create(num_affaire=2)
-        self.affaire3 = Affaire.objects.create(num_affaire=3)
+        self.affaire = Affaire.objects.create(num_affaire=1, validation_ingenieur=True)
+        self.affaire2 = Affaire.objects.create(num_affaire=2, validation_ingenieur=True)
+        self.affaire3 = Affaire.objects.create(num_affaire=3, validation_ingenieur=True)
+
+        # ne sera pas à planifier car l'affaire n'est pas validée
+        self.affaire_non_valide = Affaire.objects.create(
+            num_affaire=4, validation_ingenieur=False
+        )
 
         self.groupe_machine = GroupeMachine.objects.create(
             nom_groupe="Ajustage", prix_theorique=100
@@ -156,6 +161,13 @@ class FichesAjustageAPlanifierTest(TestCase):
             affaire=self.affaire2,
             fourniture=False,
             id=3,
+        )
+
+        self.fiche5 = Fiche.objects.create(
+            titre="Fiche test",
+            affaire=self.affaire_non_valide,
+            fourniture=False,
+            id=5,
         )
 
         self.etape1 = Etape.objects.create(
@@ -187,6 +199,11 @@ class FichesAjustageAPlanifierTest(TestCase):
 
         self.etape6 = Etape.objects.create(
             fiche=self.fiche3, groupe_machine=self.groupe_machine, num_etape=2
+        )
+
+        # ne sera pas à planifier car l'affaire n'est pas validée
+        self.etape7 = Etape.objects.create(
+            fiche=self.fiche5, groupe_machine=self.groupe_machine2, num_etape=1
         )
 
         # Ajout d'une affectation prévue mais non terminée
@@ -289,9 +306,13 @@ class FichesMachineAPlanifierTest(TestCase):
     """
 
     def setUp(self):
-        self.affaire = Affaire.objects.create(num_affaire=1)
-        self.affaire2 = Affaire.objects.create(num_affaire=2)
-        self.affaire3 = Affaire.objects.create(num_affaire=3)
+        self.affaire = Affaire.objects.create(num_affaire=1, validation_ingenieur=True)
+        self.affaire2 = Affaire.objects.create(num_affaire=2, validation_ingenieur=True)
+        self.affaire3 = Affaire.objects.create(num_affaire=3, validation_ingenieur=True)
+        # ne sera pas à planifier car l'affaire n'est pas validée
+        self.affaire_non_valide = Affaire.objects.create(
+            num_affaire=4, validation_ingenieur=False
+        )
 
         self.groupe_machine = GroupeMachine.objects.create(
             nom_groupe="Ajustage", prix_theorique=100
@@ -338,6 +359,13 @@ class FichesMachineAPlanifierTest(TestCase):
             id=4,
         )
 
+        self.fiche5 = Fiche.objects.create(
+            titre="Fiche test",
+            affaire=self.affaire_non_valide,
+            fourniture=False,
+            id=5,
+        )
+
         self.etape1 = Etape.objects.create(
             fiche=self.fiche1, groupe_machine=self.groupe_machine, num_etape=1
         )
@@ -363,6 +391,11 @@ class FichesMachineAPlanifierTest(TestCase):
             fiche=self.fiche4, groupe_machine=self.groupe_machine2, num_etape=1
         )
 
+        # ne sera pas à planifier car l'affaire n'est pas validée
+        self.etape6 = Etape.objects.create(
+            fiche=self.fiche5, groupe_machine=self.groupe_machine2, num_etape=1
+        )
+
         # affectation d'une fiche avec date d'affectation dépasée
         # doit apparaitre dans la liste des fiches à planifier
         self.affectation1 = AffectationMachine.objects.create(
@@ -380,13 +413,13 @@ class FichesMachineAPlanifierTest(TestCase):
 
     def test_retour_affaire(self):
         """
-        Seul les affaires sans étape machine de type ajustage (groupe_machine.id != 1)
+        Renvoie les affaires avec étape machine sans affectation ou avec affectation dépassée
         """
         url = "/api/fiches/machine/a_planifier"
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # 2 affaires avec étape machine
+        # 2 affaires avec étape machines, une sans étape machine, une non validée
         self.assertEqual(len(response.data["results"]), 2)
 
     def test_retour_fiche(self):

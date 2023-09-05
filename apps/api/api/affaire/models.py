@@ -39,6 +39,10 @@ class Affaire(models.Model):
         validators=[MinValueValidator(0)],
     )
 
+    validation_ingenieur = models.BooleanField(
+        "Validation de l'ingénieur", default=False
+    )
+
     description = models.CharField(
         "Description de l'affaire", max_length=10000, null=True, blank=True
     )
