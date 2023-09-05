@@ -1,10 +1,15 @@
+from datetime import timezone, timedelta, datetime
+
 from rest_framework import status
 from django.test import TestCase
+from api.zone.models import Zone
 from api.fiche.models import Fiche
 from api.affaire.models import Affaire
 from api.machine.models import Machine
 from api.groupe_machine.models import GroupeMachine
 from api.etape.models import Etape
+from api.affectation_etape_machine.models import AffectationMachine
+from api.affectation_etape_zone.models import AffectationAjustage
 
 
 class FicheCreateViewTestCase(TestCase):
@@ -57,9 +62,7 @@ class FicheRUDViewTestCase(TestCase):
             "description": "Description updated",
             "fourniture": True,
         }
-        response = self.client.patch(
-            url, data, content_type="application/json"
-        )
+        response = self.client.patch(url, data, content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["titre"], "Fiche test updated")
         self.assertEqual(response.data["description"], "Description updated")
@@ -123,6 +126,8 @@ class FichesAjustageAPlanifierTest(TestCase):
     """
 
     def setUp(self):
+        self.zone = Zone.objects.create(nom="Zone 1", description="Description")
+
         self.affaire = Affaire.objects.create(num_affaire=1)
         self.affaire2 = Affaire.objects.create(num_affaire=2)
         self.affaire3 = Affaire.objects.create(num_affaire=3)
@@ -158,7 +163,10 @@ class FichesAjustageAPlanifierTest(TestCase):
         )
 
         self.etape2 = Etape.objects.create(
-            fiche=self.fiche2, groupe_machine=self.groupe_machine2, num_etape=1
+            fiche=self.fiche2,
+            groupe_machine=self.groupe_machine2,
+            num_etape=1,
+            terminee=True,
         )
 
         self.etape3 = Etape.objects.create(
@@ -169,9 +177,35 @@ class FichesAjustageAPlanifierTest(TestCase):
             fiche=self.fiche2, groupe_machine=self.groupe_machine, num_etape=3
         )
 
+        # étape terminée donc n'apparait pas dans la liste des étapes à planifier
+        self.etape5 = Etape.objects.create(
+            fiche=self.fiche3,
+            groupe_machine=self.groupe_machine,
+            num_etape=1,
+            terminee=True,
+        )
+
+        self.etape6 = Etape.objects.create(
+            fiche=self.fiche3, groupe_machine=self.groupe_machine, num_etape=2
+        )
+
+        # Ajout d'une affectation prévue mais non terminée
+        self.affectation_non_complete = AffectationAjustage.objects.create(
+            semaine_affectation=datetime.now().date() - timedelta(days=7),
+            etape=self.etape3,
+            zone=self.zone,
+        )
+
+        # Ajout d'une affectation terminée
+        self.affectation_complete = AffectationAjustage.objects.create(
+            semaine_affectation=datetime.now().date() - timedelta(days=7),
+            etape=self.etape2,
+            zone=self.zone,
+        )
+
     def test_retour_affaire(self):
         """
-        Seul les affaires contenant au moins une étape machine
+        Seul les affaires contenant au moins une étape ajustage
         """
         url = "/api/fiches/ajustage/a_planifier"
         response = self.client.get(url)
@@ -190,43 +224,62 @@ class FichesAjustageAPlanifierTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # 2 affaires avec des fiches d'ajustage à planifier
         self.assertEqual(len(response.data["results"]), 2)
+
         # 1 fiche pour l'affaire 1
         self.assertEqual(len(response.data["results"][0]["fiches"]), 1)
 
-        # 1 fiche pour l'affaire 2
-        self.assertEqual(len(response.data["results"][1]["fiches"]), 1)
+        # 2 fiches pour l'affaire 2
+        self.assertEqual(len(response.data["results"][1]["fiches"]), 2)
+
+    def test_retour_etape(self):
+        """
+        Seul les étapes ajustage non terminées
+        """
+        url = "/api/fiches/ajustage/a_planifier"
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # 1 étape pour la fiche 1
+        self.assertEqual(len(response.data["results"][0]["fiches"][0]["etapes"]), 1)
+
+        # 2 étapes pour la fiche 2
+        self.assertEqual(len(response.data["results"][1]["fiches"][0]["etapes"]), 2)
+
+        # 1 étape pour la fiche 3
+        self.assertEqual(len(response.data["results"][1]["fiches"][1]["etapes"]), 1)
 
     def test_fiches_ajustage_a_planifier(self):
         url = "/api/fiches/ajustage/a_planifier"
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # 2 affaires avec des fiches d'ajustage à planifier
-        self.assertEqual(len(response.data["results"]), 2)
-        # 1 fiche pour l'affaire 1
-        self.assertEqual(len(response.data["results"][0]["fiches"]), 1)
 
-        # 1 fiche pour l'affaire 2
-        self.assertEqual(len(response.data["results"][1]["fiches"]), 1)
-
-        # 2 etaes pour l'affaire 2
-        self.assertEqual(
-            len(response.data["results"][1]["fiches"][0]["etapes"]), 2
+        # etape 1 pour la fiche 1
+        self.assertIn(
+            self.etape1.id,
+            [
+                etape["id"]
+                for etape in response.data["results"][0]["fiches"][0]["etapes"]
+            ],
         )
 
-        # Vérifiez que les fiches sont bien triées par affaire
-        self.assertEqual(response.data["results"][0]["id"], self.affaire.id)
-        self.assertEqual(response.data["results"][1]["id"], self.affaire2.id)
+        # etape 2 non présente pour la fiche 2 (affectation terminée)
+        self.assertNotIn(
+            self.etape2.id,
+            [
+                etape["id"]
+                for etape in response.data["results"][1]["fiches"][0]["etapes"]
+            ],
+        )
 
-        # Vérifiez que les fiches sont bien triées par étape
-        self.assertEqual(
-            response.data["results"][1]["fiches"][0]["etapes"][0]["id"],
+        # etape 3 pour la fiche 2 (affectation non terminée)
+        self.assertIn(
             self.etape3.id,
-        )
-
-        self.assertEqual(
-            response.data["results"][1]["fiches"][0]["etapes"][1]["id"],
-            self.etape4.id,
+            [
+                etape["id"]
+                for etape in response.data["results"][1]["fiches"][0]["etapes"]
+            ],
         )
 
 
@@ -247,6 +300,16 @@ class FichesMachineAPlanifierTest(TestCase):
             nom_groupe="Scie", prix_theorique=1
         )
 
+        self.machine1 = Machine.objects.create(
+            nom_machine="Machine 1",
+            groupe_machine=self.groupe_machine,
+        )
+
+        self.machine2 = Machine.objects.create(
+            nom_machine="Machine 2",
+            groupe_machine=self.groupe_machine2,
+        )
+
         self.fiche1 = Fiche.objects.create(
             titre="Fiche test",
             affaire=self.affaire,
@@ -259,6 +322,8 @@ class FichesMachineAPlanifierTest(TestCase):
             fourniture=False,
             id=2,
         )
+
+        # affaire 3 possède 2 fiches
         self.fiche3 = Fiche.objects.create(
             titre="Fiche test",
             affaire=self.affaire3,
@@ -281,16 +346,36 @@ class FichesMachineAPlanifierTest(TestCase):
             fiche=self.fiche2, groupe_machine=self.groupe_machine2, num_etape=1
         )
 
+        self.etape21 = Etape.objects.create(
+            fiche=self.fiche2, groupe_machine=self.groupe_machine2, num_etape=2
+        )
+
+        # fiche 3 possède 2 étapes
         self.etape3 = Etape.objects.create(
+            fiche=self.fiche3, groupe_machine=self.groupe_machine2, num_etape=1
+        )
+        self.etape4 = Etape.objects.create(
             fiche=self.fiche3, groupe_machine=self.groupe_machine2, num_etape=2
         )
 
-        self.etape4 = Etape.objects.create(
-            fiche=self.fiche3, groupe_machine=self.groupe_machine2, num_etape=3
-        )
-
+        # fiche 4 possède 1 étape
         self.etape5 = Etape.objects.create(
             fiche=self.fiche4, groupe_machine=self.groupe_machine2, num_etape=1
+        )
+
+        # affectation d'une fiche avec date d'affectation dépasée
+        # doit apparaitre dans la liste des fiches à planifier
+        self.affectation1 = AffectationMachine.objects.create(
+            semaine_affectation=datetime.now().date() - timedelta(days=10),
+            etape=self.etape2,
+            machine=self.machine2,
+        )
+
+        # affectation d'une étape avec date d'affectation non dépasée, ne doit pas apparaitre dans la liste des fiches à planifier
+        self.affectation2 = AffectationMachine.objects.create(
+            semaine_affectation=datetime.now().date() + timedelta(days=10),
+            machine=self.machine2,
+            etape=self.etape5,
         )
 
     def test_retour_affaire(self):
@@ -301,44 +386,32 @@ class FichesMachineAPlanifierTest(TestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # 2 affaires sans avec étape machine
+        # 2 affaires avec étape machine
         self.assertEqual(len(response.data["results"]), 2)
 
     def test_retour_fiche(self):
         """
-        Seul les fiches machine sans étape de type ajustage
+        Renvoie les fiches avec étape machine sans affectation ou avec affectation dépassée
         """
         url = "/api/fiches/machine/a_planifier"
         response = self.client.get(url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # 1 fiche pour affaire 2
         self.assertEqual(len(response.data["results"][0]["fiches"]), 1)
 
-        # 2 fiches pour affaire 3
-        self.assertEqual(len(response.data["results"][1]["fiches"]), 2)
+        # 1 fiches pour affaire 3 car 2 fiches mais une avec étape planifiée
+        self.assertEqual(len(response.data["results"][1]["fiches"]), 1)
 
     def test_retour_etape(self):
         """
-        Seul les étapes machine autre que ajustage
+        Renvoie les étapes machine sans affectation ou avec affectation dépassée
         """
         url = "/api/fiches/machine/a_planifier"
         response = self.client.get(url)
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # 1 étape pour affaire 2 fiches 1
-        self.assertEqual(
-            len(response.data["results"][0]["fiches"][0]["etapes"]), 1
-        )
+        # affaire 2 possède 2 etapes une non affectée et une affectée mais date dépassée
+        self.assertEqual(len(response.data["results"][0]["fiches"][0]["etapes"]), 2)
 
         # 2 étapes pour affaire 3 fiches 2
-        self.assertEqual(
-            len(response.data["results"][1]["fiches"][0]["etapes"]), 2
-        )
-
-        # 1 étape pour affaire 3 fiches 4
-        self.assertEqual(
-            len(response.data["results"][1]["fiches"][1]["etapes"]), 1
-        )
+        self.assertEqual(len(response.data["results"][1]["fiches"][0]["etapes"]), 2)
