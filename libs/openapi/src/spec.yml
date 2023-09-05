@@ -1937,6 +1937,9 @@ components:
           nullable: true
           title: Numéro d'affaire correspondant à l'affaire dans la base de données
             de SGM
+        validation_ingenieur:
+          type: boolean
+          title: Validation de l'ingénieur
         description:
           type: string
           nullable: true
@@ -2009,6 +2012,9 @@ components:
           nullable: true
           title: Numéro d'affaire correspondant à l'affaire dans la base de données
             de SGM
+        validation_ingenieur:
+          type: boolean
+          title: Validation de l'ingénieur
         fiches:
           type: array
           items:
@@ -2035,6 +2041,9 @@ components:
           nullable: true
           title: Numéro d'affaire correspondant à l'affaire dans la base de données
             de SGM
+        validation_ingenieur:
+          type: boolean
+          title: Validation de l'ingénieur
         description:
           type: string
           nullable: true
@@ -2067,6 +2076,9 @@ components:
           nullable: true
           title: Numéro d'affaire correspondant à l'affaire dans la base de données
             de SGM
+        validation_ingenieur:
+          type: boolean
+          title: Validation de l'ingénieur
         description:
           type: string
           nullable: true
@@ -2098,6 +2110,9 @@ components:
           nullable: true
           title: Numéro d'affaire correspondant à l'affaire dans la base de données
             de SGM
+        validation_ingenieur:
+          type: boolean
+          title: Validation de l'ingénieur
         description:
           type: string
           nullable: true

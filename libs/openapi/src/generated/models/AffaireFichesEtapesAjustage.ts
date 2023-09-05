@@ -11,6 +11,7 @@ import type { FicheEtEtapesAjustage } from './FicheEtEtapesAjustage';
 export type AffaireFichesEtapesAjustage = {
     readonly id: number;
     num_affaire?: number | null;
+    validation_ingenieur?: boolean;
     description?: string | null;
     readonly fiches: Array<FicheEtEtapesAjustage>;
     readonly charge_affaire: string;

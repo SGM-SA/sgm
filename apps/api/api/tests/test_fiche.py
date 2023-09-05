@@ -134,7 +134,7 @@ class FichesAjustageAPlanifierTest(TestCase):
 
         # ne sera pas à planifier car l'affaire n'est pas validée
         self.affaire_non_valide = Affaire.objects.create(
-          num_affaire=4, validation_ingenieur=False
+            num_affaire=4, validation_ingenieur=False
         )
 
         self.groupe_machine = GroupeMachine.objects.create(
@@ -164,10 +164,10 @@ class FichesAjustageAPlanifierTest(TestCase):
         )
 
         self.fiche5 = Fiche.objects.create(
-          titre="Fiche test",
-          affaire=self.affaire_non_valide,
-          fourniture=False,
-          id=5,
+            titre="Fiche test",
+            affaire=self.affaire_non_valide,
+            fourniture=False,
+            id=5,
         )
 
         self.etape1 = Etape.objects.create(
@@ -203,7 +203,7 @@ class FichesAjustageAPlanifierTest(TestCase):
 
         # ne sera pas à planifier car l'affaire n'est pas validée
         self.etape7 = Etape.objects.create(
-          fiche=self.fiche5, groupe_machine=self.groupe_machine2, num_etape=1
+            fiche=self.fiche5, groupe_machine=self.groupe_machine2, num_etape=1
         )
 
         # Ajout d'une affectation prévue mais non terminée

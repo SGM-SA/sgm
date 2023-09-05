@@ -14,6 +14,7 @@ import type { StatutEnum } from './StatutEnum';
 export type AffaireDetails = {
     readonly id: number;
     num_affaire?: number | null;
+    validation_ingenieur?: boolean;
     description?: string | null;
     observation?: string | null;
     client?: string | null;

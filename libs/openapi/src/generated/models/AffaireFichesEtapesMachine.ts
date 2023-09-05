@@ -11,6 +11,7 @@ import type { FicheEtEtapesMachine } from './FicheEtEtapesMachine';
 export type AffaireFichesEtapesMachine = {
     readonly id: number;
     num_affaire?: number | null;
+    validation_ingenieur?: boolean;
     description?: string | null;
     readonly fiches: Array<FicheEtEtapesMachine>;
     readonly charge_affaire: string;

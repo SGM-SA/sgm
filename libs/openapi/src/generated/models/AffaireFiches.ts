@@ -12,6 +12,7 @@ import type { Salarie } from './Salarie';
 export type AffaireFiches = {
     readonly id: number;
     num_affaire?: number | null;
+    validation_ingenieur?: boolean;
     readonly fiches: Array<FicheDetail>;
     readonly charge_affaire_detail: Salarie;
 };
