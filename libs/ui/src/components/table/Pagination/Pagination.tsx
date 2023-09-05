@@ -7,23 +7,27 @@ type PaginationProps = {
     table: Table<any>,
 }
 
+const resultsPerPageOptions = [10, 25, 50, 100]
+
 export const Pagination: React.FC<PaginationProps> = ({ table }) => {
 
     const onPreviousPage = () => table.previousPage()
     const onNextPage = () => table.nextPage()
+    const changeResultsPerPage = (resultsPerPage: number) => table.setPageSize(resultsPerPage)
     // const onPageSelect = (pageNumber: number) => table.setPageIndex(pageNumber - 1)
 
 	return <>
         <HStack mt='2em' w='100%' justifyContent='center' position='relative'>
 
             <HStack position='absolute' left='1em'>
-                <Text fontSize='sm'>Résultats par page</Text>
+                <Text fontSize='xs'>Résultats par page</Text>
 
-                <Select size='sm'>
-                    <option value={10}>10</option>
-                    <option value={25}>25</option>
-                    <option value={50}>50</option>
-                    <option value={100}>100</option>
+                <Select size='xs' onChange={e => changeResultsPerPage(parseInt(e.target.value))}>
+                    {resultsPerPageOptions.map(resultsPerPage =>
+                        <option key={resultsPerPage} value={resultsPerPage}>
+                            {resultsPerPage}
+                        </option>
+                    )}
                 </Select>
             </HStack>
 

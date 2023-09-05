@@ -1,11 +1,12 @@
-import { Result } from '@sgm/utils'
+import { Paginated, Result } from '@sgm/utils'
 
-type Types = 'text' | 'number' | 'date' | 'select'
+type Types = 'text' | 'number' | 'date' | 'select' | 'boolean'
 type Correspondances = {
     'text': string
     'number': number
     'date': Date
     'select': string
+    'boolean': boolean
 }
 
 export type MetaEditable<TData extends Types> = TData extends 'select' ? {
@@ -25,4 +26,11 @@ export type MetaBase<TData extends Types> = {
 
 export const createMeta = <TData extends Types>(options: MetaBase<TData>) => {
     return options
+}
+
+export const resolveResults = <TData>(data?: Paginated<TData> | Array<TData>) => {
+
+    if (!data) return []
+    else if (Array.isArray(data)) return data
+    else return data.results || []
 }

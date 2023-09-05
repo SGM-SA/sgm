@@ -5,6 +5,7 @@ import { SideBar } from '../modules'
 type DashboardLayoutProps = {
 	title: string
 	children: React.ReactNode
+	removePadding?: boolean
 }
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
@@ -37,7 +38,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
 					{/* title */}
 					<Heading as='h1'
 						color='secondary'
-						my='5rem'
+						mt='6rem'
+						mb='4rem'
 					>
 						{props.title}
 					</Heading>
@@ -46,8 +48,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
 					<VStack
 						as='main'
 						w='100%'
-						p='2rem'
+						padding={props.removePadding ? '0' : '2rem'}
 						backgroundColor='secondary'
+						border='1px solid'
+						borderColor='gray.200'
 						alignItems='flex-start'
 						alignSelf='center'
 						borderRadius='5px'

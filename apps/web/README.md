@@ -2,6 +2,7 @@
 
 ## Todo
 
+### Global
 - [ ] Authentication
   - [ ] Switch from username to mail (with confirmation mail)
   - [x] Test token expiration
@@ -13,9 +14,19 @@
   - [ ] API calls (Popup)
   - [ ] Check for a more FP way of handling errors (rather than ungly try/catch)
 - [ ] Layout
-  - [ ] Sidebar menu
-- [ ] Pages
-  - [ ] ...
+  - [x] Sidebar menu
+
+### Liste des affaires
+
+- [ ] Min height sur le tableau (doit prendre tout l'espact)
+- [ ] Tri
+  - [ ] Date de rendu
+  - [ ] Numéro d'affaire
+- [ ] Recherche (num_affaire, client ou description en 3 in 1) 
+- [ ] Chat room
+  - [ ] 
+
+---
 
 ## Stack
 

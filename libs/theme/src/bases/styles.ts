@@ -12,6 +12,10 @@ export const styles = {
             fontSize: 'xs'
         },
 
+        '.not-striped tr:nth-of-type(odd) td': {
+            background: 'transparent !important',
+        },
+
         /**
          * Resets
          */

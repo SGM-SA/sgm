@@ -4,6 +4,7 @@ import { Table, createMeta, usePagination } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { DashboardLayout } from '../../components/layouts'
+import { FichesTable } from '../../components/modules'
 
 const columnHelper = createColumnHelper<AffaireDetails>()
 
@@ -12,9 +13,8 @@ const columns = [
         id: 'numero',
         header: 'Numéro',
         meta: createMeta({
-            editable: true,
-            type: 'number',
-            // customValidation: (value) => value < 1000 ? Err('Le numéro d\'affaire doit être supérieur à 1000') : Ok(true)
+            editable: false,
+        //     // customValidation: (value) => value < 1000 ? Err('Le numéro d\'affaire doit être supérieur à 1000') : Ok(true)
         })
     }),
     columnHelper.accessor('description', {
@@ -29,7 +29,7 @@ const columns = [
         id: 'avancement',
         header: 'Avancement',
         cell: value => <Box>
-            <span color='#c7d2fe'>{value.getValue()}%</span>
+            <Box as='span' fontSize='xs'>{value.getValue()}%</Box>
             <Progress value={value.getValue()} 
                 background='#c7d2fe'
                 borderRadius='10px'
@@ -97,19 +97,25 @@ const AffairesPage: React.FC = () => {
 
 	return <>
     	<DashboardLayout 
-			title="Liste affaires"
+			title="Affaires"
+            removePadding={true}
 		>
                 <Table<AffaireDetails>
+                    title="Liste affaires"
                     columns={columns}
                     data={data}
                     pagination={pagination}
                     setPagination={setPagination}
-                    rowCanExpand={true}
-                    renderSubComponent={({ row }) => <p>Hello world</p>}
                     editable={true}
-                    chakraProps={{
-                        variant: 'striped',
+                    rowCanExpand={true}
+                    renderSubComponent={({ row }) => <FichesTable affaireId={row.original.id} />}
+                    styling={{
+                        table: {
+                            variant: 'simple'
+                        }
                     }}
+                    // rowSelectionActionsComponent=
+                    
                 />
         </DashboardLayout>
     </>

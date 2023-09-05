@@ -1,4 +1,4 @@
-import { Input, Select } from '@chakra-ui/react'
+import { Box, Input, Select } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
@@ -9,7 +9,28 @@ type DefaultTableCellProps = {
     table: any
 }
 
-export const DefaultTableCell: React.FC<DefaultTableCellProps> = ({ getValue, row: { index }, column, table }) => {
+const fontSize = 'xs'
+
+export const DefaultTableCell: React.FC<DefaultTableCellProps> = (props) => {
+
+
+    if (props.column.columnDef.meta?.editable) return <EditableTableCell {...props} />
+    else return <RawTableCell {...props} />
+}
+
+export const RawTableCell: React.FC<DefaultTableCellProps> = (props) => {
+
+    const doubleClickHandler = () => toast.warn("Ce champs n'est pas éditable")
+
+    return <Box as='span' 
+        fontSize={fontSize}
+        onDoubleClick={doubleClickHandler}
+    >
+        {props.getValue() as any}
+    </Box>
+}
+
+export const EditableTableCell: React.FC<DefaultTableCellProps> = ({ getValue, row: { index }, column, table }) => {
 
     const initialValue = getValue()
     const meta = column.columnDef.meta // not typed on purpose
@@ -46,7 +67,7 @@ export const DefaultTableCell: React.FC<DefaultTableCellProps> = ({ getValue, ro
                 <Input
                     type={meta.type}
                     variant='unstyled'
-                    fontSize='sm'
+                    fontSize={fontSize}
                     value={value as string || ''}
                     onChange={e => setValue(e.target.value)}
                     onBlur={onBlur}
@@ -54,19 +75,29 @@ export const DefaultTableCell: React.FC<DefaultTableCellProps> = ({ getValue, ro
             )
             break
         case 'select':
-            // 
             return (
-                <Select fontSize='sm'>
+                <Select size={fontSize}>
                     <option value={''}></option>
                     {meta.choices?.map((choice: string) => <option key={choice} value={choice}>{choice}</option>)}
                 </Select>
             )
             break
+        case 'boolean': 
+            return (
+                <Input
+                    type='checkbox'
+                    variant='unstyled'
+                    fontSize={fontSize}
+                    value={value as string || ''}
+                    onChange={e => setValue(e.target.value)}
+                    onBlur={onBlur}
+                />
+            )
         default:
             <Input
                 variant='unstyled'
                 value={value as string || ''}
-                fontSize='sm'
+                fontSize={fontSize}
                 onChange={e => setValue(e.target.value)}
                 onBlur={onBlur}
             />

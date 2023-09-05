@@ -118,16 +118,17 @@ axiosInstance.interceptors.response.use(
 
 			return Promise.reject(errorWrapper)
 		} else if (error.request) {
+
 			// Handle request errors
 			const errorWrapper: Error = {
 				name: 'unknown',
 				message: `Network error (${error.message})`,
 				stack: error.stack || '',
 			}
-			toast.error(errorWrapper.message, {
-				toastId: 'network-error',
-			})
+			if (!['canceled'].includes(error.message)) toast.error(errorWrapper.message, { toastId: 'network-error' })
+
 			return Promise.reject(errorWrapper)
+
 		} else {
 			// Handle other errors
 			const errorObject: Error = {

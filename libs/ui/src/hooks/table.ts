@@ -1,7 +1,10 @@
 import { PaginationState } from '@tanstack/react-table'
 import { useState } from 'react'
 
-export const usePagination = (initialData: PaginationState = { pageIndex: 0, pageSize: 10 }) => {
+const defaultPageIndex = 0
+const defaultPageSize = 10
+
+export const usePagination = (initialData: PaginationState = { pageIndex: defaultPageIndex, pageSize: defaultPageSize }) => {
 
     const [pagination, setPagination] = useState<PaginationState>(initialData)
 
