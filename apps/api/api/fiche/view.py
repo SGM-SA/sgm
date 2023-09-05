@@ -20,7 +20,10 @@ class EtapeAjustagePlanifierFilter(filters.BaseFilterBackend):
     """
     Filtre permettant de ne garder que les fiches ajustage à planifier
     filtres :
-        * affaire : renvoie uniquement les affaires qui ont des fiches ajustage à planifier
+        * affaire :
+            - affaire validée par ingénieur
+            - affaire qui a des fiches ajustage à planifier
+
 
         * etape : renvoie uniquement les étapes ajustage à planifier avec ces critères
             - affectation__isnull=True : l'étape n'a pas d'affectation
@@ -57,19 +60,23 @@ class EtapeAjustagePlanifierFilter(filters.BaseFilterBackend):
         )
 
         # Filtrer le queryset pour renvoyer uniquement les affaires avec étapes à planifier ou en retard
-        queryset = queryset.prefetch_related(
-            Prefetch(
-                "fiches",
-                queryset=Fiche.objects.filter(
-                    id__in=etapes_a_planifier
-                ).prefetch_related(
-                    Prefetch(
-                        "etapes",
-                        queryset=Etape.objects.filter(etape_ajustage_filter),
-                    )
-                ),
+        queryset = (
+            queryset.prefetch_related(
+                Prefetch(
+                    "fiches",
+                    queryset=Fiche.objects.filter(
+                        id__in=etapes_a_planifier
+                    ).prefetch_related(
+                        Prefetch(
+                            "etapes",
+                            queryset=Etape.objects.filter(etape_ajustage_filter),
+                        )
+                    ),
+                )
             )
-        ).filter(id__in=affaire_avec_fiches_non_vide)
+            .exclude(validation_ingenieur=False)
+            .filter(id__in=affaire_avec_fiches_non_vide)
+        )
 
         return queryset
 
@@ -78,11 +85,13 @@ class EtapeMachinePlanifierFilter(filters.BaseFilterBackend):
     """
     Filtre permettant de ne garder que les fiches machine à planifier
     filtres :
-        * affaire : renvoie uniquement les affaires qui ont des fiches machines à planifier
+        * affaire :
+            - affaire validée par ingénieur
+            - affaire qui a des fiches machines à planifier
 
-        * fiche : renvoie uniquement les fiches machine à planifier avec ces critères
+        * fiche : renvoie uniquement les fiches machines à planifier avec ces critères
             - affectation__isnull=True : la fiche n'a pas d'affectation
-            - groupe_machine!=2 : la fiche n'est pas un ajustage
+            - groupe_machine != 2 : la fiche n'est pas un ajustage
             - data_affecation a été dépaséée
 
     """
@@ -116,19 +125,23 @@ class EtapeMachinePlanifierFilter(filters.BaseFilterBackend):
         )
 
         # Filtrer le queryset pour renvoyer uniquement les affaires avec étapes à planifier ou en retard
-        queryset = queryset.prefetch_related(
-            Prefetch(
-                "fiches",
-                queryset=Fiche.objects.filter(
-                    id__in=etapes_a_planifier
-                ).prefetch_related(
-                    Prefetch(
-                        "etapes",
-                        queryset=Etape.objects.filter(etape_machine_filter),
-                    )
-                ),
+        queryset = (
+            queryset.prefetch_related(
+                Prefetch(
+                    "fiches",
+                    queryset=Fiche.objects.filter(
+                        id__in=etapes_a_planifier
+                    ).prefetch_related(
+                        Prefetch(
+                            "etapes",
+                            queryset=Etape.objects.filter(etape_machine_filter),
+                        )
+                    ),
+                )
             )
-        ).filter(id__in=affaire_avec_fiches_non_vide)
+            .exclude(validation_ingenieur=False)
+            .filter(id__in=affaire_avec_fiches_non_vide)
+        )
 
         return queryset
 
