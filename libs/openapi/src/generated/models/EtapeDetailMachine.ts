@@ -23,5 +23,6 @@ export type EtapeDetailMachine = {
     readonly date_modification: string;
     date_cloture?: string | null;
     fiche: number;
+    groupe_machine?: number | null;
 };
 

@@ -15,6 +15,6 @@ export type EtapeModeleListCreate = {
     readonly date_creation: string;
     readonly date_modification: string;
     fiche_modele: number;
-    machine: number;
+    groupe_machine?: number | null;
 };
 

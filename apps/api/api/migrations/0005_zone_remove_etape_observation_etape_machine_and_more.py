@@ -66,16 +66,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="etape",
             name="temps",
-            field=models.IntegerField(
-                default=0, verbose_name="Temps nécessaire"
-            ),
+            field=models.IntegerField(default=0, verbose_name="Temps nécessaire"),
         ),
         migrations.AddField(
             model_name="etape",
             name="terminee",
-            field=models.BooleanField(
-                default=False, verbose_name="Terminée ?"
-            ),
+            field=models.BooleanField(default=False, verbose_name="Terminée ?"),
         ),
         migrations.AddField(
             model_name="fiche",
@@ -87,9 +83,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="fiche",
             name="terminee",
-            field=models.BooleanField(
-                default=False, verbose_name="Fiche terminée"
-            ),
+            field=models.BooleanField(default=False, verbose_name="Fiche terminée"),
         ),
         migrations.AlterField(
             model_name="etape",

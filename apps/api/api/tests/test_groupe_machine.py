@@ -36,9 +36,7 @@ class GroupeMachineRUDViewTestCase(TestCase):
             "nom_groupe": "Groupe B",
             "prix_theorique": 150,
         }
-        response = self.client.patch(
-            url, data, content_type="application/json"
-        )
+        response = self.client.patch(url, data, content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["nom_groupe"], "Groupe B")
         self.assertEqual(response.data["prix_theorique"], 150)

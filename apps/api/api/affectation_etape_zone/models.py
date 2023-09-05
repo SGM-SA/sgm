@@ -14,9 +14,7 @@ class AffectationAjustage(models.Model):
     etape = models.OneToOneField(
         Etape, null=False, default=False, on_delete=models.CASCADE
     )
-    zone = models.ForeignKey(
-        Zone, null=False, default=False, on_delete=models.CASCADE
-    )
+    zone = models.ForeignKey(Zone, null=False, default=False, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"semaine : {self.semaine_affectation} - Affaire : {self.etape.fiche.affaire.num_affaire} - Fiche : {self.etape.fiche.titre} Etape : {self.etape.num_etape}"

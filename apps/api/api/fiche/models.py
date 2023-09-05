@@ -9,9 +9,7 @@ class Fiche(models.Model):
         blank=False,
         related_name="fiches",
     )
-    titre = models.CharField(
-        max_length=100, null=False, blank=False, default=""
-    )
+    titre = models.CharField(max_length=100, null=False, blank=False, default="")
     description = models.TextField(null=True, blank=True)
     observation = models.CharField(max_length=1000, null=True, blank=True)
     ref_doc = models.CharField(max_length=200, null=True, blank=True)
@@ -24,9 +22,7 @@ class Fiche(models.Model):
     )
 
     date_creation = models.DateField("date de création", auto_now_add=True)
-    date_modification = models.DateTimeField(
-        "date de modification", auto_now=True
-    )
+    date_modification = models.DateTimeField("date de modification", auto_now=True)
     date_cloture = models.DateField("date de clôture", null=True, blank=True)
 
     def __str__(self):

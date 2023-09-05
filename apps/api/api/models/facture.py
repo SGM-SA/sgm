@@ -5,9 +5,7 @@ from django.db.models import Sum, FloatField, F, Value
 class Facture(models.Model):
     affaire = models.ForeignKey("Affaire", on_delete=models.CASCADE)
     date_creation = models.DateField("date de création", auto_now_add=True)
-    date_modification = models.DateTimeField(
-        "date de modification", auto_now=True
-    )
+    date_modification = models.DateTimeField("date de modification", auto_now=True)
     date_envoi = models.DateField("date d'envoi", null=True, blank=True)
     date_echeance = models.DateField("date d'échéance", null=True, blank=True)
     date_paiement = models.DateField("date de paiement", null=True, blank=True)

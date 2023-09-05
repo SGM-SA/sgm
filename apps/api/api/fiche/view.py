@@ -1,18 +1,18 @@
-from rest_framework.parsers import JSONParser
+from _datetime import datetime
 from rest_framework.response import Response
-from typing import List
+
+from api.commun.views import BulkDeleteView
 from api.fiche.models import Fiche
 from api.etape.models import Etape
 from api.affaire.models import Affaire
 from api.affaire.serializer import AffaireFichesEtapesSerializer
-from api.fiche.serializer import (
-    FicheEtEtapesAjustageSerializer,
-    FicheCRUDSerializer,
+from api.fiche.serializer import FicheEtEtapesAjustageSerializer, FicheCRUDSerializer
+from rest_framework import generics, filters, status, serializers
+from drf_spectacular.utils import (
+    extend_schema_view,
+    extend_schema,
 )
-from api.commun.views import BulkDeleteView
-from rest_framework import generics, filters
-from drf_spectacular.utils import extend_schema_view, extend_schema
-from django.db.models import Prefetch, Count
+from django.db.models import Prefetch, Count, Q
 from constance import config
 
 
@@ -25,46 +25,52 @@ class EtapeAjustagePlanifierFilter(filters.BaseFilterBackend):
         * etape : renvoie uniquement les étapes ajustage à planifier avec ces critères
             - affectation__isnull=True : l'étape n'a pas d'affectation
             - groupe_machine=config.CONSTANTE : l'étape est un ajustage
-
-
-
+            - date affectation dépasée
     """
 
     def filter_queryset(self, request, queryset, view):
-        fiche_avec_etapes = (
-            Etape.objects.all()
-            .filter(
-                affectationajustage__isnull=True,
-                groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID,
+        etape_ajustage_filter = (
+            Q(terminee=False)
+            & Q(groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID)
+            & (
+                Q(affectationajustage__isnull=True)
+                | Q(affectationajustage__semaine_affectation__lt=datetime.now())
             )
+        )
+
+        # Étapes à planifier et étapes assignées en retard
+        etapes_a_planifier = (
+            Etape.objects.all()
+            .filter(etape_ajustage_filter)
             .values("fiche")
             .alias(total=Count("id"))
             .filter(total__gt=0)
         )
+
+        # Affaires avec fiches contenant des étapes à planifier ou en retard
         affaire_avec_fiches_non_vide = (
             Fiche.objects.all()
-            .filter(id__in=fiche_avec_etapes)
+            .filter(id__in=etapes_a_planifier)
             .values("affaire")
             .alias(total=Count("id"))
             .filter(total__gt=0)
         )
-        # FILTER THE QUERYSET to only return the affaires that have etape to plan
+
+        # Filtrer le queryset pour renvoyer uniquement les affaires avec étapes à planifier ou en retard
         queryset = queryset.prefetch_related(
             Prefetch(
                 "fiches",
                 queryset=Fiche.objects.filter(
-                    id__in=fiche_avec_etapes
+                    id__in=etapes_a_planifier
                 ).prefetch_related(
                     Prefetch(
                         "etapes",
-                        queryset=Etape.objects.filter(
-                            affectationajustage__isnull=True,
-                            groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID,
-                        ),
+                        queryset=Etape.objects.filter(etape_ajustage_filter),
                     )
                 ),
             )
         ).filter(id__in=affaire_avec_fiches_non_vide)
+
         return queryset
 
 
@@ -76,45 +82,54 @@ class EtapeMachinePlanifierFilter(filters.BaseFilterBackend):
 
         * fiche : renvoie uniquement les fiches machine à planifier avec ces critères
             - affectation__isnull=True : la fiche n'a pas d'affectation
-            - groupe_machine=2 : la fiche est un ajustage
-            - TODO : groupe machine n'existe plus, remplacer avec filtre etape
+            - groupe_machine!=2 : la fiche n'est pas un ajustage
+            - data_affecation a été dépaséée
 
     """
 
     def filter_queryset(self, request, queryset, view):
-        fiche_avec_etapes_machine = (
+        etape_machine_filter = (
+            Q(terminee=False)
+            & ~Q(groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID)
+            & (
+                Q(affectationmachine__isnull=True)
+                | Q(affectationmachine__semaine_affectation__lt=datetime.now())
+            )
+        )
+
+        # Étapes à planifier et étapes assignées en retard
+        etapes_a_planifier = (
             Etape.objects.all()
-            .filter(affectationmachine__isnull=True)
-            .exclude(groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID)
+            .filter(etape_machine_filter)
             .values("fiche")
             .alias(total=Count("id"))
             .filter(total__gt=0)
         )
+
+        # Affaires avec fiches contenant des étapes à planifier ou en retard
         affaire_avec_fiches_non_vide = (
             Fiche.objects.all()
-            .filter(id__in=fiche_avec_etapes_machine)
+            .filter(id__in=etapes_a_planifier)
             .values("affaire")
             .alias(total=Count("id"))
             .filter(total__gt=0)
         )
-        # FILTER THE QUERYSET to only return the affaires that have etape to plan
+
+        # Filtrer le queryset pour renvoyer uniquement les affaires avec étapes à planifier ou en retard
         queryset = queryset.prefetch_related(
             Prefetch(
                 "fiches",
                 queryset=Fiche.objects.filter(
-                    id__in=fiche_avec_etapes_machine
+                    id__in=etapes_a_planifier
                 ).prefetch_related(
                     Prefetch(
                         "etapes",
-                        queryset=Etape.objects.filter(
-                            affectationmachine__isnull=True,
-                        ).exclude(
-                            groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID
-                        ),
+                        queryset=Etape.objects.filter(etape_machine_filter),
                     )
                 ),
             )
         ).filter(id__in=affaire_avec_fiches_non_vide)
+
         return queryset
 
 

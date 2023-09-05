@@ -3,12 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Etat } from './Etat';
+import type { GroupeMachine } from './GroupeMachine';
 
-export type PaginatedEtatList = {
+export type PaginatedGroupeMachineList = {
     count?: number;
     next?: string | null;
     previous?: string | null;
-    results?: Array<Etat>;
+    results?: Array<GroupeMachine>;
 };
 

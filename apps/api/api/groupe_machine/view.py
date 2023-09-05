@@ -47,9 +47,7 @@ class GroupeMachineListCreateView(generics.ListCreateAPIView):
         tags=["GroupeMachine"],
     ),
 )
-class GroupeMachineRetrieveUpdateDestroyView(
-    generics.RetrieveUpdateDestroyAPIView
-):
+class GroupeMachineRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = GroupeMachine.objects.all()
     serializer_class = GroupeMachineSerializer
 

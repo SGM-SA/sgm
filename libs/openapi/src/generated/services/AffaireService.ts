@@ -49,24 +49,6 @@ export class AffaireService {
 
     /**
      * Affaire
-     * Création affaire
-     * @param requestBody
-     * @returns AffaireDetails
-     * @throws ApiError
-     */
-    public static apiAffairesCreate(
-        requestBody?: AffaireDetails,
-    ): CancelablePromise<AffaireDetails> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/affaires/',
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-
-    /**
-     * Affaire
      * Permet de récupérer une affaire
      * @param id
      * @returns AffaireDetails

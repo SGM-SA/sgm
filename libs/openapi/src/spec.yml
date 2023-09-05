@@ -70,33 +70,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedAffaireDetailsList'
           description: ''
-    post:
-      operationId: api_affaires_create
-      description: Création affaire
-      summary: Affaire
-      tags:
-      - Affaire
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AffaireDetails'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/AffaireDetails'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/AffaireDetails'
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AffaireDetails'
-          description: ''
   /api/affaires/{id}:
     get:
       operationId: api_affaires_retrieve
@@ -468,159 +441,12 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/clients:
-    get:
-      operationId: api_clients_list
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      tags:
-      - api
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedClientList'
-          description: ''
-    post:
-      operationId: api_clients_create
-      tags:
-      - api
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Client'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Client'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Client'
-        required: true
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Client'
-          description: ''
-  /api/clients/{id}:
-    get:
-      operationId: api_clients_retrieve
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - api
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Client'
-          description: ''
-    put:
-      operationId: api_clients_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - api
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Client'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Client'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/Client'
-        required: true
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Client'
-          description: ''
-    patch:
-      operationId: api_clients_partial_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - api
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedClient'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedClient'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedClient'
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Client'
-          description: ''
-    delete:
-      operationId: api_clients_destroy
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - api
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '204':
-          description: No response body
   /api/etapes/:
     post:
       operationId: api_etapes_create
+      summary: Creation d'Etape
       tags:
-      - api
+      - Etape
       requestBody:
         content:
           application/json:
@@ -646,6 +472,7 @@ paths:
   /api/etapes/{id}:
     get:
       operationId: api_etapes_retrieve
+      summary: Gestion d'Etapes
       parameters:
       - in: path
         name: id
@@ -653,7 +480,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - Etape
       security:
       - jwtAuth: []
       - {}
@@ -666,6 +493,7 @@ paths:
           description: ''
     put:
       operationId: api_etapes_update
+      summary: Gestion d'Etapes
       parameters:
       - in: path
         name: id
@@ -673,7 +501,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - Etape
       requestBody:
         content:
           application/json:
@@ -698,6 +526,7 @@ paths:
           description: ''
     patch:
       operationId: api_etapes_partial_update
+      summary: Gestion d'Etapes
       parameters:
       - in: path
         name: id
@@ -705,7 +534,7 @@ paths:
           type: integer
         required: true
       tags:
-      - api
+      - Etape
       requestBody:
         content:
           application/json:
@@ -729,31 +558,12 @@ paths:
           description: ''
     delete:
       operationId: api_etapes_destroy
+      summary: Gestion d'Etapes
       parameters:
       - in: path
         name: id
         schema:
           type: integer
-        required: true
-      tags:
-      - api
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '204':
-          description: No response body
-  /api/etapes/delete:
-    delete:
-      operationId: api_etapes_delete_destroy
-      description: Bulk delete des étapes
-      summary: Suppression
-      parameters:
-      - in: query
-        name: ids
-        schema:
-          type: integer
-        description: Liste des ids des étapes à supprimer
         required: true
       tags:
       - Etape
@@ -763,49 +573,33 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/etats:
-    get:
-      operationId: api_etats_list
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
+  /api/etapes/delete:
+    post:
+      operationId: api_etapes_delete_create
+      description: Bulk delete d'objets en fonction de leur id
+      summary: Bulk delete d'Etapes
       tags:
-      - api
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedEtatList'
-          description: ''
-  /api/etats/{id}:
-    get:
-      operationId: api_etats_retrieve
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
+      - Etape
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkDelete'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BulkDelete'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BulkDelete'
         required: true
-      tags:
-      - api
       security:
       - jwtAuth: []
       - {}
       responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Etat'
-          description: ''
+        '204':
+          description: No response body
+        '400':
+          description: No response body
   /api/fiches/:
     post:
       operationId: api_fiches_create
@@ -969,17 +763,31 @@ paths:
                 $ref: '#/components/schemas/PaginatedAffaireFichesEtapesList'
           description: ''
   /api/fiches/delete/:
-    delete:
-      operationId: api_fiches_delete_destroy
-      description: Bulk delete des fiches
-      summary: Suppression bulk de fiches
+    post:
+      operationId: api_fiches_delete_create
+      description: Permet de supprimer plusieurs fiches en même temps
+      summary: Bulk delete de fiches
       tags:
       - Fiche
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkDelete'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BulkDelete'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BulkDelete'
+        required: true
       security:
       - jwtAuth: []
       - {}
       responses:
         '204':
+          description: No response body
+        '400':
           description: No response body
   /api/fiches/etapes/{id}:
     get:
@@ -1026,6 +834,197 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedAffaireFichesEtapesList'
           description: ''
+  /api/groupe_machine/:
+    get:
+      operationId: api_groupe_machine_list
+      description: Cette opération permet de récupérer la liste de tous les GroupesMachine.
+      summary: Lister tous les GroupesMachine
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - GroupeMachine
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupeMachineList'
+          description: ''
+    post:
+      operationId: api_groupe_machine_create
+      description: Cette opération permet de créer un nouveau GroupeMachine.
+      summary: Créer un nouveau GroupeMachine
+      tags:
+      - GroupeMachine
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupeMachine'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupeMachine'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupeMachine'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupeMachine'
+          description: ''
+  /api/groupe_machine/{id}/:
+    get:
+      operationId: api_groupe_machine_retrieve
+      description: Cette opération permet de récupérer un GroupeMachine spécifique
+        en utilisant son ID.
+      summary: Récupérer un GroupeMachine
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - GroupeMachine
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupeMachine'
+          description: ''
+    put:
+      operationId: api_groupe_machine_update
+      description: Cette opération permet de mettre à jour un GroupeMachine spécifique
+        en utilisant son ID.
+      summary: Mettre à jour un GroupeMachine
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - GroupeMachine
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupeMachine'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupeMachine'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupeMachine'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupeMachine'
+          description: ''
+    patch:
+      operationId: api_groupe_machine_partial_update
+      description: Cette opération permet de mettre à jour partiellement un GroupeMachine
+        spécifique en utilisant son ID.
+      summary: Mise à jour partielle d'un GroupeMachine
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - GroupeMachine
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGroupeMachine'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGroupeMachine'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGroupeMachine'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupeMachine'
+          description: ''
+    delete:
+      operationId: api_groupe_machine_destroy
+      description: Cette opération permet de supprimer un GroupeMachine spécifique
+        en utilisant son ID.
+      summary: Supprimer un GroupeMachine
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - GroupeMachine
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/groupe_machine/delete/:
+    post:
+      operationId: api_groupe_machine_delete_create
+      description: Permet de supprimer plusieurs GroupeMachines en même temps
+      summary: Bulk delete de GroupeMachine
+      tags:
+      - GroupeMachine
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkDelete'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BulkDelete'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BulkDelete'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+        '400':
+          description: No response body
   /api/machines/:
     get:
       operationId: api_machines_list
@@ -1586,6 +1585,142 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedFicheModeleOptionsList'
           description: ''
+  /api/notes/:
+    post:
+      operationId: api_notes_create
+      description: Permet de créer une nouvelle note
+      summary: Créer une Note
+      tags:
+      - Note
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NoteCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NoteCreate'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteCreate'
+          description: ''
+  /api/notes/{id}:
+    get:
+      operationId: api_notes_retrieve
+      description: Permet de récupérer, modifier ou supprimer une note existante
+      summary: Détails et Modification de la Note
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Note
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteDetail'
+          description: ''
+    put:
+      operationId: api_notes_update
+      description: Permet de récupérer, modifier ou supprimer une note existante
+      summary: Détails et Modification de la Note
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Note
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NoteDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NoteDetail'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteDetail'
+          description: ''
+    patch:
+      operationId: api_notes_partial_update
+      description: Permet de récupérer, modifier ou supprimer une note existante
+      summary: Détails et Modification de la Note
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Note
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNoteDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNoteDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNoteDetail'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteDetail'
+          description: ''
+    delete:
+      operationId: api_notes_destroy
+      description: Permet de récupérer, modifier ou supprimer une note existante
+      summary: Détails et Modification de la Note
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Note
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
   /api/planning/machine:
     get:
       operationId: api_planning_machine_list
@@ -2035,70 +2170,16 @@ components:
     BlankEnum:
       enum:
       - ''
-    Client:
+    BulkDelete:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        raison:
-          type: string
-          maxLength: 200
-        type:
-          type: string
-          nullable: true
-          maxLength: 200
-        adresse1:
-          type: string
-          maxLength: 200
-        adresse2:
-          type: string
-          nullable: true
-          maxLength: 200
-        adresse3:
-          type: string
-          nullable: true
-          maxLength: 200
-        zip_code:
-          type: string
-          maxLength: 200
-        ville:
-          type: string
-          maxLength: 200
-        pays:
-          type: string
-          maxLength: 200
-        tel1:
-          type: string
-          maxLength: 200
-        tel2:
-          type: string
-          nullable: true
-          maxLength: 200
-        email:
-          type: string
-          maxLength: 200
-        correspondant:
-          type: string
-          maxLength: 200
-        memo:
-          type: string
-          nullable: true
-          maxLength: 200
-        compte:
-          type: string
-          nullable: true
-          maxLength: 200
+        ids:
+          type: array
+          items:
+            type: integer
+          description: Liste des ids des objets à supprimer
       required:
-      - adresse1
-      - correspondant
-      - email
-      - id
-      - pays
-      - raison
-      - tel1
-      - ville
-      - zip_code
+      - ids
     EtapeCreate:
       type: object
       properties:
@@ -2155,14 +2236,14 @@ components:
           title: Date de clôture
         fiche:
           type: integer
-        machine:
+        groupe_machine:
           type: integer
+          nullable: true
       required:
       - date_creation
       - date_modification
       - fiche
       - id
-      - machine
       - num_etape
     EtapeDetail:
       type: object
@@ -2227,6 +2308,9 @@ components:
           title: Date de clôture
         fiche:
           type: integer
+        groupe_machine:
+          type: integer
+          nullable: true
       required:
       - affectation_id
       - date_creation
@@ -2298,6 +2382,9 @@ components:
           title: Date de clôture
         fiche:
           type: integer
+        groupe_machine:
+          type: integer
+          nullable: true
       required:
       - affectation_id
       - date_creation
@@ -2372,6 +2459,9 @@ components:
           title: Date de clôture
         fiche:
           type: integer
+        groupe_machine:
+          type: integer
+          nullable: true
       required:
       - affectation_id
       - date_creation
@@ -2427,6 +2517,9 @@ components:
           title: Date de modification
         fiche_modele:
           type: integer
+        groupe_machine:
+          type: integer
+          nullable: true
       required:
       - date_creation
       - date_modification
@@ -2476,27 +2569,15 @@ components:
           title: Date de modification
         fiche_modele:
           type: integer
-        machine:
+        groupe_machine:
           type: integer
+          nullable: true
       required:
       - date_creation
       - date_modification
       - fiche_modele
       - id
-      - machine
       - num_etape
-    Etat:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        designation:
-          type: string
-          maxLength: 200
-      required:
-      - designation
-      - id
     FicheCRUD:
       type: object
       properties:
@@ -2949,6 +3030,22 @@ components:
       required:
       - name
       - value
+    GroupeMachine:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nom_groupe:
+          type: string
+          title: Nom du groupe machine
+          maxLength: 300
+        prix_theorique:
+          type: integer
+          title: Prix théorique / heure
+      required:
+      - id
+      - nom_groupe
     ListZone:
       type: object
       properties:
@@ -2982,9 +3079,51 @@ components:
           type: boolean
         est_active:
           type: boolean
+        groupe_machine:
+          type: integer
+          nullable: true
       required:
       - id
       - nom_machine
+    NoteCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        contenu:
+          type: string
+        date_creation:
+          type: string
+          format: date
+          readOnly: true
+        affaire:
+          type: integer
+      required:
+      - affaire
+      - contenu
+      - date_creation
+      - id
+    NoteDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: string
+          readOnly: true
+        contenu:
+          type: string
+        date_creation:
+          type: string
+          format: date
+          readOnly: true
+      required:
+      - contenu
+      - date_creation
+      - id
+      - user
     NullEnum:
       enum:
       - null
@@ -3088,26 +3227,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AffectationMachineDetail'
-    PaginatedClientList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Client'
     PaginatedEtapeModeleListCreateList:
       type: object
       properties:
@@ -3128,26 +3247,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EtapeModeleListCreate'
-    PaginatedEtatList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Etat'
     PaginatedFicheModeleDetailList:
       type: object
       properties:
@@ -3188,6 +3287,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FicheModeleOptions'
+    PaginatedGroupeMachineList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupeMachine'
     PaginatedListZoneList:
       type: object
       properties:
@@ -3319,60 +3438,6 @@ components:
         salarie:
           type: integer
           nullable: true
-    PatchedClient:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        raison:
-          type: string
-          maxLength: 200
-        type:
-          type: string
-          nullable: true
-          maxLength: 200
-        adresse1:
-          type: string
-          maxLength: 200
-        adresse2:
-          type: string
-          nullable: true
-          maxLength: 200
-        adresse3:
-          type: string
-          nullable: true
-          maxLength: 200
-        zip_code:
-          type: string
-          maxLength: 200
-        ville:
-          type: string
-          maxLength: 200
-        pays:
-          type: string
-          maxLength: 200
-        tel1:
-          type: string
-          maxLength: 200
-        tel2:
-          type: string
-          nullable: true
-          maxLength: 200
-        email:
-          type: string
-          maxLength: 200
-        correspondant:
-          type: string
-          maxLength: 200
-        memo:
-          type: string
-          nullable: true
-          maxLength: 200
-        compte:
-          type: string
-          nullable: true
-          maxLength: 200
     PatchedEtapeCreate:
       type: object
       properties:
@@ -3429,8 +3494,9 @@ components:
           title: Date de clôture
         fiche:
           type: integer
-        machine:
+        groupe_machine:
           type: integer
+          nullable: true
     PatchedEtapeModeleDetail:
       type: object
       properties:
@@ -3477,6 +3543,9 @@ components:
           title: Date de modification
         fiche_modele:
           type: integer
+        groupe_machine:
+          type: integer
+          nullable: true
     PatchedFicheCRUD:
       type: object
       properties:
@@ -3552,6 +3621,19 @@ components:
         fourniture:
           type: boolean
           title: Fournitures arrivées
+    PatchedGroupeMachine:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nom_groupe:
+          type: string
+          title: Nom du groupe machine
+          maxLength: 300
+        prix_theorique:
+          type: integer
+          title: Prix théorique / heure
     PatchedMachineDetail:
       type: object
       properties:
@@ -3569,6 +3651,24 @@ components:
           type: boolean
         est_active:
           type: boolean
+        groupe_machine:
+          type: integer
+          nullable: true
+    PatchedNoteDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: string
+          readOnly: true
+        contenu:
+          type: string
+        date_creation:
+          type: string
+          format: date
+          readOnly: true
     PlanningMachine:
       type: object
       description: Serializer pour la planification d'une machine.

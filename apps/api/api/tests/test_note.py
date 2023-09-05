@@ -22,9 +22,7 @@ class NoteViewsTestCase(TestCase):
 
         # Authenticate the client using JWT
         refresh = RefreshToken.for_user(self.user)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}"
-        )
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
 
     def test_create_note(self):
         url = "/api/notes/"
@@ -60,9 +58,7 @@ class NoteViewsTestCase(TestCase):
         )
         url = f"/api/notes/{note.id}"
         updated_content = "Updated note content"
-        response = self.client.put(
-            url, {"contenu": updated_content}, format="json"
-        )
+        response = self.client.put(url, {"contenu": updated_content}, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         note.refresh_from_db()

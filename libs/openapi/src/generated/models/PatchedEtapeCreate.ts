@@ -18,6 +18,6 @@ export type PatchedEtapeCreate = {
     readonly date_modification?: string;
     date_cloture?: string | null;
     fiche?: number;
-    machine?: number;
+    groupe_machine?: number | null;
 };
 
