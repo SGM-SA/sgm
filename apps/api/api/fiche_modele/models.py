@@ -6,9 +6,7 @@ class FicheModele(models.Model):
     date_creation = models.DateField("date de création", auto_now_add=True)
 
     # fiche infos
-    titre = models.CharField(
-        max_length=100, null=False, blank=False, default=""
-    )
+    titre = models.CharField(max_length=100, null=False, blank=False, default="")
     description = models.TextField(null=True, blank=True)
 
     fourniture = models.BooleanField(

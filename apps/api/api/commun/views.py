@@ -30,6 +30,4 @@ class BulkDeleteView(APIView):
 
             return Response(status=HTTP_204_NO_CONTENT)
         except Exception as e:
-            return Response(
-                status=HTTP_400_BAD_REQUEST, data={"error": str(e)}
-            )
+            return Response(status=HTTP_400_BAD_REQUEST, data={"error": str(e)})

@@ -57,9 +57,7 @@ class Affaire(models.Model):
         blank=True,
     )
 
-    client = models.CharField(
-        "nom du client", max_length=200, null=True, blank=True
-    )
+    client = models.CharField("nom du client", max_length=200, null=True, blank=True)
 
     montant = models.DecimalField(
         "montant de l'affaire",
@@ -85,9 +83,7 @@ class Affaire(models.Model):
         "date à laquelle l'affaire doit être terminée", null=True, blank=True
     )
 
-    date_modification = models.DateTimeField(
-        "date de modification", auto_now=True
-    )
+    date_modification = models.DateTimeField("date de modification", auto_now=True)
 
     date_cloture = models.DateField(
         "date de clôture de l'affaire (terminée)", null=True, blank=True

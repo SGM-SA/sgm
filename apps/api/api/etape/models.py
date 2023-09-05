@@ -12,9 +12,7 @@ class Etape(models.Model):
         related_name="etapes",
     )
     num_etape = models.IntegerField("N°Étape")
-    terminee = models.BooleanField(
-        "Terminée ?", default=False, null=False, blank=False
-    )
+    terminee = models.BooleanField("Terminée ?", default=False, null=False, blank=False)
     description = models.TextField(
         "Description", max_length=10000, null=True, blank=True
     )
@@ -31,9 +29,7 @@ class Etape(models.Model):
     rep = models.CharField(max_length=2000, null=True, blank=True)
 
     date_creation = models.DateField("date de création", auto_now_add=True)
-    date_modification = models.DateTimeField(
-        "date de modification", auto_now=True
-    )
+    date_modification = models.DateTimeField("date de modification", auto_now=True)
     date_cloture = models.DateField("date de clôture", null=True, blank=True)
 
     def __str__(self):

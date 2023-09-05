@@ -17,9 +17,7 @@ class PlanningMachineSerializer(serializers.ModelSerializer):
     affaires = serializers.SerializerMethodField()
 
     @extend_schema_field(
-        serializers.ListSerializer(
-            child=AffaireFichesEtapesMachineSerializer()
-        )
+        serializers.ListSerializer(child=AffaireFichesEtapesMachineSerializer())
     )
     def get_affaires(self, obj):
         """

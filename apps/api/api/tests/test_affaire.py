@@ -28,27 +28,15 @@ class AffaireListTestCase(APITestCase):
 
         # Vérifie que les données de la première affaire sont correctes
         affaire1_data = response_data[0]
-        self.assertEqual(
-            affaire1_data["num_affaire"], self.affaire1.num_affaire
-        )
-        self.assertEqual(
-            affaire1_data["description"], self.affaire1.description
-        )
-        self.assertEqual(
-            affaire1_data["observation"], self.affaire1.observation
-        )
+        self.assertEqual(affaire1_data["num_affaire"], self.affaire1.num_affaire)
+        self.assertEqual(affaire1_data["description"], self.affaire1.description)
+        self.assertEqual(affaire1_data["observation"], self.affaire1.observation)
 
         # Vérifie que la deuxième affaire dans la réponse est la bonne
         affaire2_data = response_data[1]
-        self.assertEqual(
-            affaire2_data["num_affaire"], self.affaire2.num_affaire
-        )
-        self.assertEqual(
-            affaire2_data["description"], self.affaire2.description
-        )
-        self.assertEqual(
-            affaire2_data["observation"], self.affaire2.observation
-        )
+        self.assertEqual(affaire2_data["num_affaire"], self.affaire2.num_affaire)
+        self.assertEqual(affaire2_data["description"], self.affaire2.description)
+        self.assertEqual(affaire2_data["observation"], self.affaire2.observation)
 
     def test_list_affaires_et_fiches(self):
         # TODO: Teste que les fiches sont bien incluses dans la réponse

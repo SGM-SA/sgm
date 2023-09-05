@@ -11,9 +11,7 @@ class Note(models.Model):
         blank=False,
         related_name="notes",
     )
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_notes"
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_notes")
     contenu = models.TextField()
     date_creation = models.DateField(auto_now_add=True)
 

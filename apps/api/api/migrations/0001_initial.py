@@ -211,9 +211,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "memo",
-                    models.TextField(
-                        blank=True, null=True, verbose_name="mémo"
-                    ),
+                    models.TextField(blank=True, null=True, verbose_name="mémo"),
                 ),
             ],
         ),
@@ -252,9 +250,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "description",
-                    models.TextField(
-                        verbose_name="Description du type de fourniture"
-                    ),
+                    models.TextField(verbose_name="Description du type de fourniture"),
                 ),
             ],
             options={
@@ -358,9 +354,7 @@ class Migration(migrations.Migration):
                 ("code_fourniture", models.CharField(max_length=200)),
                 (
                     "description",
-                    models.TextField(
-                        verbose_name="Description de la fourniture"
-                    ),
+                    models.TextField(verbose_name="Description de la fourniture"),
                 ),
                 (
                     "prix_ht",

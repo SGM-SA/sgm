@@ -38,8 +38,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="affectationajustage",
             name="semaine_affectation",
-            field=models.DateField(
-                verbose_name="Semaine d'affectation de l'étape"
-            ),
+            field=models.DateField(verbose_name="Semaine d'affectation de l'étape"),
         ),
     ]
