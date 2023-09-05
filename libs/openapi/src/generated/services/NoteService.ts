@@ -2,45 +2,47 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { BulkDelete } from '../models/BulkDelete';
-import type { EtapeCreate } from '../models/EtapeCreate';
-import type { PatchedEtapeCreate } from '../models/PatchedEtapeCreate';
+import type { NoteCreate } from '../models/NoteCreate';
+import type { NoteDetail } from '../models/NoteDetail';
+import type { PatchedNoteDetail } from '../models/PatchedNoteDetail';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class EtapeService {
+export class NoteService {
 
     /**
-     * Creation d'Etape
+     * Créer une Note
+     * Permet de créer une nouvelle note
      * @param requestBody
-     * @returns EtapeCreate
+     * @returns NoteCreate
      * @throws ApiError
      */
-    public static apiEtapesCreate(
-        requestBody: EtapeCreate,
-    ): CancelablePromise<EtapeCreate> {
+    public static apiNotesCreate(
+        requestBody: NoteCreate,
+    ): CancelablePromise<NoteCreate> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/etapes/',
+            url: '/api/notes/',
             body: requestBody,
             mediaType: 'application/json',
         });
     }
 
     /**
-     * Gestion d'Etapes
+     * Détails et Modification de la Note
+     * Permet de récupérer, modifier ou supprimer une note existante
      * @param id
-     * @returns EtapeCreate
+     * @returns NoteDetail
      * @throws ApiError
      */
-    public static apiEtapesRetrieve(
+    public static apiNotesRetrieve(
         id: number,
-    ): CancelablePromise<EtapeCreate> {
+    ): CancelablePromise<NoteDetail> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/etapes/{id}',
+            url: '/api/notes/{id}',
             path: {
                 'id': id,
             },
@@ -48,19 +50,20 @@ export class EtapeService {
     }
 
     /**
-     * Gestion d'Etapes
+     * Détails et Modification de la Note
+     * Permet de récupérer, modifier ou supprimer une note existante
      * @param id
      * @param requestBody
-     * @returns EtapeCreate
+     * @returns NoteDetail
      * @throws ApiError
      */
-    public static apiEtapesUpdate(
+    public static apiNotesUpdate(
         id: number,
-        requestBody: EtapeCreate,
-    ): CancelablePromise<EtapeCreate> {
+        requestBody: NoteDetail,
+    ): CancelablePromise<NoteDetail> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/etapes/{id}',
+            url: '/api/notes/{id}',
             path: {
                 'id': id,
             },
@@ -70,19 +73,20 @@ export class EtapeService {
     }
 
     /**
-     * Gestion d'Etapes
+     * Détails et Modification de la Note
+     * Permet de récupérer, modifier ou supprimer une note existante
      * @param id
      * @param requestBody
-     * @returns EtapeCreate
+     * @returns NoteDetail
      * @throws ApiError
      */
-    public static apiEtapesPartialUpdate(
+    public static apiNotesPartialUpdate(
         id: number,
-        requestBody?: PatchedEtapeCreate,
-    ): CancelablePromise<EtapeCreate> {
+        requestBody?: PatchedNoteDetail,
+    ): CancelablePromise<NoteDetail> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/api/etapes/{id}',
+            url: '/api/notes/{id}',
             path: {
                 'id': id,
             },
@@ -92,40 +96,20 @@ export class EtapeService {
     }
 
     /**
-     * Gestion d'Etapes
+     * Détails et Modification de la Note
+     * Permet de récupérer, modifier ou supprimer une note existante
      * @param id
      * @returns void
      * @throws ApiError
      */
-    public static apiEtapesDestroy(
+    public static apiNotesDestroy(
         id: number,
     ): CancelablePromise<void> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/api/etapes/{id}',
+            url: '/api/notes/{id}',
             path: {
                 'id': id,
-            },
-        });
-    }
-
-    /**
-     * Bulk delete d'Etapes
-     * Bulk delete d'objets en fonction de leur id
-     * @param requestBody
-     * @returns void
-     * @throws ApiError
-     */
-    public static apiEtapesDeleteCreate(
-        requestBody: BulkDelete,
-    ): CancelablePromise<void> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/etapes/delete',
-            body: requestBody,
-            mediaType: 'application/json',
-            errors: {
-                400: `No response body`,
             },
         });
     }

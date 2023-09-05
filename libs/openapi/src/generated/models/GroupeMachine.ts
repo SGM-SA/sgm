@@ -3,8 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Etat = {
+export type GroupeMachine = {
     readonly id: number;
-    designation: string;
+    nom_groupe: string;
+    prix_theorique?: number;
 };
 

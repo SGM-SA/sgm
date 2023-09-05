@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { BulkDelete } from '../models/BulkDelete';
 import type { FicheCRUD } from '../models/FicheCRUD';
 import type { PatchedFicheCRUD } from '../models/PatchedFicheCRUD';
 
@@ -95,15 +96,23 @@ export class FicheService {
     }
 
     /**
-     * Suppression bulk de fiches
-     * Bulk delete des fiches
+     * Bulk delete de fiches
+     * Permet de supprimer plusieurs fiches en même temps
+     * @param requestBody
      * @returns void
      * @throws ApiError
      */
-    public static apiFichesDeleteDestroy(): CancelablePromise<void> {
+    public static apiFichesDeleteCreate(
+        requestBody: BulkDelete,
+    ): CancelablePromise<void> {
         return __request(OpenAPI, {
-            method: 'DELETE',
+            method: 'POST',
             url: '/api/fiches/delete/',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                400: `No response body`,
+            },
         });
     }
 

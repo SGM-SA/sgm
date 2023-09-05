@@ -9,5 +9,6 @@ export type PatchedMachineDetail = {
     description?: string | null;
     fonctionnelle?: boolean;
     est_active?: boolean;
+    groupe_machine?: number | null;
 };
 

@@ -18,5 +18,6 @@ export type EtapeModeleDetail = {
     readonly date_creation: string;
     readonly date_modification: string;
     fiche_modele: number;
+    groupe_machine?: number | null;
 };
 
