@@ -5,7 +5,6 @@ from .models import (
     Statut,
     Aptitude,
     Etat,
-    Pointage,
     Facture,
     Fournisseur,
     Fourniture,

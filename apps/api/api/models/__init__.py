@@ -3,7 +3,6 @@ from .client import Client
 from api.salarie.models import Salarie
 from .aptitude import Aptitude
 from .etat_affaire import Etat
-from .pointage import Pointage
 from .facture import Facture
 from .fournisseur import Fournisseur
 from .fourniture import Fourniture
