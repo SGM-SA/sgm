@@ -110,7 +110,7 @@ export const useApiAffairesList = <TData = Schemas.PaginatedAffaireDetailsList>(
 export type ApiAffairesCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffairesCreateVariables = {
-	body: Schemas.AffaireDetails
+	body?: Schemas.AffaireDetailsRequest
 } & ApiContext['fetcherOptions']
 
 /**
@@ -123,7 +123,7 @@ export const fetchApiAffairesCreate = (
 	apiFetch<
 		Schemas.AffaireDetails,
 		ApiAffairesCreateError,
-		Schemas.AffaireDetails,
+		Schemas.AffaireDetailsRequest,
 		{},
 		{},
 		{}
@@ -415,7 +415,7 @@ export type ApiAffectationsAjustagesCreateError =
 	Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffectationsAjustagesCreateVariables = {
-	body: Schemas.AffectationAjustageDetail
+	body: Schemas.AffectationAjustageDetailRequest
 } & ApiContext['fetcherOptions']
 
 export const fetchApiAffectationsAjustagesCreate = (
@@ -425,7 +425,7 @@ export const fetchApiAffectationsAjustagesCreate = (
 	apiFetch<
 		Schemas.AffectationAjustageDetail,
 		ApiAffectationsAjustagesCreateError,
-		Schemas.AffectationAjustageDetail,
+		Schemas.AffectationAjustageDetailRequest,
 		{},
 		{},
 		{}
@@ -532,7 +532,7 @@ export type ApiAffectationsAjustagesUpdateError =
 	Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffectationsAjustagesUpdateVariables = {
-	body: Schemas.AffectationAjustageDetail
+	body: Schemas.AffectationAjustageDetailRequest
 	pathParams: ApiAffectationsAjustagesUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -543,7 +543,7 @@ export const fetchApiAffectationsAjustagesUpdate = (
 	apiFetch<
 		Schemas.AffectationAjustageDetail,
 		ApiAffectationsAjustagesUpdateError,
-		Schemas.AffectationAjustageDetail,
+		Schemas.AffectationAjustageDetailRequest,
 		{},
 		{},
 		ApiAffectationsAjustagesUpdatePathParams
@@ -587,7 +587,7 @@ export type ApiAffectationsAjustagesPartialUpdateError =
 	Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffectationsAjustagesPartialUpdateVariables = {
-	body?: Schemas.PatchedAffectationAjustageDetail
+	body?: Schemas.PatchedAffectationAjustageDetailRequest
 	pathParams: ApiAffectationsAjustagesPartialUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -598,7 +598,7 @@ export const fetchApiAffectationsAjustagesPartialUpdate = (
 	apiFetch<
 		Schemas.AffectationAjustageDetail,
 		ApiAffectationsAjustagesPartialUpdateError,
-		Schemas.PatchedAffectationAjustageDetail,
+		Schemas.PatchedAffectationAjustageDetailRequest,
 		{},
 		{},
 		ApiAffectationsAjustagesPartialUpdatePathParams
@@ -758,7 +758,7 @@ export const useApiAffectationsMachinesList = <
 export type ApiAffectationsMachinesCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffectationsMachinesCreateVariables = {
-	body: Schemas.AffectationMachineDetail
+	body: Schemas.AffectationMachineDetailRequest
 } & ApiContext['fetcherOptions']
 
 export const fetchApiAffectationsMachinesCreate = (
@@ -768,7 +768,7 @@ export const fetchApiAffectationsMachinesCreate = (
 	apiFetch<
 		Schemas.AffectationMachineDetail,
 		ApiAffectationsMachinesCreateError,
-		Schemas.AffectationMachineDetail,
+		Schemas.AffectationMachineDetailRequest,
 		{},
 		{},
 		{}
@@ -874,7 +874,7 @@ export type ApiAffectationsMachinesUpdatePathParams = {
 export type ApiAffectationsMachinesUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffectationsMachinesUpdateVariables = {
-	body: Schemas.AffectationMachineDetail
+	body: Schemas.AffectationMachineDetailRequest
 	pathParams: ApiAffectationsMachinesUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -885,7 +885,7 @@ export const fetchApiAffectationsMachinesUpdate = (
 	apiFetch<
 		Schemas.AffectationMachineDetail,
 		ApiAffectationsMachinesUpdateError,
-		Schemas.AffectationMachineDetail,
+		Schemas.AffectationMachineDetailRequest,
 		{},
 		{},
 		ApiAffectationsMachinesUpdatePathParams
@@ -929,7 +929,7 @@ export type ApiAffectationsMachinesPartialUpdateError =
 	Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffectationsMachinesPartialUpdateVariables = {
-	body?: Schemas.PatchedAffectationMachineDetail
+	body?: Schemas.PatchedAffectationMachineDetailRequest
 	pathParams: ApiAffectationsMachinesPartialUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -940,7 +940,7 @@ export const fetchApiAffectationsMachinesPartialUpdate = (
 	apiFetch<
 		Schemas.AffectationMachineDetail,
 		ApiAffectationsMachinesPartialUpdateError,
-		Schemas.PatchedAffectationMachineDetail,
+		Schemas.PatchedAffectationMachineDetailRequest,
 		{},
 		{},
 		ApiAffectationsMachinesPartialUpdatePathParams
@@ -1090,16 +1090,21 @@ export const useApiClientsList = <TData = Schemas.PaginatedClientList>(
 export type ApiClientsCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiClientsCreateVariables = {
-	body: Schemas.Client
+	body: Schemas.ClientRequest
 } & ApiContext['fetcherOptions']
 
 export const fetchApiClientsCreate = (
 	variables: ApiClientsCreateVariables,
 	signal?: AbortSignal
 ) =>
-	apiFetch<Schemas.Client, ApiClientsCreateError, Schemas.Client, {}, {}, {}>(
-		{ url: '/api/clients', method: 'post', ...variables, signal }
-	)
+	apiFetch<
+		Schemas.Client,
+		ApiClientsCreateError,
+		Schemas.ClientRequest,
+		{},
+		{},
+		{}
+	>({ url: '/api/clients', method: 'post', ...variables, signal })
 
 export const useApiClientsCreate = (
 	options?: Omit<
@@ -1181,7 +1186,7 @@ export type ApiClientsUpdatePathParams = {
 export type ApiClientsUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiClientsUpdateVariables = {
-	body: Schemas.Client
+	body: Schemas.ClientRequest
 	pathParams: ApiClientsUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -1192,7 +1197,7 @@ export const fetchApiClientsUpdate = (
 	apiFetch<
 		Schemas.Client,
 		ApiClientsUpdateError,
-		Schemas.Client,
+		Schemas.ClientRequest,
 		{},
 		{},
 		ApiClientsUpdatePathParams
@@ -1227,7 +1232,7 @@ export type ApiClientsPartialUpdatePathParams = {
 export type ApiClientsPartialUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiClientsPartialUpdateVariables = {
-	body?: Schemas.PatchedClient
+	body?: Schemas.PatchedClientRequest
 	pathParams: ApiClientsPartialUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -1238,7 +1243,7 @@ export const fetchApiClientsPartialUpdate = (
 	apiFetch<
 		Schemas.Client,
 		ApiClientsPartialUpdateError,
-		Schemas.PatchedClient,
+		Schemas.PatchedClientRequest,
 		{},
 		{},
 		ApiClientsPartialUpdatePathParams
@@ -1314,7 +1319,7 @@ export const useApiClientsDestroy = (
 export type ApiEtapesCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiEtapesCreateVariables = {
-	body: Schemas.EtapeCreate
+	body: Schemas.EtapeCreateRequest
 } & ApiContext['fetcherOptions']
 
 export const fetchApiEtapesCreate = (
@@ -1324,7 +1329,7 @@ export const fetchApiEtapesCreate = (
 	apiFetch<
 		Schemas.EtapeCreate,
 		ApiEtapesCreateError,
-		Schemas.EtapeCreate,
+		Schemas.EtapeCreateRequest,
 		{},
 		{},
 		{}
@@ -1411,7 +1416,7 @@ export type ApiEtapesUpdatePathParams = {
 export type ApiEtapesUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiEtapesUpdateVariables = {
-	body: Schemas.EtapeCreate
+	body: Schemas.EtapeCreateRequest
 	pathParams: ApiEtapesUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -1422,7 +1427,7 @@ export const fetchApiEtapesUpdate = (
 	apiFetch<
 		Schemas.EtapeCreate,
 		ApiEtapesUpdateError,
-		Schemas.EtapeCreate,
+		Schemas.EtapeCreateRequest,
 		{},
 		{},
 		ApiEtapesUpdatePathParams
@@ -1457,7 +1462,7 @@ export type ApiEtapesPartialUpdatePathParams = {
 export type ApiEtapesPartialUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiEtapesPartialUpdateVariables = {
-	body?: Schemas.PatchedEtapeCreate
+	body?: Schemas.PatchedEtapeCreateRequest
 	pathParams: ApiEtapesPartialUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -1468,7 +1473,7 @@ export const fetchApiEtapesPartialUpdate = (
 	apiFetch<
 		Schemas.EtapeCreate,
 		ApiEtapesPartialUpdateError,
-		Schemas.PatchedEtapeCreate,
+		Schemas.PatchedEtapeCreateRequest,
 		{},
 		{},
 		ApiEtapesPartialUpdatePathParams
@@ -1697,7 +1702,7 @@ export const useApiEtatsRetrieve = <TData = Schemas.Etat>(
 export type ApiFichesCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiFichesCreateVariables = {
-	body: Schemas.FicheCRUD
+	body: Schemas.FicheCRUDRequest
 } & ApiContext['fetcherOptions']
 
 /**
@@ -1710,7 +1715,7 @@ export const fetchApiFichesCreate = (
 	apiFetch<
 		Schemas.FicheCRUD,
 		ApiFichesCreateError,
-		Schemas.FicheCRUD,
+		Schemas.FicheCRUDRequest,
 		{},
 		{},
 		{}
@@ -1806,7 +1811,7 @@ export type ApiFichesUpdatePathParams = {
 export type ApiFichesUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiFichesUpdateVariables = {
-	body: Schemas.FicheCRUD
+	body: Schemas.FicheCRUDRequest
 	pathParams: ApiFichesUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -1820,7 +1825,7 @@ export const fetchApiFichesUpdate = (
 	apiFetch<
 		Schemas.FicheCRUD,
 		ApiFichesUpdateError,
-		Schemas.FicheCRUD,
+		Schemas.FicheCRUDRequest,
 		{},
 		{},
 		ApiFichesUpdatePathParams
@@ -1858,7 +1863,7 @@ export type ApiFichesPartialUpdatePathParams = {
 export type ApiFichesPartialUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiFichesPartialUpdateVariables = {
-	body?: Schemas.PatchedFicheCRUD
+	body?: Schemas.PatchedFicheCRUDRequest
 	pathParams: ApiFichesPartialUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -1872,7 +1877,7 @@ export const fetchApiFichesPartialUpdate = (
 	apiFetch<
 		Schemas.FicheCRUD,
 		ApiFichesPartialUpdateError,
-		Schemas.PatchedFicheCRUD,
+		Schemas.PatchedFicheCRUDRequest,
 		{},
 		{},
 		ApiFichesPartialUpdatePathParams
@@ -2256,7 +2261,7 @@ export const useApiMachinesList = <TData = Schemas.PaginatedMachineDetailList>(
 export type ApiMachinesCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiMachinesCreateVariables = {
-	body: Schemas.MachineDetail
+	body: Schemas.MachineDetailRequest
 } & ApiContext['fetcherOptions']
 
 /**
@@ -2269,7 +2274,7 @@ export const fetchApiMachinesCreate = (
 	apiFetch<
 		Schemas.MachineDetail,
 		ApiMachinesCreateError,
-		Schemas.MachineDetail,
+		Schemas.MachineDetailRequest,
 		{},
 		{},
 		{}
@@ -2368,7 +2373,7 @@ export type ApiMachinesUpdatePathParams = {
 export type ApiMachinesUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiMachinesUpdateVariables = {
-	body: Schemas.MachineDetail
+	body: Schemas.MachineDetailRequest
 	pathParams: ApiMachinesUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -2382,7 +2387,7 @@ export const fetchApiMachinesUpdate = (
 	apiFetch<
 		Schemas.MachineDetail,
 		ApiMachinesUpdateError,
-		Schemas.MachineDetail,
+		Schemas.MachineDetailRequest,
 		{},
 		{},
 		ApiMachinesUpdatePathParams
@@ -2420,7 +2425,7 @@ export type ApiMachinesPartialUpdatePathParams = {
 export type ApiMachinesPartialUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiMachinesPartialUpdateVariables = {
-	body?: Schemas.PatchedMachineDetail
+	body?: Schemas.PatchedMachineDetailRequest
 	pathParams: ApiMachinesPartialUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -2434,7 +2439,7 @@ export const fetchApiMachinesPartialUpdate = (
 	apiFetch<
 		Schemas.MachineDetail,
 		ApiMachinesPartialUpdateError,
-		Schemas.PatchedMachineDetail,
+		Schemas.PatchedMachineDetailRequest,
 		{},
 		{},
 		ApiMachinesPartialUpdatePathParams
@@ -2585,7 +2590,7 @@ export const useApiModelesEtapesList = <
 export type ApiModelesEtapesCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiModelesEtapesCreateVariables = {
-	body: Schemas.EtapeModeleListCreate
+	body: Schemas.EtapeModeleListCreateRequest
 } & ApiContext['fetcherOptions']
 
 /**
@@ -2598,7 +2603,7 @@ export const fetchApiModelesEtapesCreate = (
 	apiFetch<
 		Schemas.EtapeModeleListCreate,
 		ApiModelesEtapesCreateError,
-		Schemas.EtapeModeleListCreate,
+		Schemas.EtapeModeleListCreateRequest,
 		{},
 		{},
 		{}
@@ -2697,7 +2702,7 @@ export type ApiModelesEtapesUpdatePathParams = {
 export type ApiModelesEtapesUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiModelesEtapesUpdateVariables = {
-	body: Schemas.EtapeModeleDetail
+	body: Schemas.EtapeModeleDetailRequest
 	pathParams: ApiModelesEtapesUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -2711,7 +2716,7 @@ export const fetchApiModelesEtapesUpdate = (
 	apiFetch<
 		Schemas.EtapeModeleDetail,
 		ApiModelesEtapesUpdateError,
-		Schemas.EtapeModeleDetail,
+		Schemas.EtapeModeleDetailRequest,
 		{},
 		{},
 		ApiModelesEtapesUpdatePathParams
@@ -2749,7 +2754,7 @@ export type ApiModelesEtapesPartialUpdatePathParams = {
 export type ApiModelesEtapesPartialUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiModelesEtapesPartialUpdateVariables = {
-	body?: Schemas.PatchedEtapeModeleDetail
+	body?: Schemas.PatchedEtapeModeleDetailRequest
 	pathParams: ApiModelesEtapesPartialUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -2763,7 +2768,7 @@ export const fetchApiModelesEtapesPartialUpdate = (
 	apiFetch<
 		Schemas.EtapeModeleDetail,
 		ApiModelesEtapesPartialUpdateError,
-		Schemas.PatchedEtapeModeleDetail,
+		Schemas.PatchedEtapeModeleDetailRequest,
 		{},
 		{},
 		ApiModelesEtapesPartialUpdatePathParams
@@ -2927,7 +2932,7 @@ export const useApiModelesFichesList = <
 export type ApiModelesFichesCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiModelesFichesCreateVariables = {
-	body: Schemas.FicheModeleDetail
+	body?: Schemas.FicheModeleDetailRequest
 } & ApiContext['fetcherOptions']
 
 /**
@@ -2940,7 +2945,7 @@ export const fetchApiModelesFichesCreate = (
 	apiFetch<
 		Schemas.FicheModeleDetail,
 		ApiModelesFichesCreateError,
-		Schemas.FicheModeleDetail,
+		Schemas.FicheModeleDetailRequest,
 		{},
 		{},
 		{}
@@ -3041,7 +3046,7 @@ export type ApiModelesFichesUpdatePathParams = {
 export type ApiModelesFichesUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiModelesFichesUpdateVariables = {
-	body: Schemas.FicheModeleEtEtapes
+	body?: Schemas.FicheModeleEtEtapesRequest
 	pathParams: ApiModelesFichesUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -3055,7 +3060,7 @@ export const fetchApiModelesFichesUpdate = (
 	apiFetch<
 		Schemas.FicheModeleEtEtapes,
 		ApiModelesFichesUpdateError,
-		Schemas.FicheModeleEtEtapes,
+		Schemas.FicheModeleEtEtapesRequest,
 		{},
 		{},
 		ApiModelesFichesUpdatePathParams
@@ -3093,7 +3098,7 @@ export type ApiModelesFichesPartialUpdatePathParams = {
 export type ApiModelesFichesPartialUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiModelesFichesPartialUpdateVariables = {
-	body?: Schemas.PatchedFicheModeleEtEtapes
+	body?: Schemas.PatchedFicheModeleEtEtapesRequest
 	pathParams: ApiModelesFichesPartialUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -3107,7 +3112,7 @@ export const fetchApiModelesFichesPartialUpdate = (
 	apiFetch<
 		Schemas.FicheModeleEtEtapes,
 		ApiModelesFichesPartialUpdateError,
-		Schemas.PatchedFicheModeleEtEtapes,
+		Schemas.PatchedFicheModeleEtEtapesRequest,
 		{},
 		{},
 		ApiModelesFichesPartialUpdatePathParams
@@ -3216,7 +3221,7 @@ export type ApiModelesFichesCopyCreateQueryParams = {
 export type ApiModelesFichesCopyCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiModelesFichesCopyCreateVariables = {
-	body: Schemas.FicheModeleEtEtapes
+	body?: Schemas.FicheModeleEtEtapesRequest
 	queryParams: ApiModelesFichesCopyCreateQueryParams
 } & ApiContext['fetcherOptions']
 
@@ -3230,7 +3235,7 @@ export const fetchApiModelesFichesCopyCreate = (
 	apiFetch<
 		Schemas.FicheModeleEtEtapes,
 		ApiModelesFichesCopyCreateError,
-		Schemas.FicheModeleEtEtapes,
+		Schemas.FicheModeleEtEtapesRequest,
 		{},
 		ApiModelesFichesCopyCreateQueryParams,
 		{}
@@ -3327,6 +3332,340 @@ export const useApiModelesFichesOptionsList = <
 		}),
 		queryFn: ({ signal }) =>
 			fetchApiModelesFichesOptionsList(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
+export type ApiNotesCreateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiNotesCreateVariables = {
+	body: Schemas.NoteCreateRequest
+} & ApiContext['fetcherOptions']
+
+/**
+ * Permet de créer une nouvelle note
+ */
+export const fetchApiNotesCreate = (
+	variables: ApiNotesCreateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.NoteCreate,
+		ApiNotesCreateError,
+		Schemas.NoteCreateRequest,
+		{},
+		{},
+		{}
+	>({ url: '/api/notes/', method: 'post', ...variables, signal })
+
+/**
+ * Permet de créer une nouvelle note
+ */
+export const useApiNotesCreate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			Schemas.NoteCreate,
+			ApiNotesCreateError,
+			ApiNotesCreateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		Schemas.NoteCreate,
+		ApiNotesCreateError,
+		ApiNotesCreateVariables
+	>({
+		mutationFn: (variables: ApiNotesCreateVariables) =>
+			fetchApiNotesCreate({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
+export type ApiNotesRetrievePathParams = {
+	id: number
+}
+
+export type ApiNotesRetrieveError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiNotesRetrieveVariables = {
+	pathParams: ApiNotesRetrievePathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Permet de récupérer, modifier ou supprimer une note existante
+ */
+export const fetchApiNotesRetrieve = (
+	variables: ApiNotesRetrieveVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.NoteDetail,
+		ApiNotesRetrieveError,
+		undefined,
+		{},
+		{},
+		ApiNotesRetrievePathParams
+	>({ url: '/api/notes/{id}', method: 'get', ...variables, signal })
+
+/**
+ * Permet de récupérer, modifier ou supprimer une note existante
+ */
+export const useApiNotesRetrieve = <TData = Schemas.NoteDetail>(
+	variables: ApiNotesRetrieveVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			Schemas.NoteDetail,
+			ApiNotesRetrieveError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		Schemas.NoteDetail,
+		ApiNotesRetrieveError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/notes/{id}',
+			operationId: 'apiNotesRetrieve',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiNotesRetrieve({ ...fetcherOptions, ...variables }, signal),
+		...options,
+		...queryOptions,
+	})
+}
+
+export type ApiNotesUpdatePathParams = {
+	id: number
+}
+
+export type ApiNotesUpdateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiNotesUpdateVariables = {
+	body: Schemas.NoteDetailRequest
+	pathParams: ApiNotesUpdatePathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Permet de récupérer, modifier ou supprimer une note existante
+ */
+export const fetchApiNotesUpdate = (
+	variables: ApiNotesUpdateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.NoteDetail,
+		ApiNotesUpdateError,
+		Schemas.NoteDetailRequest,
+		{},
+		{},
+		ApiNotesUpdatePathParams
+	>({ url: '/api/notes/{id}', method: 'put', ...variables, signal })
+
+/**
+ * Permet de récupérer, modifier ou supprimer une note existante
+ */
+export const useApiNotesUpdate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			Schemas.NoteDetail,
+			ApiNotesUpdateError,
+			ApiNotesUpdateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		Schemas.NoteDetail,
+		ApiNotesUpdateError,
+		ApiNotesUpdateVariables
+	>({
+		mutationFn: (variables: ApiNotesUpdateVariables) =>
+			fetchApiNotesUpdate({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
+export type ApiNotesPartialUpdatePathParams = {
+	id: number
+}
+
+export type ApiNotesPartialUpdateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiNotesPartialUpdateVariables = {
+	body?: Schemas.PatchedNoteDetailRequest
+	pathParams: ApiNotesPartialUpdatePathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Permet de récupérer, modifier ou supprimer une note existante
+ */
+export const fetchApiNotesPartialUpdate = (
+	variables: ApiNotesPartialUpdateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.NoteDetail,
+		ApiNotesPartialUpdateError,
+		Schemas.PatchedNoteDetailRequest,
+		{},
+		{},
+		ApiNotesPartialUpdatePathParams
+	>({ url: '/api/notes/{id}', method: 'patch', ...variables, signal })
+
+/**
+ * Permet de récupérer, modifier ou supprimer une note existante
+ */
+export const useApiNotesPartialUpdate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			Schemas.NoteDetail,
+			ApiNotesPartialUpdateError,
+			ApiNotesPartialUpdateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		Schemas.NoteDetail,
+		ApiNotesPartialUpdateError,
+		ApiNotesPartialUpdateVariables
+	>({
+		mutationFn: (variables: ApiNotesPartialUpdateVariables) =>
+			fetchApiNotesPartialUpdate({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
+export type ApiNotesDestroyPathParams = {
+	id: number
+}
+
+export type ApiNotesDestroyError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiNotesDestroyVariables = {
+	pathParams: ApiNotesDestroyPathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Permet de récupérer, modifier ou supprimer une note existante
+ */
+export const fetchApiNotesDestroy = (
+	variables: ApiNotesDestroyVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		undefined,
+		ApiNotesDestroyError,
+		undefined,
+		{},
+		{},
+		ApiNotesDestroyPathParams
+	>({ url: '/api/notes/{id}', method: 'delete', ...variables, signal })
+
+/**
+ * Permet de récupérer, modifier ou supprimer une note existante
+ */
+export const useApiNotesDestroy = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			undefined,
+			ApiNotesDestroyError,
+			ApiNotesDestroyVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		undefined,
+		ApiNotesDestroyError,
+		ApiNotesDestroyVariables
+	>({
+		mutationFn: (variables: ApiNotesDestroyVariables) =>
+			fetchApiNotesDestroy({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
+export type ApiNotesAffaireListPathParams = {
+	affaireId: number
+}
+
+export type ApiNotesAffaireListQueryParams = {
+	/**
+	 * A page number within the paginated result set.
+	 */
+	page?: number
+}
+
+export type ApiNotesAffaireListError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiNotesAffaireListVariables = {
+	pathParams: ApiNotesAffaireListPathParams
+	queryParams?: ApiNotesAffaireListQueryParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Récupère toutes les notes associées à une affaire donnée, ordonnées par date de création. La première note est la description de l'affaire.
+ */
+export const fetchApiNotesAffaireList = (
+	variables: ApiNotesAffaireListVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.PaginatedNoteDetailList,
+		ApiNotesAffaireListError,
+		undefined,
+		{},
+		ApiNotesAffaireListQueryParams,
+		ApiNotesAffaireListPathParams
+	>({
+		url: '/api/notes/affaire/{affaireId}',
+		method: 'get',
+		...variables,
+		signal,
+	})
+
+/**
+ * Récupère toutes les notes associées à une affaire donnée, ordonnées par date de création. La première note est la description de l'affaire.
+ */
+export const useApiNotesAffaireList = <TData = Schemas.PaginatedNoteDetailList>(
+	variables: ApiNotesAffaireListVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			Schemas.PaginatedNoteDetailList,
+			ApiNotesAffaireListError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		Schemas.PaginatedNoteDetailList,
+		ApiNotesAffaireListError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/notes/affaire/{affaire_id}',
+			operationId: 'apiNotesAffaireList',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiNotesAffaireList(
 				{ ...fetcherOptions, ...variables },
 				signal
 			),
@@ -3701,7 +4040,7 @@ export const useApiZonesList = <TData = Schemas.PaginatedListZoneList>(
 export type AuthTokenCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type AuthTokenCreateVariables = {
-	body: Schemas.TokenObtainPair
+	body: Schemas.TokenObtainPairRequest
 } & ApiContext['fetcherOptions']
 
 /**
@@ -3715,7 +4054,7 @@ export const fetchAuthTokenCreate = (
 	apiFetch<
 		Schemas.TokenObtainPair,
 		AuthTokenCreateError,
-		Schemas.TokenObtainPair,
+		Schemas.TokenObtainPairRequest,
 		{},
 		{},
 		{}
@@ -3750,7 +4089,7 @@ export const useAuthTokenCreate = (
 export type AuthTokenRefreshCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type AuthTokenRefreshCreateVariables = {
-	body: Schemas.TokenRefresh
+	body: Schemas.TokenRefreshRequest
 } & ApiContext['fetcherOptions']
 
 /**
@@ -3764,7 +4103,7 @@ export const fetchAuthTokenRefreshCreate = (
 	apiFetch<
 		Schemas.TokenRefresh,
 		AuthTokenRefreshCreateError,
-		Schemas.TokenRefresh,
+		Schemas.TokenRefreshRequest,
 		{},
 		{},
 		{}
@@ -3916,6 +4255,16 @@ export type QueryOperation =
 			path: '/api/modeles/fiches/options'
 			operationId: 'apiModelesFichesOptionsList'
 			variables: ApiModelesFichesOptionsListVariables
+	  }
+	| {
+			path: '/api/notes/{id}'
+			operationId: 'apiNotesRetrieve'
+			variables: ApiNotesRetrieveVariables
+	  }
+	| {
+			path: '/api/notes/affaire/{affaire_id}'
+			operationId: 'apiNotesAffaireList'
+			variables: ApiNotesAffaireListVariables
 	  }
 	| {
 			path: '/api/planning/machine'

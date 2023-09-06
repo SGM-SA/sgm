@@ -53,6 +53,42 @@ export type AffaireDetails = {
 }
 
 /**
+ * Serializer pour l'affichage des affaires
+ */
+export type AffaireDetailsRequest = {
+	/**
+	 * @minimum 0
+	 */
+	num_affaire?: number | null
+	/**
+	 * @maxLength 10000
+	 */
+	description?: string | null
+	/**
+	 * @maxLength 1000
+	 */
+	observation?: string | null
+	/**
+	 * @maxLength 200
+	 */
+	client?: string | null
+	/**
+	 * @format decimal
+	 * @pattern ^-?\d{0,8}(?:\.\d{0,2})?$
+	 */
+	montant?: string | null
+	statut?: StatutEnum
+	/**
+	 * @format date
+	 */
+	date_rendu?: string | null
+	/**
+	 * @format date
+	 */
+	date_cloture?: string | null
+}
+
+/**
  * Serializer pour récupérer une affaire avec ses fiches
  */
 export type AffaireFiches = {
@@ -137,8 +173,27 @@ export type AffectationAjustageDetail = {
 	zone?: number
 }
 
+export type AffectationAjustageDetailRequest = {
+	/**
+	 * @format date
+	 */
+	semaine_affectation: string
+	etape?: number
+	zone?: number
+}
+
 export type AffectationMachineDetail = {
 	id: number
+	/**
+	 * @format date
+	 */
+	semaine_affectation: string
+	etape?: number
+	machine?: number
+	salarie?: number | null
+}
+
+export type AffectationMachineDetailRequest = {
 	/**
 	 * @format date
 	 */
@@ -208,6 +263,73 @@ export type Client = {
 	compte?: string | null
 }
 
+export type ClientRequest = {
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	raison: string
+	/**
+	 * @maxLength 200
+	 */
+	type?: string | null
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	adresse1: string
+	/**
+	 * @maxLength 200
+	 */
+	adresse2?: string | null
+	/**
+	 * @maxLength 200
+	 */
+	adresse3?: string | null
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	zip_code: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	ville: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	pays: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	tel1: string
+	/**
+	 * @maxLength 200
+	 */
+	tel2?: string | null
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	email: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	correspondant: string
+	/**
+	 * @maxLength 200
+	 */
+	memo?: string | null
+	/**
+	 * @maxLength 200
+	 */
+	compte?: string | null
+}
+
 export type EtapeCreate = {
 	id: number
 	num_etape: number
@@ -242,6 +364,39 @@ export type EtapeCreate = {
 	 * @format date-time
 	 */
 	date_modification: string
+	/**
+	 * @format date
+	 */
+	date_cloture?: string | null
+	fiche: number
+	machine: number
+}
+
+export type EtapeCreateRequest = {
+	num_etape: number
+	terminee?: boolean
+	/**
+	 * @maxLength 10000
+	 */
+	description?: string | null
+	/**
+	 * @maxLength 2000
+	 */
+	ref_doc?: string | null
+	/**
+	 * @maxLength 2000
+	 */
+	nom_piece?: string | null
+	quantite?: number
+	temps?: number
+	/**
+	 * @maxLength 2000
+	 */
+	plan?: string | null
+	/**
+	 * @maxLength 2000
+	 */
+	rep?: string | null
 	/**
 	 * @format date
 	 */
@@ -410,6 +565,26 @@ export type EtapeModeleDetail = {
 	fiche_modele: number
 }
 
+export type EtapeModeleDetailRequest = {
+	num_etape: number
+	quantite?: number
+	temps?: number
+	/**
+	 * @maxLength 2000
+	 */
+	plan?: string | null
+	/**
+	 * @maxLength 2000
+	 */
+	rep?: string | null
+	terminee?: boolean
+	/**
+	 * @maxLength 10000
+	 */
+	description?: string | null
+	fiche_modele: number
+}
+
 export type EtapeModeleListCreate = {
 	id: number
 	num_etape: number
@@ -436,6 +611,27 @@ export type EtapeModeleListCreate = {
 	 * @format date-time
 	 */
 	date_modification: string
+	fiche_modele: number
+	machine: number
+}
+
+export type EtapeModeleListCreateRequest = {
+	num_etape: number
+	quantite?: number
+	temps?: number
+	/**
+	 * @maxLength 2000
+	 */
+	plan?: string | null
+	/**
+	 * @maxLength 2000
+	 */
+	rep?: string | null
+	terminee?: boolean
+	/**
+	 * @maxLength 10000
+	 */
+	description?: string | null
 	fiche_modele: number
 	machine: number
 }
@@ -480,6 +676,30 @@ export type FicheCRUD = {
 	 * @format date-time
 	 */
 	date_modification: string
+	/**
+	 * @format date
+	 */
+	date_cloture?: string | null
+	affaire: number
+}
+
+export type FicheCRUDRequest = {
+	/**
+	 * @minLength 1
+	 * @maxLength 100
+	 */
+	titre?: string
+	description?: string | null
+	/**
+	 * @maxLength 1000
+	 */
+	observation?: string | null
+	/**
+	 * @maxLength 200
+	 */
+	ref_doc?: string | null
+	terminee?: boolean
+	fourniture?: boolean
 	/**
 	 * @format date
 	 */
@@ -688,6 +908,16 @@ export type FicheModeleDetail = {
 	fourniture?: boolean
 }
 
+export type FicheModeleDetailRequest = {
+	/**
+	 * @minLength 1
+	 * @maxLength 100
+	 */
+	titre?: string
+	description?: string | null
+	fourniture?: boolean
+}
+
 export type FicheModeleEtEtapes = {
 	id: number
 	etapes_modele: EtapeModeleDetail[]
@@ -696,6 +926,16 @@ export type FicheModeleEtEtapes = {
 	 */
 	date_creation: string
 	/**
+	 * @maxLength 100
+	 */
+	titre?: string
+	description?: string | null
+	fourniture?: boolean
+}
+
+export type FicheModeleEtEtapesRequest = {
+	/**
+	 * @minLength 1
 	 * @maxLength 100
 	 */
 	titre?: string
@@ -732,6 +972,55 @@ export type MachineDetail = {
 	description?: string | null
 	fonctionnelle?: boolean
 	est_active?: boolean
+}
+
+export type MachineDetailRequest = {
+	/**
+	 * @minLength 1
+	 * @maxLength 100
+	 */
+	nom_machine: string
+	/**
+	 * @maxLength 1000
+	 */
+	description?: string | null
+	fonctionnelle?: boolean
+	est_active?: boolean
+}
+
+export type NoteCreate = {
+	id: number
+	contenu: string
+	/**
+	 * @format date
+	 */
+	date_creation: string
+	affaire: number
+}
+
+export type NoteCreateRequest = {
+	/**
+	 * @minLength 1
+	 */
+	contenu: string
+	affaire: number
+}
+
+export type NoteDetail = {
+	id: number
+	user: string
+	contenu: string
+	/**
+	 * @format date
+	 */
+	date_creation: string
+}
+
+export type NoteDetailRequest = {
+	/**
+	 * @minLength 1
+	 */
+	contenu: string
 }
 
 export type PaginatedAffaireDetailsList = {
@@ -950,6 +1239,24 @@ export type PaginatedMachineDetailList = {
 	results?: MachineDetail[]
 }
 
+export type PaginatedNoteDetailList = {
+	/**
+	 * @example 123
+	 */
+	count?: number
+	/**
+	 * @format uri
+	 * @example http://api.example.org/accounts/?page=4
+	 */
+	next?: string | null
+	/**
+	 * @format uri
+	 * @example http://api.example.org/accounts/?page=2
+	 */
+	previous?: string | null
+	results?: NoteDetail[]
+}
+
 export type PaginatedPlanningMachineList = {
 	/**
 	 * @example 123
@@ -1004,8 +1311,7 @@ export type PaginatedSalarieFormOptionsList = {
 	results?: SalarieFormOptions[]
 }
 
-export type PatchedAffectationAjustageDetail = {
-	id?: number
+export type PatchedAffectationAjustageDetailRequest = {
 	/**
 	 * @format date
 	 */
@@ -1014,8 +1320,7 @@ export type PatchedAffectationAjustageDetail = {
 	zone?: number
 }
 
-export type PatchedAffectationMachineDetail = {
-	id?: number
+export type PatchedAffectationMachineDetailRequest = {
 	/**
 	 * @format date
 	 */
@@ -1025,9 +1330,9 @@ export type PatchedAffectationMachineDetail = {
 	salarie?: number | null
 }
 
-export type PatchedClient = {
-	id?: number
+export type PatchedClientRequest = {
 	/**
+	 * @minLength 1
 	 * @maxLength 200
 	 */
 	raison?: string
@@ -1036,6 +1341,7 @@ export type PatchedClient = {
 	 */
 	type?: string | null
 	/**
+	 * @minLength 1
 	 * @maxLength 200
 	 */
 	adresse1?: string
@@ -1048,18 +1354,22 @@ export type PatchedClient = {
 	 */
 	adresse3?: string | null
 	/**
+	 * @minLength 1
 	 * @maxLength 200
 	 */
 	zip_code?: string
 	/**
+	 * @minLength 1
 	 * @maxLength 200
 	 */
 	ville?: string
 	/**
+	 * @minLength 1
 	 * @maxLength 200
 	 */
 	pays?: string
 	/**
+	 * @minLength 1
 	 * @maxLength 200
 	 */
 	tel1?: string
@@ -1068,10 +1378,12 @@ export type PatchedClient = {
 	 */
 	tel2?: string | null
 	/**
+	 * @minLength 1
 	 * @maxLength 200
 	 */
 	email?: string
 	/**
+	 * @minLength 1
 	 * @maxLength 200
 	 */
 	correspondant?: string
@@ -1085,8 +1397,7 @@ export type PatchedClient = {
 	compte?: string | null
 }
 
-export type PatchedEtapeCreate = {
-	id?: number
+export type PatchedEtapeCreateRequest = {
 	num_etape?: number
 	terminee?: boolean
 	/**
@@ -1114,22 +1425,12 @@ export type PatchedEtapeCreate = {
 	/**
 	 * @format date
 	 */
-	date_creation?: string
-	/**
-	 * @format date-time
-	 */
-	date_modification?: string
-	/**
-	 * @format date
-	 */
 	date_cloture?: string | null
 	fiche?: number
 	machine?: number
 }
 
-export type PatchedEtapeModeleDetail = {
-	id?: number
-	machine?: MachineDetail
+export type PatchedEtapeModeleDetailRequest = {
 	num_etape?: number
 	quantite?: number
 	temps?: number
@@ -1146,27 +1447,12 @@ export type PatchedEtapeModeleDetail = {
 	 * @maxLength 10000
 	 */
 	description?: string | null
-	/**
-	 * @format date
-	 */
-	date_creation?: string
-	/**
-	 * @format date-time
-	 */
-	date_modification?: string
 	fiche_modele?: number
 }
 
-export type PatchedFicheCRUD = {
-	id?: number
+export type PatchedFicheCRUDRequest = {
 	/**
-	 * @format double
-	 * @maximum 1
-	 * @minimum 0
-	 * @default 0
-	 */
-	avancement_fiche?: number
-	/**
+	 * @minLength 1
 	 * @maxLength 100
 	 */
 	titre?: string
@@ -1184,26 +1470,13 @@ export type PatchedFicheCRUD = {
 	/**
 	 * @format date
 	 */
-	date_creation?: string
-	/**
-	 * @format date-time
-	 */
-	date_modification?: string
-	/**
-	 * @format date
-	 */
 	date_cloture?: string | null
 	affaire?: number
 }
 
-export type PatchedFicheModeleEtEtapes = {
-	id?: number
-	etapes_modele?: EtapeModeleDetail[]
+export type PatchedFicheModeleEtEtapesRequest = {
 	/**
-	 * @format date
-	 */
-	date_creation?: string
-	/**
+	 * @minLength 1
 	 * @maxLength 100
 	 */
 	titre?: string
@@ -1211,9 +1484,9 @@ export type PatchedFicheModeleEtEtapes = {
 	fourniture?: boolean
 }
 
-export type PatchedMachineDetail = {
-	id?: number
+export type PatchedMachineDetailRequest = {
 	/**
+	 * @minLength 1
 	 * @maxLength 100
 	 */
 	nom_machine?: string
@@ -1223,6 +1496,13 @@ export type PatchedMachineDetail = {
 	description?: string | null
 	fonctionnelle?: boolean
 	est_active?: boolean
+}
+
+export type PatchedNoteDetailRequest = {
+	/**
+	 * @minLength 1
+	 */
+	contenu?: string
 }
 
 /**
@@ -1324,6 +1604,74 @@ export type SalarieFormOptions = {
 	prenom: string
 }
 
+export type SalarieRequest = {
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	num_secu: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	civilite: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	nom: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	prenom: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	adresse1: string
+	/**
+	 * @maxLength 200
+	 */
+	adresse2?: string | null
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	zip_code: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	ville: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	pays: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	tel: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	email: string
+	/**
+	 * @format date
+	 */
+	date_embauche: string
+	/**
+	 * @format date
+	 */
+	date_depart?: string | null
+	user: number
+	aptitude?: number | null
+	zone?: number | null
+}
+
 export type StatutEnum =
 	| 'S00'
 	| 'A00'
@@ -1344,14 +1692,29 @@ export type StatutEnum =
 	| 'ECH'
 
 export type TokenObtainPair = {
-	username: string
-	password: string
 	access: string
 	refresh: string
 }
 
+export type TokenObtainPairRequest = {
+	/**
+	 * @minLength 1
+	 */
+	username: string
+	/**
+	 * @minLength 1
+	 */
+	password: string
+}
+
 export type TokenRefresh = {
 	access: string
+}
+
+export type TokenRefreshRequest = {
+	/**
+	 * @minLength 1
+	 */
 	refresh: string
 }
 

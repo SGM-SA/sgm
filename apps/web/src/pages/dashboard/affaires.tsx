@@ -88,7 +88,6 @@ const columns = [
     })
 ]
 
-
 const AffairesPage: React.FC = () => {
 
     const { pagination, setPagination, fetchDataOptions } = usePagination()
@@ -101,7 +100,6 @@ const AffairesPage: React.FC = () => {
             removePadding={true}
 		>
                 <Table<AffaireDetails>
-                    title="Liste affaires"
                     columns={columns}
                     data={data}
                     pagination={pagination}

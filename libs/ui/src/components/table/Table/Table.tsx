@@ -1,7 +1,7 @@
 import { Box, Table as ChakraTable, TableProps as ChakraTableProps, Checkbox, Flex, Icon, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { Paginated } from '@sgm/utils'
 import { ColumnDef, PaginationState, Row, RowData, flexRender, getCoreRowModel, getExpandedRowModel, useReactTable } from '@tanstack/react-table'
-import React, { Fragment, ReactNode, useEffect, useMemo, useState } from 'react'
+import React, { Fragment, useMemo } from 'react'
 import { FaChevronDown, FaChevronRight } from 'react-icons/fa'
 import { resolveResults } from '../../../utils'
 import { DefaultTableCell } from '../DefaultTableCell/DefaultTableCell'
@@ -58,8 +58,10 @@ type BaseTableProps<TData> = {
     /**
      * Header
      */
-    title?: string
-    customHeader?: ReactNode
+    header?: {
+        title?: string
+        customHeader?: React.FC
+    }
     /**
      * Styling
      */
@@ -167,9 +169,11 @@ export function Table<TData>(props: TableProps<TData>) {
                 }
 
                 <TableHeader
-                    title={props.title}
+                    title={props.header?.title}
                 >
-                    {props.customHeader}
+                    {props.header?.customHeader &&
+                        <props.header.customHeader />
+                    }
                 </TableHeader>
             </Box>
 

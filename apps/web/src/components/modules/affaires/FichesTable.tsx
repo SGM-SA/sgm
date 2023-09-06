@@ -1,12 +1,8 @@
-import { Box, Progress } from '@chakra-ui/react'
-import { AffaireDetails, FicheDetail, useApiAffairesFichesRetrieve } from '@sgm/openapi'
+import { Box, Button, Progress } from '@chakra-ui/react'
+import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteDestroy, fetchApiFichesDestroy, useApiAffairesFichesRetrieve } from '@sgm/openapi'
 import { Table, createMeta } from '@sgm/ui'
-import { Row, createColumnHelper } from '@tanstack/react-table'
+import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
-
-type FichesTableProps = {
-    affaireId: number
-}
 
 const columnHelper = createColumnHelper<FicheDetail>()
 
@@ -54,21 +50,43 @@ const columns = [
     }),
 ]
 
+type FichesTableProps = {
+    affaireId: number
+}
+
 export const FichesTable: React.FC<FichesTableProps> = (props) => {
 
-    const { data } = useApiAffairesFichesRetrieve({ pathParams: { id: props.affaireId } })
+    const { data, refetch } = useApiAffairesFichesRetrieve({ pathParams: { id: props.affaireId } })
 
 	return <Box className='not-striped'>
         <Table<FicheDetail>
             data={data?.fiches || []}
             columns={columns}
-            title='Fiches'
+            header={{
+                customHeader: () => <Box p='2em'>
+                    <Button colorScheme='blue'
+                        onClick={() => fetchApiFichesCreate({
+                            body: {
+                                affaire: props.affaireId,
+                            }
+                        }).then(() => refetch())}
+                    >Ajouter une fiche</Button>
+                </Box>
+            }}
             editable={true}
             rowSelection={{
                 enabled: true,
                 actionsComponent: ({ checkedItems }) => {
                     return <Box>
-                        {checkedItems.length} items selected
+                        <Button 
+                            colorScheme='red' 
+                            mr='1em'
+                            onClick={async () => {
+                                for (const checkedItem of checkedItems) {
+                                    // await fetchApiFichesDestroy({  })
+                                }
+                            }}
+                        >Supprimer</Button>
                     </Box>
                 }
 

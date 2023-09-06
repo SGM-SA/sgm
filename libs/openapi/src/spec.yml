@@ -70,6 +70,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedAffaireDetailsList'
           description: ''
+<<<<<<< HEAD
+=======
+    post:
+      operationId: api_affaires_create
+      description: Création affaire
+      summary: Affaire
+      tags:
+      - Affaire
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AffaireDetailsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AffaireDetailsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AffaireDetailsRequest'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AffaireDetails'
+          description: ''
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
   /api/affaires/{id}:
     get:
       operationId: api_affaires_retrieve
@@ -175,13 +205,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetail'
+              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetail'
+              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetail'
+              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -228,13 +258,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetail'
+              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetail'
+              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetail'
+              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -260,13 +290,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationAjustageDetail'
+              $ref: '#/components/schemas/PatchedAffectationAjustageDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationAjustageDetail'
+              $ref: '#/components/schemas/PatchedAffectationAjustageDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationAjustageDetail'
+              $ref: '#/components/schemas/PatchedAffectationAjustageDetailRequest'
       security:
       - jwtAuth: []
       - {}
@@ -323,13 +353,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetail'
+              $ref: '#/components/schemas/AffectationMachineDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetail'
+              $ref: '#/components/schemas/AffectationMachineDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetail'
+              $ref: '#/components/schemas/AffectationMachineDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -376,13 +406,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetail'
+              $ref: '#/components/schemas/AffectationMachineDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetail'
+              $ref: '#/components/schemas/AffectationMachineDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetail'
+              $ref: '#/components/schemas/AffectationMachineDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -408,13 +438,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationMachineDetail'
+              $ref: '#/components/schemas/PatchedAffectationMachineDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationMachineDetail'
+              $ref: '#/components/schemas/PatchedAffectationMachineDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationMachineDetail'
+              $ref: '#/components/schemas/PatchedAffectationMachineDetailRequest'
       security:
       - jwtAuth: []
       - {}
@@ -441,6 +471,157 @@ paths:
       responses:
         '204':
           description: No response body
+<<<<<<< HEAD
+=======
+  /api/clients:
+    get:
+      operationId: api_clients_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedClientList'
+          description: ''
+    post:
+      operationId: api_clients_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ClientRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ClientRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+          description: ''
+  /api/clients/{id}:
+    get:
+      operationId: api_clients_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+          description: ''
+    put:
+      operationId: api_clients_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ClientRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ClientRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+          description: ''
+    patch:
+      operationId: api_clients_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedClientRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedClientRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedClientRequest'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+          description: ''
+    delete:
+      operationId: api_clients_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
   /api/etapes/:
     post:
       operationId: api_etapes_create
@@ -451,13 +632,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EtapeCreate'
+              $ref: '#/components/schemas/EtapeCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/EtapeCreate'
+              $ref: '#/components/schemas/EtapeCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/EtapeCreate'
+              $ref: '#/components/schemas/EtapeCreateRequest'
         required: true
       security:
       - jwtAuth: []
@@ -506,13 +687,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EtapeCreate'
+              $ref: '#/components/schemas/EtapeCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/EtapeCreate'
+              $ref: '#/components/schemas/EtapeCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/EtapeCreate'
+              $ref: '#/components/schemas/EtapeCreateRequest'
         required: true
       security:
       - jwtAuth: []
@@ -539,13 +720,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedEtapeCreate'
+              $ref: '#/components/schemas/PatchedEtapeCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedEtapeCreate'
+              $ref: '#/components/schemas/PatchedEtapeCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedEtapeCreate'
+              $ref: '#/components/schemas/PatchedEtapeCreateRequest'
       security:
       - jwtAuth: []
       - {}
@@ -611,13 +792,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FicheCRUD'
+              $ref: '#/components/schemas/FicheCRUDRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/FicheCRUD'
+              $ref: '#/components/schemas/FicheCRUDRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/FicheCRUD'
+              $ref: '#/components/schemas/FicheCRUDRequest'
         required: true
       security:
       - jwtAuth: []
@@ -670,13 +851,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FicheCRUD'
+              $ref: '#/components/schemas/FicheCRUDRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/FicheCRUD'
+              $ref: '#/components/schemas/FicheCRUDRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/FicheCRUD'
+              $ref: '#/components/schemas/FicheCRUDRequest'
         required: true
       security:
       - jwtAuth: []
@@ -705,13 +886,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedFicheCRUD'
+              $ref: '#/components/schemas/PatchedFicheCRUDRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedFicheCRUD'
+              $ref: '#/components/schemas/PatchedFicheCRUDRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedFicheCRUD'
+              $ref: '#/components/schemas/PatchedFicheCRUDRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1059,13 +1240,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MachineDetail'
+              $ref: '#/components/schemas/MachineDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/MachineDetail'
+              $ref: '#/components/schemas/MachineDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/MachineDetail'
+              $ref: '#/components/schemas/MachineDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1116,13 +1297,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MachineDetail'
+              $ref: '#/components/schemas/MachineDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/MachineDetail'
+              $ref: '#/components/schemas/MachineDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/MachineDetail'
+              $ref: '#/components/schemas/MachineDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1150,13 +1331,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedMachineDetail'
+              $ref: '#/components/schemas/PatchedMachineDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedMachineDetail'
+              $ref: '#/components/schemas/PatchedMachineDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedMachineDetail'
+              $ref: '#/components/schemas/PatchedMachineDetailRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1223,13 +1404,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EtapeModeleListCreate'
+              $ref: '#/components/schemas/EtapeModeleListCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/EtapeModeleListCreate'
+              $ref: '#/components/schemas/EtapeModeleListCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/EtapeModeleListCreate'
+              $ref: '#/components/schemas/EtapeModeleListCreateRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1282,13 +1463,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EtapeModeleDetail'
+              $ref: '#/components/schemas/EtapeModeleDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/EtapeModeleDetail'
+              $ref: '#/components/schemas/EtapeModeleDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/EtapeModeleDetail'
+              $ref: '#/components/schemas/EtapeModeleDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1317,13 +1498,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedEtapeModeleDetail'
+              $ref: '#/components/schemas/PatchedEtapeModeleDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedEtapeModeleDetail'
+              $ref: '#/components/schemas/PatchedEtapeModeleDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedEtapeModeleDetail'
+              $ref: '#/components/schemas/PatchedEtapeModeleDetailRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1389,13 +1570,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FicheModeleDetail'
+              $ref: '#/components/schemas/FicheModeleDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/FicheModeleDetail'
+              $ref: '#/components/schemas/FicheModeleDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/FicheModeleDetail'
+              $ref: '#/components/schemas/FicheModeleDetailRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1447,13 +1628,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapes'
+              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapes'
+              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapes'
+              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1481,13 +1662,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedFicheModeleEtEtapes'
+              $ref: '#/components/schemas/PatchedFicheModeleEtEtapesRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedFicheModeleEtEtapes'
+              $ref: '#/components/schemas/PatchedFicheModeleEtEtapesRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedFicheModeleEtEtapes'
+              $ref: '#/components/schemas/PatchedFicheModeleEtEtapesRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1542,13 +1723,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapes'
+              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapes'
+              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapes'
+              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1596,6 +1777,7 @@ paths:
         content:
           application/json:
             schema:
+<<<<<<< HEAD
               $ref: '#/components/schemas/NoteCreate'
           application/x-www-form-urlencoded:
             schema:
@@ -1603,6 +1785,15 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/NoteCreate'
+=======
+              $ref: '#/components/schemas/NoteCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NoteCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NoteCreateRequest'
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
         required: true
       security:
       - jwtAuth: []
@@ -1652,6 +1843,7 @@ paths:
         content:
           application/json:
             schema:
+<<<<<<< HEAD
               $ref: '#/components/schemas/NoteDetail'
           application/x-www-form-urlencoded:
             schema:
@@ -1659,6 +1851,15 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/NoteDetail'
+=======
+              $ref: '#/components/schemas/NoteDetailRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NoteDetailRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NoteDetailRequest'
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
         required: true
       security:
       - jwtAuth: []
@@ -1686,6 +1887,7 @@ paths:
         content:
           application/json:
             schema:
+<<<<<<< HEAD
               $ref: '#/components/schemas/PatchedNoteDetail'
           application/x-www-form-urlencoded:
             schema:
@@ -1693,6 +1895,15 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedNoteDetail'
+=======
+              $ref: '#/components/schemas/PatchedNoteDetailRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNoteDetailRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNoteDetailRequest'
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
       security:
       - jwtAuth: []
       - {}
@@ -1721,6 +1932,39 @@ paths:
       responses:
         '204':
           description: No response body
+<<<<<<< HEAD
+=======
+  /api/notes/affaire/{affaire_id}:
+    get:
+      operationId: api_notes_affaire_list
+      description: Récupère toutes les notes associées à une affaire donnée, ordonnées
+        par date de création. La première note est la description de l'affaire.
+      summary: Liste des Notes par Affaire
+      parameters:
+      - in: path
+        name: affaire_id
+        schema:
+          type: integer
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - Note
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNoteDetailList'
+          description: ''
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
   /api/planning/machine:
     get:
       operationId: api_planning_machine_list
@@ -1880,13 +2124,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenObtainPair'
+              $ref: '#/components/schemas/TokenObtainPairRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/TokenObtainPair'
+              $ref: '#/components/schemas/TokenObtainPairRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/TokenObtainPair'
+              $ref: '#/components/schemas/TokenObtainPairRequest'
         required: true
       responses:
         '200':
@@ -1907,13 +2151,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: '#/components/schemas/TokenRefreshRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: '#/components/schemas/TokenRefreshRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: '#/components/schemas/TokenRefreshRequest'
         required: true
       responses:
         '200':
@@ -1996,6 +2240,51 @@ components:
       - charge_affaire_detail
       - date_modification
       - id
+    AffaireDetailsRequest:
+      type: object
+      description: Serializer pour l'affichage des affaires
+      properties:
+        num_affaire:
+          type: integer
+          minimum: 0
+          nullable: true
+          title: Numéro d'affaire correspondant à l'affaire dans la base de données
+            de SGM
+        description:
+          type: string
+          nullable: true
+          title: Description de l'affaire
+          maxLength: 10000
+        observation:
+          type: string
+          nullable: true
+          title: Observation faite sur l'affaire
+          maxLength: 1000
+        client:
+          type: string
+          nullable: true
+          title: Nom du client
+          maxLength: 200
+        montant:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+          title: Montant de l'affaire
+        statut:
+          allOf:
+          - $ref: '#/components/schemas/StatutEnum'
+          title: Statut de l'affaire
+        date_rendu:
+          type: string
+          format: date
+          nullable: true
+          title: Date à laquelle l'affaire doit être terminée
+        date_cloture:
+          type: string
+          format: date
+          nullable: true
+          title: Date de clôture de l'affaire (terminée)
     AffaireFiches:
       type: object
       description: Serializer pour récupérer une affaire avec ses fiches
@@ -2159,6 +2448,19 @@ components:
       required:
       - id
       - semaine_affectation
+    AffectationAjustageDetailRequest:
+      type: object
+      properties:
+        semaine_affectation:
+          type: string
+          format: date
+          title: Semaine d'affectation de l'étape
+        etape:
+          type: integer
+        zone:
+          type: integer
+      required:
+      - semaine_affectation
     AffectationMachineDetail:
       type: object
       properties:
@@ -2180,11 +2482,30 @@ components:
       - id
       - semaine_affectation
 <<<<<<< HEAD
+<<<<<<< HEAD
     BlankEnum:
       enum:
       - ''
     BulkDelete:
 =======
+=======
+    AffectationMachineDetailRequest:
+      type: object
+      properties:
+        semaine_affectation:
+          type: string
+          format: date
+          title: Semaine d'affectation de l'étape
+        etape:
+          type: integer
+        machine:
+          type: integer
+        salarie:
+          type: integer
+          nullable: true
+      required:
+      - semaine_affectation
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     Client:
 >>>>>>> ed40f7f (fix(api): blank enum invalid ts openapi generation)
       type: object
@@ -2195,7 +2516,87 @@ components:
             type: integer
           description: Liste des ids des objets à supprimer
       required:
+<<<<<<< HEAD
       - ids
+=======
+      - adresse1
+      - correspondant
+      - email
+      - id
+      - pays
+      - raison
+      - tel1
+      - ville
+      - zip_code
+    ClientRequest:
+      type: object
+      properties:
+        raison:
+          type: string
+          minLength: 1
+          maxLength: 200
+        type:
+          type: string
+          nullable: true
+          maxLength: 200
+        adresse1:
+          type: string
+          minLength: 1
+          maxLength: 200
+        adresse2:
+          type: string
+          nullable: true
+          maxLength: 200
+        adresse3:
+          type: string
+          nullable: true
+          maxLength: 200
+        zip_code:
+          type: string
+          minLength: 1
+          maxLength: 200
+        ville:
+          type: string
+          minLength: 1
+          maxLength: 200
+        pays:
+          type: string
+          minLength: 1
+          maxLength: 200
+        tel1:
+          type: string
+          minLength: 1
+          maxLength: 200
+        tel2:
+          type: string
+          nullable: true
+          maxLength: 200
+        email:
+          type: string
+          minLength: 1
+          maxLength: 200
+        correspondant:
+          type: string
+          minLength: 1
+          maxLength: 200
+        memo:
+          type: string
+          nullable: true
+          maxLength: 200
+        compte:
+          type: string
+          nullable: true
+          maxLength: 200
+      required:
+      - adresse1
+      - correspondant
+      - email
+      - pays
+      - raison
+      - tel1
+      - ville
+      - zip_code
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     EtapeCreate:
       type: object
       properties:
@@ -2260,6 +2661,55 @@ components:
       - date_modification
       - fiche
       - id
+      - num_etape
+    EtapeCreateRequest:
+      type: object
+      properties:
+        num_etape:
+          type: integer
+          title: N°Étape
+        terminee:
+          type: boolean
+          title: Terminée ?
+        description:
+          type: string
+          nullable: true
+          maxLength: 10000
+        ref_doc:
+          type: string
+          nullable: true
+          maxLength: 2000
+        nom_piece:
+          type: string
+          nullable: true
+          title: Nom de la pièce
+          maxLength: 2000
+        quantite:
+          type: integer
+          title: Quantité
+        temps:
+          type: integer
+          title: Temps nécessaire
+        plan:
+          type: string
+          nullable: true
+          maxLength: 2000
+        rep:
+          type: string
+          nullable: true
+          maxLength: 2000
+        date_cloture:
+          type: string
+          format: date
+          nullable: true
+          title: Date de clôture
+        fiche:
+          type: integer
+        machine:
+          type: integer
+      required:
+      - fiche
+      - machine
       - num_etape
     EtapeDetail:
       type: object
@@ -2543,6 +2993,38 @@ components:
       - id
       - machine
       - num_etape
+    EtapeModeleDetailRequest:
+      type: object
+      properties:
+        num_etape:
+          type: integer
+          title: N°Étape
+        quantite:
+          type: integer
+          title: Quantité
+        temps:
+          type: integer
+          title: Temps nécessaire
+        plan:
+          type: string
+          nullable: true
+          maxLength: 2000
+        rep:
+          type: string
+          nullable: true
+          maxLength: 2000
+        terminee:
+          type: boolean
+          title: Terminée ?
+        description:
+          type: string
+          nullable: true
+          maxLength: 10000
+        fiche_modele:
+          type: integer
+      required:
+      - fiche_modele
+      - num_etape
     EtapeModeleListCreate:
       type: object
       properties:
@@ -2594,6 +3076,56 @@ components:
       - fiche_modele
       - id
       - num_etape
+<<<<<<< HEAD
+=======
+    EtapeModeleListCreateRequest:
+      type: object
+      properties:
+        num_etape:
+          type: integer
+          title: N°Étape
+        quantite:
+          type: integer
+          title: Quantité
+        temps:
+          type: integer
+          title: Temps nécessaire
+        plan:
+          type: string
+          nullable: true
+          maxLength: 2000
+        rep:
+          type: string
+          nullable: true
+          maxLength: 2000
+        terminee:
+          type: boolean
+          title: Terminée ?
+        description:
+          type: string
+          nullable: true
+          maxLength: 10000
+        fiche_modele:
+          type: integer
+        machine:
+          type: integer
+      required:
+      - fiche_modele
+      - machine
+      - num_etape
+    Etat:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        designation:
+          type: string
+          maxLength: 200
+      required:
+      - designation
+      - id
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     FicheCRUD:
       type: object
       properties:
@@ -2650,6 +3182,39 @@ components:
       - date_creation
       - date_modification
       - id
+    FicheCRUDRequest:
+      type: object
+      properties:
+        titre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        observation:
+          type: string
+          nullable: true
+          maxLength: 1000
+        ref_doc:
+          type: string
+          nullable: true
+          maxLength: 200
+        terminee:
+          type: boolean
+          title: Fiche terminée
+        fourniture:
+          type: boolean
+          title: Fournitures arrivées
+        date_cloture:
+          type: string
+          format: date
+          nullable: true
+          title: Date de clôture
+        affaire:
+          type: integer
+      required:
+      - affaire
     FicheDetail:
       type: object
       properties:
@@ -3007,6 +3572,19 @@ components:
       required:
       - date_creation
       - id
+    FicheModeleDetailRequest:
+      type: object
+      properties:
+        titre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        fourniture:
+          type: boolean
+          title: Fournitures arrivées
     FicheModeleEtEtapes:
       type: object
       properties:
@@ -3036,6 +3614,19 @@ components:
       - date_creation
       - etapes_modele
       - id
+    FicheModeleEtEtapesRequest:
+      type: object
+      properties:
+        titre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        fourniture:
+          type: boolean
+          title: Fournitures arrivées
     FicheModeleOptions:
       type: object
       properties:
@@ -3102,6 +3693,26 @@ components:
       - id
       - nom_machine
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    MachineDetailRequest:
+      type: object
+      properties:
+        nom_machine:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+          maxLength: 1000
+        fonctionnelle:
+          type: boolean
+        est_active:
+          type: boolean
+      required:
+      - nom_machine
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     NoteCreate:
       type: object
       properties:
@@ -3121,6 +3732,20 @@ components:
       - contenu
       - date_creation
       - id
+<<<<<<< HEAD
+=======
+    NoteCreateRequest:
+      type: object
+      properties:
+        contenu:
+          type: string
+          minLength: 1
+        affaire:
+          type: integer
+      required:
+      - affaire
+      - contenu
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     NoteDetail:
       type: object
       properties:
@@ -3141,11 +3766,22 @@ components:
       - date_creation
       - id
       - user
+<<<<<<< HEAD
     NullEnum:
       enum:
       - null
 =======
 >>>>>>> ed40f7f (fix(api): blank enum invalid ts openapi generation)
+=======
+    NoteDetailRequest:
+      type: object
+      properties:
+        contenu:
+          type: string
+          minLength: 1
+      required:
+      - contenu
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     PaginatedAffaireDetailsList:
       type: object
       properties:
@@ -3366,6 +4002,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MachineDetail'
+    PaginatedNoteDetailList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NoteDetail'
     PaginatedPlanningMachineList:
       type: object
       properties:
@@ -3426,12 +4082,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SalarieFormOptions'
-    PatchedAffectationAjustageDetail:
+    PatchedAffectationAjustageDetailRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
         semaine_affectation:
           type: string
           format: date
@@ -3440,12 +4093,9 @@ components:
           type: integer
         zone:
           type: integer
-    PatchedAffectationMachineDetail:
+    PatchedAffectationMachineDetailRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
         semaine_affectation:
           type: string
           format: date
@@ -3457,12 +4107,72 @@ components:
         salarie:
           type: integer
           nullable: true
+<<<<<<< HEAD
     PatchedEtapeCreate:
+=======
+    PatchedClientRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
+        raison:
+          type: string
+          minLength: 1
+          maxLength: 200
+        type:
+          type: string
+          nullable: true
+          maxLength: 200
+        adresse1:
+          type: string
+          minLength: 1
+          maxLength: 200
+        adresse2:
+          type: string
+          nullable: true
+          maxLength: 200
+        adresse3:
+          type: string
+          nullable: true
+          maxLength: 200
+        zip_code:
+          type: string
+          minLength: 1
+          maxLength: 200
+        ville:
+          type: string
+          minLength: 1
+          maxLength: 200
+        pays:
+          type: string
+          minLength: 1
+          maxLength: 200
+        tel1:
+          type: string
+          minLength: 1
+          maxLength: 200
+        tel2:
+          type: string
+          nullable: true
+          maxLength: 200
+        email:
+          type: string
+          minLength: 1
+          maxLength: 200
+        correspondant:
+          type: string
+          minLength: 1
+          maxLength: 200
+        memo:
+          type: string
+          nullable: true
+          maxLength: 200
+        compte:
+          type: string
+          nullable: true
+          maxLength: 200
+    PatchedEtapeCreateRequest:
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
+      type: object
+      properties:
         num_etape:
           type: integer
           title: N°Étape
@@ -3496,16 +4206,6 @@ components:
           type: string
           nullable: true
           maxLength: 2000
-        date_creation:
-          type: string
-          format: date
-          readOnly: true
-          title: Date de création
-        date_modification:
-          type: string
-          format: date-time
-          readOnly: true
-          title: Date de modification
         date_cloture:
           type: string
           format: date
@@ -3515,17 +4215,14 @@ components:
           type: integer
         groupe_machine:
           type: integer
+<<<<<<< HEAD
           nullable: true
     PatchedEtapeModeleDetail:
+=======
+    PatchedEtapeModeleDetailRequest:
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        machine:
-          allOf:
-          - $ref: '#/components/schemas/MachineDetail'
-          readOnly: true
         num_etape:
           type: integer
           title: N°Étape
@@ -3550,36 +4247,21 @@ components:
           type: string
           nullable: true
           maxLength: 10000
-        date_creation:
-          type: string
-          format: date
-          readOnly: true
-          title: Date de création
-        date_modification:
-          type: string
-          format: date-time
-          readOnly: true
-          title: Date de modification
         fiche_modele:
           type: integer
+<<<<<<< HEAD
         groupe_machine:
           type: integer
           nullable: true
     PatchedFicheCRUD:
+=======
+    PatchedFicheCRUDRequest:
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        avancement_fiche:
-          type: number
-          format: double
-          maximum: 1
-          minimum: 0
-          readOnly: true
-          default: 0.0
         titre:
           type: string
+          minLength: 1
           maxLength: 100
         description:
           type: string
@@ -3598,16 +4280,6 @@ components:
         fourniture:
           type: boolean
           title: Fournitures arrivées
-        date_creation:
-          type: string
-          format: date
-          readOnly: true
-          title: Date de création
-        date_modification:
-          type: string
-          format: date-time
-          readOnly: true
-          title: Date de modification
         date_cloture:
           type: string
           format: date
@@ -3615,24 +4287,12 @@ components:
           title: Date de clôture
         affaire:
           type: integer
-    PatchedFicheModeleEtEtapes:
+    PatchedFicheModeleEtEtapesRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        etapes_modele:
-          type: array
-          items:
-            $ref: '#/components/schemas/EtapeModeleDetail'
-          readOnly: true
-        date_creation:
-          type: string
-          format: date
-          readOnly: true
-          title: Date de création
         titre:
           type: string
+          minLength: 1
           maxLength: 100
         description:
           type: string
@@ -3640,6 +4300,7 @@ components:
         fourniture:
           type: boolean
           title: Fournitures arrivées
+<<<<<<< HEAD
     PatchedGroupeMachine:
       type: object
       properties:
@@ -3654,13 +4315,14 @@ components:
           type: integer
           title: Prix théorique / heure
     PatchedMachineDetail:
+=======
+    PatchedMachineDetailRequest:
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
         nom_machine:
           type: string
+          minLength: 1
           maxLength: 100
         description:
           type: string
@@ -3670,6 +4332,7 @@ components:
           type: boolean
         est_active:
           type: boolean
+<<<<<<< HEAD
         groupe_machine:
           type: integer
           nullable: true
@@ -3688,6 +4351,14 @@ components:
           type: string
           format: date
           readOnly: true
+=======
+    PatchedNoteDetailRequest:
+      type: object
+      properties:
+        contenu:
+          type: string
+          minLength: 1
+>>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     PlanningMachine:
       type: object
       description: Serializer pour la planification d'une machine.
@@ -3815,6 +4486,81 @@ components:
       - id
       - nom
       - prenom
+    SalarieRequest:
+      type: object
+      properties:
+        num_secu:
+          type: string
+          minLength: 1
+          maxLength: 200
+        civilite:
+          type: string
+          minLength: 1
+          maxLength: 200
+        nom:
+          type: string
+          minLength: 1
+          maxLength: 200
+        prenom:
+          type: string
+          minLength: 1
+          maxLength: 200
+        adresse1:
+          type: string
+          minLength: 1
+          maxLength: 200
+        adresse2:
+          type: string
+          nullable: true
+          maxLength: 200
+        zip_code:
+          type: string
+          minLength: 1
+          maxLength: 200
+        ville:
+          type: string
+          minLength: 1
+          maxLength: 200
+        pays:
+          type: string
+          minLength: 1
+          maxLength: 200
+        tel:
+          type: string
+          minLength: 1
+          maxLength: 200
+        email:
+          type: string
+          minLength: 1
+          maxLength: 200
+        date_embauche:
+          type: string
+          format: date
+        date_depart:
+          type: string
+          format: date
+          nullable: true
+        user:
+          type: integer
+        aptitude:
+          type: integer
+          nullable: true
+        zone:
+          type: integer
+          nullable: true
+      required:
+      - adresse1
+      - civilite
+      - date_embauche
+      - email
+      - nom
+      - num_secu
+      - pays
+      - prenom
+      - tel
+      - user
+      - ville
+      - zip_code
     StatutEnum:
       enum:
       - S00
@@ -3838,12 +4584,6 @@ components:
     TokenObtainPair:
       type: object
       properties:
-        username:
-          type: string
-          writeOnly: true
-        password:
-          type: string
-          writeOnly: true
         access:
           type: string
           readOnly: true
@@ -3852,8 +4592,20 @@ components:
           readOnly: true
       required:
       - access
-      - password
       - refresh
+    TokenObtainPairRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - password
       - username
     TokenRefresh:
       type: object
@@ -3861,11 +4613,16 @@ components:
         access:
           type: string
           readOnly: true
+      required:
+      - access
+    TokenRefreshRequest:
+      type: object
+      properties:
         refresh:
           type: string
           writeOnly: true
+          minLength: 1
       required:
-      - access
       - refresh
     User:
       type: object
