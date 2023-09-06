@@ -1,7 +1,6 @@
 from .client import ClientSerializer
 from .aptitude import AptitudeSerializer
 from .etat_affaire import EtatSerializer
-from .pointage import PointageSerializer
 from .fournisseur import FournisseurSerializer
 from .facture import FactureSerializer
 from .fourniture import FournitureSerializer

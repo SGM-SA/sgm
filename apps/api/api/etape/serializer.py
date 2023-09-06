@@ -3,6 +3,12 @@ from api.etape.models import Etape
 from api.machine.serializer import MachineDetailSerializer
 
 
+class EtapeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Etape
+        fields = ["id", "num_etape"]
+
+
 class EtapeDetail(serializers.ModelSerializer):
     machine = MachineDetailSerializer(read_only=True)
     affectation_id = serializers.SlugRelatedField(

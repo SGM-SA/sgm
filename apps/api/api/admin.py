@@ -5,7 +5,6 @@ from .models import (
     Statut,
     Aptitude,
     Etat,
-    Pointage,
     Facture,
     Fournisseur,
     Fourniture,
@@ -25,6 +24,7 @@ from api.affectation_etape_machine.models import AffectationMachine
 from api.affectation_etape_machine.admin import AffectationMachineModelAdmin
 from api.note.models import Note
 from api.groupe_machine.models import GroupeMachine
+from api.pointage.models import PointageEtape
 
 admin.site.register(AffectationMachine, AffectationMachineModelAdmin)
 admin.site.register(GroupeMachine)
@@ -39,7 +39,7 @@ admin.site.register(Client)
 admin.site.register(Statut)
 admin.site.register(Aptitude)
 admin.site.register(Etat)
-admin.site.register(Pointage)
+admin.site.register(PointageEtape)
 admin.site.register(Facture)
 admin.site.register(Fournisseur)
 admin.site.register(Fourniture)

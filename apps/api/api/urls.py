@@ -17,6 +17,7 @@ from api.salarie.urls import urlpatterns as salarie_patterns
 from api.synchro.view import resync_data_sgm
 from api.note.urls import urlpatterns as note_patterns
 from api.groupe_machine.urls import urlpatterns as groupe_machine_patterns
+from api.pointage.urls import urlpatterns as pointage_patterns
 
 urlpatterns = [
     path("affaires/", include(affaire_patters)),
@@ -28,6 +29,7 @@ urlpatterns = [
     path("machines/", include(machine_patterns)),
     path("affectations/ajustages/", include(affectation_patterns)),
     path("affectations/machines/", include(affectation_machine_patterns)),
+    path("pointages/", include(pointage_patterns)),
     # TODO : ajout affectation_etape_machine
     path("planning/", include(planning_zone_patterns)),
     path("planning/", include(planning_machine_patterns)),
