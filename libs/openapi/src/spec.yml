@@ -70,36 +70,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedAffaireDetailsList'
           description: ''
-<<<<<<< HEAD
-=======
-    post:
-      operationId: api_affaires_create
-      description: Création affaire
-      summary: Affaire
-      tags:
-      - Affaire
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AffaireDetailsRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/AffaireDetailsRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/AffaireDetailsRequest'
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AffaireDetails'
-          description: ''
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
   /api/affaires/{id}:
     get:
       operationId: api_affaires_retrieve
@@ -471,157 +441,6 @@ paths:
       responses:
         '204':
           description: No response body
-<<<<<<< HEAD
-=======
-  /api/clients:
-    get:
-      operationId: api_clients_list
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      tags:
-      - api
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedClientList'
-          description: ''
-    post:
-      operationId: api_clients_create
-      tags:
-      - api
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClientRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ClientRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ClientRequest'
-        required: true
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Client'
-          description: ''
-  /api/clients/{id}:
-    get:
-      operationId: api_clients_retrieve
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - api
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Client'
-          description: ''
-    put:
-      operationId: api_clients_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - api
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClientRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ClientRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ClientRequest'
-        required: true
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Client'
-          description: ''
-    patch:
-      operationId: api_clients_partial_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - api
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedClientRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedClientRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedClientRequest'
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Client'
-          description: ''
-    delete:
-      operationId: api_clients_destroy
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - api
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '204':
-          description: No response body
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
   /api/etapes/:
     post:
       operationId: api_etapes_create
@@ -765,13 +584,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
         required: true
       security:
       - jwtAuth: []
@@ -954,13 +773,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1049,13 +868,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupeMachine'
+              $ref: '#/components/schemas/GroupeMachineRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/GroupeMachine'
+              $ref: '#/components/schemas/GroupeMachineRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/GroupeMachine'
+              $ref: '#/components/schemas/GroupeMachineRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1108,13 +927,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupeMachine'
+              $ref: '#/components/schemas/GroupeMachineRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/GroupeMachine'
+              $ref: '#/components/schemas/GroupeMachineRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/GroupeMachine'
+              $ref: '#/components/schemas/GroupeMachineRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1143,13 +962,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedGroupeMachine'
+              $ref: '#/components/schemas/PatchedGroupeMachineRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedGroupeMachine'
+              $ref: '#/components/schemas/PatchedGroupeMachineRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedGroupeMachine'
+              $ref: '#/components/schemas/PatchedGroupeMachineRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1190,13 +1009,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1777,15 +1596,6 @@ paths:
         content:
           application/json:
             schema:
-<<<<<<< HEAD
-              $ref: '#/components/schemas/NoteCreate'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/NoteCreate'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/NoteCreate'
-=======
               $ref: '#/components/schemas/NoteCreateRequest'
           application/x-www-form-urlencoded:
             schema:
@@ -1793,7 +1603,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/NoteCreateRequest'
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
         required: true
       security:
       - jwtAuth: []
@@ -1843,15 +1652,6 @@ paths:
         content:
           application/json:
             schema:
-<<<<<<< HEAD
-              $ref: '#/components/schemas/NoteDetail'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/NoteDetail'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/NoteDetail'
-=======
               $ref: '#/components/schemas/NoteDetailRequest'
           application/x-www-form-urlencoded:
             schema:
@@ -1859,7 +1659,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/NoteDetailRequest'
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
         required: true
       security:
       - jwtAuth: []
@@ -1887,15 +1686,6 @@ paths:
         content:
           application/json:
             schema:
-<<<<<<< HEAD
-              $ref: '#/components/schemas/PatchedNoteDetail'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedNoteDetail'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedNoteDetail'
-=======
               $ref: '#/components/schemas/PatchedNoteDetailRequest'
           application/x-www-form-urlencoded:
             schema:
@@ -1903,7 +1693,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedNoteDetailRequest'
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
       security:
       - jwtAuth: []
       - {}
@@ -1932,39 +1721,6 @@ paths:
       responses:
         '204':
           description: No response body
-<<<<<<< HEAD
-=======
-  /api/notes/affaire/{affaire_id}:
-    get:
-      operationId: api_notes_affaire_list
-      description: Récupère toutes les notes associées à une affaire donnée, ordonnées
-        par date de création. La première note est la description de l'affaire.
-      summary: Liste des Notes par Affaire
-      parameters:
-      - in: path
-        name: affaire_id
-        schema:
-          type: integer
-        required: true
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      tags:
-      - Note
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedNoteDetailList'
-          description: ''
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
   /api/planning/machine:
     get:
       operationId: api_planning_machine_list
@@ -2240,51 +1996,6 @@ components:
       - charge_affaire_detail
       - date_modification
       - id
-    AffaireDetailsRequest:
-      type: object
-      description: Serializer pour l'affichage des affaires
-      properties:
-        num_affaire:
-          type: integer
-          minimum: 0
-          nullable: true
-          title: Numéro d'affaire correspondant à l'affaire dans la base de données
-            de SGM
-        description:
-          type: string
-          nullable: true
-          title: Description de l'affaire
-          maxLength: 10000
-        observation:
-          type: string
-          nullable: true
-          title: Observation faite sur l'affaire
-          maxLength: 1000
-        client:
-          type: string
-          nullable: true
-          title: Nom du client
-          maxLength: 200
-        montant:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
-          nullable: true
-          title: Montant de l'affaire
-        statut:
-          allOf:
-          - $ref: '#/components/schemas/StatutEnum'
-          title: Statut de l'affaire
-        date_rendu:
-          type: string
-          format: date
-          nullable: true
-          title: Date à laquelle l'affaire doit être terminée
-        date_cloture:
-          type: string
-          format: date
-          nullable: true
-          title: Date de clôture de l'affaire (terminée)
     AffaireFiches:
       type: object
       description: Serializer pour récupérer une affaire avec ses fiches
@@ -2481,14 +2192,6 @@ components:
       required:
       - id
       - semaine_affectation
-<<<<<<< HEAD
-<<<<<<< HEAD
-    BlankEnum:
-      enum:
-      - ''
-    BulkDelete:
-=======
-=======
     AffectationMachineDetailRequest:
       type: object
       properties:
@@ -2505,9 +2208,7 @@ components:
           nullable: true
       required:
       - semaine_affectation
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
-    Client:
->>>>>>> ed40f7f (fix(api): blank enum invalid ts openapi generation)
+    BulkDeleteRequest:
       type: object
       properties:
         ids:
@@ -2516,87 +2217,7 @@ components:
             type: integer
           description: Liste des ids des objets à supprimer
       required:
-<<<<<<< HEAD
       - ids
-=======
-      - adresse1
-      - correspondant
-      - email
-      - id
-      - pays
-      - raison
-      - tel1
-      - ville
-      - zip_code
-    ClientRequest:
-      type: object
-      properties:
-        raison:
-          type: string
-          minLength: 1
-          maxLength: 200
-        type:
-          type: string
-          nullable: true
-          maxLength: 200
-        adresse1:
-          type: string
-          minLength: 1
-          maxLength: 200
-        adresse2:
-          type: string
-          nullable: true
-          maxLength: 200
-        adresse3:
-          type: string
-          nullable: true
-          maxLength: 200
-        zip_code:
-          type: string
-          minLength: 1
-          maxLength: 200
-        ville:
-          type: string
-          minLength: 1
-          maxLength: 200
-        pays:
-          type: string
-          minLength: 1
-          maxLength: 200
-        tel1:
-          type: string
-          minLength: 1
-          maxLength: 200
-        tel2:
-          type: string
-          nullable: true
-          maxLength: 200
-        email:
-          type: string
-          minLength: 1
-          maxLength: 200
-        correspondant:
-          type: string
-          minLength: 1
-          maxLength: 200
-        memo:
-          type: string
-          nullable: true
-          maxLength: 200
-        compte:
-          type: string
-          nullable: true
-          maxLength: 200
-      required:
-      - adresse1
-      - correspondant
-      - email
-      - pays
-      - raison
-      - tel1
-      - ville
-      - zip_code
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     EtapeCreate:
       type: object
       properties:
@@ -2705,11 +2326,11 @@ components:
           title: Date de clôture
         fiche:
           type: integer
-        machine:
+        groupe_machine:
           type: integer
+          nullable: true
       required:
       - fiche
-      - machine
       - num_etape
     EtapeDetail:
       type: object
@@ -3022,6 +2643,9 @@ components:
           maxLength: 10000
         fiche_modele:
           type: integer
+        groupe_machine:
+          type: integer
+          nullable: true
       required:
       - fiche_modele
       - num_etape
@@ -3076,8 +2700,6 @@ components:
       - fiche_modele
       - id
       - num_etape
-<<<<<<< HEAD
-=======
     EtapeModeleListCreateRequest:
       type: object
       properties:
@@ -3107,25 +2729,12 @@ components:
           maxLength: 10000
         fiche_modele:
           type: integer
-        machine:
+        groupe_machine:
           type: integer
+          nullable: true
       required:
       - fiche_modele
-      - machine
       - num_etape
-    Etat:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        designation:
-          type: string
-          maxLength: 200
-      required:
-      - designation
-      - id
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     FicheCRUD:
       type: object
       properties:
@@ -3653,6 +3262,19 @@ components:
       required:
       - id
       - nom_groupe
+    GroupeMachineRequest:
+      type: object
+      properties:
+        nom_groupe:
+          type: string
+          minLength: 1
+          title: Nom du groupe machine
+          maxLength: 300
+        prix_theorique:
+          type: integer
+          title: Prix théorique / heure
+      required:
+      - nom_groupe
     ListZone:
       type: object
       properties:
@@ -3692,9 +3314,6 @@ components:
       required:
       - id
       - nom_machine
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
     MachineDetailRequest:
       type: object
       properties:
@@ -3710,9 +3329,11 @@ components:
           type: boolean
         est_active:
           type: boolean
+        groupe_machine:
+          type: integer
+          nullable: true
       required:
       - nom_machine
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     NoteCreate:
       type: object
       properties:
@@ -3732,8 +3353,6 @@ components:
       - contenu
       - date_creation
       - id
-<<<<<<< HEAD
-=======
     NoteCreateRequest:
       type: object
       properties:
@@ -3745,7 +3364,6 @@ components:
       required:
       - affaire
       - contenu
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     NoteDetail:
       type: object
       properties:
@@ -3766,13 +3384,6 @@ components:
       - date_creation
       - id
       - user
-<<<<<<< HEAD
-    NullEnum:
-      enum:
-      - null
-=======
->>>>>>> ed40f7f (fix(api): blank enum invalid ts openapi generation)
-=======
     NoteDetailRequest:
       type: object
       properties:
@@ -3781,7 +3392,6 @@ components:
           minLength: 1
       required:
       - contenu
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     PaginatedAffaireDetailsList:
       type: object
       properties:
@@ -4002,26 +3612,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MachineDetail'
-    PaginatedNoteDetailList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/NoteDetail'
     PaginatedPlanningMachineList:
       type: object
       properties:
@@ -4107,70 +3697,7 @@ components:
         salarie:
           type: integer
           nullable: true
-<<<<<<< HEAD
-    PatchedEtapeCreate:
-=======
-    PatchedClientRequest:
-      type: object
-      properties:
-        raison:
-          type: string
-          minLength: 1
-          maxLength: 200
-        type:
-          type: string
-          nullable: true
-          maxLength: 200
-        adresse1:
-          type: string
-          minLength: 1
-          maxLength: 200
-        adresse2:
-          type: string
-          nullable: true
-          maxLength: 200
-        adresse3:
-          type: string
-          nullable: true
-          maxLength: 200
-        zip_code:
-          type: string
-          minLength: 1
-          maxLength: 200
-        ville:
-          type: string
-          minLength: 1
-          maxLength: 200
-        pays:
-          type: string
-          minLength: 1
-          maxLength: 200
-        tel1:
-          type: string
-          minLength: 1
-          maxLength: 200
-        tel2:
-          type: string
-          nullable: true
-          maxLength: 200
-        email:
-          type: string
-          minLength: 1
-          maxLength: 200
-        correspondant:
-          type: string
-          minLength: 1
-          maxLength: 200
-        memo:
-          type: string
-          nullable: true
-          maxLength: 200
-        compte:
-          type: string
-          nullable: true
-          maxLength: 200
     PatchedEtapeCreateRequest:
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
       type: object
       properties:
         num_etape:
@@ -4215,12 +3742,8 @@ components:
           type: integer
         groupe_machine:
           type: integer
-<<<<<<< HEAD
           nullable: true
-    PatchedEtapeModeleDetail:
-=======
     PatchedEtapeModeleDetailRequest:
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
       type: object
       properties:
         num_etape:
@@ -4249,14 +3772,10 @@ components:
           maxLength: 10000
         fiche_modele:
           type: integer
-<<<<<<< HEAD
         groupe_machine:
           type: integer
           nullable: true
-    PatchedFicheCRUD:
-=======
     PatchedFicheCRUDRequest:
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
       type: object
       properties:
         titre:
@@ -4300,24 +3819,18 @@ components:
         fourniture:
           type: boolean
           title: Fournitures arrivées
-<<<<<<< HEAD
-    PatchedGroupeMachine:
+    PatchedGroupeMachineRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
         nom_groupe:
           type: string
+          minLength: 1
           title: Nom du groupe machine
           maxLength: 300
         prix_theorique:
           type: integer
           title: Prix théorique / heure
-    PatchedMachineDetail:
-=======
     PatchedMachineDetailRequest:
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
       type: object
       properties:
         nom_machine:
@@ -4332,33 +3845,15 @@ components:
           type: boolean
         est_active:
           type: boolean
-<<<<<<< HEAD
         groupe_machine:
           type: integer
           nullable: true
-    PatchedNoteDetail:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        user:
-          type: string
-          readOnly: true
-        contenu:
-          type: string
-        date_creation:
-          type: string
-          format: date
-          readOnly: true
-=======
     PatchedNoteDetailRequest:
       type: object
       properties:
         contenu:
           type: string
           minLength: 1
->>>>>>> a9860dd (fix(api): drf not separating res dto from req dto)
     PlanningMachine:
       type: object
       description: Serializer pour la planification d'une machine.
@@ -4486,81 +3981,6 @@ components:
       - id
       - nom
       - prenom
-    SalarieRequest:
-      type: object
-      properties:
-        num_secu:
-          type: string
-          minLength: 1
-          maxLength: 200
-        civilite:
-          type: string
-          minLength: 1
-          maxLength: 200
-        nom:
-          type: string
-          minLength: 1
-          maxLength: 200
-        prenom:
-          type: string
-          minLength: 1
-          maxLength: 200
-        adresse1:
-          type: string
-          minLength: 1
-          maxLength: 200
-        adresse2:
-          type: string
-          nullable: true
-          maxLength: 200
-        zip_code:
-          type: string
-          minLength: 1
-          maxLength: 200
-        ville:
-          type: string
-          minLength: 1
-          maxLength: 200
-        pays:
-          type: string
-          minLength: 1
-          maxLength: 200
-        tel:
-          type: string
-          minLength: 1
-          maxLength: 200
-        email:
-          type: string
-          minLength: 1
-          maxLength: 200
-        date_embauche:
-          type: string
-          format: date
-        date_depart:
-          type: string
-          format: date
-          nullable: true
-        user:
-          type: integer
-        aptitude:
-          type: integer
-          nullable: true
-        zone:
-          type: integer
-          nullable: true
-      required:
-      - adresse1
-      - civilite
-      - date_embauche
-      - email
-      - nom
-      - num_secu
-      - pays
-      - prenom
-      - tel
-      - user
-      - ville
-      - zip_code
     StatutEnum:
       enum:
       - S00

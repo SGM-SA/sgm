@@ -107,53 +107,6 @@ export const useApiAffairesList = <TData = Schemas.PaginatedAffaireDetailsList>(
 	})
 }
 
-export type ApiAffairesCreateError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiAffairesCreateVariables = {
-	body?: Schemas.AffaireDetailsRequest
-} & ApiContext['fetcherOptions']
-
-/**
- * Création affaire
- */
-export const fetchApiAffairesCreate = (
-	variables: ApiAffairesCreateVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		Schemas.AffaireDetails,
-		ApiAffairesCreateError,
-		Schemas.AffaireDetailsRequest,
-		{},
-		{},
-		{}
-	>({ url: '/api/affaires/', method: 'post', ...variables, signal })
-
-/**
- * Création affaire
- */
-export const useApiAffairesCreate = (
-	options?: Omit<
-		reactQuery.UseMutationOptions<
-			Schemas.AffaireDetails,
-			ApiAffairesCreateError,
-			ApiAffairesCreateVariables
-		>,
-		'mutationFn'
-	>
-) => {
-	const { fetcherOptions } = useApiContext()
-	return reactQuery.useMutation<
-		Schemas.AffaireDetails,
-		ApiAffairesCreateError,
-		ApiAffairesCreateVariables
-	>({
-		mutationFn: (variables: ApiAffairesCreateVariables) =>
-			fetchApiAffairesCreate({ ...fetcherOptions, ...variables }),
-		...options,
-	})
-}
-
 export type ApiAffairesRetrievePathParams = {
 	id: number
 }
@@ -1032,290 +985,6 @@ export const useApiAffectationsMachinesDestroy = (
 	})
 }
 
-export type ApiClientsListQueryParams = {
-	/**
-	 * A page number within the paginated result set.
-	 */
-	page?: number
-}
-
-export type ApiClientsListError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiClientsListVariables = {
-	queryParams?: ApiClientsListQueryParams
-} & ApiContext['fetcherOptions']
-
-export const fetchApiClientsList = (
-	variables: ApiClientsListVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		Schemas.PaginatedClientList,
-		ApiClientsListError,
-		undefined,
-		{},
-		ApiClientsListQueryParams,
-		{}
-	>({ url: '/api/clients', method: 'get', ...variables, signal })
-
-export const useApiClientsList = <TData = Schemas.PaginatedClientList>(
-	variables: ApiClientsListVariables,
-	options?: Omit<
-		reactQuery.UseQueryOptions<
-			Schemas.PaginatedClientList,
-			ApiClientsListError,
-			TData
-		>,
-		'queryKey' | 'queryFn'
-	>
-) => {
-	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
-	return reactQuery.useQuery<
-		Schemas.PaginatedClientList,
-		ApiClientsListError,
-		TData
-	>({
-		queryKey: queryKeyFn({
-			path: '/api/clients',
-			operationId: 'apiClientsList',
-			variables,
-		}),
-		queryFn: ({ signal }) =>
-			fetchApiClientsList({ ...fetcherOptions, ...variables }, signal),
-		...options,
-		...queryOptions,
-	})
-}
-
-export type ApiClientsCreateError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiClientsCreateVariables = {
-	body: Schemas.ClientRequest
-} & ApiContext['fetcherOptions']
-
-export const fetchApiClientsCreate = (
-	variables: ApiClientsCreateVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		Schemas.Client,
-		ApiClientsCreateError,
-		Schemas.ClientRequest,
-		{},
-		{},
-		{}
-	>({ url: '/api/clients', method: 'post', ...variables, signal })
-
-export const useApiClientsCreate = (
-	options?: Omit<
-		reactQuery.UseMutationOptions<
-			Schemas.Client,
-			ApiClientsCreateError,
-			ApiClientsCreateVariables
-		>,
-		'mutationFn'
-	>
-) => {
-	const { fetcherOptions } = useApiContext()
-	return reactQuery.useMutation<
-		Schemas.Client,
-		ApiClientsCreateError,
-		ApiClientsCreateVariables
-	>({
-		mutationFn: (variables: ApiClientsCreateVariables) =>
-			fetchApiClientsCreate({ ...fetcherOptions, ...variables }),
-		...options,
-	})
-}
-
-export type ApiClientsRetrievePathParams = {
-	id: number
-}
-
-export type ApiClientsRetrieveError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiClientsRetrieveVariables = {
-	pathParams: ApiClientsRetrievePathParams
-} & ApiContext['fetcherOptions']
-
-export const fetchApiClientsRetrieve = (
-	variables: ApiClientsRetrieveVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		Schemas.Client,
-		ApiClientsRetrieveError,
-		undefined,
-		{},
-		{},
-		ApiClientsRetrievePathParams
-	>({ url: '/api/clients/{id}', method: 'get', ...variables, signal })
-
-export const useApiClientsRetrieve = <TData = Schemas.Client>(
-	variables: ApiClientsRetrieveVariables,
-	options?: Omit<
-		reactQuery.UseQueryOptions<
-			Schemas.Client,
-			ApiClientsRetrieveError,
-			TData
-		>,
-		'queryKey' | 'queryFn'
-	>
-) => {
-	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
-	return reactQuery.useQuery<Schemas.Client, ApiClientsRetrieveError, TData>({
-		queryKey: queryKeyFn({
-			path: '/api/clients/{id}',
-			operationId: 'apiClientsRetrieve',
-			variables,
-		}),
-		queryFn: ({ signal }) =>
-			fetchApiClientsRetrieve(
-				{ ...fetcherOptions, ...variables },
-				signal
-			),
-		...options,
-		...queryOptions,
-	})
-}
-
-export type ApiClientsUpdatePathParams = {
-	id: number
-}
-
-export type ApiClientsUpdateError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiClientsUpdateVariables = {
-	body: Schemas.ClientRequest
-	pathParams: ApiClientsUpdatePathParams
-} & ApiContext['fetcherOptions']
-
-export const fetchApiClientsUpdate = (
-	variables: ApiClientsUpdateVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		Schemas.Client,
-		ApiClientsUpdateError,
-		Schemas.ClientRequest,
-		{},
-		{},
-		ApiClientsUpdatePathParams
-	>({ url: '/api/clients/{id}', method: 'put', ...variables, signal })
-
-export const useApiClientsUpdate = (
-	options?: Omit<
-		reactQuery.UseMutationOptions<
-			Schemas.Client,
-			ApiClientsUpdateError,
-			ApiClientsUpdateVariables
-		>,
-		'mutationFn'
-	>
-) => {
-	const { fetcherOptions } = useApiContext()
-	return reactQuery.useMutation<
-		Schemas.Client,
-		ApiClientsUpdateError,
-		ApiClientsUpdateVariables
-	>({
-		mutationFn: (variables: ApiClientsUpdateVariables) =>
-			fetchApiClientsUpdate({ ...fetcherOptions, ...variables }),
-		...options,
-	})
-}
-
-export type ApiClientsPartialUpdatePathParams = {
-	id: number
-}
-
-export type ApiClientsPartialUpdateError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiClientsPartialUpdateVariables = {
-	body?: Schemas.PatchedClientRequest
-	pathParams: ApiClientsPartialUpdatePathParams
-} & ApiContext['fetcherOptions']
-
-export const fetchApiClientsPartialUpdate = (
-	variables: ApiClientsPartialUpdateVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		Schemas.Client,
-		ApiClientsPartialUpdateError,
-		Schemas.PatchedClientRequest,
-		{},
-		{},
-		ApiClientsPartialUpdatePathParams
-	>({ url: '/api/clients/{id}', method: 'patch', ...variables, signal })
-
-export const useApiClientsPartialUpdate = (
-	options?: Omit<
-		reactQuery.UseMutationOptions<
-			Schemas.Client,
-			ApiClientsPartialUpdateError,
-			ApiClientsPartialUpdateVariables
-		>,
-		'mutationFn'
-	>
-) => {
-	const { fetcherOptions } = useApiContext()
-	return reactQuery.useMutation<
-		Schemas.Client,
-		ApiClientsPartialUpdateError,
-		ApiClientsPartialUpdateVariables
-	>({
-		mutationFn: (variables: ApiClientsPartialUpdateVariables) =>
-			fetchApiClientsPartialUpdate({ ...fetcherOptions, ...variables }),
-		...options,
-	})
-}
-
-export type ApiClientsDestroyPathParams = {
-	id: number
-}
-
-export type ApiClientsDestroyError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiClientsDestroyVariables = {
-	pathParams: ApiClientsDestroyPathParams
-} & ApiContext['fetcherOptions']
-
-export const fetchApiClientsDestroy = (
-	variables: ApiClientsDestroyVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		undefined,
-		ApiClientsDestroyError,
-		undefined,
-		{},
-		{},
-		ApiClientsDestroyPathParams
-	>({ url: '/api/clients/{id}', method: 'delete', ...variables, signal })
-
-export const useApiClientsDestroy = (
-	options?: Omit<
-		reactQuery.UseMutationOptions<
-			undefined,
-			ApiClientsDestroyError,
-			ApiClientsDestroyVariables
-		>,
-		'mutationFn'
-	>
-) => {
-	const { fetcherOptions } = useApiContext()
-	return reactQuery.useMutation<
-		undefined,
-		ApiClientsDestroyError,
-		ApiClientsDestroyVariables
-	>({
-		mutationFn: (variables: ApiClientsDestroyVariables) =>
-			fetchApiClientsDestroy({ ...fetcherOptions, ...variables }),
-		...options,
-	})
-}
-
 export type ApiEtapesCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiEtapesCreateVariables = {
@@ -1546,44 +1215,37 @@ export const useApiEtapesDestroy = (
 	})
 }
 
-export type ApiEtapesDeleteDestroyQueryParams = {
-	/**
-	 * Liste des ids des étapes à supprimer
-	 */
-	ids: number
-}
+export type ApiEtapesDeleteCreateError = Fetcher.ErrorWrapper<undefined>
 
-export type ApiEtapesDeleteDestroyError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiEtapesDeleteDestroyVariables = {
-	queryParams: ApiEtapesDeleteDestroyQueryParams
+export type ApiEtapesDeleteCreateVariables = {
+	body: Schemas.BulkDeleteRequest
 } & ApiContext['fetcherOptions']
 
 /**
- * Bulk delete des étapes
+ * Bulk delete d'objets en fonction de leur id
  */
-export const fetchApiEtapesDeleteDestroy = (
-	variables: ApiEtapesDeleteDestroyVariables,
+export const fetchApiEtapesDeleteCreate = (
+	variables: ApiEtapesDeleteCreateVariables,
 	signal?: AbortSignal
 ) =>
 	apiFetch<
 		undefined,
-		ApiEtapesDeleteDestroyError,
-		undefined,
+		ApiEtapesDeleteCreateError,
+		Schemas.BulkDeleteRequest,
 		{},
-		ApiEtapesDeleteDestroyQueryParams,
+		{},
 		{}
-	>({ url: '/api/etapes/delete', method: 'delete', ...variables, signal })
+	>({ url: '/api/etapes/delete', method: 'post', ...variables, signal })
 
 /**
- * Bulk delete des étapes
+ * Bulk delete d'objets en fonction de leur id
  */
-export const useApiEtapesDeleteDestroy = (
+export const useApiEtapesDeleteCreate = (
 	options?: Omit<
 		reactQuery.UseMutationOptions<
 			undefined,
-			ApiEtapesDeleteDestroyError,
-			ApiEtapesDeleteDestroyVariables
+			ApiEtapesDeleteCreateError,
+			ApiEtapesDeleteCreateVariables
 		>,
 		'mutationFn'
 	>
@@ -1591,111 +1253,12 @@ export const useApiEtapesDeleteDestroy = (
 	const { fetcherOptions } = useApiContext()
 	return reactQuery.useMutation<
 		undefined,
-		ApiEtapesDeleteDestroyError,
-		ApiEtapesDeleteDestroyVariables
+		ApiEtapesDeleteCreateError,
+		ApiEtapesDeleteCreateVariables
 	>({
-		mutationFn: (variables: ApiEtapesDeleteDestroyVariables) =>
-			fetchApiEtapesDeleteDestroy({ ...fetcherOptions, ...variables }),
+		mutationFn: (variables: ApiEtapesDeleteCreateVariables) =>
+			fetchApiEtapesDeleteCreate({ ...fetcherOptions, ...variables }),
 		...options,
-	})
-}
-
-export type ApiEtatsListQueryParams = {
-	/**
-	 * A page number within the paginated result set.
-	 */
-	page?: number
-}
-
-export type ApiEtatsListError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiEtatsListVariables = {
-	queryParams?: ApiEtatsListQueryParams
-} & ApiContext['fetcherOptions']
-
-export const fetchApiEtatsList = (
-	variables: ApiEtatsListVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		Schemas.PaginatedEtatList,
-		ApiEtatsListError,
-		undefined,
-		{},
-		ApiEtatsListQueryParams,
-		{}
-	>({ url: '/api/etats', method: 'get', ...variables, signal })
-
-export const useApiEtatsList = <TData = Schemas.PaginatedEtatList>(
-	variables: ApiEtatsListVariables,
-	options?: Omit<
-		reactQuery.UseQueryOptions<
-			Schemas.PaginatedEtatList,
-			ApiEtatsListError,
-			TData
-		>,
-		'queryKey' | 'queryFn'
-	>
-) => {
-	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
-	return reactQuery.useQuery<
-		Schemas.PaginatedEtatList,
-		ApiEtatsListError,
-		TData
-	>({
-		queryKey: queryKeyFn({
-			path: '/api/etats',
-			operationId: 'apiEtatsList',
-			variables,
-		}),
-		queryFn: ({ signal }) =>
-			fetchApiEtatsList({ ...fetcherOptions, ...variables }, signal),
-		...options,
-		...queryOptions,
-	})
-}
-
-export type ApiEtatsRetrievePathParams = {
-	id: number
-}
-
-export type ApiEtatsRetrieveError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiEtatsRetrieveVariables = {
-	pathParams: ApiEtatsRetrievePathParams
-} & ApiContext['fetcherOptions']
-
-export const fetchApiEtatsRetrieve = (
-	variables: ApiEtatsRetrieveVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		Schemas.Etat,
-		ApiEtatsRetrieveError,
-		undefined,
-		{},
-		{},
-		ApiEtatsRetrievePathParams
-	>({ url: '/api/etats/{id}', method: 'get', ...variables, signal })
-
-export const useApiEtatsRetrieve = <TData = Schemas.Etat>(
-	variables: ApiEtatsRetrieveVariables,
-	options?: Omit<
-		reactQuery.UseQueryOptions<Schemas.Etat, ApiEtatsRetrieveError, TData>,
-		'queryKey' | 'queryFn'
-	>
-) => {
-	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
-	return reactQuery.useQuery<Schemas.Etat, ApiEtatsRetrieveError, TData>({
-		queryKey: queryKeyFn({
-			path: '/api/etats/{id}',
-			operationId: 'apiEtatsRetrieve',
-			variables,
-		}),
-		queryFn: ({ signal }) =>
-			fetchApiEtatsRetrieve({ ...fetcherOptions, ...variables }, signal),
-		...options,
-		...queryOptions,
 	})
 }
 
@@ -2025,33 +1588,37 @@ export const useApiFichesAjustageAPlanifierList = <
 	})
 }
 
-export type ApiFichesDeleteDestroyError = Fetcher.ErrorWrapper<undefined>
+export type ApiFichesDeleteCreateError = Fetcher.ErrorWrapper<undefined>
 
-export type ApiFichesDeleteDestroyVariables = ApiContext['fetcherOptions']
+export type ApiFichesDeleteCreateVariables = {
+	body: Schemas.BulkDeleteRequest
+} & ApiContext['fetcherOptions']
 
 /**
- * Bulk delete des fiches
+ * Permet de supprimer plusieurs fiches en même temps
  */
-export const fetchApiFichesDeleteDestroy = (
-	variables: ApiFichesDeleteDestroyVariables,
+export const fetchApiFichesDeleteCreate = (
+	variables: ApiFichesDeleteCreateVariables,
 	signal?: AbortSignal
 ) =>
-	apiFetch<undefined, ApiFichesDeleteDestroyError, undefined, {}, {}, {}>({
-		url: '/api/fiches/delete/',
-		method: 'delete',
-		...variables,
-		signal,
-	})
+	apiFetch<
+		undefined,
+		ApiFichesDeleteCreateError,
+		Schemas.BulkDeleteRequest,
+		{},
+		{},
+		{}
+	>({ url: '/api/fiches/delete/', method: 'post', ...variables, signal })
 
 /**
- * Bulk delete des fiches
+ * Permet de supprimer plusieurs fiches en même temps
  */
-export const useApiFichesDeleteDestroy = (
+export const useApiFichesDeleteCreate = (
 	options?: Omit<
 		reactQuery.UseMutationOptions<
 			undefined,
-			ApiFichesDeleteDestroyError,
-			ApiFichesDeleteDestroyVariables
+			ApiFichesDeleteCreateError,
+			ApiFichesDeleteCreateVariables
 		>,
 		'mutationFn'
 	>
@@ -2059,11 +1626,11 @@ export const useApiFichesDeleteDestroy = (
 	const { fetcherOptions } = useApiContext()
 	return reactQuery.useMutation<
 		undefined,
-		ApiFichesDeleteDestroyError,
-		ApiFichesDeleteDestroyVariables
+		ApiFichesDeleteCreateError,
+		ApiFichesDeleteCreateVariables
 	>({
-		mutationFn: (variables: ApiFichesDeleteDestroyVariables) =>
-			fetchApiFichesDeleteDestroy({ ...fetcherOptions, ...variables }),
+		mutationFn: (variables: ApiFichesDeleteCreateVariables) =>
+			fetchApiFichesDeleteCreate({ ...fetcherOptions, ...variables }),
 		...options,
 	})
 }
@@ -2194,6 +1761,403 @@ export const useApiFichesMachineAPlanifierList = <
 			),
 		...options,
 		...queryOptions,
+	})
+}
+
+export type ApiGroupeMachineListQueryParams = {
+	/**
+	 * A page number within the paginated result set.
+	 */
+	page?: number
+}
+
+export type ApiGroupeMachineListError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiGroupeMachineListVariables = {
+	queryParams?: ApiGroupeMachineListQueryParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Cette opération permet de récupérer la liste de tous les GroupesMachine.
+ */
+export const fetchApiGroupeMachineList = (
+	variables: ApiGroupeMachineListVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.PaginatedGroupeMachineList,
+		ApiGroupeMachineListError,
+		undefined,
+		{},
+		ApiGroupeMachineListQueryParams,
+		{}
+	>({ url: '/api/groupe_machine/', method: 'get', ...variables, signal })
+
+/**
+ * Cette opération permet de récupérer la liste de tous les GroupesMachine.
+ */
+export const useApiGroupeMachineList = <
+	TData = Schemas.PaginatedGroupeMachineList
+>(
+	variables: ApiGroupeMachineListVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			Schemas.PaginatedGroupeMachineList,
+			ApiGroupeMachineListError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		Schemas.PaginatedGroupeMachineList,
+		ApiGroupeMachineListError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/groupe_machine/',
+			operationId: 'apiGroupeMachineList',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiGroupeMachineList(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
+export type ApiGroupeMachineCreateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiGroupeMachineCreateVariables = {
+	body: Schemas.GroupeMachineRequest
+} & ApiContext['fetcherOptions']
+
+/**
+ * Cette opération permet de créer un nouveau GroupeMachine.
+ */
+export const fetchApiGroupeMachineCreate = (
+	variables: ApiGroupeMachineCreateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.GroupeMachine,
+		ApiGroupeMachineCreateError,
+		Schemas.GroupeMachineRequest,
+		{},
+		{},
+		{}
+	>({ url: '/api/groupe_machine/', method: 'post', ...variables, signal })
+
+/**
+ * Cette opération permet de créer un nouveau GroupeMachine.
+ */
+export const useApiGroupeMachineCreate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			Schemas.GroupeMachine,
+			ApiGroupeMachineCreateError,
+			ApiGroupeMachineCreateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		Schemas.GroupeMachine,
+		ApiGroupeMachineCreateError,
+		ApiGroupeMachineCreateVariables
+	>({
+		mutationFn: (variables: ApiGroupeMachineCreateVariables) =>
+			fetchApiGroupeMachineCreate({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
+export type ApiGroupeMachineRetrievePathParams = {
+	id: number
+}
+
+export type ApiGroupeMachineRetrieveError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiGroupeMachineRetrieveVariables = {
+	pathParams: ApiGroupeMachineRetrievePathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Cette opération permet de récupérer un GroupeMachine spécifique en utilisant son ID.
+ */
+export const fetchApiGroupeMachineRetrieve = (
+	variables: ApiGroupeMachineRetrieveVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.GroupeMachine,
+		ApiGroupeMachineRetrieveError,
+		undefined,
+		{},
+		{},
+		ApiGroupeMachineRetrievePathParams
+	>({ url: '/api/groupe_machine/{id}/', method: 'get', ...variables, signal })
+
+/**
+ * Cette opération permet de récupérer un GroupeMachine spécifique en utilisant son ID.
+ */
+export const useApiGroupeMachineRetrieve = <TData = Schemas.GroupeMachine>(
+	variables: ApiGroupeMachineRetrieveVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			Schemas.GroupeMachine,
+			ApiGroupeMachineRetrieveError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		Schemas.GroupeMachine,
+		ApiGroupeMachineRetrieveError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/groupe_machine/{id}/',
+			operationId: 'apiGroupeMachineRetrieve',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiGroupeMachineRetrieve(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
+export type ApiGroupeMachineUpdatePathParams = {
+	id: number
+}
+
+export type ApiGroupeMachineUpdateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiGroupeMachineUpdateVariables = {
+	body: Schemas.GroupeMachineRequest
+	pathParams: ApiGroupeMachineUpdatePathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Cette opération permet de mettre à jour un GroupeMachine spécifique en utilisant son ID.
+ */
+export const fetchApiGroupeMachineUpdate = (
+	variables: ApiGroupeMachineUpdateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.GroupeMachine,
+		ApiGroupeMachineUpdateError,
+		Schemas.GroupeMachineRequest,
+		{},
+		{},
+		ApiGroupeMachineUpdatePathParams
+	>({ url: '/api/groupe_machine/{id}/', method: 'put', ...variables, signal })
+
+/**
+ * Cette opération permet de mettre à jour un GroupeMachine spécifique en utilisant son ID.
+ */
+export const useApiGroupeMachineUpdate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			Schemas.GroupeMachine,
+			ApiGroupeMachineUpdateError,
+			ApiGroupeMachineUpdateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		Schemas.GroupeMachine,
+		ApiGroupeMachineUpdateError,
+		ApiGroupeMachineUpdateVariables
+	>({
+		mutationFn: (variables: ApiGroupeMachineUpdateVariables) =>
+			fetchApiGroupeMachineUpdate({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
+export type ApiGroupeMachinePartialUpdatePathParams = {
+	id: number
+}
+
+export type ApiGroupeMachinePartialUpdateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiGroupeMachinePartialUpdateVariables = {
+	body?: Schemas.PatchedGroupeMachineRequest
+	pathParams: ApiGroupeMachinePartialUpdatePathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Cette opération permet de mettre à jour partiellement un GroupeMachine spécifique en utilisant son ID.
+ */
+export const fetchApiGroupeMachinePartialUpdate = (
+	variables: ApiGroupeMachinePartialUpdateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.GroupeMachine,
+		ApiGroupeMachinePartialUpdateError,
+		Schemas.PatchedGroupeMachineRequest,
+		{},
+		{},
+		ApiGroupeMachinePartialUpdatePathParams
+	>({
+		url: '/api/groupe_machine/{id}/',
+		method: 'patch',
+		...variables,
+		signal,
+	})
+
+/**
+ * Cette opération permet de mettre à jour partiellement un GroupeMachine spécifique en utilisant son ID.
+ */
+export const useApiGroupeMachinePartialUpdate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			Schemas.GroupeMachine,
+			ApiGroupeMachinePartialUpdateError,
+			ApiGroupeMachinePartialUpdateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		Schemas.GroupeMachine,
+		ApiGroupeMachinePartialUpdateError,
+		ApiGroupeMachinePartialUpdateVariables
+	>({
+		mutationFn: (variables: ApiGroupeMachinePartialUpdateVariables) =>
+			fetchApiGroupeMachinePartialUpdate({
+				...fetcherOptions,
+				...variables,
+			}),
+		...options,
+	})
+}
+
+export type ApiGroupeMachineDestroyPathParams = {
+	id: number
+}
+
+export type ApiGroupeMachineDestroyError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiGroupeMachineDestroyVariables = {
+	pathParams: ApiGroupeMachineDestroyPathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Cette opération permet de supprimer un GroupeMachine spécifique en utilisant son ID.
+ */
+export const fetchApiGroupeMachineDestroy = (
+	variables: ApiGroupeMachineDestroyVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		undefined,
+		ApiGroupeMachineDestroyError,
+		undefined,
+		{},
+		{},
+		ApiGroupeMachineDestroyPathParams
+	>({
+		url: '/api/groupe_machine/{id}/',
+		method: 'delete',
+		...variables,
+		signal,
+	})
+
+/**
+ * Cette opération permet de supprimer un GroupeMachine spécifique en utilisant son ID.
+ */
+export const useApiGroupeMachineDestroy = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			undefined,
+			ApiGroupeMachineDestroyError,
+			ApiGroupeMachineDestroyVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		undefined,
+		ApiGroupeMachineDestroyError,
+		ApiGroupeMachineDestroyVariables
+	>({
+		mutationFn: (variables: ApiGroupeMachineDestroyVariables) =>
+			fetchApiGroupeMachineDestroy({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
+export type ApiGroupeMachineDeleteCreateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiGroupeMachineDeleteCreateVariables = {
+	body: Schemas.BulkDeleteRequest
+} & ApiContext['fetcherOptions']
+
+/**
+ * Permet de supprimer plusieurs GroupeMachines en même temps
+ */
+export const fetchApiGroupeMachineDeleteCreate = (
+	variables: ApiGroupeMachineDeleteCreateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		undefined,
+		ApiGroupeMachineDeleteCreateError,
+		Schemas.BulkDeleteRequest,
+		{},
+		{},
+		{}
+	>({
+		url: '/api/groupe_machine/delete/',
+		method: 'post',
+		...variables,
+		signal,
+	})
+
+/**
+ * Permet de supprimer plusieurs GroupeMachines en même temps
+ */
+export const useApiGroupeMachineDeleteCreate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			undefined,
+			ApiGroupeMachineDeleteCreateError,
+			ApiGroupeMachineDeleteCreateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		undefined,
+		ApiGroupeMachineDeleteCreateError,
+		ApiGroupeMachineDeleteCreateVariables
+	>({
+		mutationFn: (variables: ApiGroupeMachineDeleteCreateVariables) =>
+			fetchApiGroupeMachineDeleteCreate({
+				...fetcherOptions,
+				...variables,
+			}),
+		...options,
 	})
 }
 
@@ -3600,80 +3564,6 @@ export const useApiNotesDestroy = (
 	})
 }
 
-export type ApiNotesAffaireListPathParams = {
-	affaireId: number
-}
-
-export type ApiNotesAffaireListQueryParams = {
-	/**
-	 * A page number within the paginated result set.
-	 */
-	page?: number
-}
-
-export type ApiNotesAffaireListError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiNotesAffaireListVariables = {
-	pathParams: ApiNotesAffaireListPathParams
-	queryParams?: ApiNotesAffaireListQueryParams
-} & ApiContext['fetcherOptions']
-
-/**
- * Récupère toutes les notes associées à une affaire donnée, ordonnées par date de création. La première note est la description de l'affaire.
- */
-export const fetchApiNotesAffaireList = (
-	variables: ApiNotesAffaireListVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		Schemas.PaginatedNoteDetailList,
-		ApiNotesAffaireListError,
-		undefined,
-		{},
-		ApiNotesAffaireListQueryParams,
-		ApiNotesAffaireListPathParams
-	>({
-		url: '/api/notes/affaire/{affaireId}',
-		method: 'get',
-		...variables,
-		signal,
-	})
-
-/**
- * Récupère toutes les notes associées à une affaire donnée, ordonnées par date de création. La première note est la description de l'affaire.
- */
-export const useApiNotesAffaireList = <TData = Schemas.PaginatedNoteDetailList>(
-	variables: ApiNotesAffaireListVariables,
-	options?: Omit<
-		reactQuery.UseQueryOptions<
-			Schemas.PaginatedNoteDetailList,
-			ApiNotesAffaireListError,
-			TData
-		>,
-		'queryKey' | 'queryFn'
-	>
-) => {
-	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
-	return reactQuery.useQuery<
-		Schemas.PaginatedNoteDetailList,
-		ApiNotesAffaireListError,
-		TData
-	>({
-		queryKey: queryKeyFn({
-			path: '/api/notes/affaire/{affaire_id}',
-			operationId: 'apiNotesAffaireList',
-			variables,
-		}),
-		queryFn: ({ signal }) =>
-			fetchApiNotesAffaireList(
-				{ ...fetcherOptions, ...variables },
-				signal
-			),
-		...options,
-		...queryOptions,
-	})
-}
-
 export type ApiPlanningMachineListQueryParams = {
 	/**
 	 * annee
@@ -4177,29 +4067,9 @@ export type QueryOperation =
 			variables: ApiAffectationsMachinesRetrieveVariables
 	  }
 	| {
-			path: '/api/clients'
-			operationId: 'apiClientsList'
-			variables: ApiClientsListVariables
-	  }
-	| {
-			path: '/api/clients/{id}'
-			operationId: 'apiClientsRetrieve'
-			variables: ApiClientsRetrieveVariables
-	  }
-	| {
 			path: '/api/etapes/{id}'
 			operationId: 'apiEtapesRetrieve'
 			variables: ApiEtapesRetrieveVariables
-	  }
-	| {
-			path: '/api/etats'
-			operationId: 'apiEtatsList'
-			variables: ApiEtatsListVariables
-	  }
-	| {
-			path: '/api/etats/{id}'
-			operationId: 'apiEtatsRetrieve'
-			variables: ApiEtatsRetrieveVariables
 	  }
 	| {
 			path: '/api/fiches/{id}'
@@ -4220,6 +4090,16 @@ export type QueryOperation =
 			path: '/api/fiches/machine/a_planifier'
 			operationId: 'apiFichesMachineAPlanifierList'
 			variables: ApiFichesMachineAPlanifierListVariables
+	  }
+	| {
+			path: '/api/groupe_machine/'
+			operationId: 'apiGroupeMachineList'
+			variables: ApiGroupeMachineListVariables
+	  }
+	| {
+			path: '/api/groupe_machine/{id}/'
+			operationId: 'apiGroupeMachineRetrieve'
+			variables: ApiGroupeMachineRetrieveVariables
 	  }
 	| {
 			path: '/api/machines/'
@@ -4260,11 +4140,6 @@ export type QueryOperation =
 			path: '/api/notes/{id}'
 			operationId: 'apiNotesRetrieve'
 			variables: ApiNotesRetrieveVariables
-	  }
-	| {
-			path: '/api/notes/affaire/{affaire_id}'
-			operationId: 'apiNotesAffaireList'
-			variables: ApiNotesAffaireListVariables
 	  }
 	| {
 			path: '/api/planning/machine'

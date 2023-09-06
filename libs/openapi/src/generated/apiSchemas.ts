@@ -12,6 +12,7 @@ export type AffaireDetails = {
 	 * @minimum 0
 	 */
 	num_affaire?: number | null
+	validation_ingenieur?: boolean
 	/**
 	 * @maxLength 10000
 	 */
@@ -53,42 +54,6 @@ export type AffaireDetails = {
 }
 
 /**
- * Serializer pour l'affichage des affaires
- */
-export type AffaireDetailsRequest = {
-	/**
-	 * @minimum 0
-	 */
-	num_affaire?: number | null
-	/**
-	 * @maxLength 10000
-	 */
-	description?: string | null
-	/**
-	 * @maxLength 1000
-	 */
-	observation?: string | null
-	/**
-	 * @maxLength 200
-	 */
-	client?: string | null
-	/**
-	 * @format decimal
-	 * @pattern ^-?\d{0,8}(?:\.\d{0,2})?$
-	 */
-	montant?: string | null
-	statut?: StatutEnum
-	/**
-	 * @format date
-	 */
-	date_rendu?: string | null
-	/**
-	 * @format date
-	 */
-	date_cloture?: string | null
-}
-
-/**
  * Serializer pour récupérer une affaire avec ses fiches
  */
 export type AffaireFiches = {
@@ -97,6 +62,7 @@ export type AffaireFiches = {
 	 * @minimum 0
 	 */
 	num_affaire?: number | null
+	validation_ingenieur?: boolean
 	fiches: FicheDetail[]
 	charge_affaire_detail: Salarie
 }
@@ -110,6 +76,7 @@ export type AffaireFichesEtapes = {
 	 * @minimum 0
 	 */
 	num_affaire?: number | null
+	validation_ingenieur?: boolean
 	/**
 	 * @maxLength 10000
 	 */
@@ -127,6 +94,7 @@ export type AffaireFichesEtapesAjustage = {
 	 * @minimum 0
 	 */
 	num_affaire?: number | null
+	validation_ingenieur?: boolean
 	/**
 	 * @maxLength 10000
 	 */
@@ -144,6 +112,7 @@ export type AffaireFichesEtapesMachine = {
 	 * @minimum 0
 	 */
 	num_affaire?: number | null
+	validation_ingenieur?: boolean
 	/**
 	 * @maxLength 10000
 	 */
@@ -203,131 +172,11 @@ export type AffectationMachineDetailRequest = {
 	salarie?: number | null
 }
 
-export type Client = {
-	id: number
+export type BulkDeleteRequest = {
 	/**
-	 * @maxLength 200
+	 * Liste des ids des objets à supprimer
 	 */
-	raison: string
-	/**
-	 * @maxLength 200
-	 */
-	type?: string | null
-	/**
-	 * @maxLength 200
-	 */
-	adresse1: string
-	/**
-	 * @maxLength 200
-	 */
-	adresse2?: string | null
-	/**
-	 * @maxLength 200
-	 */
-	adresse3?: string | null
-	/**
-	 * @maxLength 200
-	 */
-	zip_code: string
-	/**
-	 * @maxLength 200
-	 */
-	ville: string
-	/**
-	 * @maxLength 200
-	 */
-	pays: string
-	/**
-	 * @maxLength 200
-	 */
-	tel1: string
-	/**
-	 * @maxLength 200
-	 */
-	tel2?: string | null
-	/**
-	 * @maxLength 200
-	 */
-	email: string
-	/**
-	 * @maxLength 200
-	 */
-	correspondant: string
-	/**
-	 * @maxLength 200
-	 */
-	memo?: string | null
-	/**
-	 * @maxLength 200
-	 */
-	compte?: string | null
-}
-
-export type ClientRequest = {
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	raison: string
-	/**
-	 * @maxLength 200
-	 */
-	type?: string | null
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	adresse1: string
-	/**
-	 * @maxLength 200
-	 */
-	adresse2?: string | null
-	/**
-	 * @maxLength 200
-	 */
-	adresse3?: string | null
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	zip_code: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	ville: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	pays: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	tel1: string
-	/**
-	 * @maxLength 200
-	 */
-	tel2?: string | null
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	email: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	correspondant: string
-	/**
-	 * @maxLength 200
-	 */
-	memo?: string | null
-	/**
-	 * @maxLength 200
-	 */
-	compte?: string | null
+	ids: number[]
 }
 
 export type EtapeCreate = {
@@ -369,7 +218,7 @@ export type EtapeCreate = {
 	 */
 	date_cloture?: string | null
 	fiche: number
-	machine: number
+	groupe_machine?: number | null
 }
 
 export type EtapeCreateRequest = {
@@ -402,7 +251,7 @@ export type EtapeCreateRequest = {
 	 */
 	date_cloture?: string | null
 	fiche: number
-	machine: number
+	groupe_machine?: number | null
 }
 
 export type EtapeDetail = {
@@ -446,6 +295,7 @@ export type EtapeDetail = {
 	 */
 	date_cloture?: string | null
 	fiche: number
+	groupe_machine?: number | null
 }
 
 export type EtapeDetailAjustage = {
@@ -489,6 +339,7 @@ export type EtapeDetailAjustage = {
 	 */
 	date_cloture?: string | null
 	fiche: number
+	groupe_machine?: number | null
 }
 
 export type EtapeDetailMachine = {
@@ -533,6 +384,7 @@ export type EtapeDetailMachine = {
 	 */
 	date_cloture?: string | null
 	fiche: number
+	groupe_machine?: number | null
 }
 
 export type EtapeModeleDetail = {
@@ -563,6 +415,7 @@ export type EtapeModeleDetail = {
 	 */
 	date_modification: string
 	fiche_modele: number
+	groupe_machine?: number | null
 }
 
 export type EtapeModeleDetailRequest = {
@@ -583,6 +436,7 @@ export type EtapeModeleDetailRequest = {
 	 */
 	description?: string | null
 	fiche_modele: number
+	groupe_machine?: number | null
 }
 
 export type EtapeModeleListCreate = {
@@ -612,7 +466,7 @@ export type EtapeModeleListCreate = {
 	 */
 	date_modification: string
 	fiche_modele: number
-	machine: number
+	groupe_machine?: number | null
 }
 
 export type EtapeModeleListCreateRequest = {
@@ -633,15 +487,7 @@ export type EtapeModeleListCreateRequest = {
 	 */
 	description?: string | null
 	fiche_modele: number
-	machine: number
-}
-
-export type Etat = {
-	id: number
-	/**
-	 * @maxLength 200
-	 */
-	designation: string
+	groupe_machine?: number | null
 }
 
 export type FicheCRUD = {
@@ -948,6 +794,24 @@ export type FicheModeleOptions = {
 	name: string
 }
 
+export type GroupeMachine = {
+	id: number
+	/**
+	 * @maxLength 300
+	 */
+	nom_groupe: string
+	prix_theorique?: number
+}
+
+export type GroupeMachineRequest = {
+	/**
+	 * @minLength 1
+	 * @maxLength 300
+	 */
+	nom_groupe: string
+	prix_theorique?: number
+}
+
 export type ListZone = {
 	id: number
 	/**
@@ -972,6 +836,7 @@ export type MachineDetail = {
 	description?: string | null
 	fonctionnelle?: boolean
 	est_active?: boolean
+	groupe_machine?: number | null
 }
 
 export type MachineDetailRequest = {
@@ -986,6 +851,7 @@ export type MachineDetailRequest = {
 	description?: string | null
 	fonctionnelle?: boolean
 	est_active?: boolean
+	groupe_machine?: number | null
 }
 
 export type NoteCreate = {
@@ -1113,24 +979,6 @@ export type PaginatedAffectationMachineDetailList = {
 	results?: AffectationMachineDetail[]
 }
 
-export type PaginatedClientList = {
-	/**
-	 * @example 123
-	 */
-	count?: number
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=4
-	 */
-	next?: string | null
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=2
-	 */
-	previous?: string | null
-	results?: Client[]
-}
-
 export type PaginatedEtapeModeleListCreateList = {
 	/**
 	 * @example 123
@@ -1147,24 +995,6 @@ export type PaginatedEtapeModeleListCreateList = {
 	 */
 	previous?: string | null
 	results?: EtapeModeleListCreate[]
-}
-
-export type PaginatedEtatList = {
-	/**
-	 * @example 123
-	 */
-	count?: number
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=4
-	 */
-	next?: string | null
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=2
-	 */
-	previous?: string | null
-	results?: Etat[]
 }
 
 export type PaginatedFicheModeleDetailList = {
@@ -1203,6 +1033,24 @@ export type PaginatedFicheModeleOptionsList = {
 	results?: FicheModeleOptions[]
 }
 
+export type PaginatedGroupeMachineList = {
+	/**
+	 * @example 123
+	 */
+	count?: number
+	/**
+	 * @format uri
+	 * @example http://api.example.org/accounts/?page=4
+	 */
+	next?: string | null
+	/**
+	 * @format uri
+	 * @example http://api.example.org/accounts/?page=2
+	 */
+	previous?: string | null
+	results?: GroupeMachine[]
+}
+
 export type PaginatedListZoneList = {
 	/**
 	 * @example 123
@@ -1237,24 +1085,6 @@ export type PaginatedMachineDetailList = {
 	 */
 	previous?: string | null
 	results?: MachineDetail[]
-}
-
-export type PaginatedNoteDetailList = {
-	/**
-	 * @example 123
-	 */
-	count?: number
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=4
-	 */
-	next?: string | null
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=2
-	 */
-	previous?: string | null
-	results?: NoteDetail[]
 }
 
 export type PaginatedPlanningMachineList = {
@@ -1330,73 +1160,6 @@ export type PatchedAffectationMachineDetailRequest = {
 	salarie?: number | null
 }
 
-export type PatchedClientRequest = {
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	raison?: string
-	/**
-	 * @maxLength 200
-	 */
-	type?: string | null
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	adresse1?: string
-	/**
-	 * @maxLength 200
-	 */
-	adresse2?: string | null
-	/**
-	 * @maxLength 200
-	 */
-	adresse3?: string | null
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	zip_code?: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	ville?: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	pays?: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	tel1?: string
-	/**
-	 * @maxLength 200
-	 */
-	tel2?: string | null
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	email?: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	correspondant?: string
-	/**
-	 * @maxLength 200
-	 */
-	memo?: string | null
-	/**
-	 * @maxLength 200
-	 */
-	compte?: string | null
-}
-
 export type PatchedEtapeCreateRequest = {
 	num_etape?: number
 	terminee?: boolean
@@ -1427,7 +1190,7 @@ export type PatchedEtapeCreateRequest = {
 	 */
 	date_cloture?: string | null
 	fiche?: number
-	machine?: number
+	groupe_machine?: number | null
 }
 
 export type PatchedEtapeModeleDetailRequest = {
@@ -1448,6 +1211,7 @@ export type PatchedEtapeModeleDetailRequest = {
 	 */
 	description?: string | null
 	fiche_modele?: number
+	groupe_machine?: number | null
 }
 
 export type PatchedFicheCRUDRequest = {
@@ -1484,6 +1248,15 @@ export type PatchedFicheModeleEtEtapesRequest = {
 	fourniture?: boolean
 }
 
+export type PatchedGroupeMachineRequest = {
+	/**
+	 * @minLength 1
+	 * @maxLength 300
+	 */
+	nom_groupe?: string
+	prix_theorique?: number
+}
+
 export type PatchedMachineDetailRequest = {
 	/**
 	 * @minLength 1
@@ -1496,6 +1269,7 @@ export type PatchedMachineDetailRequest = {
 	description?: string | null
 	fonctionnelle?: boolean
 	est_active?: boolean
+	groupe_machine?: number | null
 }
 
 export type PatchedNoteDetailRequest = {
@@ -1602,74 +1376,6 @@ export type SalarieFormOptions = {
 	 * @maxLength 200
 	 */
 	prenom: string
-}
-
-export type SalarieRequest = {
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	num_secu: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	civilite: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	nom: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	prenom: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	adresse1: string
-	/**
-	 * @maxLength 200
-	 */
-	adresse2?: string | null
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	zip_code: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	ville: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	pays: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	tel: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	email: string
-	/**
-	 * @format date
-	 */
-	date_embauche: string
-	/**
-	 * @format date
-	 */
-	date_depart?: string | null
-	user: number
-	aptitude?: number | null
-	zone?: number | null
 }
 
 export type StatutEnum =
