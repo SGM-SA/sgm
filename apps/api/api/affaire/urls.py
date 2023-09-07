@@ -4,7 +4,8 @@ from api.affaire.view import (
     AffaireDetail,
     AffaireDetailFiches,
     AffaireNumAffaire,
-    AffaireStatsGlobalView
+    AffaireStatsGlobalView,
+    AffaireStatsView,
 )
 
 urlpatterns = [
@@ -13,4 +14,5 @@ urlpatterns = [
     path("<int:pk>", AffaireDetail.as_view()),
     path("<int:pk>/fiches", AffaireDetailFiches.as_view()),
     path("stats", AffaireStatsGlobalView.as_view()),
+    path("stats/<int:pk>", AffaireStatsView.as_view()),
 ]

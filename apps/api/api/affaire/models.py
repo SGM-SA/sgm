@@ -125,5 +125,26 @@ class Affaire(models.Model):
         else:
             return 0
 
+    def temps_ajustage(self):
+        """
+        Temps total d'ajustage de la fiche
+        :return: int
+        """
+        return sum([fiche.temps_ajustage() for fiche in self.fiches.all()])
+
+    def temps_machine(self):
+        """
+        Temps total machine de la fiche
+        :return: int
+        """
+        return sum([fiche.temps_machine() for fiche in self.fiches.all()])
+
+    def temps_restant(self):
+        """
+        Temps restant de la fiche
+        :return: int
+        """
+        return sum([fiche.temps_restant() for fiche in self.fiches.all()])
+
     def __str__(self):
         return f"{self.num_affaire} - {self.statut} - {self.date_creation} - {self.date_rendu} - {self.date_cloture}"

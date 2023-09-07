@@ -1,4 +1,5 @@
 from django.db import models
+from constance import config
 
 
 class Fiche(models.Model):
@@ -39,3 +40,38 @@ class Fiche(models.Model):
             return round((100 * nb_etapes_terminees) / total, 0)
         else:
             return 0
+
+    def temps_ajustage(self):
+        """
+        Temps total d'ajustage de la fiche
+        :return: int
+        """
+        return sum(
+            [
+                e.temps
+                for e in self.etapes.all().filter(
+                    groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID
+                )
+            ]
+        )
+
+    def temps_machine(self):
+        """
+        Temps total machine de la fiche
+        :return: int
+        """
+        return sum(
+            [
+                e.temps
+                for e in self.etapes.all().exclude(
+                    groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID
+                )
+            ]
+        )
+
+    def temps_restant(self):
+        """
+        Temps restant de la fiche
+        :return: int
+        """
+        return sum([e.temps for e in self.etapes.all().filter(terminee=False)])
