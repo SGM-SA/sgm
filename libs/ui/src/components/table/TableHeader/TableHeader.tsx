@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 
 type TableHeaderProps = {
     title?: string
-    children?: React.FC
+    children?: ReactNode
 }
 
 export const TableHeader: React.FC<TableHeaderProps> = (props) => {

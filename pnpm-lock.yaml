@@ -65,6 +65,9 @@ dependencies:
   tslib:
     specifier: ^2.6.0
     version: 2.6.0
+  use-debounce:
+    specifier: ^9.0.4
+    version: 9.0.4(react@18.2.0)
   uuid:
     specifier: ^9.0.0
     version: 9.0.0
@@ -14100,6 +14103,15 @@ packages:
       '@types/react': 18.2.13
       react: 18.2.0
       tslib: 2.6.0
+
+  /use-debounce@9.0.4(react@18.2.0):
+    resolution: {integrity: sha512-6X8H/mikbrt0XE8e+JXRtZ8yYVvKkdYRfmIhWZYsP8rcNs9hk3APV8Ua2mFkKRLcJKVdnX2/Vwrmg2GWKUQEaQ==}
+    engines: {node: '>= 10.0.0'}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /use-resize-observer@9.1.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-R25VqO9Wb3asSD4eqtcxk8sJalvIOYBqS8MNZlpDSQ4l4xMQxC/J7Id9HoTqPq8FwULIn0PVW+OAqF2dyYbjow==}

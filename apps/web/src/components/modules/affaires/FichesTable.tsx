@@ -1,5 +1,5 @@
 import { Box, Button, Progress } from '@chakra-ui/react'
-import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteDestroy, fetchApiFichesDestroy, useApiAffairesFichesRetrieve } from '@sgm/openapi'
+import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteCreate, fetchApiFichesDestroy, useApiAffairesFichesRetrieve } from '@sgm/openapi'
 import { Table, createMeta } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
@@ -56,12 +56,13 @@ type FichesTableProps = {
 
 export const FichesTable: React.FC<FichesTableProps> = (props) => {
 
-    const { data, refetch } = useApiAffairesFichesRetrieve({ pathParams: { id: props.affaireId } })
+    const { data, refetch, isLoading } = useApiAffairesFichesRetrieve({ pathParams: { id: props.affaireId } })
 
 	return <Box className='not-striped'>
         <Table<FicheDetail>
             data={data?.fiches || []}
             columns={columns}
+            loading={isLoading}
             header={{
                 customHeader: () => <Box p='2em'>
                     <Button colorScheme='blue'
@@ -74,22 +75,31 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                 </Box>
             }}
             editable={true}
+            newRow={() => {
+                fetchApiFichesCreate({
+                    body: { affaire: props.affaireId }
+                }).then(() => refetch())
+            }}
             rowSelection={{
                 enabled: true,
-                actionsComponent: ({ checkedItems }) => {
+                actionsComponent: ({ checkedItems, resetSelection }) => {
                     return <Box>
                         <Button 
-                            colorScheme='red' 
+                            colorScheme='red'
                             mr='1em'
                             onClick={async () => {
-                                for (const checkedItem of checkedItems) {
-                                    // await fetchApiFichesDestroy({  })
-                                }
+                                await fetchApiFichesDeleteCreate({
+                                    body: {
+                                        ids: checkedItems.map(item => item.original.id)
+                                    }
+                                }).then(() => {
+                                    resetSelection()
+                                    refetch()
+                                })
                             }}
                         >Supprimer</Button>
                     </Box>
                 }
-
             }}
             styling={{
                 container: {

@@ -1,8 +1,8 @@
 import { Box, Progress } from '@chakra-ui/react'
 import { AffaireDetails, useApiAffairesList } from '@sgm/openapi'
-import { Table, createMeta, usePagination } from '@sgm/ui'
+import { Table, createMeta, useTableQueryHelper } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { DashboardLayout } from '../../components/layouts'
 import { FichesTable } from '../../components/modules'
 
@@ -10,10 +10,11 @@ const columnHelper = createColumnHelper<AffaireDetails>()
 
 const columns = [
     columnHelper.accessor('num_affaire', {
-        id: 'numero',
+        id: 'num_affaire',
         header: 'Numéro',
         meta: createMeta({
             editable: false,
+            sortable: true
         //     // customValidation: (value) => value < 1000 ? Err('Le numéro d\'affaire doit être supérieur à 1000') : Ok(true)
         })
     }),
@@ -26,7 +27,7 @@ const columns = [
         })
     }),
     columnHelper.accessor('avancement_affaire', {
-        id: 'avancement',
+        id: 'avancement_affaire',
         header: 'Avancement',
         cell: value => <Box>
             <Box as='span' fontSize='xs'>{value.getValue()}%</Box>
@@ -52,11 +53,12 @@ const columns = [
     }),
     // TODO: accessor sur la date de création (c'est quelle key ??)
     columnHelper.accessor('date_rendu', { // TODO: date_rendu ou date_cloture ?
-        id: 'delais',
+        id: 'date_rendu',
         header: 'Délais',
         meta: createMeta({
             editable: true,
-            type: 'date'
+            type: 'date',
+            sortable: true
         })
     }),
     columnHelper.accessor('statut', {
@@ -90,9 +92,9 @@ const columns = [
 
 const AffairesPage: React.FC = () => {
 
-    const { pagination, setPagination, fetchDataOptions } = usePagination()
+    const { pagination, setPagination, sorting, setSorting, fetchDataOptions } = useTableQueryHelper()
 
-    const { data } = useApiAffairesList(fetchDataOptions)
+    const { data, isLoading } = useApiAffairesList(fetchDataOptions)
 
 	return <>
     	<DashboardLayout 
@@ -102,18 +104,21 @@ const AffairesPage: React.FC = () => {
                 <Table<AffaireDetails>
                     columns={columns}
                     data={data}
+                    loading={isLoading}
                     pagination={pagination}
                     setPagination={setPagination}
-                    editable={true}
-                    rowCanExpand={true}
-                    renderSubComponent={({ row }) => <FichesTable affaireId={row.original.id} />}
+                    editable
+                    sorting={sorting}
+                    setSorting={setSorting}
+                    rowExpansion={{
+                        enabled: true,
+                        renderSubComponent: ({ row }) => <FichesTable affaireId={row.original.id} />
+                    }}
                     styling={{
                         table: {
                             variant: 'simple'
                         }
                     }}
-                    // rowSelectionActionsComponent=
-                    
                 />
         </DashboardLayout>
     </>
