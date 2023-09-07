@@ -2,6 +2,9 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from django.utils import timezone
 from api.affaire.models import Affaire
+from api.etape.models import Etape
+from api.fiche.models import Fiche
+from api.groupe_machine.models import GroupeMachine
 
 
 class AffaireListTestCase(APITestCase):
@@ -92,3 +95,60 @@ class AffaireStatsGlobalTestCase(APITestCase):
         self.assertEqual(data["terminees_semaine_der"], 0)
 
         self.assertEqual(data["en_retard"], 1)
+
+class StatsAffaireIndTestCase(APITestCase):
+    def setUp(self) -> None:
+        self.affaire = Affaire.objects.create(
+          num_affaire=1,
+          description="Test affaire 1",
+          observation="Observation affaire 1",
+          statut="S00",
+        )
+
+        self.groupe_machine = GroupeMachine.objects.create(
+          nom_groupe="Ajustage", prix_theorique=100
+        )
+        self.groupe_machine2 = GroupeMachine.objects.create(
+          nom_groupe="Scie", prix_theorique=20
+        )
+
+        self.fiche1 = Fiche.objects.create(
+          titre="Fiche test",
+          affaire=self.affaire,
+          fourniture=False,
+          id=1,
+        )
+
+        self.fiche2 = Fiche.objects.create(
+          titre="Fiche test",
+          affaire=self.affaire,
+          fourniture=False,
+          id=2,
+        )
+
+        Etape.objects.create(
+          fiche=self.fiche1, groupe_machine=self.groupe_machine, num_etape=1, temps=4
+        )
+
+        Etape.objects.create(
+          fiche=self.fiche1, groupe_machine=self.groupe_machine, num_etape=2, temps=8, terminee=True
+        )
+
+        Etape.objects.create(
+          fiche=self.fiche1, groupe_machine=self.groupe_machine2, num_etape=2, temps=8
+        )
+
+        Etape.objects.create(
+          fiche=self.fiche2, groupe_machine=self.groupe_machine2, num_etape=2, temps=7
+        )
+
+    def test_stats_affaire_ind(self):
+      response = self.client.get(f"/api/affaires/stats/{self.affaire.id}")
+      self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+      data = response.json()
+
+      self.assertEqual(data["temps_ajustage"], 12)
+      self.assertEqual(data["temps_machine"], 15)
+      self.assertEqual(data["temps_restant"], 19)
+
