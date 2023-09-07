@@ -12,6 +12,7 @@ from api.fiche.serializer import (
 from django.utils import timezone
 from typing import Dict
 
+
 class AffaireDetailsSerializer(serializers.ModelSerializer):
     """
     Serializer pour l'affichage des affaires
@@ -159,19 +160,50 @@ class AffaireStatsGlobalSerializer(serializers.Serializer):
     def get_par_statut(self, obj) -> Dict[str, int]:
         stats = {}
         for statut, _ in Affaire.STATUTS_AFFAIRE:
-          stats[statut] = Affaire.objects.filter(statut=statut).count()
+            stats[statut] = Affaire.objects.filter(statut=statut).count()
         return stats
 
     def get_terminees_cette_semaine(self, obj) -> int:
         debut_semaine = timezone.now() - timedelta(days=timezone.now().weekday())
         fin_semaine = debut_semaine + timedelta(days=6)
-        return Affaire.objects.filter(date_cloture__range=(debut_semaine, fin_semaine)).count()
+        return Affaire.objects.filter(
+            date_cloture__range=(debut_semaine, fin_semaine)
+        ).count()
 
     def get_terminees_semaine_der(self, obj) -> int:
-        debut_semaine_der = timezone.now() - timedelta(days=timezone.now().weekday() + 7)
+        debut_semaine_der = timezone.now() - timedelta(
+            days=timezone.now().weekday() + 7
+        )
         fin_semaine_der = debut_semaine_der + timedelta(days=6)
-        return Affaire.objects.filter(date_cloture__range=(debut_semaine_der, fin_semaine_der)).count()
+        return Affaire.objects.filter(
+            date_cloture__range=(debut_semaine_der, fin_semaine_der)
+        ).count()
 
     def get_en_retard(self, obj) -> int:
-        return Affaire.objects.filter(date_rendu__lt=timezone.now(), date_cloture=None).count()
+        return Affaire.objects.filter(
+            date_rendu__lt=timezone.now(), date_cloture=None
+        ).count()
 
+
+class AffaireStatsSerializer(serializers.Serializer):
+    """
+    Serializer pour les statistiques d'une affaire précise
+      on y retrouve
+        - temps ajustage total (théorique)
+        - temps machine total (théorique)
+        - temps restant total
+    """
+
+    temps_ajustage = serializers.SerializerMethodField()
+    temps_machine = serializers.SerializerMethodField()
+    temps_restant = serializers.SerializerMethodField()
+
+    def get_temps_ajustage(self, affaire: Affaire):
+        # pour chaque fiches prendre etapes.temps
+        return affaire.temps_ajustage()
+
+    def get_temps_machine(self, affaire: Affaire):
+        return affaire.temps_machine()
+
+    def get_temps_restant(self, affaire: Affaire):
+        return affaire.temps_restant()

@@ -5,10 +5,12 @@ from api.etape.models import Etape
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 
+
 class PointageSerializer(serializers.Serializer):
     """
     Serializer pour les pointages,
     """
+
     etape = serializers.PrimaryKeyRelatedField(queryset=Etape.objects.all())
 
 
@@ -22,9 +24,7 @@ class ReadPointageSerializer(serializers.ModelSerializer):
     en_cours = serializers.SerializerMethodField(
         method_name="get_en_cours", read_only=True
     )
-    duree = serializers.SerializerMethodField(
-        method_name="get_duree", read_only=True
-    )
+    duree = serializers.SerializerMethodField(method_name="get_duree", read_only=True)
 
     class Meta:
         model = PointageEtape

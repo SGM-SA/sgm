@@ -101,5 +101,3 @@ class PointageGestionTest(TestCase):
 
         self.assertEqual(PointageEtape.objects.get(etape=self.etape1).en_cours(), False)
         self.assertEqual(PointageEtape.objects.get(etape=self.etape2).en_cours(), True)
-
-
