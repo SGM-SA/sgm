@@ -2,10 +2,11 @@ from django.http import Http404
 
 from api.affaire.models import Affaire
 from api.affaire.serializer import (
-  AffaireDetailsSerializer,
-  AffaireFichesSerializer,
-  AffaireNumAffaireSerializer,
-  AffaireStatsGlobalSerializer, AffaireStatsSerializer,
+    AffaireDetailsSerializer,
+    AffaireFichesSerializer,
+    AffaireNumAffaireSerializer,
+    AffaireStatsGlobalSerializer,
+    AffaireStatsSerializer,
 )
 from rest_framework import generics, pagination, filters, views, status
 from rest_framework.response import Response
@@ -152,25 +153,25 @@ class AffaireStatsGlobalView(views.APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 @extend_schema(
-  summary="Stats Affaire",
-  description="Permet de récupérer les stats d'une affaire spécifique",
-  tags=["Affaire"],
-  responses={200: AffaireStatsSerializer},
+    summary="Stats Affaire",
+    description="Permet de récupérer les stats d'une affaire spécifique",
+    tags=["Affaire"],
+    responses={200: AffaireStatsSerializer},
 )
 class AffaireStatsView(views.APIView):
-  """
-  Vue pour obtenir les statistiques d'une affaire spécifique.
-  """
+    """
+    Vue pour obtenir les statistiques d'une affaire spécifique.
+    """
 
-  def get_object(self, pk):
-    try:
-      return Affaire.objects.get(pk=pk)
-    except Affaire.DoesNotExist:
-      raise Http404
+    def get_object(self, pk):
+        try:
+            return Affaire.objects.get(pk=pk)
+        except Affaire.DoesNotExist:
+            raise Http404
 
-  def get(self, request, pk, *args, **kwargs):
-    affaire = self.get_object(pk)
-    serializer = AffaireStatsSerializer(affaire)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
+    def get(self, request, pk, *args, **kwargs):
+        affaire = self.get_object(pk)
+        serializer = AffaireStatsSerializer(affaire)
+        return Response(serializer.data, status=status.HTTP_200_OK)

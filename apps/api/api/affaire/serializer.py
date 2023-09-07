@@ -12,6 +12,7 @@ from api.fiche.serializer import (
 from django.utils import timezone
 from typing import Dict
 
+
 class AffaireDetailsSerializer(serializers.ModelSerializer):
     """
     Serializer pour l'affichage des affaires

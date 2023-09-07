@@ -96,59 +96,63 @@ class AffaireStatsGlobalTestCase(APITestCase):
 
         self.assertEqual(data["en_retard"], 1)
 
+
 class StatsAffaireIndTestCase(APITestCase):
     def setUp(self) -> None:
         self.affaire = Affaire.objects.create(
-          num_affaire=1,
-          description="Test affaire 1",
-          observation="Observation affaire 1",
-          statut="S00",
+            num_affaire=1,
+            description="Test affaire 1",
+            observation="Observation affaire 1",
+            statut="S00",
         )
 
         self.groupe_machine = GroupeMachine.objects.create(
-          nom_groupe="Ajustage", prix_theorique=100
+            nom_groupe="Ajustage", prix_theorique=100
         )
         self.groupe_machine2 = GroupeMachine.objects.create(
-          nom_groupe="Scie", prix_theorique=20
+            nom_groupe="Scie", prix_theorique=20
         )
 
         self.fiche1 = Fiche.objects.create(
-          titre="Fiche test",
-          affaire=self.affaire,
-          fourniture=False,
-          id=1,
+            titre="Fiche test",
+            affaire=self.affaire,
+            fourniture=False,
+            id=1,
         )
 
         self.fiche2 = Fiche.objects.create(
-          titre="Fiche test",
-          affaire=self.affaire,
-          fourniture=False,
-          id=2,
+            titre="Fiche test",
+            affaire=self.affaire,
+            fourniture=False,
+            id=2,
         )
 
         Etape.objects.create(
-          fiche=self.fiche1, groupe_machine=self.groupe_machine, num_etape=1, temps=4
+            fiche=self.fiche1, groupe_machine=self.groupe_machine, num_etape=1, temps=4
         )
 
         Etape.objects.create(
-          fiche=self.fiche1, groupe_machine=self.groupe_machine, num_etape=2, temps=8, terminee=True
+            fiche=self.fiche1,
+            groupe_machine=self.groupe_machine,
+            num_etape=2,
+            temps=8,
+            terminee=True,
         )
 
         Etape.objects.create(
-          fiche=self.fiche1, groupe_machine=self.groupe_machine2, num_etape=2, temps=8
+            fiche=self.fiche1, groupe_machine=self.groupe_machine2, num_etape=2, temps=8
         )
 
         Etape.objects.create(
-          fiche=self.fiche2, groupe_machine=self.groupe_machine2, num_etape=2, temps=7
+            fiche=self.fiche2, groupe_machine=self.groupe_machine2, num_etape=2, temps=7
         )
 
     def test_stats_affaire_ind(self):
-      response = self.client.get(f"/api/affaires/stats/{self.affaire.id}")
-      self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response = self.client.get(f"/api/affaires/stats/{self.affaire.id}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-      data = response.json()
+        data = response.json()
 
-      self.assertEqual(data["temps_ajustage"], 12)
-      self.assertEqual(data["temps_machine"], 15)
-      self.assertEqual(data["temps_restant"], 19)
-
+        self.assertEqual(data["temps_ajustage"], 12)
+        self.assertEqual(data["temps_machine"], 15)
+        self.assertEqual(data["temps_restant"], 19)
