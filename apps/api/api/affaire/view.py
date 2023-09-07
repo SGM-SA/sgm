@@ -3,9 +3,11 @@ from api.affaire.serializer import (
     AffaireDetailsSerializer,
     AffaireFichesSerializer,
     AffaireNumAffaireSerializer,
+    AffaireStatsGlobalSerializer,
 )
-from rest_framework import generics, pagination
-from rest_framework import filters
+from rest_framework import generics, pagination, filters, views, status
+from rest_framework.response import Response
+
 from drf_spectacular.utils import (
     extend_schema,
     extend_schema_view,
@@ -130,3 +132,21 @@ class AffaireNumAffaire(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ["^num_affaire"]
     ordering_fields = ["num_affaire"]
+
+@extend_schema(
+    summary="Stats Affaire",
+    description="Permet de récupérer les stats globals des affaires",
+    tags=["Affaire"],
+    responses={200: AffaireStatsGlobalSerializer},
+)
+class AffaireStatsGlobalView(views.APIView):
+    """
+    Permet de récupérer les stats globals des affaires
+    """
+
+    def get(self, request, *args, **kwargs):
+        serializer = AffaireStatsGlobalSerializer({})
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
