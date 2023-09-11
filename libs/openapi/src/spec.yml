@@ -145,6 +145,46 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedAffaireNumAffaireList'
           description: ''
+  /api/affaires/stats:
+    get:
+      operationId: api_affaires_stats_retrieve
+      description: Permet de récupérer les stats globals des affaires
+      summary: Stats Affaire
+      tags:
+      - Affaire
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AffaireStatsGlobal'
+          description: ''
+  /api/affaires/stats/{id}:
+    get:
+      operationId: api_affaires_stats_retrieve_2
+      description: Permet de récupérer les stats d'une affaire spécifique
+      summary: Stats Affaire
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Affaire
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AffaireStats'
+          description: ''
   /api/affectations/ajustages/:
     get:
       operationId: api_affectations_ajustages_list
@@ -1794,6 +1834,76 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedPlanningZoneList'
           description: ''
+  /api/pointages/:
+    post:
+      operationId: api_pointages_create
+      description: |-
+        Si aucun pointage n'est en cours, crée un nouveau pointage
+
+        Si un pointage est en cours et que l'étape est différente que celle du pointage en cours,
+        stoppe le pointage en cour et en crée un nouveau
+
+        Si un pointage est en cours et que l'étape est la même que celle du pointage en cours,
+        stoppe le pointage en cours
+      summary: Gestion Pointage
+      tags:
+      - Pointage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PointageRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PointageRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PointageRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pointage'
+          description: ''
+        '400':
+          description: No response body
+        '404':
+          description: No response body
+  /api/pointages/list:
+    get:
+      operationId: api_pointages_list_list
+      description: Liste des pointages
+      summary: Pointage
+      parameters:
+      - in: query
+        name: en_cours
+        schema:
+          type: string
+          enum:
+          - 'false'
+          - 'true'
+        description: Filtre les pointages selon qu'ils soient en cours ou non
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - Pointage
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedReadPointageList'
+          description: ''
   /api/salaries/form-options:
     get:
       operationId: api_salaries_form_options_list
@@ -2142,6 +2252,56 @@ components:
             de SGM
       required:
       - id
+    AffaireStats:
+      type: object
+      description: |-
+        Serializer pour les statistiques d'une affaire précise
+          on y retrouve
+            - temps ajustage total (théorique)
+            - temps machine total (théorique)
+            - temps restant total
+      properties:
+        temps_ajustage:
+          type: string
+          readOnly: true
+        temps_machine:
+          type: string
+          readOnly: true
+        temps_restant:
+          type: string
+          readOnly: true
+      required:
+      - temps_ajustage
+      - temps_machine
+      - temps_restant
+    AffaireStatsGlobal:
+      type: object
+      description: |-
+        Serializer pour les statistiques des affaires.
+          on y retrouve
+            - le nombre d'affaires par statut
+            - nombre d'affaires terminées cette semaine
+            - nombre d'affaires en retard
+      properties:
+        par_statut:
+          type: object
+          additionalProperties:
+            type: integer
+          readOnly: true
+        terminees_cette_semaine:
+          type: integer
+          readOnly: true
+        terminees_semaine_der:
+          type: integer
+          readOnly: true
+        en_retard:
+          type: integer
+          readOnly: true
+      required:
+      - en_retard
+      - par_statut
+      - terminees_cette_semaine
+      - terminees_semaine_der
     AffectationAjustageDetail:
       type: object
       properties:
@@ -2218,6 +2378,18 @@ components:
           description: Liste des ids des objets à supprimer
       required:
       - ids
+    Etape:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        num_etape:
+          type: integer
+          title: N°Étape
+      required:
+      - id
+      - num_etape
     EtapeCreate:
       type: object
       properties:
@@ -3652,6 +3824,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PlanningZone'
+    PaginatedReadPointageList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadPointage'
     PaginatedSalarieFormOptionsList:
       type: object
       properties:
@@ -3896,6 +4088,59 @@ components:
       - description
       - id
       - nom
+    Pointage:
+      type: object
+      description: Serializer pour les pointages,
+      properties:
+        etape:
+          type: integer
+      required:
+      - etape
+    PointageRequest:
+      type: object
+      description: Serializer pour les pointages,
+      properties:
+        etape:
+          type: integer
+      required:
+      - etape
+    ReadPointage:
+      type: object
+      description: Serializer pour les pointages en lecture
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: string
+          readOnly: true
+        etape:
+          allOf:
+          - $ref: '#/components/schemas/Etape'
+          readOnly: true
+        en_cours:
+          type: boolean
+          readOnly: true
+        duree:
+          type: number
+          format: float
+          readOnly: true
+        date_debut:
+          type: string
+          format: date-time
+          title: Date de début
+        date_fin:
+          type: string
+          format: date-time
+          nullable: true
+          title: Date de fin
+      required:
+      - date_debut
+      - duree
+      - en_cours
+      - etape
+      - id
+      - user
     Salarie:
       type: object
       properties:

@@ -1,5 +1,6 @@
 /// <reference types="vitest" />
-import { defineConfig, searchForWorkspaceRoot } from 'vite';
+
+import { defineConfig, searchForWorkspaceRoot } from 'vite'
 import react from '@vitejs/plugin-react';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 import generouted from '@generouted/react-router/plugin'
@@ -30,11 +31,11 @@ export default defineConfig({
     }),
     generouted({
       source: {
-        routes: './src/pages/**/[\\w[-]*.{jsx,tsx}',
-        modals: './src/modals/**/[+]*.{jsx,tsx}',
+        routes: searchForWorkspaceRoot(process.cwd()) + '/apps/web/src/pages/**/[\\w[-]*.{jsx,tsx}',
+        modals: searchForWorkspaceRoot(process.cwd()) + '/apps/web/src/modals/**/[+]*.{jsx,tsx}',
       },
-      output: '../../libs/web/router/src/router.ts',
-    })
+      output: searchForWorkspaceRoot(process.cwd()) + '/libs/web/router/src/router.ts',
+    }),
   ],
 
   test: {

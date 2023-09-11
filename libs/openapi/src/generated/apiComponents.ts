@@ -299,6 +299,122 @@ export const useApiAffairesNumsList = <
 	})
 }
 
+export type ApiAffairesStatsRetrieveError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiAffairesStatsRetrieveVariables = ApiContext['fetcherOptions']
+
+/**
+ * Permet de récupérer les stats globals des affaires
+ */
+export const fetchApiAffairesStatsRetrieve = (
+	variables: ApiAffairesStatsRetrieveVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.AffaireStatsGlobal,
+		ApiAffairesStatsRetrieveError,
+		undefined,
+		{},
+		{},
+		{}
+	>({ url: '/api/affaires/stats', method: 'get', ...variables, signal })
+
+/**
+ * Permet de récupérer les stats globals des affaires
+ */
+export const useApiAffairesStatsRetrieve = <TData = Schemas.AffaireStatsGlobal>(
+	variables: ApiAffairesStatsRetrieveVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			Schemas.AffaireStatsGlobal,
+			ApiAffairesStatsRetrieveError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		Schemas.AffaireStatsGlobal,
+		ApiAffairesStatsRetrieveError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/affaires/stats',
+			operationId: 'apiAffairesStatsRetrieve',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiAffairesStatsRetrieve(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
+export type ApiAffairesStatsRetrieve2PathParams = {
+	id: number
+}
+
+export type ApiAffairesStatsRetrieve2Error = Fetcher.ErrorWrapper<undefined>
+
+export type ApiAffairesStatsRetrieve2Variables = {
+	pathParams: ApiAffairesStatsRetrieve2PathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Permet de récupérer les stats d'une affaire spécifique
+ */
+export const fetchApiAffairesStatsRetrieve2 = (
+	variables: ApiAffairesStatsRetrieve2Variables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.AffaireStats,
+		ApiAffairesStatsRetrieve2Error,
+		undefined,
+		{},
+		{},
+		ApiAffairesStatsRetrieve2PathParams
+	>({ url: '/api/affaires/stats/{id}', method: 'get', ...variables, signal })
+
+/**
+ * Permet de récupérer les stats d'une affaire spécifique
+ */
+export const useApiAffairesStatsRetrieve2 = <TData = Schemas.AffaireStats>(
+	variables: ApiAffairesStatsRetrieve2Variables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			Schemas.AffaireStats,
+			ApiAffairesStatsRetrieve2Error,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		Schemas.AffaireStats,
+		ApiAffairesStatsRetrieve2Error,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/affaires/stats/{id}',
+			operationId: 'apiAffairesStatsRetrieve2',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiAffairesStatsRetrieve2(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
 export type ApiAffectationsAjustagesListQueryParams = {
 	/**
 	 * A page number within the paginated result set.
@@ -3712,6 +3828,135 @@ export const useApiPlanningZoneList = <
 	})
 }
 
+export type ApiPointagesCreateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiPointagesCreateVariables = {
+	body: Schemas.PointageRequest
+} & ApiContext['fetcherOptions']
+
+/**
+ * Si aucun pointage n'est en cours, crée un nouveau pointage
+ *
+ * Si un pointage est en cours et que l'étape est différente que celle du pointage en cours,
+ * stoppe le pointage en cour et en crée un nouveau
+ *
+ * Si un pointage est en cours et que l'étape est la même que celle du pointage en cours,
+ * stoppe le pointage en cours
+ */
+export const fetchApiPointagesCreate = (
+	variables: ApiPointagesCreateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.Pointage,
+		ApiPointagesCreateError,
+		Schemas.PointageRequest,
+		{},
+		{},
+		{}
+	>({ url: '/api/pointages/', method: 'post', ...variables, signal })
+
+/**
+ * Si aucun pointage n'est en cours, crée un nouveau pointage
+ *
+ * Si un pointage est en cours et que l'étape est différente que celle du pointage en cours,
+ * stoppe le pointage en cour et en crée un nouveau
+ *
+ * Si un pointage est en cours et que l'étape est la même que celle du pointage en cours,
+ * stoppe le pointage en cours
+ */
+export const useApiPointagesCreate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			Schemas.Pointage,
+			ApiPointagesCreateError,
+			ApiPointagesCreateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		Schemas.Pointage,
+		ApiPointagesCreateError,
+		ApiPointagesCreateVariables
+	>({
+		mutationFn: (variables: ApiPointagesCreateVariables) =>
+			fetchApiPointagesCreate({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
+export type ApiPointagesListListQueryParams = {
+	/**
+	 * Filtre les pointages selon qu'ils soient en cours ou non
+	 */
+	en_cours?: 'false' | 'true'
+	/**
+	 * A page number within the paginated result set.
+	 */
+	page?: number
+}
+
+export type ApiPointagesListListError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiPointagesListListVariables = {
+	queryParams?: ApiPointagesListListQueryParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Liste des pointages
+ */
+export const fetchApiPointagesListList = (
+	variables: ApiPointagesListListVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.PaginatedReadPointageList,
+		ApiPointagesListListError,
+		undefined,
+		{},
+		ApiPointagesListListQueryParams,
+		{}
+	>({ url: '/api/pointages/list', method: 'get', ...variables, signal })
+
+/**
+ * Liste des pointages
+ */
+export const useApiPointagesListList = <
+	TData = Schemas.PaginatedReadPointageList
+>(
+	variables: ApiPointagesListListVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			Schemas.PaginatedReadPointageList,
+			ApiPointagesListListError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		Schemas.PaginatedReadPointageList,
+		ApiPointagesListListError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/pointages/list',
+			operationId: 'apiPointagesListList',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiPointagesListList(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
 export type ApiSalariesFormOptionsListQueryParams = {
 	/**
 	 * A page number within the paginated result set.
@@ -4047,6 +4292,16 @@ export type QueryOperation =
 			variables: ApiAffairesNumsListVariables
 	  }
 	| {
+			path: '/api/affaires/stats'
+			operationId: 'apiAffairesStatsRetrieve'
+			variables: ApiAffairesStatsRetrieveVariables
+	  }
+	| {
+			path: '/api/affaires/stats/{id}'
+			operationId: 'apiAffairesStatsRetrieve2'
+			variables: ApiAffairesStatsRetrieve2Variables
+	  }
+	| {
 			path: '/api/affectations/ajustages/'
 			operationId: 'apiAffectationsAjustagesList'
 			variables: ApiAffectationsAjustagesListVariables
@@ -4150,6 +4405,11 @@ export type QueryOperation =
 			path: '/api/planning/zone'
 			operationId: 'apiPlanningZoneList'
 			variables: ApiPlanningZoneListVariables
+	  }
+	| {
+			path: '/api/pointages/list'
+			operationId: 'apiPointagesListList'
+			variables: ApiPointagesListListVariables
 	  }
 	| {
 			path: '/api/salaries/form-options'

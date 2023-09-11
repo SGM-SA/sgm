@@ -15,7 +15,8 @@
 			"outputs": ["{options.outputPath}"],
 			"defaultConfiguration": "production",
 			"options": {
-				"outputPath": "dist/apps/web"
+				"outputPath": "dist/apps/web",
+				"cwd": "apps/web"
 			},
 			"configurations": {
 				"development": {
@@ -30,8 +31,7 @@
 			"executor": "@nx/vite:dev-server",
 			"defaultConfiguration": "development",
 			"options": {
-				"buildTarget": "web:build:vite",
-				"cwd": "apps/web"
+				"buildTarget": "web:build:vite"
 			},
 			"configurations": {
 				"development": {
@@ -47,8 +47,7 @@
 		"dev": {
 			"executor": "nx:run-commands",
 			"options": {
-				"command": "nx run web:serve",
-				"cwd": "apps/web"
+				"command": "nx run web:serve"
 			}
 		},
 		"preview": {

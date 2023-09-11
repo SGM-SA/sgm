@@ -132,6 +132,35 @@ export type AffaireNumAffaire = {
 	num_affaire?: number | null
 }
 
+/**
+ * Serializer pour les statistiques d'une affaire précise
+ *   on y retrouve
+ *     - temps ajustage total (théorique)
+ *     - temps machine total (théorique)
+ *     - temps restant total
+ */
+export type AffaireStats = {
+	temps_ajustage: string
+	temps_machine: string
+	temps_restant: string
+}
+
+/**
+ * Serializer pour les statistiques des affaires.
+ *   on y retrouve
+ *     - le nombre d'affaires par statut
+ *     - nombre d'affaires terminées cette semaine
+ *     - nombre d'affaires en retard
+ */
+export type AffaireStatsGlobal = {
+	par_statut: {
+		[key: string]: number
+	}
+	terminees_cette_semaine: number
+	terminees_semaine_der: number
+	en_retard: number
+}
+
 export type AffectationAjustageDetail = {
 	id: number
 	/**
@@ -177,6 +206,11 @@ export type BulkDeleteRequest = {
 	 * Liste des ids des objets à supprimer
 	 */
 	ids: number[]
+}
+
+export type Etape = {
+	id: number
+	num_etape: number
 }
 
 export type EtapeCreate = {
@@ -1123,6 +1157,24 @@ export type PaginatedPlanningZoneList = {
 	results?: PlanningZone[]
 }
 
+export type PaginatedReadPointageList = {
+	/**
+	 * @example 123
+	 */
+	count?: number
+	/**
+	 * @format uri
+	 * @example http://api.example.org/accounts/?page=4
+	 */
+	next?: string | null
+	/**
+	 * @format uri
+	 * @example http://api.example.org/accounts/?page=2
+	 */
+	previous?: string | null
+	results?: ReadPointage[]
+}
+
 export type PaginatedSalarieFormOptionsList = {
 	/**
 	 * @example 123
@@ -1305,6 +1357,42 @@ export type PlanningZone = {
 	 */
 	description: string
 	affaires: AffaireFichesEtapesAjustage[]
+}
+
+/**
+ * Serializer pour les pointages,
+ */
+export type Pointage = {
+	etape: number
+}
+
+/**
+ * Serializer pour les pointages,
+ */
+export type PointageRequest = {
+	etape: number
+}
+
+/**
+ * Serializer pour les pointages en lecture
+ */
+export type ReadPointage = {
+	id: number
+	user: string
+	etape: Etape
+	en_cours: boolean
+	/**
+	 * @format float
+	 */
+	duree: number
+	/**
+	 * @format date-time
+	 */
+	date_debut: string
+	/**
+	 * @format date-time
+	 */
+	date_fin?: string | null
 }
 
 export type Salarie = {
