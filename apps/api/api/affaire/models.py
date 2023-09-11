@@ -74,8 +74,9 @@ class Affaire(models.Model):
     statut = models.CharField(
         "statut de l'affaire",
         max_length=200,
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
+        default="INCONNU",
         choices=STATUTS_AFFAIRE,
     )
 

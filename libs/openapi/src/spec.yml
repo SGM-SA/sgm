@@ -175,13 +175,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetail'
+              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetail'
+              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetail'
+              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -228,13 +228,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetail'
+              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetail'
+              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetail'
+              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -260,13 +260,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationAjustageDetail'
+              $ref: '#/components/schemas/PatchedAffectationAjustageDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationAjustageDetail'
+              $ref: '#/components/schemas/PatchedAffectationAjustageDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationAjustageDetail'
+              $ref: '#/components/schemas/PatchedAffectationAjustageDetailRequest'
       security:
       - jwtAuth: []
       - {}
@@ -323,13 +323,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetail'
+              $ref: '#/components/schemas/AffectationMachineDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetail'
+              $ref: '#/components/schemas/AffectationMachineDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetail'
+              $ref: '#/components/schemas/AffectationMachineDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -376,13 +376,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetail'
+              $ref: '#/components/schemas/AffectationMachineDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetail'
+              $ref: '#/components/schemas/AffectationMachineDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetail'
+              $ref: '#/components/schemas/AffectationMachineDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -408,13 +408,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationMachineDetail'
+              $ref: '#/components/schemas/PatchedAffectationMachineDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationMachineDetail'
+              $ref: '#/components/schemas/PatchedAffectationMachineDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationMachineDetail'
+              $ref: '#/components/schemas/PatchedAffectationMachineDetailRequest'
       security:
       - jwtAuth: []
       - {}
@@ -451,13 +451,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EtapeCreate'
+              $ref: '#/components/schemas/EtapeCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/EtapeCreate'
+              $ref: '#/components/schemas/EtapeCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/EtapeCreate'
+              $ref: '#/components/schemas/EtapeCreateRequest'
         required: true
       security:
       - jwtAuth: []
@@ -506,13 +506,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EtapeCreate'
+              $ref: '#/components/schemas/EtapeCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/EtapeCreate'
+              $ref: '#/components/schemas/EtapeCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/EtapeCreate'
+              $ref: '#/components/schemas/EtapeCreateRequest'
         required: true
       security:
       - jwtAuth: []
@@ -539,13 +539,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedEtapeCreate'
+              $ref: '#/components/schemas/PatchedEtapeCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedEtapeCreate'
+              $ref: '#/components/schemas/PatchedEtapeCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedEtapeCreate'
+              $ref: '#/components/schemas/PatchedEtapeCreateRequest'
       security:
       - jwtAuth: []
       - {}
@@ -584,13 +584,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
         required: true
       security:
       - jwtAuth: []
@@ -611,13 +611,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FicheCRUD'
+              $ref: '#/components/schemas/FicheCRUDRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/FicheCRUD'
+              $ref: '#/components/schemas/FicheCRUDRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/FicheCRUD'
+              $ref: '#/components/schemas/FicheCRUDRequest'
         required: true
       security:
       - jwtAuth: []
@@ -670,13 +670,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FicheCRUD'
+              $ref: '#/components/schemas/FicheCRUDRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/FicheCRUD'
+              $ref: '#/components/schemas/FicheCRUDRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/FicheCRUD'
+              $ref: '#/components/schemas/FicheCRUDRequest'
         required: true
       security:
       - jwtAuth: []
@@ -705,13 +705,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedFicheCRUD'
+              $ref: '#/components/schemas/PatchedFicheCRUDRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedFicheCRUD'
+              $ref: '#/components/schemas/PatchedFicheCRUDRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedFicheCRUD'
+              $ref: '#/components/schemas/PatchedFicheCRUDRequest'
       security:
       - jwtAuth: []
       - {}
@@ -773,13 +773,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
         required: true
       security:
       - jwtAuth: []
@@ -868,13 +868,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupeMachine'
+              $ref: '#/components/schemas/GroupeMachineRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/GroupeMachine'
+              $ref: '#/components/schemas/GroupeMachineRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/GroupeMachine'
+              $ref: '#/components/schemas/GroupeMachineRequest'
         required: true
       security:
       - jwtAuth: []
@@ -927,13 +927,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupeMachine'
+              $ref: '#/components/schemas/GroupeMachineRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/GroupeMachine'
+              $ref: '#/components/schemas/GroupeMachineRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/GroupeMachine'
+              $ref: '#/components/schemas/GroupeMachineRequest'
         required: true
       security:
       - jwtAuth: []
@@ -962,13 +962,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedGroupeMachine'
+              $ref: '#/components/schemas/PatchedGroupeMachineRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedGroupeMachine'
+              $ref: '#/components/schemas/PatchedGroupeMachineRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedGroupeMachine'
+              $ref: '#/components/schemas/PatchedGroupeMachineRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1009,13 +1009,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/BulkDelete'
+              $ref: '#/components/schemas/BulkDeleteRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1059,13 +1059,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MachineDetail'
+              $ref: '#/components/schemas/MachineDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/MachineDetail'
+              $ref: '#/components/schemas/MachineDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/MachineDetail'
+              $ref: '#/components/schemas/MachineDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1116,13 +1116,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MachineDetail'
+              $ref: '#/components/schemas/MachineDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/MachineDetail'
+              $ref: '#/components/schemas/MachineDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/MachineDetail'
+              $ref: '#/components/schemas/MachineDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1150,13 +1150,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedMachineDetail'
+              $ref: '#/components/schemas/PatchedMachineDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedMachineDetail'
+              $ref: '#/components/schemas/PatchedMachineDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedMachineDetail'
+              $ref: '#/components/schemas/PatchedMachineDetailRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1223,13 +1223,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EtapeModeleListCreate'
+              $ref: '#/components/schemas/EtapeModeleListCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/EtapeModeleListCreate'
+              $ref: '#/components/schemas/EtapeModeleListCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/EtapeModeleListCreate'
+              $ref: '#/components/schemas/EtapeModeleListCreateRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1282,13 +1282,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EtapeModeleDetail'
+              $ref: '#/components/schemas/EtapeModeleDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/EtapeModeleDetail'
+              $ref: '#/components/schemas/EtapeModeleDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/EtapeModeleDetail'
+              $ref: '#/components/schemas/EtapeModeleDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1317,13 +1317,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedEtapeModeleDetail'
+              $ref: '#/components/schemas/PatchedEtapeModeleDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedEtapeModeleDetail'
+              $ref: '#/components/schemas/PatchedEtapeModeleDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedEtapeModeleDetail'
+              $ref: '#/components/schemas/PatchedEtapeModeleDetailRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1389,13 +1389,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FicheModeleDetail'
+              $ref: '#/components/schemas/FicheModeleDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/FicheModeleDetail'
+              $ref: '#/components/schemas/FicheModeleDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/FicheModeleDetail'
+              $ref: '#/components/schemas/FicheModeleDetailRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1447,13 +1447,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapes'
+              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapes'
+              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapes'
+              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1481,13 +1481,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedFicheModeleEtEtapes'
+              $ref: '#/components/schemas/PatchedFicheModeleEtEtapesRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedFicheModeleEtEtapes'
+              $ref: '#/components/schemas/PatchedFicheModeleEtEtapesRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedFicheModeleEtEtapes'
+              $ref: '#/components/schemas/PatchedFicheModeleEtEtapesRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1542,13 +1542,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapes'
+              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapes'
+              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapes'
+              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1596,13 +1596,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NoteCreate'
+              $ref: '#/components/schemas/NoteCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/NoteCreate'
+              $ref: '#/components/schemas/NoteCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/NoteCreate'
+              $ref: '#/components/schemas/NoteCreateRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1652,13 +1652,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NoteDetail'
+              $ref: '#/components/schemas/NoteDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/NoteDetail'
+              $ref: '#/components/schemas/NoteDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/NoteDetail'
+              $ref: '#/components/schemas/NoteDetailRequest'
         required: true
       security:
       - jwtAuth: []
@@ -1686,13 +1686,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedNoteDetail'
+              $ref: '#/components/schemas/PatchedNoteDetailRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedNoteDetail'
+              $ref: '#/components/schemas/PatchedNoteDetailRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedNoteDetail'
+              $ref: '#/components/schemas/PatchedNoteDetailRequest'
       security:
       - jwtAuth: []
       - {}
@@ -1880,13 +1880,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenObtainPair'
+              $ref: '#/components/schemas/TokenObtainPairRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/TokenObtainPair'
+              $ref: '#/components/schemas/TokenObtainPairRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/TokenObtainPair'
+              $ref: '#/components/schemas/TokenObtainPairRequest'
         required: true
       responses:
         '200':
@@ -1907,13 +1907,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: '#/components/schemas/TokenRefreshRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: '#/components/schemas/TokenRefreshRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/TokenRefresh'
+              $ref: '#/components/schemas/TokenRefreshRequest'
         required: true
       responses:
         '200':
@@ -1962,12 +1962,9 @@ components:
           nullable: true
           title: Montant de l'affaire
         statut:
-          nullable: true
-          title: Statut de l'affaire
-          oneOf:
+          allOf:
           - $ref: '#/components/schemas/StatutEnum'
-          - $ref: '#/components/schemas/BlankEnum'
-          - $ref: '#/components/schemas/NullEnum'
+          title: Statut de l'affaire
         date_rendu:
           type: string
           format: date
@@ -2162,6 +2159,19 @@ components:
       required:
       - id
       - semaine_affectation
+    AffectationAjustageDetailRequest:
+      type: object
+      properties:
+        semaine_affectation:
+          type: string
+          format: date
+          title: Semaine d'affectation de l'étape
+        etape:
+          type: integer
+        zone:
+          type: integer
+      required:
+      - semaine_affectation
     AffectationMachineDetail:
       type: object
       properties:
@@ -2182,10 +2192,23 @@ components:
       required:
       - id
       - semaine_affectation
-    BlankEnum:
-      enum:
-      - ''
-    BulkDelete:
+    AffectationMachineDetailRequest:
+      type: object
+      properties:
+        semaine_affectation:
+          type: string
+          format: date
+          title: Semaine d'affectation de l'étape
+        etape:
+          type: integer
+        machine:
+          type: integer
+        salarie:
+          type: integer
+          nullable: true
+      required:
+      - semaine_affectation
+    BulkDeleteRequest:
       type: object
       properties:
         ids:
@@ -2259,6 +2282,55 @@ components:
       - date_modification
       - fiche
       - id
+      - num_etape
+    EtapeCreateRequest:
+      type: object
+      properties:
+        num_etape:
+          type: integer
+          title: N°Étape
+        terminee:
+          type: boolean
+          title: Terminée ?
+        description:
+          type: string
+          nullable: true
+          maxLength: 10000
+        ref_doc:
+          type: string
+          nullable: true
+          maxLength: 2000
+        nom_piece:
+          type: string
+          nullable: true
+          title: Nom de la pièce
+          maxLength: 2000
+        quantite:
+          type: integer
+          title: Quantité
+        temps:
+          type: integer
+          title: Temps nécessaire
+        plan:
+          type: string
+          nullable: true
+          maxLength: 2000
+        rep:
+          type: string
+          nullable: true
+          maxLength: 2000
+        date_cloture:
+          type: string
+          format: date
+          nullable: true
+          title: Date de clôture
+        fiche:
+          type: integer
+        groupe_machine:
+          type: integer
+          nullable: true
+      required:
+      - fiche
       - num_etape
     EtapeDetail:
       type: object
@@ -2542,6 +2614,41 @@ components:
       - id
       - machine
       - num_etape
+    EtapeModeleDetailRequest:
+      type: object
+      properties:
+        num_etape:
+          type: integer
+          title: N°Étape
+        quantite:
+          type: integer
+          title: Quantité
+        temps:
+          type: integer
+          title: Temps nécessaire
+        plan:
+          type: string
+          nullable: true
+          maxLength: 2000
+        rep:
+          type: string
+          nullable: true
+          maxLength: 2000
+        terminee:
+          type: boolean
+          title: Terminée ?
+        description:
+          type: string
+          nullable: true
+          maxLength: 10000
+        fiche_modele:
+          type: integer
+        groupe_machine:
+          type: integer
+          nullable: true
+      required:
+      - fiche_modele
+      - num_etape
     EtapeModeleListCreate:
       type: object
       properties:
@@ -2592,6 +2699,41 @@ components:
       - date_modification
       - fiche_modele
       - id
+      - num_etape
+    EtapeModeleListCreateRequest:
+      type: object
+      properties:
+        num_etape:
+          type: integer
+          title: N°Étape
+        quantite:
+          type: integer
+          title: Quantité
+        temps:
+          type: integer
+          title: Temps nécessaire
+        plan:
+          type: string
+          nullable: true
+          maxLength: 2000
+        rep:
+          type: string
+          nullable: true
+          maxLength: 2000
+        terminee:
+          type: boolean
+          title: Terminée ?
+        description:
+          type: string
+          nullable: true
+          maxLength: 10000
+        fiche_modele:
+          type: integer
+        groupe_machine:
+          type: integer
+          nullable: true
+      required:
+      - fiche_modele
       - num_etape
     FicheCRUD:
       type: object
@@ -2649,6 +2791,39 @@ components:
       - date_creation
       - date_modification
       - id
+    FicheCRUDRequest:
+      type: object
+      properties:
+        titre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        observation:
+          type: string
+          nullable: true
+          maxLength: 1000
+        ref_doc:
+          type: string
+          nullable: true
+          maxLength: 200
+        terminee:
+          type: boolean
+          title: Fiche terminée
+        fourniture:
+          type: boolean
+          title: Fournitures arrivées
+        date_cloture:
+          type: string
+          format: date
+          nullable: true
+          title: Date de clôture
+        affaire:
+          type: integer
+      required:
+      - affaire
     FicheDetail:
       type: object
       properties:
@@ -3006,6 +3181,19 @@ components:
       required:
       - date_creation
       - id
+    FicheModeleDetailRequest:
+      type: object
+      properties:
+        titre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        fourniture:
+          type: boolean
+          title: Fournitures arrivées
     FicheModeleEtEtapes:
       type: object
       properties:
@@ -3035,6 +3223,19 @@ components:
       - date_creation
       - etapes_modele
       - id
+    FicheModeleEtEtapesRequest:
+      type: object
+      properties:
+        titre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        fourniture:
+          type: boolean
+          title: Fournitures arrivées
     FicheModeleOptions:
       type: object
       properties:
@@ -3060,6 +3261,19 @@ components:
           title: Prix théorique / heure
       required:
       - id
+      - nom_groupe
+    GroupeMachineRequest:
+      type: object
+      properties:
+        nom_groupe:
+          type: string
+          minLength: 1
+          title: Nom du groupe machine
+          maxLength: 300
+        prix_theorique:
+          type: integer
+          title: Prix théorique / heure
+      required:
       - nom_groupe
     ListZone:
       type: object
@@ -3100,6 +3314,26 @@ components:
       required:
       - id
       - nom_machine
+    MachineDetailRequest:
+      type: object
+      properties:
+        nom_machine:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+          maxLength: 1000
+        fonctionnelle:
+          type: boolean
+        est_active:
+          type: boolean
+        groupe_machine:
+          type: integer
+          nullable: true
+      required:
+      - nom_machine
     NoteCreate:
       type: object
       properties:
@@ -3119,6 +3353,17 @@ components:
       - contenu
       - date_creation
       - id
+    NoteCreateRequest:
+      type: object
+      properties:
+        contenu:
+          type: string
+          minLength: 1
+        affaire:
+          type: integer
+      required:
+      - affaire
+      - contenu
     NoteDetail:
       type: object
       properties:
@@ -3139,9 +3384,14 @@ components:
       - date_creation
       - id
       - user
-    NullEnum:
-      enum:
-      - null
+    NoteDetailRequest:
+      type: object
+      properties:
+        contenu:
+          type: string
+          minLength: 1
+      required:
+      - contenu
     PaginatedAffaireDetailsList:
       type: object
       properties:
@@ -3422,12 +3672,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SalarieFormOptions'
-    PatchedAffectationAjustageDetail:
+    PatchedAffectationAjustageDetailRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
         semaine_affectation:
           type: string
           format: date
@@ -3436,12 +3683,9 @@ components:
           type: integer
         zone:
           type: integer
-    PatchedAffectationMachineDetail:
+    PatchedAffectationMachineDetailRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
         semaine_affectation:
           type: string
           format: date
@@ -3453,12 +3697,9 @@ components:
         salarie:
           type: integer
           nullable: true
-    PatchedEtapeCreate:
+    PatchedEtapeCreateRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
         num_etape:
           type: integer
           title: N°Étape
@@ -3492,16 +3733,6 @@ components:
           type: string
           nullable: true
           maxLength: 2000
-        date_creation:
-          type: string
-          format: date
-          readOnly: true
-          title: Date de création
-        date_modification:
-          type: string
-          format: date-time
-          readOnly: true
-          title: Date de modification
         date_cloture:
           type: string
           format: date
@@ -3512,16 +3743,9 @@ components:
         groupe_machine:
           type: integer
           nullable: true
-    PatchedEtapeModeleDetail:
+    PatchedEtapeModeleDetailRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        machine:
-          allOf:
-          - $ref: '#/components/schemas/MachineDetail'
-          readOnly: true
         num_etape:
           type: integer
           title: N°Étape
@@ -3546,36 +3770,17 @@ components:
           type: string
           nullable: true
           maxLength: 10000
-        date_creation:
-          type: string
-          format: date
-          readOnly: true
-          title: Date de création
-        date_modification:
-          type: string
-          format: date-time
-          readOnly: true
-          title: Date de modification
         fiche_modele:
           type: integer
         groupe_machine:
           type: integer
           nullable: true
-    PatchedFicheCRUD:
+    PatchedFicheCRUDRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        avancement_fiche:
-          type: number
-          format: double
-          maximum: 1
-          minimum: 0
-          readOnly: true
-          default: 0.0
         titre:
           type: string
+          minLength: 1
           maxLength: 100
         description:
           type: string
@@ -3594,16 +3799,6 @@ components:
         fourniture:
           type: boolean
           title: Fournitures arrivées
-        date_creation:
-          type: string
-          format: date
-          readOnly: true
-          title: Date de création
-        date_modification:
-          type: string
-          format: date-time
-          readOnly: true
-          title: Date de modification
         date_cloture:
           type: string
           format: date
@@ -3611,24 +3806,12 @@ components:
           title: Date de clôture
         affaire:
           type: integer
-    PatchedFicheModeleEtEtapes:
+    PatchedFicheModeleEtEtapesRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        etapes_modele:
-          type: array
-          items:
-            $ref: '#/components/schemas/EtapeModeleDetail'
-          readOnly: true
-        date_creation:
-          type: string
-          format: date
-          readOnly: true
-          title: Date de création
         titre:
           type: string
+          minLength: 1
           maxLength: 100
         description:
           type: string
@@ -3636,27 +3819,23 @@ components:
         fourniture:
           type: boolean
           title: Fournitures arrivées
-    PatchedGroupeMachine:
+    PatchedGroupeMachineRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
         nom_groupe:
           type: string
+          minLength: 1
           title: Nom du groupe machine
           maxLength: 300
         prix_theorique:
           type: integer
           title: Prix théorique / heure
-    PatchedMachineDetail:
+    PatchedMachineDetailRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
         nom_machine:
           type: string
+          minLength: 1
           maxLength: 100
         description:
           type: string
@@ -3669,21 +3848,12 @@ components:
         groupe_machine:
           type: integer
           nullable: true
-    PatchedNoteDetail:
+    PatchedNoteDetailRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        user:
-          type: string
-          readOnly: true
         contenu:
           type: string
-        date_creation:
-          type: string
-          format: date
-          readOnly: true
+          minLength: 1
     PlanningMachine:
       type: object
       description: Serializer pour la planification d'une machine.
@@ -3834,12 +4004,6 @@ components:
     TokenObtainPair:
       type: object
       properties:
-        username:
-          type: string
-          writeOnly: true
-        password:
-          type: string
-          writeOnly: true
         access:
           type: string
           readOnly: true
@@ -3848,8 +4012,20 @@ components:
           readOnly: true
       required:
       - access
-      - password
       - refresh
+    TokenObtainPairRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - password
       - username
     TokenRefresh:
       type: object
@@ -3857,11 +4033,16 @@ components:
         access:
           type: string
           readOnly: true
+      required:
+      - access
+    TokenRefreshRequest:
+      type: object
+      properties:
         refresh:
           type: string
           writeOnly: true
+          minLength: 1
       required:
-      - access
       - refresh
     User:
       type: object

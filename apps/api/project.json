@@ -71,8 +71,14 @@
 		"dev": {
 			"executor": "@nxlv/python:run-commands",
 			"options": {
-				"command": "poetry run ./manage.py devserver",
+				"command": "nx run-many -t start watch:openapi -p api",
 				"cwd": "apps/api"
+			}
+		},
+		"watch:openapi": {
+			"executor": "nx:run-commands",
+			"options": {
+			  	"command": "nodemon --watch /home/coder/sgm/apps/api -e py --exec \"nx run openapi:generate\" --delay 5 > /dev/null 2>&1"
 			}
 		},
 		"generate:spec": {

@@ -15,11 +15,15 @@
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@sgm/components": ["libs/components/src/index.ts"],
+			"@sgm/cli": ["libs/cli/src/index.ts"],
 			"@sgm/openapi": ["libs/openapi/src/index.ts"],
 			"@sgm/storybook": ["libs/storybook/src/index.ts"],
 			"@sgm/theme": ["libs/theme/src/index.ts"],
-			"@web/*": ["apps/web/src/*"]
+			"@sgm/ui": ["libs/ui/src/index.ts"],
+			"@sgm/utils": ["libs/utils/src/index.ts"],
+			"@sgm/web/auth": ["libs/web/auth/src/index.ts"],
+			"@sgm/web/environments": ["libs/web/environments/src/index.ts"],
+			"@sgm/web/router": ["libs/web/router/src/index.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]
