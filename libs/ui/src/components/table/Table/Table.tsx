@@ -1,7 +1,7 @@
 import { Box, Table as ChakraTable, TableProps as ChakraTableProps, Checkbox, Flex, Icon, IconButton, Skeleton, Spinner, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { Paginated } from '@sgm/utils'
 import { ColumnDef, PaginationState, Row, RowData, SortingState, flexRender, getCoreRowModel, getExpandedRowModel, useReactTable } from '@tanstack/react-table'
-import React, { Fragment, useEffect, useMemo, useState } from 'react'
+import React, { Fragment, MouseEvent, MouseEventHandler, useEffect, useMemo, useState } from 'react'
 import { FaArrowDown, FaArrowUp, FaChevronDown, FaChevronRight, FaPlus } from 'react-icons/fa'
 import { RowSelectionActionComponentProps, getMetaFromColumn, resolveResults } from '../../../utils'
 import { DefaultTableCell } from '../DefaultTableCell/DefaultTableCell'
@@ -61,7 +61,18 @@ type BaseTableProps<TData> = {
      */
     rowSelection?: {
         enabled: boolean
-        actionsComponent?: RowSelectionActionComponentProps<TData>
+        selectionActionComponent?: RowSelectionActionComponentProps<TData>
+    }
+    /**
+     * Row behavior
+     */
+    rowAction?: {
+        enableDoubleClick?: boolean
+        enableCtrlClick?: boolean
+        actionFn: (row: Row<TData>, options: {
+            isCtrlKey: boolean
+            isDoubleClick: boolean
+        }) => void
     }
     /**
      * New row
@@ -81,6 +92,10 @@ type BaseTableProps<TData> = {
         table?: ChakraTableProps
         container?: ChakraTableProps
     }
+    /**
+     * Misc
+     */
+    loadingSkeletonRowsCount?: number
 }
 
 type TableProps<TData> = BaseTableProps<TData> & ({
@@ -136,11 +151,12 @@ export function Table<TData>(props: TableProps<TData>) {
         } : undefined
 
 
-    const data = resolveResults(props.data) || []
-    const columns = rowSelectionColumn ? [rowSelectionColumn].concat(props.columns) : props.columns
+    const data = resolveResults(props.data) || [],
+          columns = rowSelectionColumn ? [rowSelectionColumn].concat(props.columns) : props.columns,
+          loadingSkeletonRowsCount = props.loadingSkeletonRowsCount || props.pagination?.pageSize || 10
 
     const table = useReactTable<TData>({
-        data: props.loading ? Array(props.pagination?.pageSize || 10).fill({}) : data,
+        data: props.loading ? Array(loadingSkeletonRowsCount).fill({}) : data,
         columns: props.loading ? columns.map(column => ({
             ...column,
             cell: () => <Skeleton height='2em'/>
@@ -173,6 +189,28 @@ export function Table<TData>(props: TableProps<TData>) {
         } : {})
     })
 
+    const getTrProps = (row: Row<TData>) => ({
+        ...(props.rowAction?.enableDoubleClick ? {
+            onDoubleClick: (e: MouseEvent<HTMLTableRowElement>) => {
+                props.rowAction?.actionFn(row, {
+                    isCtrlKey: e.ctrlKey,
+                    isDoubleClick: true
+                })
+            }
+        } : {}),
+        ...(props.rowAction?.enableCtrlClick ? {
+            onClick: (e: MouseEvent<HTMLTableRowElement>) => {
+                if (e.ctrlKey) {
+                    console.log(e.currentTarget)
+                    props.rowAction?.actionFn(row, {
+                        isCtrlKey: e.ctrlKey,
+                        isDoubleClick: false
+                    })
+                }
+            }
+        } : {})
+    })
+
     useEffect(() => {
         
         if (internalSorting[0] && props.setSorting) {
@@ -191,7 +229,7 @@ export function Table<TData>(props: TableProps<TData>) {
             
             <Box w='100%' position='relative'>
 
-                {props.rowSelection?.actionsComponent &&
+                {props.rowSelection?.selectionActionComponent &&
                     <Flex 
                         justifyContent='flex-end' alignItems='center'
                         w='100%' h={(table.getIsSomeRowsSelected() || table.getIsAllRowsSelected()) ? 'unset' : 0} 
@@ -200,7 +238,7 @@ export function Table<TData>(props: TableProps<TData>) {
                         overflow='hidden'
                         position='absolute' top={0} left={0}
                     >
-                        <props.rowSelection.actionsComponent 
+                        <props.rowSelection.selectionActionComponent 
                             checkedItems={table.getIsAllRowsSelected() ? table.getRowModel().rows : table.getRowModel().rows.filter(row => row.getIsSelected())}
                             resetSelection={() => table.toggleAllPageRowsSelected(false)}
                     />
@@ -266,7 +304,8 @@ export function Table<TData>(props: TableProps<TData>) {
                     } */}
                         {table.getRowModel().rows.map(row => (<Fragment key={row.id}>
                     
-                            <Tr>
+                            <Tr {...getTrProps(row)}>
+
                                 {props.rowExpansion?.enabled && (
                                     props.loading ? 
                                     <Td></Td>
@@ -290,8 +329,9 @@ export function Table<TData>(props: TableProps<TData>) {
                                     </Td>
                                 ))}
                             </Tr>
+
                             {(row.getIsExpanded() && props.rowExpansion?.renderSubComponent) && (
-                                <Tr>
+                                <Tr {...getTrProps(row)}>
                                     <Td 
                                         colSpan={row.getVisibleCells().length + 2}
                                         p={0}

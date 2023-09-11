@@ -85,7 +85,7 @@ const columns = [
                 'SV0',
                 'EST',
                 'ECH',
-            ]
+            ],
         }),
     })
 ]
@@ -113,6 +113,10 @@ const AffairesPage: React.FC = () => {
                     rowExpansion={{
                         enabled: true,
                         renderSubComponent: ({ row }) => <FichesTable affaireId={row.original.id} />
+                    }}
+                    rowAction={{
+                        enableCtrlClick: true,
+                        actionFn: (row) => console.log(row.original.num_affaire)
                     }}
                     styling={{
                         table: {

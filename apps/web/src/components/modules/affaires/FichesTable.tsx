@@ -1,5 +1,5 @@
 import { Box, Button, Progress } from '@chakra-ui/react'
-import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteCreate, fetchApiFichesDestroy, useApiAffairesFichesRetrieve } from '@sgm/openapi'
+import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteCreate, useApiAffairesFichesRetrieve } from '@sgm/openapi'
 import { Table, createMeta } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
@@ -82,7 +82,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
             }}
             rowSelection={{
                 enabled: true,
-                actionsComponent: ({ checkedItems, resetSelection }) => {
+                selectionActionComponent: ({ checkedItems, resetSelection }) => {
                     return <Box>
                         <Button 
                             colorScheme='red'
@@ -109,6 +109,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                     variant: 'unstyled'
                 }
             }}
+            loadingSkeletonRowsCount={3}
         />     
     </Box>
 }

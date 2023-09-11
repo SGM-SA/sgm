@@ -21,6 +21,7 @@ export type MetaEditable<TData extends Types> = TData extends 'select' ? {
 
 type MetaBase = {
     sortable?: boolean
+    // filterable?: boolean
 }
 
 export type Meta<TData extends Types> = ({
