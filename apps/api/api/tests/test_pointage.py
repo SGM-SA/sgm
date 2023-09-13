@@ -157,7 +157,6 @@ class PointageGestionTest(TestCase):
         self.etape1.refresh_from_db()
         # On vérifie que l'étape est bien terminée
         self.assertEqual(self.etape1.terminee, True)
-        # TODO : on met a jour etape 2 à la place de etape 1
         # On vérifie que le pointage est bien arrêté
         self.assertEqual(PointageEtape.objects.get(etape=self.etape1).en_cours(), False)
 
