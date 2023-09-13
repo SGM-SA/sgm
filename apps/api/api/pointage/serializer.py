@@ -12,6 +12,7 @@ class PointageSerializer(serializers.Serializer):
     """
 
     etape = serializers.PrimaryKeyRelatedField(queryset=Etape.objects.all())
+    terminer_etape = serializers.BooleanField(default=False)
 
 
 class ReadPointageSerializer(serializers.ModelSerializer):
