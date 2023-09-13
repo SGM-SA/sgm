@@ -4094,6 +4094,9 @@ components:
       properties:
         etape:
           type: integer
+        terminer_etape:
+          type: boolean
+          default: false
       required:
       - etape
     PointageRequest:
@@ -4102,6 +4105,9 @@ components:
       properties:
         etape:
           type: integer
+        terminer_etape:
+          type: boolean
+          default: false
       required:
       - etape
     ReadPointage:

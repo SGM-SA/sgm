@@ -93,6 +93,7 @@ class PointageGestion(views.APIView):
         """
         user = request.user
         etape_id = request.data.get("etape", None)
+        terminer_etape = request.data.get("terminer_etape", False)
 
         if not etape_id:
             return Response(
@@ -117,6 +118,10 @@ class PointageGestion(views.APIView):
                 # Stop le pointage en cours si l'étape est la même
                 current_pointage.date_fin = timezone.now()
                 current_pointage.save()
+
+                if terminer_etape:
+                    self.terminer(current_pointage.etape)
+
                 return Response(
                     {"detail": "Pointage arrêté"}, status=status.HTTP_200_OK
                 )
@@ -128,6 +133,10 @@ class PointageGestion(views.APIView):
                     user=user, etape=etape, date_debut=timezone.now()
                 )
                 new_pointage.save()
+
+                if terminer_etape:
+                    self.terminer(current_pointage.etape)
+
                 return Response(
                     {"detail": "Ancien Pointage stoppé, nouveau créé"},
                     status=status.HTTP_200_OK,
@@ -137,4 +146,9 @@ class PointageGestion(views.APIView):
                 user=user, etape=etape, date_debut=timezone.now()
             )
             new_pointage.save()
-            return Response({"detail": "Pointage Créé"}, status=status.HTTP_200_OK)
+            return Response({"detail": "Pointage créé"}, status=status.HTTP_200_OK)
+
+    def terminer(self, etape: Etape):
+        etape.date_cloture = timezone.now()
+        etape.terminee = True
+        etape.save()
