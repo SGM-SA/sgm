@@ -101,3 +101,65 @@ class PointageGestionTest(TestCase):
 
         self.assertEqual(PointageEtape.objects.get(etape=self.etape1).en_cours(), False)
         self.assertEqual(PointageEtape.objects.get(etape=self.etape2).en_cours(), True)
+
+    def terminer_etape_en_pointant_meme_etape(self):
+        """
+        Si un pointage est en cours et qu'on pointe une étape en la terminant,
+        le pointage en cours doit être arrêté et l'étape marquée comme terminée
+        """
+        # On commence par créer un pointage
+        url = "/api/pointages/"
+        data = {
+          "etape": self.etape1.id,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # On vérifie que l'étape n'est pas terminée
+        self.assertEqual(self.etape1.terminee, False)
+
+        # On termine l'étape
+        url = "/api/pointages/"
+        data = {
+          "etape": self.etape1.id,
+          "terminer_etape": True,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # On vérifie que l'étape est bien terminée
+        self.assertEqual(self.etape1.terminee, True)
+
+        # On vérifie que le pointage est bien arrêté
+        self.assertEqual(PointageEtape.objects.get(etape=self.etape1).en_cours(), False)
+
+    def test_terminer_etape_en_pointant_etape_different(self):
+
+        # On commence par créer un pointage
+        url = "/api/pointages/"
+        data = {
+          "etape": self.etape1.id,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # On vérifie que l'étape n'est pas terminée
+        self.assertEqual(self.etape1.terminee, False)
+
+        # On termine l'étape et on pointe une autre étape
+        url = "/api/pointages/"
+        data = {
+          "etape": self.etape2.id,
+          "terminer_etape": True,
+        }
+        self.client.post(url, data, format="json")
+
+        self.etape1.refresh_from_db()
+        # On vérifie que l'étape est bien terminée
+        self.assertEqual(self.etape1.terminee, True)
+        # TODO : on met a jour etape 2 à la place de etape 1
+        # On vérifie que le pointage est bien arrêté
+        self.assertEqual(PointageEtape.objects.get(etape=self.etape1).en_cours(), False)
+
+        # On vérifie que l'étape 2 est bien en cours
+        self.assertEqual(PointageEtape.objects.get(etape=self.etape2).en_cours(), True)
