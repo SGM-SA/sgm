@@ -1364,6 +1364,10 @@ export type PlanningZone = {
  */
 export type Pointage = {
 	etape: number
+	/**
+	 * @default false
+	 */
+	terminer_etape?: boolean
 }
 
 /**
@@ -1371,6 +1375,10 @@ export type Pointage = {
  */
 export type PointageRequest = {
 	etape: number
+	/**
+	 * @default false
+	 */
+	terminer_etape?: boolean
 }
 
 /**
