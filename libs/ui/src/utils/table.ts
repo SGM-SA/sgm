@@ -21,14 +21,14 @@ export type MetaEditable<TData extends Types> = TData extends 'select' ? {
 
 type MetaBase = {
     sortable?: boolean
+    disableWarnings?: boolean
     // filterable?: boolean
 }
 
 export type Meta<TData extends Types> = ({
-    editable: false
+    editable?: false
 } & MetaBase) | ({
     editable: true
-    sortable?: boolean
 } & MetaEditable<TData> & MetaBase)
 
 export type RowSelectionActionComponentProps<TData> = React.FC<{ 

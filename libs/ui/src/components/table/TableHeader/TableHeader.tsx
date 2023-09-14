@@ -14,7 +14,15 @@ export const TableHeader: React.FC<TableHeaderProps> = (props) => {
             justifyContent='space-between'
             mb='2em'
         >
-            {props.title && <Box as='h2' fontSize='xl' fontWeight='bold' mr='auto'>{props.title}</Box>}
+            {props.title && 
+                <Box as='h2' 
+                    fontSize='xl' 
+                    mr='auto'
+                    p='1em'
+                >
+                    {props.title}
+                </Box>
+            }
             {props.children}
         </Flex>
     </>

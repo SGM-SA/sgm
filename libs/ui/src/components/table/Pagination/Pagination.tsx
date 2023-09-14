@@ -1,23 +1,25 @@
-import { Button, HStack, Select, Text } from '@chakra-ui/react'
+import { Button, ChakraProps, HStack, Select, Text } from '@chakra-ui/react'
 import { Table } from '@tanstack/react-table'
 import React from 'react'
 import { GrFormNext, GrFormPrevious } from 'react-icons/gr'
 
 type PaginationProps = {
-    table: Table<any>,
-}
+    table: Table<any>
+} & ChakraProps
 
 const resultsPerPageOptions = [10, 25, 50, 100]
 
-export const Pagination: React.FC<PaginationProps> = ({ table }) => {
+export const Pagination: React.FC<PaginationProps> = ({ table, ...chakraProps }) => {
 
     const onPreviousPage = () => table.previousPage()
     const onNextPage = () => table.nextPage()
     const changeResultsPerPage = (resultsPerPage: number) => table.setPageSize(resultsPerPage)
     // const onPageSelect = (pageNumber: number) => table.setPageIndex(pageNumber - 1)
 
+    console.log('next page disabled', !table.getCanNextPage())
+
 	return <>
-        <HStack mt='2em' w='100%' justifyContent='center' position='relative'>
+        <HStack mt='2em' w='100%' justifyContent='center' position='relative' {...chakraProps}>
 
             <HStack position='absolute' left='1em'>
                 <Text fontSize='xs'>Résultats par page</Text>
@@ -34,10 +36,11 @@ export const Pagination: React.FC<PaginationProps> = ({ table }) => {
             <Button 
                 aria-label='Page précédente' 
                 onClick={onPreviousPage}
-                disabled={table.getCanPreviousPage()}
+                isDisabled={!table.getCanPreviousPage()}
                 variant='unstyled'
                 display='flex'
                 fontWeight='normal'
+                fontSize='sm'
             >
                 <GrFormPrevious />
                 Précédent
@@ -64,10 +67,11 @@ export const Pagination: React.FC<PaginationProps> = ({ table }) => {
             <Button 
                 aria-label='Page suivante' 
                 onClick={onNextPage}
-                disabled={table.getCanNextPage()}
+                isDisabled={!table.getCanNextPage()}
                 variant='unstyled'
                 display='flex'
                 fontWeight='normal'
+                fontSize='sm'
             >
                 Suivant
                 <GrFormNext />

@@ -2,9 +2,9 @@ import { Box, Progress } from '@chakra-ui/react'
 import { AffaireDetails, useApiAffairesList } from '@sgm/openapi'
 import { Table, createMeta, useTableQueryHelper } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { DashboardLayout } from '../../components/layouts'
-import { FichesTable } from '../../components/modules'
+import { AffaireSearch, FichesTable } from '../../components/modules'
 
 const columnHelper = createColumnHelper<AffaireDetails>()
 
@@ -13,9 +13,8 @@ const columns = [
         id: 'num_affaire',
         header: 'Numéro',
         meta: createMeta({
-            editable: false,
-            sortable: true
-        //     // customValidation: (value) => value < 1000 ? Err('Le numéro d\'affaire doit être supérieur à 1000') : Ok(true)
+            sortable: true,
+            disableWarnings: true
         })
     }),
     columnHelper.accessor('description', {
@@ -37,7 +36,7 @@ const columns = [
                 size='sm'
                 mt='.5em'
             />
-        </Box>,
+        </Box>
     }),
     columnHelper.accessor('client', {
         id: 'client',
@@ -92,7 +91,7 @@ const columns = [
 
 const AffairesPage: React.FC = () => {
 
-    const { pagination, setPagination, sorting, setSorting, fetchDataOptions } = useTableQueryHelper()
+    const { pagination, setPagination, sorting, setSorting, filters, setFilters, fetchDataOptions } = useTableQueryHelper()
 
     const { data, isLoading } = useApiAffairesList(fetchDataOptions)
 
@@ -110,13 +109,17 @@ const AffairesPage: React.FC = () => {
                     editable
                     sorting={sorting}
                     setSorting={setSorting}
+                    header={{
+                        title: 'Liste des affaires',
+                        customHeader: () => <AffaireSearch filters={filters} setFilters={setFilters}/>
+                    }}
                     rowExpansion={{
                         enabled: true,
                         renderSubComponent: ({ row }) => <FichesTable affaireId={row.original.id} />
                     }}
                     rowAction={{
                         enableCtrlClick: true,
-                        actionFn: (row) => console.log(row.original.num_affaire)
+                        actionFn: (row) => console.log(row.original)
                     }}
                     styling={{
                         table: {

@@ -8,12 +8,14 @@ export const useTableQueryHelper = (initialData: PaginationState = { pageIndex: 
 
     const [pagination, setPagination] = useState<PaginationState>(initialData)
     const [sorting, setSorting] = useState<string>('')
+    const [filters, setFilters] = useState<any>({})
 
     const fetchDataOptions = {
         queryParams: {
             page: (pagination.pageIndex + 1).toString(),
             per_page: pagination.pageSize.toString(),
-            ordering: sorting
+            ordering: sorting,
+            ...filters
         }
     }
 
@@ -22,6 +24,8 @@ export const useTableQueryHelper = (initialData: PaginationState = { pageIndex: 
         setPagination,
         sorting,
         setSorting,
+        filters,
+        setFilters,
         fetchDataOptions
     }
 }

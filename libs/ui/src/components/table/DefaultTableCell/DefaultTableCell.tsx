@@ -20,7 +20,9 @@ export const DefaultTableCell: React.FC<DefaultTableCellProps> = (props) => {
 
 export const RawTableCell: React.FC<DefaultTableCellProps> = (props) => {
 
-    const doubleClickHandler = () => toast.warn("Ce champs n'est pas éditable")
+    const doubleClickHandler = () => {
+        if (!props.column.columnDef.meta?.disableWarnings) toast.warn("Ce champs n'est pas éditable")
+    }
 
     return <Box as='span' 
         fontSize={fontSize}

@@ -64,15 +64,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
             columns={columns}
             loading={isLoading}
             header={{
-                customHeader: () => <Box p='2em'>
-                    <Button colorScheme='blue'
-                        onClick={() => fetchApiFichesCreate({
-                            body: {
-                                affaire: props.affaireId,
-                            }
-                        }).then(() => refetch())}
-                    >Ajouter une fiche</Button>
-                </Box>
+                title: 'Fiches',
             }}
             editable={true}
             newRow={() => {

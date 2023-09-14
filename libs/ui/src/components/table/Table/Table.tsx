@@ -222,8 +222,8 @@ export function Table<TData>(props: TableProps<TData>) {
 
 	return <>
         <TableContainer 
-            w='100%' minH='70vh' 
-            display='flex' flexDirection='column' justifyContent='space-between' alignItems='center' 
+            w='100%' minH='70vh'
+            display='flex' flexDirection='column' justifyContent='flex-start' alignItems='center' 
             {...props.styling?.container}
         >
             
@@ -256,6 +256,7 @@ export function Table<TData>(props: TableProps<TData>) {
 
             <ChakraTable
                 size='sm'
+                mb='auto'
                 {...props.styling?.table}
             >
                 
