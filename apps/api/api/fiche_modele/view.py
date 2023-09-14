@@ -1,4 +1,6 @@
+from drf_spectacular.types import OpenApiTypes
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from api.fiche_modele.models import FicheModele
 from api.fiche.models import Fiche
@@ -73,27 +75,41 @@ class FicheModeleOptionsView(generics.ListAPIView):
                 type=int,
                 required=True,
                 description="id de l'affaire vers laquelle copier la fiche modèle",
+                location="query",
             ),
             OpenApiParameter(
                 name="modele",
                 type=int,
                 required=True,
                 description="id de la fiche modèle à copier",
+                location="query",
             ),
         ],
+        responses={
+            201: OpenApiTypes.STR,
+            400: OpenApiTypes.STR,
+            404: OpenApiTypes.STR,
+        },
     )
 )
-class CopieModeleToAffaire(generics.GenericAPIView):
+class CopieModeleToAffaire(APIView):
     queryset = FicheModele.objects.all()
-    serializer_class = FicheModeleEtEtapes
 
-    def post(self, request, *args, **kwargs):
+    def post(self, requete, *args, **kwargs):
+        id_affaire = requete.query_params.get("affaire")
+        id_modele = requete.query_params.get("modele")
+
+        # Vérifiez si les deux 'affaire' et 'modele' sont fournis
+        if not (id_affaire and id_modele):
+            return Response(
+                {"detail": "'affaire' et 'modele' sont requis."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         try:
-            # get the affaire id from the request query params
-            affaire_id = request.query_params.get("affaire")
-            modele_id = request.query_params.get("modele")
-            affaire = Affaire.objects.get(id=affaire_id)
-            modele = FicheModele.objects.get(id=modele_id)
+            affaire = Affaire.objects.get(id=id_affaire)
+            modele = FicheModele.objects.get(id=id_modele)
+
             fiche = Fiche.objects.create(
                 affaire=affaire,
                 titre=modele.titre,
@@ -102,18 +118,32 @@ class CopieModeleToAffaire(generics.GenericAPIView):
             )
 
             etapes = modele.etapes_modele.all()
-            for _etape in etapes:
-                Etape.objects.create(
+            nouvelles_etapes = [
+                Etape(
                     fiche=fiche,
                     num_etape=_etape.num_etape,
                     quantite=_etape.quantite,
                     temps=_etape.temps,
                     plan=_etape.plan,
                     rep=_etape.rep,
-                    machine=_etape.machine,
+                    groupe_machine=_etape.groupe_machine,
                     terminee=_etape.terminee,
                     description=_etape.description,
                 )
-            return Response(status=status.HTTP_201_CREATED)
+                for _etape in etapes
+            ]
+            Etape.objects.bulk_create(nouvelles_etapes)
+            return Response(
+                {"detail": "Création réussie."}, status=status.HTTP_201_CREATED
+            )
+
+        except Affaire.DoesNotExist:
+            return Response(
+                {"detail": "Affaire non trouvée."}, status=status.HTTP_404_NOT_FOUND
+            )
+        except FicheModele.DoesNotExist:
+            return Response(
+                {"detail": "Modele non trouvé."}, status=status.HTTP_404_NOT_FOUND
+            )
         except Exception as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)

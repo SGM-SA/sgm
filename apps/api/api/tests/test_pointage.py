@@ -110,7 +110,7 @@ class PointageGestionTest(TestCase):
         # On commence par créer un pointage
         url = "/api/pointages/"
         data = {
-          "etape": self.etape1.id,
+            "etape": self.etape1.id,
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -121,8 +121,8 @@ class PointageGestionTest(TestCase):
         # On termine l'étape
         url = "/api/pointages/"
         data = {
-          "etape": self.etape1.id,
-          "terminer_etape": True,
+            "etape": self.etape1.id,
+            "terminer_etape": True,
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -138,7 +138,7 @@ class PointageGestionTest(TestCase):
         # On commence par créer un pointage
         url = "/api/pointages/"
         data = {
-          "etape": self.etape1.id,
+            "etape": self.etape1.id,
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -149,8 +149,8 @@ class PointageGestionTest(TestCase):
         # On termine l'étape et on pointe une autre étape
         url = "/api/pointages/"
         data = {
-          "etape": self.etape2.id,
-          "terminer_etape": True,
+            "etape": self.etape2.id,
+            "terminer_etape": True,
         }
         self.client.post(url, data, format="json")
 
