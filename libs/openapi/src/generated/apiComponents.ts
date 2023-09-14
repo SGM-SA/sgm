@@ -3298,10 +3298,18 @@ export type ApiModelesFichesCopyCreateQueryParams = {
 	modele: number
 }
 
-export type ApiModelesFichesCopyCreateError = Fetcher.ErrorWrapper<undefined>
+export type ApiModelesFichesCopyCreateError = Fetcher.ErrorWrapper<
+	| {
+			status: 400
+			payload: string
+	  }
+	| {
+			status: 404
+			payload: string
+	  }
+>
 
 export type ApiModelesFichesCopyCreateVariables = {
-	body?: Schemas.FicheModeleEtEtapesRequest
 	queryParams: ApiModelesFichesCopyCreateQueryParams
 } & ApiContext['fetcherOptions']
 
@@ -3313,9 +3321,9 @@ export const fetchApiModelesFichesCopyCreate = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.FicheModeleEtEtapes,
+		string,
 		ApiModelesFichesCopyCreateError,
-		Schemas.FicheModeleEtEtapesRequest,
+		undefined,
 		{},
 		ApiModelesFichesCopyCreateQueryParams,
 		{}
@@ -3327,7 +3335,7 @@ export const fetchApiModelesFichesCopyCreate = (
 export const useApiModelesFichesCopyCreate = (
 	options?: Omit<
 		reactQuery.UseMutationOptions<
-			Schemas.FicheModeleEtEtapes,
+			string,
 			ApiModelesFichesCopyCreateError,
 			ApiModelesFichesCopyCreateVariables
 		>,
@@ -3336,7 +3344,7 @@ export const useApiModelesFichesCopyCreate = (
 ) => {
 	const { fetcherOptions } = useApiContext()
 	return reactQuery.useMutation<
-		Schemas.FicheModeleEtEtapes,
+		string,
 		ApiModelesFichesCopyCreateError,
 		ApiModelesFichesCopyCreateVariables
 	>({

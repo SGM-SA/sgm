@@ -1578,26 +1578,27 @@ paths:
       tags:
       - Fiche Modele
       - Modele
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/FicheModeleEtEtapesRequest'
       security:
       - jwtAuth: []
       - {}
       responses:
-        '200':
+        '201':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FicheModeleEtEtapes'
+                type: string
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                type: string
           description: ''
   /api/modeles/fiches/options:
     get:
