@@ -17,7 +17,9 @@ class FicheModeleCopyViewTestCase(TestCase):
     def setUp(self):
         self.affaire = Affaire.objects.create(num_affaire=1)
         self.groupe_machine = GroupeMachine.objects.create(nom_groupe="Groupe 1")
-        self.machine = Machine.objects.create(nom_machine="Machine 1", groupe_machine=self.groupe_machine)
+        self.machine = Machine.objects.create(
+            nom_machine="Machine 1", groupe_machine=self.groupe_machine
+        )
 
         self.fiche_modele = FicheModele.objects.create(
             titre="Fiche modele 1",
@@ -31,7 +33,6 @@ class FicheModeleCopyViewTestCase(TestCase):
             quantite=1,
             temps=1,
             groupe_machine=self.groupe_machine,
-
         )
 
         self.etape_modele_2 = EtapeModele.objects.create(
@@ -49,24 +50,50 @@ class FicheModeleCopyViewTestCase(TestCase):
 
         # fiche
         self.assertEqual(self.affaire.fiches.first().titre, self.fiche_modele.titre)
-        self.assertEqual(self.affaire.fiches.first().description, self.fiche_modele.description)
-        self.assertEqual(self.affaire.fiches.first().fourniture, self.fiche_modele.fourniture)
+        self.assertEqual(
+            self.affaire.fiches.first().description, self.fiche_modele.description
+        )
+        self.assertEqual(
+            self.affaire.fiches.first().fourniture, self.fiche_modele.fourniture
+        )
         self.assertEqual(self.affaire.fiches.first().affaire, self.affaire)
 
         # etapes
-        self.assertEqual(self.affaire.fiches.first().etapes.first().num_etape, self.etape_modele.num_etape)
-        self.assertEqual(self.affaire.fiches.first().etapes.first().quantite, self.etape_modele.quantite)
-        self.assertEqual(self.affaire.fiches.first().etapes.first().temps, self.etape_modele.temps)
-        self.assertEqual(self.affaire.fiches.first().etapes.first().fiche, self.affaire.fiches.first())
-        self.assertEqual(self.affaire.fiches.first().etapes.first().groupe_machine, self.etape_modele.groupe_machine)
+        self.assertEqual(
+            self.affaire.fiches.first().etapes.first().num_etape,
+            self.etape_modele.num_etape,
+        )
+        self.assertEqual(
+            self.affaire.fiches.first().etapes.first().quantite,
+            self.etape_modele.quantite,
+        )
+        self.assertEqual(
+            self.affaire.fiches.first().etapes.first().temps, self.etape_modele.temps
+        )
+        self.assertEqual(
+            self.affaire.fiches.first().etapes.first().fiche,
+            self.affaire.fiches.first(),
+        )
+        self.assertEqual(
+            self.affaire.fiches.first().etapes.first().groupe_machine,
+            self.etape_modele.groupe_machine,
+        )
 
-        self.assertEqual(self.affaire.fiches.first().etapes.last().num_etape, self.etape_modele_2.num_etape)
-        self.assertEqual(self.affaire.fiches.first().etapes.last().quantite, self.etape_modele_2.quantite)
-        self.assertEqual(self.affaire.fiches.first().etapes.last().temps, self.etape_modele_2.temps)
-        self.assertEqual(self.affaire.fiches.first().etapes.last().fiche, self.affaire.fiches.first())
-        self.assertEqual(self.affaire.fiches.first().etapes.last().groupe_machine, self.etape_modele_2.groupe_machine)
-
-
-
-
-
+        self.assertEqual(
+            self.affaire.fiches.first().etapes.last().num_etape,
+            self.etape_modele_2.num_etape,
+        )
+        self.assertEqual(
+            self.affaire.fiches.first().etapes.last().quantite,
+            self.etape_modele_2.quantite,
+        )
+        self.assertEqual(
+            self.affaire.fiches.first().etapes.last().temps, self.etape_modele_2.temps
+        )
+        self.assertEqual(
+            self.affaire.fiches.first().etapes.last().fiche, self.affaire.fiches.first()
+        )
+        self.assertEqual(
+            self.affaire.fiches.first().etapes.last().groupe_machine,
+            self.etape_modele_2.groupe_machine,
+        )

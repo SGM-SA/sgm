@@ -75,21 +75,21 @@ class FicheModeleOptionsView(generics.ListAPIView):
                 type=int,
                 required=True,
                 description="id de l'affaire vers laquelle copier la fiche modèle",
-                location="query"
+                location="query",
             ),
             OpenApiParameter(
                 name="modele",
                 type=int,
                 required=True,
                 description="id de la fiche modèle à copier",
-                location="query"
+                location="query",
             ),
         ],
         responses={
             201: OpenApiTypes.STR,
             400: OpenApiTypes.STR,
             404: OpenApiTypes.STR,
-        }
+        },
     )
 )
 class CopieModeleToAffaire(APIView):
