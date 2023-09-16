@@ -11,6 +11,8 @@ from .task import recuperer_donnees_sgm
     summary="Sync data SGM",
     description="Sync les données SGM affaire avec la base de données django",
     tags=["Tasks"],
+    request=None,
+    responses={200: None},
 )
 @api_view(["POST"])
 def resync_data_sgm(request):
