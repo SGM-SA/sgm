@@ -54,6 +54,43 @@ export type AffaireDetails = {
 }
 
 /**
+ * Serializer pour l'affichage des affaires
+ */
+export type AffaireDetailsRequest = {
+	/**
+	 * @minimum 0
+	 */
+	num_affaire?: number | null
+	validation_ingenieur?: boolean
+	/**
+	 * @maxLength 10000
+	 */
+	description?: string | null
+	/**
+	 * @maxLength 1000
+	 */
+	observation?: string | null
+	/**
+	 * @maxLength 200
+	 */
+	client?: string | null
+	/**
+	 * @format decimal
+	 * @pattern ^-?\d{0,8}(?:\.\d{0,2})?$
+	 */
+	montant?: string | null
+	statut?: StatutEnum
+	/**
+	 * @format date
+	 */
+	date_rendu?: string | null
+	/**
+	 * @format date
+	 */
+	date_cloture?: string | null
+}
+
+/**
  * Serializer pour récupérer une affaire avec ses fiches
  */
 export type AffaireFiches = {
@@ -140,9 +177,9 @@ export type AffaireNumAffaire = {
  *     - temps restant total
  */
 export type AffaireStats = {
-	temps_ajustage: string
-	temps_machine: string
-	temps_restant: string
+	temps_ajustage: number
+	temps_machine: number
+	temps_restant: number
 }
 
 /**
@@ -1193,6 +1230,43 @@ export type PaginatedSalarieFormOptionsList = {
 	results?: SalarieFormOptions[]
 }
 
+/**
+ * Serializer pour l'affichage des affaires
+ */
+export type PatchedAffaireDetailsRequest = {
+	/**
+	 * @minimum 0
+	 */
+	num_affaire?: number | null
+	validation_ingenieur?: boolean
+	/**
+	 * @maxLength 10000
+	 */
+	description?: string | null
+	/**
+	 * @maxLength 1000
+	 */
+	observation?: string | null
+	/**
+	 * @maxLength 200
+	 */
+	client?: string | null
+	/**
+	 * @format decimal
+	 * @pattern ^-?\d{0,8}(?:\.\d{0,2})?$
+	 */
+	montant?: string | null
+	statut?: StatutEnum
+	/**
+	 * @format date
+	 */
+	date_rendu?: string | null
+	/**
+	 * @format date
+	 */
+	date_cloture?: string | null
+}
+
 export type PatchedAffectationAjustageDetailRequest = {
 	/**
 	 * @format date
@@ -1472,6 +1546,74 @@ export type SalarieFormOptions = {
 	 * @maxLength 200
 	 */
 	prenom: string
+}
+
+export type SalarieRequest = {
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	num_secu: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	civilite: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	nom: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	prenom: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	adresse1: string
+	/**
+	 * @maxLength 200
+	 */
+	adresse2?: string | null
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	zip_code: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	ville: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	pays: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	tel: string
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	email: string
+	/**
+	 * @format date
+	 */
+	date_embauche: string
+	/**
+	 * @format date
+	 */
+	date_depart?: string | null
+	user: number
+	aptitude?: number | null
+	zone?: number | null
 }
 
 export type StatutEnum =

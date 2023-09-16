@@ -73,7 +73,7 @@ paths:
   /api/affaires/{id}:
     get:
       operationId: api_affaires_retrieve
-      description: Permet de récupérer une affaire
+      description: Permet de récupérer / update une affaire
       summary: Affaire
       parameters:
       - in: path
@@ -83,6 +83,72 @@ paths:
         required: true
       tags:
       - Affaire
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AffaireDetails'
+          description: ''
+    put:
+      operationId: api_affaires_update
+      description: Permet de récupérer / update une affaire
+      summary: Affaire
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Affaire
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AffaireDetailsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AffaireDetailsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AffaireDetailsRequest'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AffaireDetails'
+          description: ''
+    patch:
+      operationId: api_affaires_partial_update
+      description: Permet de récupérer / update une affaire
+      summary: Affaire
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Affaire
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAffaireDetailsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAffaireDetailsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAffaireDetailsRequest'
       security:
       - jwtAuth: []
       - {}
@@ -145,26 +211,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedAffaireNumAffaireList'
           description: ''
-  /api/affaires/stats:
+  /api/affaires/stat/{id}:
     get:
-      operationId: api_affaires_stats_retrieve
-      description: Permet de récupérer les stats globals des affaires
-      summary: Stats Affaire
-      tags:
-      - Affaire
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AffaireStatsGlobal'
-          description: ''
-  /api/affaires/stats/{id}:
-    get:
-      operationId: api_affaires_stats_retrieve_2
+      operationId: api_affaires_stat_retrieve
       description: Permet de récupérer les stats d'une affaire spécifique
       summary: Stats Affaire
       parameters:
@@ -184,6 +233,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AffaireStats'
+          description: ''
+  /api/affaires/stats/:
+    get:
+      operationId: api_affaires_stats_retrieve
+      description: Permet de récupérer les stats globals des affaires
+      summary: Stats Affaire
+      tags:
+      - Affaire
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AffaireStatsGlobal'
           description: ''
   /api/affectations/ajustages/:
     get:
@@ -2107,6 +2173,54 @@ components:
       - charge_affaire_detail
       - date_modification
       - id
+    AffaireDetailsRequest:
+      type: object
+      description: Serializer pour l'affichage des affaires
+      properties:
+        num_affaire:
+          type: integer
+          minimum: 0
+          nullable: true
+          title: Numéro d'affaire correspondant à l'affaire dans la base de données
+            de SGM
+        validation_ingenieur:
+          type: boolean
+          title: Validation de l'ingénieur
+        description:
+          type: string
+          nullable: true
+          title: Description de l'affaire
+          maxLength: 10000
+        observation:
+          type: string
+          nullable: true
+          title: Observation faite sur l'affaire
+          maxLength: 1000
+        client:
+          type: string
+          nullable: true
+          title: Nom du client
+          maxLength: 200
+        montant:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+          title: Montant de l'affaire
+        statut:
+          allOf:
+          - $ref: '#/components/schemas/StatutEnum'
+          title: Statut de l'affaire
+        date_rendu:
+          type: string
+          format: date
+          nullable: true
+          title: Date à laquelle l'affaire doit être terminée
+        date_cloture:
+          type: string
+          format: date
+          nullable: true
+          title: Date de clôture de l'affaire (terminée)
     AffaireFiches:
       type: object
       description: Serializer pour récupérer une affaire avec ses fiches
@@ -2263,13 +2377,13 @@ components:
             - temps restant total
       properties:
         temps_ajustage:
-          type: string
+          type: integer
           readOnly: true
         temps_machine:
-          type: string
+          type: integer
           readOnly: true
         temps_restant:
-          type: string
+          type: integer
           readOnly: true
       required:
       - temps_ajustage
@@ -3865,6 +3979,54 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SalarieFormOptions'
+    PatchedAffaireDetailsRequest:
+      type: object
+      description: Serializer pour l'affichage des affaires
+      properties:
+        num_affaire:
+          type: integer
+          minimum: 0
+          nullable: true
+          title: Numéro d'affaire correspondant à l'affaire dans la base de données
+            de SGM
+        validation_ingenieur:
+          type: boolean
+          title: Validation de l'ingénieur
+        description:
+          type: string
+          nullable: true
+          title: Description de l'affaire
+          maxLength: 10000
+        observation:
+          type: string
+          nullable: true
+          title: Observation faite sur l'affaire
+          maxLength: 1000
+        client:
+          type: string
+          nullable: true
+          title: Nom du client
+          maxLength: 200
+        montant:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+          title: Montant de l'affaire
+        statut:
+          allOf:
+          - $ref: '#/components/schemas/StatutEnum'
+          title: Statut de l'affaire
+        date_rendu:
+          type: string
+          format: date
+          nullable: true
+          title: Date à laquelle l'affaire doit être terminée
+        date_cloture:
+          type: string
+          format: date
+          nullable: true
+          title: Date de clôture de l'affaire (terminée)
     PatchedAffectationAjustageDetailRequest:
       type: object
       properties:
@@ -4233,6 +4395,81 @@ components:
       - id
       - nom
       - prenom
+    SalarieRequest:
+      type: object
+      properties:
+        num_secu:
+          type: string
+          minLength: 1
+          maxLength: 200
+        civilite:
+          type: string
+          minLength: 1
+          maxLength: 200
+        nom:
+          type: string
+          minLength: 1
+          maxLength: 200
+        prenom:
+          type: string
+          minLength: 1
+          maxLength: 200
+        adresse1:
+          type: string
+          minLength: 1
+          maxLength: 200
+        adresse2:
+          type: string
+          nullable: true
+          maxLength: 200
+        zip_code:
+          type: string
+          minLength: 1
+          maxLength: 200
+        ville:
+          type: string
+          minLength: 1
+          maxLength: 200
+        pays:
+          type: string
+          minLength: 1
+          maxLength: 200
+        tel:
+          type: string
+          minLength: 1
+          maxLength: 200
+        email:
+          type: string
+          minLength: 1
+          maxLength: 200
+        date_embauche:
+          type: string
+          format: date
+        date_depart:
+          type: string
+          format: date
+          nullable: true
+        user:
+          type: integer
+        aptitude:
+          type: integer
+          nullable: true
+        zone:
+          type: integer
+          nullable: true
+      required:
+      - adresse1
+      - civilite
+      - date_embauche
+      - email
+      - nom
+      - num_secu
+      - pays
+      - prenom
+      - tel
+      - user
+      - ville
+      - zip_code
     StatutEnum:
       enum:
       - S00
