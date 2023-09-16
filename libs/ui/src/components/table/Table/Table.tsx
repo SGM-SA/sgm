@@ -1,6 +1,6 @@
 import { Box, Table as ChakraTable, TableProps as ChakraTableProps, Checkbox, Icon, IconButton, Skeleton, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import { Paginated } from '@sgm/utils'
-import { ColumnDef, PaginationState, Row, RowData, SortingState, flexRender, getCoreRowModel, getExpandedRowModel, useReactTable } from '@tanstack/react-table'
+import { ColumnDef, PaginationState, Row, RowData, SortingState, flexRender, getCoreRowModel, getExpandedRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 import React, { Fragment, MouseEvent, useEffect, useMemo, useState } from 'react'
 import { FaArrowDown, FaArrowUp, FaChevronDown, FaChevronRight, FaPlus } from 'react-icons/fa'
 import { RowSelectionActionComponentProps, getMetaFromColumn, resolveResults } from '../../../utils'
@@ -54,8 +54,10 @@ type BaseTableProps<TData> = {
     /**
      * Sortable
      */
-    sorting?: string
-    setSorting?: React.Dispatch<React.SetStateAction<string>>
+    sorting?: boolean | {
+        state: string
+        setState: React.Dispatch<React.SetStateAction<string>>
+    }
     /**
      * Row selection
      */
@@ -157,7 +159,8 @@ export function Table<TData>(props: TableProps<TData>) {
 
     const data = resolveResults(props.data) || [],
           columns = rowSelectionColumn ? [rowSelectionColumn].concat(props.columns) : props.columns,
-          loadingSkeletonRowsCount = props.loadingSkeletonRowsCount || props.pagination?.pageSize || 10
+          loadingSkeletonRowsCount = props.loadingSkeletonRowsCount || props.pagination?.pageSize || 10,
+          isServerSorting = () => props.sorting !== undefined && typeof props.sorting !== 'boolean'
 
     const table = useReactTable<TData>({
         data: props.loading ? Array(loadingSkeletonRowsCount).fill({}) : data,
@@ -187,9 +190,14 @@ export function Table<TData>(props: TableProps<TData>) {
                 }
             }
         } : {}),
-        ...(props.sorting !== undefined ? {
+        ...(isServerSorted(props.sorting) ? {
             manualSorting: true,
             onSortingChange: setInternalSorting,
+        } : {}),
+        ...(isLocalSorted(props.sorting) ? {
+            manualSorting: false,
+            onSortingChange: setInternalSorting,
+            getSortedRowModel: getSortedRowModel(),
         } : {})
     })
 
@@ -217,9 +225,9 @@ export function Table<TData>(props: TableProps<TData>) {
 
     useEffect(() => {
         
-        if (internalSorting[0] && props.setSorting) {
+        if (internalSorting[0] && isServerSorted(props.sorting)) {
             const [{ id, desc }] = internalSorting
-            props.setSorting(`${desc ? '-' : ''}${id}`)
+            props.sorting.setState(`${desc ? '-' : ''}${id}`)
         }
 
     }, [internalSorting])
@@ -288,7 +296,12 @@ export function Table<TData>(props: TableProps<TData>) {
                             {headerGroup.headers.map(header => (
                                 <Th key={header.id} colSpan={header.colSpan}>
                                     <Box
-                                        {...(header.column.getCanSort() && getMetaFromColumn(header.column)?.sortable ? {
+                                        {...(
+                                            header.column.getCanSort() && 
+                                            (
+                                                (isServerSorted(props.sorting) && getMetaFromColumn(header.column)?.sortable)
+                                                || isLocalSorted(props.sorting)
+                                            ) ? {
                                             cursor: 'pointer',
                                             onClick: header.column.getToggleSortingHandler(),
                                         } : {}) }
@@ -390,4 +403,15 @@ export function Table<TData>(props: TableProps<TData>) {
 
         </TableContainer>
     </>
+}
+
+const isServerSorted = (sorting: TableProps<any>['sorting']): sorting is {
+    state: string
+    setState: React.Dispatch<React.SetStateAction<string>>
+} => {
+    return sorting !== undefined && typeof sorting !== 'boolean'
+}
+
+const isLocalSorted = (sorting: TableProps<any>['sorting']): sorting is boolean => {
+    return sorting !== undefined && typeof sorting === 'boolean'
 }
