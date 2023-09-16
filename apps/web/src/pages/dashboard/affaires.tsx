@@ -107,8 +107,10 @@ const AffairesPage: React.FC = () => {
                     pagination={pagination}
                     setPagination={setPagination}
                     editable
-                    sorting={sorting}
-                    setSorting={setSorting}
+                    sorting={{
+                        state: sorting,
+                        setState: setSorting
+                    }}
                     header={{
                         title: 'Liste des affaires',
                         customHeader: () => <AffaireSearch filters={filters} setFilters={setFilters}/>

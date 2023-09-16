@@ -68,7 +68,8 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                 title: 'Fiches',
                 customHeader: () => <AddFicheModele affaireId={props.affaireId} refetch={refetch}/>
             }}
-            editable={true}
+            editable
+            sorting
             newRow={() => {
                 fetchApiFichesCreate({
                     body: { affaire: props.affaireId }
