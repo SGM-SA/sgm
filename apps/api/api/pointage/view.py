@@ -1,5 +1,5 @@
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
-from datetime import datetime
+from drf_spectacular.types import OpenApiTypes
 from rest_framework import generics, permissions, filters, views, status
 from rest_framework.response import Response
 from django.utils import timezone
@@ -8,6 +8,7 @@ from api.etape.models import Etape
 from api.pointage.models import PointageEtape
 
 from api.pointage.serializer import ReadPointageSerializer, PointageSerializer
+from api.pointage.export import export_pointages
 
 
 class PointageFilterBackend(filters.BaseFilterBackend):
@@ -152,3 +153,44 @@ class PointageGestion(views.APIView):
         etape.date_cloture = timezone.now()
         etape.terminee = True
         etape.save()
+
+@extend_schema_view(
+    get=extend_schema(
+        summary="Export Pointages",
+        description="Exporte les pointages",
+        tags=["Pointage"],
+        parameters=[
+            OpenApiParameter(
+                name="start_date",
+                description="Date de début de l'export",
+                required=True,
+type=OpenApiTypes.DATE
+            ),
+            OpenApiParameter(
+                name="end_date",
+                description="Date de fin de l'export",
+                required=True,
+type=OpenApiTypes.DATE
+            ),
+        ],
+    )
+)
+class ExportPointagesView(views.APIView):
+    """
+    Endpoint pour exporter les pointages
+    """
+
+    permission_classes = [permissions.IsAdminUser]
+
+    @extend_schema(
+        responses={200: None, 400: None},
+    )
+    def get(self, request, *args, **kwargs):
+        """
+        Exporte les pointages
+        """
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
+
+        return export_pointages(start_date, end_date)
+

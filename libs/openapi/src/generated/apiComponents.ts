@@ -3999,6 +3999,78 @@ export const useApiPointagesCreate = (
 	})
 }
 
+export type ApiPointagesExportRetrieveQueryParams = {
+	/**
+	 * Date de fin de l'export
+	 *
+	 * @format date
+	 */
+	end_date: string
+	/**
+	 * Date de début de l'export
+	 *
+	 * @format date
+	 */
+	start_date: string
+}
+
+export type ApiPointagesExportRetrieveError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiPointagesExportRetrieveVariables = {
+	queryParams: ApiPointagesExportRetrieveQueryParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Exporte les pointages
+ */
+export const fetchApiPointagesExportRetrieve = (
+	variables: ApiPointagesExportRetrieveVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		undefined,
+		ApiPointagesExportRetrieveError,
+		undefined,
+		{},
+		ApiPointagesExportRetrieveQueryParams,
+		{}
+	>({ url: '/api/pointages/export', method: 'get', ...variables, signal })
+
+/**
+ * Exporte les pointages
+ */
+export const useApiPointagesExportRetrieve = <TData = undefined>(
+	variables: ApiPointagesExportRetrieveVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			undefined,
+			ApiPointagesExportRetrieveError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		undefined,
+		ApiPointagesExportRetrieveError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/pointages/export',
+			operationId: 'apiPointagesExportRetrieve',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiPointagesExportRetrieve(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
 export type ApiPointagesListListQueryParams = {
 	/**
 	 * Filtre les pointages selon qu'ils soient en cours ou non
@@ -4517,6 +4589,11 @@ export type QueryOperation =
 			path: '/api/planning/zone'
 			operationId: 'apiPlanningZoneList'
 			variables: ApiPlanningZoneListVariables
+	  }
+	| {
+			path: '/api/pointages/export'
+			operationId: 'apiPointagesExportRetrieve'
+			variables: ApiPointagesExportRetrieveVariables
 	  }
 	| {
 			path: '/api/pointages/list'

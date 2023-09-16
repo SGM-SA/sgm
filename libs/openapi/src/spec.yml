@@ -1940,6 +1940,35 @@ paths:
           description: No response body
         '404':
           description: No response body
+  /api/pointages/export:
+    get:
+      operationId: api_pointages_export_retrieve
+      description: Exporte les pointages
+      summary: Export Pointages
+      parameters:
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date
+        description: Date de fin de l'export
+        required: true
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date
+        description: Date de début de l'export
+        required: true
+      tags:
+      - Pointage
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+        '400':
+          description: No response body
   /api/pointages/list:
     get:
       operationId: api_pointages_list_list
