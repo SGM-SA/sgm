@@ -10,6 +10,7 @@ from api.fiche_modele.serializer import (
     FicheModeleDetail,
     FicheModeleEtEtapes,
     FicheModeleOptionsSerializer,
+    CopyFicheSerializer,
 )
 from rest_framework import generics, status, pagination
 from drf_spectacular.utils import (
@@ -90,21 +91,20 @@ class FicheModeleOptionsView(generics.ListAPIView):
             400: OpenApiTypes.STR,
             404: OpenApiTypes.STR,
         },
+        request=None,
     )
 )
-class CopieModeleToAffaire(APIView):
+class CopieModeleToAffaire(generics.GenericAPIView):
     queryset = FicheModele.objects.all()
+    serializer_class = CopyFicheSerializer
 
     def post(self, requete, *args, **kwargs):
-        id_affaire = requete.query_params.get("affaire")
-        id_modele = requete.query_params.get("modele")
+        serializer = self.get_serializer(data=requete.query_params)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # Vérifiez si les deux 'affaire' et 'modele' sont fournis
-        if not (id_affaire and id_modele):
-            return Response(
-                {"detail": "'affaire' et 'modele' sont requis."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        id_affaire = serializer.validated_data["affaire"]
+        id_modele = serializer.validated_data["modele"]
 
         try:
             affaire = Affaire.objects.get(id=id_affaire)
