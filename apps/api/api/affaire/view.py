@@ -79,10 +79,10 @@ class AffaireList(generics.ListAPIView):
 
 @extend_schema(
     summary="Affaire",
-    description="Permet de récupérer une affaire",
+    description="Permet de récupérer / update une affaire",
     tags=["Affaire"],
 )
-class AffaireDetail(generics.RetrieveAPIView):
+class AffaireDetail(generics.RetrieveUpdateAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireDetailsSerializer
 

@@ -198,12 +198,12 @@ class AffaireStatsSerializer(serializers.Serializer):
     temps_machine = serializers.SerializerMethodField()
     temps_restant = serializers.SerializerMethodField()
 
-    def get_temps_ajustage(self, affaire: Affaire):
+    def get_temps_ajustage(self, affaire: Affaire) -> int:
         # pour chaque fiches prendre etapes.temps
         return affaire.temps_ajustage()
 
-    def get_temps_machine(self, affaire: Affaire):
+    def get_temps_machine(self, affaire: Affaire) -> int:
         return affaire.temps_machine()
 
-    def get_temps_restant(self, affaire: Affaire):
+    def get_temps_restant(self, affaire: Affaire) -> int:
         return affaire.temps_restant()
