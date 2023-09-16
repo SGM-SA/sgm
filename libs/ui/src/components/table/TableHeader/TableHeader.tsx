@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Flex, Text } from '@chakra-ui/react'
 import React, { ReactNode } from 'react'
 
 type TableHeaderProps = {
@@ -15,13 +15,14 @@ export const TableHeader: React.FC<TableHeaderProps> = (props) => {
             mb='2em'
         >
             {props.title && 
-                <Box as='h2' 
-                    fontSize='xl' 
+                <Text as='h2' 
+                    fontSize='xl'
+                    fontWeight='normal'
                     mr='auto'
-                    p='1em'
+                    padding='1em'
                 >
                     {props.title}
-                </Box>
+                </Text>
             }
             {props.children}
         </Flex>

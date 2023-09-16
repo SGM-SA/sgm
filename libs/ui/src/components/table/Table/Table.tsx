@@ -1,7 +1,7 @@
-import { Box, Table as ChakraTable, TableProps as ChakraTableProps, Checkbox, Flex, Icon, IconButton, Skeleton, Spinner, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import { Box, Table as ChakraTable, TableProps as ChakraTableProps, Checkbox, Icon, IconButton, Skeleton, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import { Paginated } from '@sgm/utils'
 import { ColumnDef, PaginationState, Row, RowData, SortingState, flexRender, getCoreRowModel, getExpandedRowModel, useReactTable } from '@tanstack/react-table'
-import React, { Fragment, MouseEvent, MouseEventHandler, useEffect, useMemo, useState } from 'react'
+import React, { Fragment, MouseEvent, useEffect, useMemo, useState } from 'react'
 import { FaArrowDown, FaArrowUp, FaChevronDown, FaChevronRight, FaPlus } from 'react-icons/fa'
 import { RowSelectionActionComponentProps, getMetaFromColumn, resolveResults } from '../../../utils'
 import { DefaultTableCell } from '../DefaultTableCell/DefaultTableCell'
@@ -126,6 +126,10 @@ export function Table<TData>(props: TableProps<TData>) {
         [props.pagination]
     )
 
+    // toast.success('test', {
+    //     autoClose: 5000000,
+    //     closeOnClick: false
+    // })
 
     const [internalSorting, setInternalSorting] = useState<SortingState>([])
     
@@ -220,30 +224,47 @@ export function Table<TData>(props: TableProps<TData>) {
 
     }, [internalSorting])
 
+    const selectedRowsCount = table.getRowModel().rows.filter(row => row.getIsSelected()).length
+
 	return <>
         <TableContainer 
             w='100%' minH='70vh'
             display='flex' flexDirection='column' justifyContent='flex-start' alignItems='center' 
             {...props.styling?.container}
         >
-            
-            <Box w='100%' position='relative'>
 
-                {props.rowSelection?.selectionActionComponent &&
-                    <Flex 
-                        justifyContent='flex-end' alignItems='center'
-                        w='100%' h={(table.getIsSomeRowsSelected() || table.getIsAllRowsSelected()) ? 'unset' : 0} 
-                        transition='all .5s ease-in-out'
-                        // background='rgba(0,0,0,.1)'
-                        overflow='hidden'
-                        position='absolute' top={0} left={0}
+            {(props.rowSelection?.selectionActionComponent && (table.getIsSomeRowsSelected() || table.getIsAllRowsSelected())) &&
+                <Box className='Toastify__toast-container Toastify__toast-container--bottom-center'
+                    w='80%'
+                    background='gray.50'
+                    // justifyContent='center' alignItems='center' 
+                    // transition='all .5s ease-in-out'
+                    // background='gray.50'
+                    // borderRadius='5px'
+                    // boxShadow='0 0 10px rgba(0,0,0,.2)'
+                    // p='1em'
+                    // overflow='hidden'
+                    // position='fixed'
+                    // bottom='5%' left='50%' transform='translateX(-50%)'
+                    // zIndex={1}
+                >
+                    <Box className='Toastify__toast Toastify__toast-theme--light Toastify__toast--success'
+                        display='flex'
+                        justifyContent='space-between' alignItems='center'
+                        paddingX='2em'
                     >
+                        <Text>
+                            {`${selectedRowsCount} lignes sélectionnée${selectedRowsCount > 1 ? 's' : ''}`}
+                        </Text>
                         <props.rowSelection.selectionActionComponent 
                             checkedItems={table.getIsAllRowsSelected() ? table.getRowModel().rows : table.getRowModel().rows.filter(row => row.getIsSelected())}
                             resetSelection={() => table.toggleAllPageRowsSelected(false)}
-                    />
-                    </Flex>
-                }
+                        />
+                    </Box>
+                </Box>
+            }
+            
+            <Box w='100%' position='relative'>
 
                 <TableHeader
                     title={props.header?.title}

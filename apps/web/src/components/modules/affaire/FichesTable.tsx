@@ -3,6 +3,7 @@ import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteCreate, useApiAf
 import { Table, createMeta } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
+import { AddFicheModele } from '../fiche/AddFicheModele'
 
 const columnHelper = createColumnHelper<FicheDetail>()
 
@@ -65,6 +66,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
             loading={isLoading}
             header={{
                 title: 'Fiches',
+                customHeader: () => <AddFicheModele affaireId={props.affaireId} refetch={refetch}/>
             }}
             editable={true}
             newRow={() => {
@@ -77,10 +79,12 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                 selectionActionComponent: ({ checkedItems, resetSelection }) => {
                     return <Box>
                         <Button 
+                            size='sm'
                             colorScheme='red'
-                            mr='1em'
+                            borderRadius='4px'
+                            variant='outline'
                             onClick={async () => {
-                                await fetchApiFichesDeleteCreate({
+                                fetchApiFichesDeleteCreate({
                                     body: {
                                         ids: checkedItems.map(item => item.original.id)
                                     }
