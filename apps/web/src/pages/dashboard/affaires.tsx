@@ -104,16 +104,18 @@ const AffairesPage: React.FC = () => {
                     columns={columns}
                     data={data}
                     loading={isLoading}
-                    pagination={pagination}
-                    setPagination={setPagination}
+                    pagination={{
+                        state: pagination,
+                        setState: setPagination
+                    }}
                     editable
-                    sorting={{
+                    sortable={{
                         state: sorting,
                         setState: setSorting
                     }}
                     header={{
                         title: 'Liste des affaires',
-                        customHeader: () => <AffaireSearch filters={filters} setFilters={setFilters}/>
+                        customComponent: () => <AffaireSearch filters={filters} setFilters={setFilters}/>
                     }}
                     rowExpansion={{
                         enabled: true,

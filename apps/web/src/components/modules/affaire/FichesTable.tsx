@@ -66,10 +66,10 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
             loading={isLoading}
             header={{
                 title: 'Fiches',
-                customHeader: () => <AddFicheModele affaireId={props.affaireId} refetch={refetch}/>
+                customComponent: () => <AddFicheModele affaireId={props.affaireId} refetch={refetch}/>
             }}
             editable
-            sorting
+            sortable
             newRow={() => {
                 fetchApiFichesCreate({
                     body: { affaire: props.affaireId }
