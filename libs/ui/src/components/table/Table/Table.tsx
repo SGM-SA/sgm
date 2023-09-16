@@ -15,7 +15,7 @@ declare module '@tanstack/react-table' {
     }
 }
 
-// Give our default column cell renderer editing superpowers
+// Give the default column cell renderer editing superpowers
 const defaultColumn: Partial<ColumnDef<any>> = {
     cell: DefaultTableCell,
 }
@@ -38,35 +38,44 @@ const useSkipper = () => {
 }
 
 type BaseTableProps<TData> = {
+    /**
+     * The \@tanstack/react-table columns definition
+     * @doc https://tanstack.com/table/v8/docs/guide/column-defs
+     */
     columns: Array<any>
+    /**
+     * Is the table is currently loading and should then display a skeleton loader
+     */
     loading: boolean
     /**
-     * Row expansion
+     * Permit to display a sub component underneath any row of the table accessible using an expansion button
      */
     rowExpansion?: {
         enabled: boolean
         renderSubComponent?: React.FC<{ row: Row<TData> }>
     }
     /**
-     * Editable
+     * Should the table cells be editable
      */
     editable?: boolean
     /**
-     * Sortable
+     * If set to a boolean, the table will be sorted locally
+     * 
+     * If set to an object with the state and setter from the `useTableQueryHelper` hook, the table will be sorted server side
      */
-    sorting?: boolean | {
+    sortable?: boolean | {
         state: string
         setState: React.Dispatch<React.SetStateAction<string>>
     }
     /**
-     * Row selection
+     * Enable row selection using checkboxes
      */
     rowSelection?: {
         enabled: boolean
         selectionActionComponent?: RowSelectionActionComponentProps<TData>
     }
     /**
-     * Row behavior
+     * Controls the rows behavior and what action to perform on what event
      */
     rowAction?: {
         enableDoubleClick?: boolean
@@ -77,15 +86,15 @@ type BaseTableProps<TData> = {
         }) => void
     }
     /**
-     * New row
+     * If set, will display a button to add a new row according to the function passed
      */
     newRow?: () => void
     /**
-     * Header
+     * Personalize the table header with either a title, a custom component displayed on its right or both
      */
     header?: {
         title?: string
-        customHeader?: React.FC
+        customComponent?: React.FC
     }
     /**
      * Styling
@@ -95,24 +104,32 @@ type BaseTableProps<TData> = {
         container?: ChakraTableProps
     }
     /**
-     * Misc
+     * Overrides the number of rows displayed in the skeleton loader
      */
     loadingSkeletonRowsCount?: number
 }
 
 type TableProps<TData> = BaseTableProps<TData> & ({
+        /**
+         * Data to display
+         */
         data?: Array<TData>
         /**
          * Pagination
          */
         pagination?: undefined
     } | {
+        /**
+         * Paginated data to display
+         */
         data?: Paginated<TData>
         /**
-         * Pagination
+         * Pagination state and setter from the `useTableQueryHelper` hook
          */
-        pagination: PaginationState
-        setPagination?: React.Dispatch<React.SetStateAction<PaginationState>>
+        pagination: {
+            state: PaginationState
+            setState?: React.Dispatch<React.SetStateAction<PaginationState>>
+        }
     })
 
 
@@ -123,15 +140,10 @@ export function Table<TData>(props: TableProps<TData>) {
     // link the pagination react state to the table internal state
     const tablePagination = useMemo(
         () => (props.pagination ? {
-            ...props.pagination,
+            ...props.pagination.state,
         } : undefined),
         [props.pagination]
     )
-
-    // toast.success('test', {
-    //     autoClose: 5000000,
-    //     closeOnClick: false
-    // })
 
     const [internalSorting, setInternalSorting] = useState<SortingState>([])
     
@@ -159,8 +171,7 @@ export function Table<TData>(props: TableProps<TData>) {
 
     const data = resolveResults(props.data) || [],
           columns = rowSelectionColumn ? [rowSelectionColumn].concat(props.columns) : props.columns,
-          loadingSkeletonRowsCount = props.loadingSkeletonRowsCount || props.pagination?.pageSize || 10,
-          isServerSorting = () => props.sorting !== undefined && typeof props.sorting !== 'boolean'
+          loadingSkeletonRowsCount = props.loadingSkeletonRowsCount || props.pagination?.state?.pageSize || 10
 
     const table = useReactTable<TData>({
         data: props.loading ? Array(loadingSkeletonRowsCount).fill({}) : data,
@@ -176,7 +187,7 @@ export function Table<TData>(props: TableProps<TData>) {
         getRowCanExpand: () => !!props.rowExpansion?.enabled,
         ...(props.pagination ? {
             manualPagination: true,
-            onPaginationChange: props.setPagination,
+            onPaginationChange: props.pagination.setState,
             pageCount: (props.data?.count && tablePagination) ? Math.ceil(props.data.count / tablePagination.pageSize) : 0,
         } : {}),
         getExpandedRowModel: getExpandedRowModel(),
@@ -190,11 +201,11 @@ export function Table<TData>(props: TableProps<TData>) {
                 }
             }
         } : {}),
-        ...(isServerSorted(props.sorting) ? {
+        ...(isServerSorted(props.sortable) ? {
             manualSorting: true,
             onSortingChange: setInternalSorting,
         } : {}),
-        ...(isLocalSorted(props.sorting) ? {
+        ...(isLocalSorted(props.sortable) ? {
             manualSorting: false,
             onSortingChange: setInternalSorting,
             getSortedRowModel: getSortedRowModel(),
@@ -225,12 +236,12 @@ export function Table<TData>(props: TableProps<TData>) {
 
     useEffect(() => {
         
-        if (internalSorting[0] && isServerSorted(props.sorting)) {
+        if (internalSorting[0] && isServerSorted(props.sortable)) {
             const [{ id, desc }] = internalSorting
-            props.sorting.setState(`${desc ? '-' : ''}${id}`)
+            props.sortable.setState(`${desc ? '-' : ''}${id}`)
         }
 
-    }, [internalSorting])
+    }, [internalSorting, props.sortable])
 
     const selectedRowsCount = table.getRowModel().rows.filter(row => row.getIsSelected()).length
 
@@ -277,8 +288,8 @@ export function Table<TData>(props: TableProps<TData>) {
                 <TableHeader
                     title={props.header?.title}
                 >
-                    {props.header?.customHeader &&
-                        <props.header.customHeader />
+                    {props.header?.customComponent &&
+                        <props.header.customComponent />
                     }
                 </TableHeader>
             </Box>
@@ -299,8 +310,8 @@ export function Table<TData>(props: TableProps<TData>) {
                                         {...(
                                             header.column.getCanSort() && 
                                             (
-                                                (isServerSorted(props.sorting) && getMetaFromColumn(header.column)?.sortable)
-                                                || isLocalSorted(props.sorting)
+                                                (isServerSorted(props.sortable) && getMetaFromColumn(header.column)?.sortable)
+                                                || isLocalSorted(props.sortable)
                                             ) ? {
                                             cursor: 'pointer',
                                             onClick: header.column.getToggleSortingHandler(),
@@ -405,13 +416,13 @@ export function Table<TData>(props: TableProps<TData>) {
     </>
 }
 
-const isServerSorted = (sorting: TableProps<any>['sorting']): sorting is {
+const isServerSorted = (sorting: TableProps<any>['sortable']): sorting is {
     state: string
     setState: React.Dispatch<React.SetStateAction<string>>
 } => {
     return sorting !== undefined && typeof sorting !== 'boolean'
 }
 
-const isLocalSorted = (sorting: TableProps<any>['sorting']): sorting is boolean => {
+const isLocalSorted = (sorting: TableProps<any>['sortable']): sorting is boolean => {
     return sorting !== undefined && typeof sorting === 'boolean'
 }
