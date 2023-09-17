@@ -17,7 +17,7 @@ from api.affaire.models import Affaire
 from api.fiche.models import Fiche
 from api.etape.models import Etape
 from api.zone.models import Zone
-from api.salarie.models import Salarie
+from api.user.models import CustomUser
 from api.fiche_modele.models import FicheModele
 from api.etape_modele.models import EtapeModele
 from api.affectation_etape_machine.models import AffectationMachine
@@ -46,5 +46,8 @@ admin.site.register(Fourniture)
 admin.site.register(TypeFourniture)
 admin.site.register(AchatFourniture)
 admin.site.register(AffectationAjustage)
-admin.site.register(Salarie)
+admin.site.register(CustomUser)
 admin.site.register(Note)
+admin.site.site_header = "SGM Administration"
+admin.site.site_title = "SGM Administration"
+

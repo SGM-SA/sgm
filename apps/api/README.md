@@ -18,9 +18,15 @@ Dans fichier .env, renseigner les variables d'environnement pour dev local:
 ENV=DEV
 ```
 lancer l'api:
-```python
+```bash
 python manage.py runserver
 ```
+
+porocess task:
+```bash
+python manage.py process_tasks
+```
+
 
 ## Swagger
 Après lancement de l'api, swagger dispo

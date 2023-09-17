@@ -1,13 +1,13 @@
 from django.db import models
 from api.etape.models import Etape
-from django.contrib.auth.models import User
+from api.user.models import CustomUser
 from django.utils import timezone
 
 
 class PointageEtape(models.Model):
     etape = models.ForeignKey(Etape, on_delete=models.PROTECT)
     user = models.ForeignKey(
-        User, on_delete=models.PROTECT, related_name="user_pointages"
+        CustomUser, on_delete=models.PROTECT, related_name="user_pointages"
     )
 
     date_debut = models.DateTimeField("Date de début", null=False, blank=False)

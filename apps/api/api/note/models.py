@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from api.user.models import CustomUser
 from api.affaire.models import Affaire
 
 
@@ -11,9 +11,11 @@ class Note(models.Model):
         blank=False,
         related_name="notes",
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_notes")
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name="user_notes"
+    )
     contenu = models.TextField()
     date_creation = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username}: {self.contenu[:10]}..."
+        return f"{self.user.name}: {self.contenu[:10]}..."

@@ -4,6 +4,7 @@ from api.affaire.models import Affaire
 from .serializer import NoteDetail, NoteCreate
 from drf_spectacular.utils import extend_schema
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
 @extend_schema(
@@ -53,3 +54,8 @@ class AffaireNotesListView(APIView):
             user=None,
         )
         return NoteDetail([description_as_note] + list(notes), many=True).data
+
+    def get(self, request, *args, **kwargs):
+      queryset = self.get_queryset()
+
+      return Response(queryset)

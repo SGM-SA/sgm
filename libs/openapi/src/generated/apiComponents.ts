@@ -3792,6 +3792,74 @@ export const useApiNotesDestroy = (
 	})
 }
 
+export type ApiNotesAffaireListPathParams = {
+	affaireId: number
+}
+
+export type ApiNotesAffaireListError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiNotesAffaireListResponse = Schemas.NoteDetail[]
+
+export type ApiNotesAffaireListVariables = {
+	pathParams: ApiNotesAffaireListPathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Récupère toutes les notes associées à une affaire donnée, ordonnées par date de création. La première note est la description de l'affaire.
+ */
+export const fetchApiNotesAffaireList = (
+	variables: ApiNotesAffaireListVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		ApiNotesAffaireListResponse,
+		ApiNotesAffaireListError,
+		undefined,
+		{},
+		{},
+		ApiNotesAffaireListPathParams
+	>({
+		url: '/api/notes/affaire/{affaireId}',
+		method: 'get',
+		...variables,
+		signal,
+	})
+
+/**
+ * Récupère toutes les notes associées à une affaire donnée, ordonnées par date de création. La première note est la description de l'affaire.
+ */
+export const useApiNotesAffaireList = <TData = ApiNotesAffaireListResponse>(
+	variables: ApiNotesAffaireListVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			ApiNotesAffaireListResponse,
+			ApiNotesAffaireListError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		ApiNotesAffaireListResponse,
+		ApiNotesAffaireListError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/notes/affaire/{affaire_id}',
+			operationId: 'apiNotesAffaireList',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiNotesAffaireList(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
 export type ApiPlanningMachineListQueryParams = {
 	/**
 	 * annee
@@ -4162,7 +4230,7 @@ export const fetchApiSalariesFormOptionsList = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.PaginatedSalarieFormOptionsList,
+		Schemas.PaginatedCustomUserDetailList,
 		ApiSalariesFormOptionsListError,
 		undefined,
 		{},
@@ -4179,12 +4247,12 @@ export const fetchApiSalariesFormOptionsList = (
  * Permet de récupérer les options pour les formulaires
  */
 export const useApiSalariesFormOptionsList = <
-	TData = Schemas.PaginatedSalarieFormOptionsList
+	TData = Schemas.PaginatedCustomUserDetailList
 >(
 	variables: ApiSalariesFormOptionsListVariables,
 	options?: Omit<
 		reactQuery.UseQueryOptions<
-			Schemas.PaginatedSalarieFormOptionsList,
+			Schemas.PaginatedCustomUserDetailList,
 			ApiSalariesFormOptionsListError,
 			TData
 		>,
@@ -4193,7 +4261,7 @@ export const useApiSalariesFormOptionsList = <
 ) => {
 	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
 	return reactQuery.useQuery<
-		Schemas.PaginatedSalarieFormOptionsList,
+		Schemas.PaginatedCustomUserDetailList,
 		ApiSalariesFormOptionsListError,
 		TData
 	>({
@@ -4273,22 +4341,32 @@ export const fetchApiUserRetrieve = (
 	variables: ApiUserRetrieveVariables,
 	signal?: AbortSignal
 ) =>
-	apiFetch<Schemas.User, ApiUserRetrieveError, undefined, {}, {}, {}>({
-		url: '/api/user',
-		method: 'get',
-		...variables,
-		signal,
-	})
+	apiFetch<
+		Schemas.CustomUserGroups,
+		ApiUserRetrieveError,
+		undefined,
+		{},
+		{},
+		{}
+	>({ url: '/api/user', method: 'get', ...variables, signal })
 
-export const useApiUserRetrieve = <TData = Schemas.User>(
+export const useApiUserRetrieve = <TData = Schemas.CustomUserGroups>(
 	variables: ApiUserRetrieveVariables,
 	options?: Omit<
-		reactQuery.UseQueryOptions<Schemas.User, ApiUserRetrieveError, TData>,
+		reactQuery.UseQueryOptions<
+			Schemas.CustomUserGroups,
+			ApiUserRetrieveError,
+			TData
+		>,
 		'queryKey' | 'queryFn'
 	>
 ) => {
 	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
-	return reactQuery.useQuery<Schemas.User, ApiUserRetrieveError, TData>({
+	return reactQuery.useQuery<
+		Schemas.CustomUserGroups,
+		ApiUserRetrieveError,
+		TData
+	>({
 		queryKey: queryKeyFn({
 			path: '/api/user',
 			operationId: 'apiUserRetrieve',
@@ -4579,6 +4657,11 @@ export type QueryOperation =
 			path: '/api/notes/{id}'
 			operationId: 'apiNotesRetrieve'
 			variables: ApiNotesRetrieveVariables
+	  }
+	| {
+			path: '/api/notes/affaire/{affaire_id}'
+			operationId: 'apiNotesAffaireList'
+			variables: ApiNotesAffaireListVariables
 	  }
 	| {
 			path: '/api/planning/machine'

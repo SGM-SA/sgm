@@ -20,7 +20,7 @@ class ReadPointageSerializer(serializers.ModelSerializer):
     Serializer pour les pointages en lecture
     """
 
-    user = serializers.CharField(source="user.username", read_only=True)
+    user = serializers.CharField(source="user.name", read_only=True)
     etape = EtapeSerializer(Etape, read_only=True)
     en_cours = serializers.SerializerMethodField(
         method_name="get_en_cours", read_only=True

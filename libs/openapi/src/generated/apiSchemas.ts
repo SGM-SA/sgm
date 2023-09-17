@@ -43,7 +43,7 @@ export type AffaireDetails = {
 	 * @format date
 	 */
 	date_cloture?: string | null
-	charge_affaire_detail: Salarie
+	charge_affaire_detail: CustomUserDetail
 	/**
 	 * @format double
 	 * @maximum 1
@@ -101,7 +101,7 @@ export type AffaireFiches = {
 	num_affaire?: number | null
 	validation_ingenieur?: boolean
 	fiches: FicheDetail[]
-	charge_affaire_detail: Salarie
+	charge_affaire_detail: CustomUserDetail
 }
 
 /**
@@ -119,7 +119,7 @@ export type AffaireFichesEtapes = {
 	 */
 	description?: string | null
 	fiches: FicheEtEtapes[]
-	charge_affaire_detail: Salarie
+	charge_affaire_detail: CustomUserDetail
 }
 
 /**
@@ -137,7 +137,7 @@ export type AffaireFichesEtapesAjustage = {
 	 */
 	description?: string | null
 	fiches: FicheEtEtapesAjustage[]
-	charge_affaire: string
+	charge_affaire: string | null
 }
 
 /**
@@ -155,7 +155,7 @@ export type AffaireFichesEtapesMachine = {
 	 */
 	description?: string | null
 	fiches: FicheEtEtapesMachine[]
-	charge_affaire: string
+	charge_affaire: string | null
 }
 
 /**
@@ -225,7 +225,7 @@ export type AffectationMachineDetail = {
 	semaine_affectation: string
 	etape?: number
 	machine?: number
-	salarie?: number | null
+	user?: number | null
 }
 
 export type AffectationMachineDetailRequest = {
@@ -235,7 +235,7 @@ export type AffectationMachineDetailRequest = {
 	semaine_affectation: string
 	etape?: number
 	machine?: number
-	salarie?: number | null
+	user?: number | null
 }
 
 export type BulkDeleteRequest = {
@@ -243,6 +243,60 @@ export type BulkDeleteRequest = {
 	 * Liste des ids des objets à supprimer
 	 */
 	ids: number[]
+}
+
+export type CustomUserDetail = {
+	id: number
+	/**
+	 * @format email
+	 * @maxLength 254
+	 */
+	email: string
+	/**
+	 * @maxLength 200
+	 */
+	name?: string | null
+	/**
+	 * @maxLength 200
+	 */
+	surname?: string | null
+}
+
+export type CustomUserDetailRequest = {
+	/**
+	 * @format email
+	 * @minLength 1
+	 * @maxLength 254
+	 */
+	email: string
+	/**
+	 * @maxLength 200
+	 */
+	name?: string | null
+	/**
+	 * @maxLength 200
+	 */
+	surname?: string | null
+}
+
+/**
+ * test
+ */
+export type CustomUserGroups = {
+	/**
+	 * @format email
+	 * @maxLength 254
+	 */
+	email: string
+	/**
+	 * @maxLength 200
+	 */
+	name?: string | null
+	/**
+	 * @maxLength 200
+	 */
+	surname?: string | null
+	groups: string[]
 }
 
 export type Etape = {
@@ -417,7 +471,7 @@ export type EtapeDetailMachine = {
 	id: number
 	machine: MachineDetail
 	affectation_id: number
-	salarie_id: number
+	user_id: number
 	num_etape: number
 	terminee?: boolean
 	/**
@@ -1050,6 +1104,24 @@ export type PaginatedAffectationMachineDetailList = {
 	results?: AffectationMachineDetail[]
 }
 
+export type PaginatedCustomUserDetailList = {
+	/**
+	 * @example 123
+	 */
+	count?: number
+	/**
+	 * @format uri
+	 * @example http://api.example.org/accounts/?page=4
+	 */
+	next?: string | null
+	/**
+	 * @format uri
+	 * @example http://api.example.org/accounts/?page=2
+	 */
+	previous?: string | null
+	results?: CustomUserDetail[]
+}
+
 export type PaginatedEtapeModeleListCreateList = {
 	/**
 	 * @example 123
@@ -1212,24 +1284,6 @@ export type PaginatedReadPointageList = {
 	results?: ReadPointage[]
 }
 
-export type PaginatedSalarieFormOptionsList = {
-	/**
-	 * @example 123
-	 */
-	count?: number
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=4
-	 */
-	next?: string | null
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=2
-	 */
-	previous?: string | null
-	results?: SalarieFormOptions[]
-}
-
 /**
  * Serializer pour l'affichage des affaires
  */
@@ -1283,7 +1337,7 @@ export type PatchedAffectationMachineDetailRequest = {
 	semaine_affectation?: string
 	etape?: number
 	machine?: number
-	salarie?: number | null
+	user?: number | null
 }
 
 export type PatchedEtapeCreateRequest = {
@@ -1477,145 +1531,6 @@ export type ReadPointage = {
 	date_fin?: string | null
 }
 
-export type Salarie = {
-	id: number
-	/**
-	 * @maxLength 200
-	 */
-	num_secu: string
-	/**
-	 * @maxLength 200
-	 */
-	civilite: string
-	/**
-	 * @maxLength 200
-	 */
-	nom: string
-	/**
-	 * @maxLength 200
-	 */
-	prenom: string
-	/**
-	 * @maxLength 200
-	 */
-	adresse1: string
-	/**
-	 * @maxLength 200
-	 */
-	adresse2?: string | null
-	/**
-	 * @maxLength 200
-	 */
-	zip_code: string
-	/**
-	 * @maxLength 200
-	 */
-	ville: string
-	/**
-	 * @maxLength 200
-	 */
-	pays: string
-	/**
-	 * @maxLength 200
-	 */
-	tel: string
-	/**
-	 * @maxLength 200
-	 */
-	email: string
-	/**
-	 * @format date
-	 */
-	date_embauche: string
-	/**
-	 * @format date
-	 */
-	date_depart?: string | null
-	user: number
-	aptitude?: number | null
-	zone?: number | null
-}
-
-export type SalarieFormOptions = {
-	id: number
-	/**
-	 * @maxLength 200
-	 */
-	nom: string
-	/**
-	 * @maxLength 200
-	 */
-	prenom: string
-}
-
-export type SalarieRequest = {
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	num_secu: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	civilite: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	nom: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	prenom: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	adresse1: string
-	/**
-	 * @maxLength 200
-	 */
-	adresse2?: string | null
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	zip_code: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	ville: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	pays: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	tel: string
-	/**
-	 * @minLength 1
-	 * @maxLength 200
-	 */
-	email: string
-	/**
-	 * @format date
-	 */
-	date_embauche: string
-	/**
-	 * @format date
-	 */
-	date_depart?: string | null
-	user: number
-	aptitude?: number | null
-	zone?: number | null
-}
-
 export type StatutEnum =
 	| 'S00'
 	| 'A00'
@@ -1644,7 +1559,7 @@ export type TokenObtainPairRequest = {
 	/**
 	 * @minLength 1
 	 */
-	username: string
+	email: string
 	/**
 	 * @minLength 1
 	 */
@@ -1660,31 +1575,4 @@ export type TokenRefreshRequest = {
 	 * @minLength 1
 	 */
 	refresh: string
-}
-
-/**
- * test
- */
-export type User = {
-	/**
-	 * Requis. 150 caractères maximum. Uniquement des lettres, nombres et les caractères « @ », « . », « + », « - » et « _ ».
-	 *
-	 * @pattern ^[\w.@+-]+$
-	 * @maxLength 150
-	 */
-	username: string
-	/**
-	 * @format email
-	 * @maxLength 254
-	 */
-	email?: string
-	/**
-	 * @maxLength 150
-	 */
-	first_name?: string
-	/**
-	 * @maxLength 150
-	 */
-	last_name?: string
-	groups: string[]
 }

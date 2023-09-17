@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.core.validators import MinValueValidator
+from api.user.models import CustomUser
 
 
 class Affaire(models.Model):
@@ -95,7 +96,7 @@ class Affaire(models.Model):
     )
 
     charge_affaire = models.ForeignKey(
-        "Salarie", on_delete=models.PROTECT, null=True, blank=True
+        CustomUser, on_delete=models.PROTECT, null=True, blank=True
     )
 
     hash_sgm_bd = models.CharField(

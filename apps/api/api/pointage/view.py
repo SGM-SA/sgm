@@ -154,6 +154,7 @@ class PointageGestion(views.APIView):
         etape.terminee = True
         etape.save()
 
+
 @extend_schema_view(
     get=extend_schema(
         summary="Export Pointages",
@@ -164,13 +165,13 @@ class PointageGestion(views.APIView):
                 name="start_date",
                 description="Date de début de l'export",
                 required=True,
-type=OpenApiTypes.DATE
+                type=OpenApiTypes.DATE,
             ),
             OpenApiParameter(
                 name="end_date",
                 description="Date de fin de l'export",
                 required=True,
-type=OpenApiTypes.DATE
+                type=OpenApiTypes.DATE,
             ),
         ],
     )
@@ -189,8 +190,7 @@ class ExportPointagesView(views.APIView):
         """
         Exporte les pointages
         """
-        start_date = request.query_params.get('start_date')
-        end_date = request.query_params.get('end_date')
+        start_date = request.query_params.get("start_date")
+        end_date = request.query_params.get("end_date")
 
         return export_pointages(start_date, end_date)
-
