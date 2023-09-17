@@ -1828,6 +1828,32 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/notes/affaire/{affaire_id}:
+    get:
+      operationId: api_notes_affaire_list
+      description: Récupère toutes les notes associées à une affaire donnée, ordonnées
+        par date de création. La première note est la description de l'affaire.
+      summary: Liste des Notes par Affaire
+      parameters:
+      - in: path
+        name: affaire_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Note
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NoteDetail'
+          description: ''
   /api/planning/machine:
     get:
       operationId: api_planning_machine_list
@@ -2022,7 +2048,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedSalarieFormOptionsList'
+                $ref: '#/components/schemas/PaginatedCustomUserDetailList'
           description: ''
   /api/tasks/resync_data_sgm:
     post:
@@ -2044,13 +2070,12 @@ paths:
       - api
       security:
       - jwtAuth: []
-      - {}
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/CustomUserGroups'
           description: ''
   /api/zones/:
     get:
@@ -2188,7 +2213,7 @@ components:
           title: Date de clôture de l'affaire (terminée)
         charge_affaire_detail:
           allOf:
-          - $ref: '#/components/schemas/Salarie'
+          - $ref: '#/components/schemas/CustomUserDetail'
           readOnly: true
         avancement_affaire:
           type: number
@@ -2273,7 +2298,7 @@ components:
           readOnly: true
         charge_affaire_detail:
           allOf:
-          - $ref: '#/components/schemas/Salarie'
+          - $ref: '#/components/schemas/CustomUserDetail'
           readOnly: true
       required:
       - charge_affaire_detail
@@ -2307,7 +2332,7 @@ components:
           readOnly: true
         charge_affaire_detail:
           allOf:
-          - $ref: '#/components/schemas/Salarie'
+          - $ref: '#/components/schemas/CustomUserDetail'
           readOnly: true
       required:
       - charge_affaire_detail
@@ -2342,6 +2367,8 @@ components:
           readOnly: true
         charge_affaire:
           type: string
+          nullable: true
+          title: Nom
           readOnly: true
       required:
       - charge_affaire
@@ -2376,6 +2403,8 @@ components:
           readOnly: true
         charge_affaire:
           type: string
+          nullable: true
+          title: Nom
           readOnly: true
       required:
       - charge_affaire
@@ -2490,7 +2519,7 @@ components:
           type: integer
         machine:
           type: integer
-        salarie:
+        user:
           type: integer
           nullable: true
       required:
@@ -2507,7 +2536,7 @@ components:
           type: integer
         machine:
           type: integer
-        salarie:
+        user:
           type: integer
           nullable: true
       required:
@@ -2522,6 +2551,75 @@ components:
           description: Liste des ids des objets à supprimer
       required:
       - ids
+    CustomUserDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          title: Adresse électronique
+          maxLength: 254
+        name:
+          type: string
+          nullable: true
+          title: Nom
+          maxLength: 200
+        surname:
+          type: string
+          nullable: true
+          maxLength: 200
+      required:
+      - email
+      - id
+    CustomUserDetailRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          title: Adresse électronique
+          maxLength: 254
+        name:
+          type: string
+          nullable: true
+          title: Nom
+          maxLength: 200
+        surname:
+          type: string
+          nullable: true
+          maxLength: 200
+      required:
+      - email
+    CustomUserGroups:
+      type: object
+      description: test
+      properties:
+        email:
+          type: string
+          format: email
+          title: Adresse électronique
+          maxLength: 254
+        name:
+          type: string
+          nullable: true
+          title: Nom
+          maxLength: 200
+        surname:
+          type: string
+          nullable: true
+          maxLength: 200
+        groups:
+          type: array
+          items:
+            type: string
+          readOnly: true
+      required:
+      - email
+      - groups
     Etape:
       type: object
       properties:
@@ -2809,7 +2907,7 @@ components:
         affectation_id:
           type: integer
           readOnly: true
-        salarie_id:
+        user_id:
           type: integer
           readOnly: true
         num_etape:
@@ -2873,7 +2971,7 @@ components:
       - id
       - machine
       - num_etape
-      - salarie_id
+      - user_id
     EtapeModeleDetail:
       type: object
       properties:
@@ -3808,6 +3906,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AffectationMachineDetail'
+    PaginatedCustomUserDetailList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomUserDetail'
     PaginatedEtapeModeleListCreateList:
       type: object
       properties:
@@ -3988,26 +4106,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ReadPointage'
-    PaginatedSalarieFormOptionsList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SalarieFormOptions'
     PatchedAffaireDetailsRequest:
       type: object
       description: Serializer pour l'affichage des affaires
@@ -4078,7 +4176,7 @@ components:
           type: integer
         machine:
           type: integer
-        salarie:
+        user:
           type: integer
           nullable: true
     PatchedEtapeCreateRequest:
@@ -4339,166 +4437,6 @@ components:
       - etape
       - id
       - user
-    Salarie:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        num_secu:
-          type: string
-          maxLength: 200
-        civilite:
-          type: string
-          maxLength: 200
-        nom:
-          type: string
-          maxLength: 200
-        prenom:
-          type: string
-          maxLength: 200
-        adresse1:
-          type: string
-          maxLength: 200
-        adresse2:
-          type: string
-          nullable: true
-          maxLength: 200
-        zip_code:
-          type: string
-          maxLength: 200
-        ville:
-          type: string
-          maxLength: 200
-        pays:
-          type: string
-          maxLength: 200
-        tel:
-          type: string
-          maxLength: 200
-        email:
-          type: string
-          maxLength: 200
-        date_embauche:
-          type: string
-          format: date
-        date_depart:
-          type: string
-          format: date
-          nullable: true
-        user:
-          type: integer
-        aptitude:
-          type: integer
-          nullable: true
-        zone:
-          type: integer
-          nullable: true
-      required:
-      - adresse1
-      - civilite
-      - date_embauche
-      - email
-      - id
-      - nom
-      - num_secu
-      - pays
-      - prenom
-      - tel
-      - user
-      - ville
-      - zip_code
-    SalarieFormOptions:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        nom:
-          type: string
-          maxLength: 200
-        prenom:
-          type: string
-          maxLength: 200
-      required:
-      - id
-      - nom
-      - prenom
-    SalarieRequest:
-      type: object
-      properties:
-        num_secu:
-          type: string
-          minLength: 1
-          maxLength: 200
-        civilite:
-          type: string
-          minLength: 1
-          maxLength: 200
-        nom:
-          type: string
-          minLength: 1
-          maxLength: 200
-        prenom:
-          type: string
-          minLength: 1
-          maxLength: 200
-        adresse1:
-          type: string
-          minLength: 1
-          maxLength: 200
-        adresse2:
-          type: string
-          nullable: true
-          maxLength: 200
-        zip_code:
-          type: string
-          minLength: 1
-          maxLength: 200
-        ville:
-          type: string
-          minLength: 1
-          maxLength: 200
-        pays:
-          type: string
-          minLength: 1
-          maxLength: 200
-        tel:
-          type: string
-          minLength: 1
-          maxLength: 200
-        email:
-          type: string
-          minLength: 1
-          maxLength: 200
-        date_embauche:
-          type: string
-          format: date
-        date_depart:
-          type: string
-          format: date
-          nullable: true
-        user:
-          type: integer
-        aptitude:
-          type: integer
-          nullable: true
-        zone:
-          type: integer
-          nullable: true
-      required:
-      - adresse1
-      - civilite
-      - date_embauche
-      - email
-      - nom
-      - num_secu
-      - pays
-      - prenom
-      - tel
-      - user
-      - ville
-      - zip_code
     StatutEnum:
       enum:
       - S00
@@ -4534,7 +4472,7 @@ components:
     TokenObtainPairRequest:
       type: object
       properties:
-        username:
+        email:
           type: string
           writeOnly: true
           minLength: 1
@@ -4543,8 +4481,8 @@ components:
           writeOnly: true
           minLength: 1
       required:
+      - email
       - password
-      - username
     TokenRefresh:
       type: object
       properties:
@@ -4562,38 +4500,6 @@ components:
           minLength: 1
       required:
       - refresh
-    User:
-      type: object
-      description: test
-      properties:
-        username:
-          type: string
-          title: Nom d’utilisateur
-          description: Requis. 150 caractères maximum. Uniquement des lettres, nombres
-            et les caractères « @ », « . », « + », « - » et « _ ».
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        email:
-          type: string
-          format: email
-          title: Adresse électronique
-          maxLength: 254
-        first_name:
-          type: string
-          title: Prénom
-          maxLength: 150
-        last_name:
-          type: string
-          title: Nom
-          maxLength: 150
-        groups:
-          type: array
-          items:
-            type: string
-          readOnly: true
-      required:
-      - groups
-      - username
   securitySchemes:
     jwtAuth:
       type: http
