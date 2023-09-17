@@ -81,7 +81,7 @@ class AffaireStatsGlobalTestCase(APITestCase):
         )
 
     def test_stats_global(self):
-        response = self.client.get("/api/affaires/stats")
+        response = self.client.get("/api/affaires/stats/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()
@@ -148,7 +148,7 @@ class StatsAffaireIndTestCase(APITestCase):
         )
 
     def test_stats_affaire_ind(self):
-        response = self.client.get(f"/api/affaires/stats/{self.affaire.id}")
+        response = self.client.get(f"/api/affaires/stat/{self.affaire.id}")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()

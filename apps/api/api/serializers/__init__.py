@@ -6,5 +6,4 @@ from .facture import FactureSerializer
 from .fourniture import FournitureSerializer
 from .type_fourniture import TypeFournitureSerializer
 from .achat_fourniture import AchatFournitureSerializer
-from .user import UserSerializer
 from .statut import StatutSerializer

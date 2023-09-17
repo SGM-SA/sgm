@@ -36,8 +36,8 @@ class EtapeDetailMachine(serializers.ModelSerializer):
     affectation_id = serializers.SlugRelatedField(
         read_only=True, slug_field="id", source="affectationmachine"
     )
-    salarie_id = serializers.SlugRelatedField(
-        read_only=True, slug_field="id", source="affectationmachine.salarie"
+    user_id = serializers.SlugRelatedField(
+        read_only=True, slug_field="id", source="affectationmachine.user"
     )
 
     class Meta:

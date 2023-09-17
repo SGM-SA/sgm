@@ -46,6 +46,7 @@ CORS_ALLOW_CREDENTIALS = True
 # Application definition
 
 INSTALLED_APPS = [
+    "api.apps.ApiConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -55,7 +56,6 @@ INSTALLED_APPS = [
     "django.contrib.admindocs",
     "rest_framework",
     "rest_framework_simplejwt",
-    "api.apps.ApiConfig",
     "django_extensions",
     "corsheaders",
     "drf_spectacular",
@@ -64,6 +64,8 @@ INSTALLED_APPS = [
     "constance.backends.database",
     "background_task",
 ]
+
+AUTH_USER_MODEL = "api.CustomUser"
 
 # constance
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"

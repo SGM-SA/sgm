@@ -1,7 +1,7 @@
 from django.db import models
 from api.etape.models import Etape
 from api.machine.models import Machine
-from api.salarie.models import Salarie
+from api.user.models import CustomUser
 
 
 class AffectationMachine(models.Model):
@@ -19,8 +19,8 @@ class AffectationMachine(models.Model):
         Machine, null=False, default=False, on_delete=models.CASCADE
     )
 
-    salarie = models.ForeignKey(
-        Salarie, null=True, blank=True, on_delete=models.CASCADE
+    user = models.ForeignKey(
+        CustomUser, null=True, blank=True, on_delete=models.CASCADE
     )
 
     def __str__(self):

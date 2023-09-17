@@ -2,7 +2,7 @@ from datetime import timedelta
 from rest_framework import serializers
 from api.fiche.models import Fiche
 from api.affaire.models import Affaire
-from api.salarie.serializer import SalarieSerializer
+from api.user.serializer import CustomUserDetailSerializer
 from api.fiche.serializer import (
     FicheEtEtapesMachineSerializer,
     FicheDetailSerializer,
@@ -22,7 +22,7 @@ class AffaireDetailsSerializer(serializers.ModelSerializer):
         read_only=True, default=0, max_value=1, min_value=0
     )
 
-    charge_affaire_detail = SalarieSerializer(
+    charge_affaire_detail = CustomUserDetailSerializer(
         source="charge_affaire",
         read_only=True,
     )
@@ -53,7 +53,7 @@ class AffaireFichesSerializer(serializers.ModelSerializer):
 
     fiches = FicheDetailSerializer(Fiche, many=True, read_only=True)
 
-    charge_affaire_detail = SalarieSerializer(
+    charge_affaire_detail = CustomUserDetailSerializer(
         source="charge_affaire",
         read_only=True,
     )
@@ -75,7 +75,7 @@ class AffaireFichesEtapesSerializer(serializers.ModelSerializer):
     """
 
     fiches = FicheEtEtapesSerializer(Fiche, many=True, read_only=True)
-    charge_affaire_detail = SalarieSerializer(
+    charge_affaire_detail = CustomUserDetailSerializer(
         source="charge_affaire",
         read_only=True,
     )
@@ -98,7 +98,7 @@ class AffaireFichesEtapesMachineSerializer(serializers.ModelSerializer):
     """
 
     fiches = FicheEtEtapesMachineSerializer(Fiche, many=True, read_only=True)
-    charge_affaire = serializers.SlugRelatedField(read_only=True, slug_field="nom")
+    charge_affaire = serializers.SlugRelatedField(read_only=True, slug_field="name")
 
     class Meta:
         model = Affaire
@@ -118,7 +118,7 @@ class AffaireFichesEtapesAjustageSerializer(serializers.ModelSerializer):
     """
 
     fiches = FicheEtEtapesAjustageSerializer(Fiche, many=True, read_only=True)
-    charge_affaire = serializers.SlugRelatedField(read_only=True, slug_field="nom")
+    charge_affaire = serializers.SlugRelatedField(read_only=True, slug_field="name")
 
     class Meta:
         model = Affaire

@@ -1,6 +1,5 @@
 from .statut import Statut
 from .client import Client
-from api.salarie.models import Salarie
 from .aptitude import Aptitude
 from .etat_affaire import Etat
 from .facture import Facture

@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from api.user.models import CustomUser
 from rest_framework import status
 from django.test import TestCase
 from api.affaire.models import Affaire
@@ -13,8 +13,8 @@ from api.pointage.models import PointageEtape
 
 class PointageGestionTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            username="testuser", password="testpassword"
+        self.user = CustomUser.objects.create_user(
+            email="test@tset.fr", password="testpassword"
         )
 
         self.groupe_machine = GroupeMachine.objects.create(
