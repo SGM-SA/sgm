@@ -7,11 +7,12 @@ export type Path =
 	| `/`
 	| `/auth/login`
 	| `/auth/logout`
+	| `/dashboard`
 	| `/dashboard/affaires`
-	| `/dashboard/affaires/:id`
+	| `/dashboard/affaires/:numAffaire`
 
 export type Params = {
-	'/dashboard/affaires/:id': { id: string }
+	'/dashboard/affaires/:numAffaire': { numAffaire: string }
 }
 
 export type ModalPath = never

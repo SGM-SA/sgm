@@ -351,7 +351,7 @@ export type ApiAffairesNumsListVariables = {
 } & ApiContext['fetcherOptions']
 
 /**
- * Permet de une liste de numéro d'affaire avec un numéro d'affaire
+ * Permet de récupérer une liste de numéro d'affaire avec un numéro d'affaire
  */
 export const fetchApiAffairesNumsList = (
 	variables: ApiAffairesNumsListVariables,
@@ -367,7 +367,7 @@ export const fetchApiAffairesNumsList = (
 	>({ url: '/api/affaires/nums', method: 'get', ...variables, signal })
 
 /**
- * Permet de une liste de numéro d'affaire avec un numéro d'affaire
+ * Permet de récupérer une liste de numéro d'affaire avec un numéro d'affaire
  */
 export const useApiAffairesNumsList = <
 	TData = Schemas.PaginatedAffaireNumAffaireList
@@ -403,41 +403,46 @@ export const useApiAffairesNumsList = <
 	})
 }
 
-export type ApiAffairesStatRetrievePathParams = {
-	id: number
+export type ApiAffairesNumsRetrievePathParams = {
+	numAffaire: number
 }
 
-export type ApiAffairesStatRetrieveError = Fetcher.ErrorWrapper<undefined>
+export type ApiAffairesNumsRetrieveError = Fetcher.ErrorWrapper<undefined>
 
-export type ApiAffairesStatRetrieveVariables = {
-	pathParams: ApiAffairesStatRetrievePathParams
+export type ApiAffairesNumsRetrieveVariables = {
+	pathParams: ApiAffairesNumsRetrievePathParams
 } & ApiContext['fetcherOptions']
 
 /**
- * Permet de récupérer les stats d'une affaire spécifique
+ * Permet de récupérer une affaire à partir de son numéro d'affaire
  */
-export const fetchApiAffairesStatRetrieve = (
-	variables: ApiAffairesStatRetrieveVariables,
+export const fetchApiAffairesNumsRetrieve = (
+	variables: ApiAffairesNumsRetrieveVariables,
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.AffaireStats,
-		ApiAffairesStatRetrieveError,
+		Schemas.AffaireDetails,
+		ApiAffairesNumsRetrieveError,
 		undefined,
 		{},
 		{},
-		ApiAffairesStatRetrievePathParams
-	>({ url: '/api/affaires/stat/{id}', method: 'get', ...variables, signal })
+		ApiAffairesNumsRetrievePathParams
+	>({
+		url: '/api/affaires/nums/{numAffaire}',
+		method: 'get',
+		...variables,
+		signal,
+	})
 
 /**
- * Permet de récupérer les stats d'une affaire spécifique
+ * Permet de récupérer une affaire à partir de son numéro d'affaire
  */
-export const useApiAffairesStatRetrieve = <TData = Schemas.AffaireStats>(
-	variables: ApiAffairesStatRetrieveVariables,
+export const useApiAffairesNumsRetrieve = <TData = Schemas.AffaireDetails>(
+	variables: ApiAffairesNumsRetrieveVariables,
 	options?: Omit<
 		reactQuery.UseQueryOptions<
-			Schemas.AffaireStats,
-			ApiAffairesStatRetrieveError,
+			Schemas.AffaireDetails,
+			ApiAffairesNumsRetrieveError,
 			TData
 		>,
 		'queryKey' | 'queryFn'
@@ -445,17 +450,17 @@ export const useApiAffairesStatRetrieve = <TData = Schemas.AffaireStats>(
 ) => {
 	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
 	return reactQuery.useQuery<
-		Schemas.AffaireStats,
-		ApiAffairesStatRetrieveError,
+		Schemas.AffaireDetails,
+		ApiAffairesNumsRetrieveError,
 		TData
 	>({
 		queryKey: queryKeyFn({
-			path: '/api/affaires/stat/{id}',
-			operationId: 'apiAffairesStatRetrieve',
+			path: '/api/affaires/nums/{num_affaire}',
+			operationId: 'apiAffairesNumsRetrieve',
 			variables,
 		}),
 		queryFn: ({ signal }) =>
-			fetchApiAffairesStatRetrieve(
+			fetchApiAffairesNumsRetrieve(
 				{ ...fetcherOptions, ...variables },
 				signal
 			),
@@ -469,7 +474,7 @@ export type ApiAffairesStatsRetrieveError = Fetcher.ErrorWrapper<undefined>
 export type ApiAffairesStatsRetrieveVariables = ApiContext['fetcherOptions']
 
 /**
- * Permet de récupérer les stats globals des affaires
+ * Permet de récupérer les statistiques globales des affaires
  */
 export const fetchApiAffairesStatsRetrieve = (
 	variables: ApiAffairesStatsRetrieveVariables,
@@ -485,7 +490,7 @@ export const fetchApiAffairesStatsRetrieve = (
 	>({ url: '/api/affaires/stats/', method: 'get', ...variables, signal })
 
 /**
- * Permet de récupérer les stats globals des affaires
+ * Permet de récupérer les statistiques globales des affaires
  */
 export const useApiAffairesStatsRetrieve = <TData = Schemas.AffaireStatsGlobal>(
 	variables: ApiAffairesStatsRetrieveVariables,
@@ -511,6 +516,67 @@ export const useApiAffairesStatsRetrieve = <TData = Schemas.AffaireStatsGlobal>(
 		}),
 		queryFn: ({ signal }) =>
 			fetchApiAffairesStatsRetrieve(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
+export type ApiAffairesStatsRetrieve2PathParams = {
+	id: number
+}
+
+export type ApiAffairesStatsRetrieve2Error = Fetcher.ErrorWrapper<undefined>
+
+export type ApiAffairesStatsRetrieve2Variables = {
+	pathParams: ApiAffairesStatsRetrieve2PathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Permet de récupérer les statistiques d'une affaire spécifique
+ */
+export const fetchApiAffairesStatsRetrieve2 = (
+	variables: ApiAffairesStatsRetrieve2Variables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.AffaireStats,
+		ApiAffairesStatsRetrieve2Error,
+		undefined,
+		{},
+		{},
+		ApiAffairesStatsRetrieve2PathParams
+	>({ url: '/api/affaires/stats/{id}', method: 'get', ...variables, signal })
+
+/**
+ * Permet de récupérer les statistiques d'une affaire spécifique
+ */
+export const useApiAffairesStatsRetrieve2 = <TData = Schemas.AffaireStats>(
+	variables: ApiAffairesStatsRetrieve2Variables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			Schemas.AffaireStats,
+			ApiAffairesStatsRetrieve2Error,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		Schemas.AffaireStats,
+		ApiAffairesStatsRetrieve2Error,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/affaires/stats/{id}',
+			operationId: 'apiAffairesStatsRetrieve2',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiAffairesStatsRetrieve2(
 				{ ...fetcherOptions, ...variables },
 				signal
 			),
@@ -4554,14 +4620,19 @@ export type QueryOperation =
 			variables: ApiAffairesNumsListVariables
 	  }
 	| {
-			path: '/api/affaires/stat/{id}'
-			operationId: 'apiAffairesStatRetrieve'
-			variables: ApiAffairesStatRetrieveVariables
+			path: '/api/affaires/nums/{num_affaire}'
+			operationId: 'apiAffairesNumsRetrieve'
+			variables: ApiAffairesNumsRetrieveVariables
 	  }
 	| {
 			path: '/api/affaires/stats/'
 			operationId: 'apiAffairesStatsRetrieve'
 			variables: ApiAffairesStatsRetrieveVariables
+	  }
+	| {
+			path: '/api/affaires/stats/{id}'
+			operationId: 'apiAffairesStatsRetrieve2'
+			variables: ApiAffairesStatsRetrieve2Variables
 	  }
 	| {
 			path: '/api/affectations/ajustages/'

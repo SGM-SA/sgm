@@ -14,9 +14,9 @@ const columns = [
         id: 'num_affaire',
         cell: value => 
             <Link 
-                to='/dashboard/affaires/:id' 
+                to='/dashboard/affaires/:numAffaire' 
                 params={{
-                    id: `${value.row.original.id}`
+                    numAffaire: `${value.row.original.num_affaire}`
                 }}
             >
                 {value.getValue()}
@@ -134,9 +134,9 @@ const AffairesPage: React.FC = () => {
                     }}
                     rowAction={{
                         enableCtrlClick: true,
-                        actionFn: (row) => navigate(`/dashboard/affaires/:id`, {
+                        actionFn: (row) => navigate(`/dashboard/affaires/:numAffaire`, {
                             params: {
-                                id: `${row.original.id}`
+                                numAffaire: `${row.original.num_affaire}`
                             }
                         })
                     }}
