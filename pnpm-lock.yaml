@@ -71,6 +71,9 @@ dependencies:
   tslib:
     specifier: ^2.6.0
     version: 2.6.0
+  use-react-router-breadcrumbs:
+    specifier: ^4.0.1
+    version: 4.0.1(react-router-dom@6.14.2)(react@18.2.0)
   uuid:
     specifier: ^9.0.0
     version: 9.0.0
@@ -14116,6 +14119,16 @@ packages:
       '@types/react': 18.2.13
       react: 18.2.0
       tslib: 2.6.0
+
+  /use-react-router-breadcrumbs@4.0.1(react-router-dom@6.14.2)(react@18.2.0):
+    resolution: {integrity: sha512-Zbcy0KvWt1JePFcUHJAnTr7Z+AeO9WxmPs6A5Q/xqOVoi8edPKzpqHF87WB2opXwie/QjCxrEyTB7kFg7fgXvQ==}
+    peerDependencies:
+      react: '>=16.8'
+      react-router-dom: '>=6.0.0'
+    dependencies:
+      react: 18.2.0
+      react-router-dom: 6.14.2(react-dom@18.2.0)(react@18.2.0)
+    dev: false
 
   /use-resize-observer@9.1.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-R25VqO9Wb3asSD4eqtcxk8sJalvIOYBqS8MNZlpDSQ4l4xMQxC/J7Id9HoTqPq8FwULIn0PVW+OAqF2dyYbjow==}
