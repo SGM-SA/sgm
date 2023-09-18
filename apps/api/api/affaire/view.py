@@ -114,7 +114,21 @@ class SmallPagination(pagination.PageNumberPagination):
 
 @extend_schema(
     summary="Affaire",
-    description="Permet de une liste de numéro d'affaire avec un numéro d'affaire",
+    description="Permet de récupérer une affaire à partir de son numéro d'affaire",
+    tags=["Affaire"],
+)
+class AffaireNumAffaire(generics.RetrieveAPIView):
+    """
+    Permet de récupérer une affaire à partir de son numéro d'affaire
+    """
+    queryset = Affaire.objects.all()
+    serializer_class = AffaireDetailsSerializer
+    lookup_field = "num_affaire"
+
+
+@extend_schema(
+    summary="Affaire",
+    description="Permet de récupérer une liste de numéro d'affaire avec un numéro d'affaire",
     tags=["Affaire"],
     parameters=[
         OpenApiParameter(
@@ -123,7 +137,7 @@ class SmallPagination(pagination.PageNumberPagination):
         )
     ],
 )
-class AffaireNumAffaire(generics.ListAPIView):
+class AffaireNumAffaires(generics.ListAPIView):
     """
     Permet de récupérer une liste de numéro d'affaire avec un numéro d'affaire
     5 resultats max
@@ -139,7 +153,7 @@ class AffaireNumAffaire(generics.ListAPIView):
 
 @extend_schema(
     summary="Stats Affaire",
-    description="Permet de récupérer les stats globals des affaires",
+    description="Permet de récupérer les statistiques globales des affaires",
     tags=["Affaire"],
     responses={200: AffaireStatsGlobalSerializer},
 )
@@ -156,7 +170,7 @@ class AffaireStatsGlobalView(views.APIView):
 
 @extend_schema(
     summary="Stats Affaire",
-    description="Permet de récupérer les stats d'une affaire spécifique",
+    description="Permet de récupérer les statistiques d'une affaire spécifique",
     tags=["Affaire"],
     responses={200: AffaireStatsSerializer},
 )
