@@ -4,7 +4,7 @@
 
 ### Global
 - [ ] Authentication
-  - [ ] Switch from username to mail (with confirmation mail)
+  - [x] Switch from username to mail (with confirmation mail)
   - [x] Test token expiration
   - [x] *Refresh token?* (or expire token after much longer time)
   - [x] Logout

@@ -9,7 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const authFormSchema = z.object({
-    username: z.string(),
+    email: z.string().email(),
     password: z.string().min(6, { message: "Password must be atleast 6 characters" })
 })
 
@@ -27,10 +27,10 @@ const LoginPage: React.FC = () => {
         resolver: zodResolver(authFormSchema)
     })
 
-    const onSubmit: SubmitHandler<AuthFormSchema> = ({ username, password }) => {
+    const onSubmit: SubmitHandler<AuthFormSchema> = ({ email, password }) => {
 
         // @ts-ignore
-        fetchAuthTokenCreate({ body: { username, password } })
+        fetchAuthTokenCreate({ body: { email, password } })
             .then(data => {
                 AuthService.login(data.access, data.refresh)
                 navigate('/')
@@ -62,8 +62,8 @@ const LoginPage: React.FC = () => {
                     </Heading>
 
                     <FormControl isRequired>
-                        <FormLabel>Nom d'utilisateur</FormLabel>
-                        <Input placeholder="Nom d'utilisateur" {...register('username', { required: true })}/>
+                        <FormLabel>Email</FormLabel>
+                        <Input placeholder="Nom d'utilisateur" {...register('email', { required: true })}/>
                     </FormControl>
 
                     <FormControl isRequired>
