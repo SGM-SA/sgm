@@ -3,14 +3,24 @@ import { AffaireDetails, useApiAffairesList } from '@sgm/openapi'
 import { Table, createMeta, useTableQueryHelper } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
-import { DashboardLayout } from '../../components/layouts'
-import { AffaireSearch, FichesTable } from '../../components/modules'
+import { DashboardLayout } from '../../../components/layouts'
+import { AffaireSearch, FichesTable } from '../../../components/modules'
+import { Link, useNavigate } from '@sgm/web/router'
 
 const columnHelper = createColumnHelper<AffaireDetails>()
 
 const columns = [
     columnHelper.accessor('num_affaire', {
         id: 'num_affaire',
+        cell: value => 
+            <Link 
+                to='/dashboard/affaires/:id' 
+                params={{
+                    id: `${value.row.original.id}`
+                }}
+            >
+                {value.getValue()}
+            </Link>,
         header: 'Numéro',
         meta: createMeta({
             sortable: true,
@@ -92,6 +102,7 @@ const columns = [
 const AffairesPage: React.FC = () => {
 
     const { pagination, setPagination, sorting, setSorting, filters, setFilters, fetchDataOptions } = useTableQueryHelper()
+    const navigate = useNavigate()
 
     const { data, isLoading } = useApiAffairesList(fetchDataOptions)
 
@@ -123,7 +134,11 @@ const AffairesPage: React.FC = () => {
                     }}
                     rowAction={{
                         enableCtrlClick: true,
-                        actionFn: (row) => console.log(row.original)
+                        actionFn: (row) => navigate(`/dashboard/affaires/:id`, {
+                            params: {
+                                id: `${row.original.id}`
+                            }
+                        })
                     }}
                     styling={{
                         table: {

@@ -59,7 +59,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
 
     const { data, refetch, isLoading } = useApiAffairesFichesRetrieve({ pathParams: { id: props.affaireId } })
 
-	return <Box className='not-striped'>
+	return <Box className='not-striped' w='100%'>
         <Table<FicheDetail>
             data={data?.fiches || []}
             columns={columns}

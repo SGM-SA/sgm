@@ -16,8 +16,6 @@ export const Pagination: React.FC<PaginationProps> = ({ table, ...chakraProps })
     const changeResultsPerPage = (resultsPerPage: number) => table.setPageSize(resultsPerPage)
     // const onPageSelect = (pageNumber: number) => table.setPageIndex(pageNumber - 1)
 
-    console.log('next page disabled', !table.getCanNextPage())
-
 	return <>
         <HStack mt='2em' w='100%' justifyContent='center' position='relative' {...chakraProps}>
 

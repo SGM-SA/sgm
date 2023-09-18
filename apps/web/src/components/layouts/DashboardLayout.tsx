@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, VStack } from '@chakra-ui/react'
+import { Box, Flex, HStack, Heading, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { SideBar } from '../modules'
 
@@ -6,16 +6,17 @@ type DashboardLayoutProps = {
 	title: string
 	children: React.ReactNode
 	removePadding?: boolean
+	customHeader?: React.ReactNode
 }
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
 
 	return (
 		<>
-			{/* sidebar */}
+			{/* Sidebar */}
 			<SideBar />
 
-			{/* background style */}
+			{/* Background style */}
 			<Box
 				position='absolute'
 				top='0'
@@ -35,16 +36,26 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
 					w='95%'
 				>
 
-					{/* title */}
-					<Heading as='h1'
-						color='secondary'
-						mt='6rem'
-						mb='4rem'
+					<HStack 
+						justifyContent='space-between' 
+						alignItems='center'
+						w='100%'
 					>
-						{props.title}
-					</Heading>
 
-					{/* main window content */}
+						<Heading as='h1'
+							color='secondary'
+							mt='6rem'
+							mb='4rem'
+						>
+							{props.title}
+						</Heading>
+
+						{props.customHeader}
+
+					</HStack>
+					{/* Title */}
+
+					{/* Main window content */}
 					<VStack
 						as='main'
 						w='100%'

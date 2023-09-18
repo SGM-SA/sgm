@@ -9,7 +9,7 @@ import { Err, Ok } from '@sgm/utils'
  */
 export default {
 	component: Table,
-	title: 'UI/Data/Table',
+	title: 'UI/Table/Table',
 } as Meta<typeof Table>
 
 /**
@@ -110,6 +110,20 @@ type Story = StoryObj<typeof Table>
 export const Primary: Story = {
 	args: {
 		columns,
-		// data: generateMockUsers(),
+		data: generateMockUsers(),
+		editable: true,
+		sortable: true,
+		rowSelection: {
+			enabled: true,
+			selectionActionComponent: () => <div>Selection action</div>
+		},
+		rowExpansion: {
+			enabled: true,
+			renderSubComponent: () => <div>Row expansion</div>
+		},
+		loading: false,
+		header: {
+			title: 'Users',
+		}
 	},
 }

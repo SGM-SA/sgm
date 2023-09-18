@@ -224,7 +224,6 @@ export function Table<TData>(props: TableProps<TData>) {
         ...(props.rowAction?.enableCtrlClick ? {
             onClick: (e: MouseEvent<HTMLTableRowElement>) => {
                 if (e.ctrlKey) {
-                    console.log(e.currentTarget)
                     props.rowAction?.actionFn(row, {
                         isCtrlKey: e.ctrlKey,
                         isDoubleClick: false

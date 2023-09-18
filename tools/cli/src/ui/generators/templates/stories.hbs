@@ -7,7 +7,11 @@ import { {{pascalCase name}} } from './{{pascalCase name}}'
 export default {
 	component: {{pascalCase name}},
 	title: 'UI/{{pascalCase category}}/{{pascalCase name}}',
-} as Meta<typeof {{pascalCase name}}></typeof>
+} as Meta<typeof {{pascalCase name}}>
+
+/**
+ * Mock data
+ */
 
 /**
  * Stories
@@ -17,7 +21,3 @@ type Story = StoryObj<typeof {{pascalCase name}}>
 export const Primary: Story = {
 	args: {},
 }
-
-/**
- * Mock data
- */

@@ -19,8 +19,6 @@ type AffaireSearchProps = {
 
 export const AffaireSearch: React.FC<AffaireSearchProps> = (props) => {
 
-    console.log('rendered', props)
-
     const {
         register,
         getValues

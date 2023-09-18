@@ -7,7 +7,7 @@ import { TableSubComponentLayout } from './TableSubComponentLayout'
 export default {
 	component: TableSubComponentLayout,
 	title: 'UI/Table/TableSubComponentLayout',
-} as Meta<typeof TableSubComponentLayout></typeof>
+} as Meta<typeof TableSubComponentLayout>
 
 /**
  * Stories
@@ -15,7 +15,9 @@ export default {
 type Story = StoryObj<typeof TableSubComponentLayout>
 
 export const Primary: Story = {
-	args: {},
+	args: {
+		children: <div>Hello world</div>,
+	},
 }
 
 /**
