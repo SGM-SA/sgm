@@ -1,9 +1,11 @@
-import { Box, Button, Progress } from '@chakra-ui/react'
-import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteCreate, useApiAffairesFichesRetrieve } from '@sgm/openapi'
-import { Table, createMeta } from '@sgm/ui'
+import { Box, Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, HStack, Icon, Progress, Spinner, useDisclosure } from '@chakra-ui/react'
+import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteCreate, useApiAffairesFichesRetrieve, useApiNotesAffaireList } from '@sgm/openapi'
+import { Table, createColumnMeta } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { AddFicheModele } from '../fiche/AddFicheModele'
+import { HiOutlineMenu } from 'react-icons/hi'
+import { AffaireNotes } from './AffaireNotes'
 
 const columnHelper = createColumnHelper<FicheDetail>()
 
@@ -11,11 +13,14 @@ const columns = [
     columnHelper.accessor('num_affaire', {
         id: 'numero',
         header: 'Numéro',
+        meta: createColumnMeta({
+            disableWarnings: true
+        })
     }),
     columnHelper.accessor('description', {
         id: 'description',
         header: 'Description',
-        meta: createMeta({
+        meta: createColumnMeta({
             editable: true,
             type: 'text'
         })
@@ -36,7 +41,7 @@ const columns = [
     columnHelper.accessor('fourniture', {
         id: 'fourniture',
         header: 'Fournitures',
-        meta: createMeta({
+        meta: createColumnMeta({
             editable: true,
             type: 'boolean'
         })
@@ -44,7 +49,7 @@ const columns = [
     columnHelper.accessor('terminee', {
         id: 'terminee',
         header: 'Terminée',
-        meta: createMeta({
+        meta: createColumnMeta({
             editable: true,
             type: 'boolean'
         })
@@ -57,23 +62,32 @@ type FichesTableProps = {
 
 export const FichesTable: React.FC<FichesTableProps> = (props) => {
 
-    const { data, refetch, isLoading } = useApiAffairesFichesRetrieve({ pathParams: { id: props.affaireId } })
+    const notesDrawer = useDisclosure()
+    const fiches = useApiAffairesFichesRetrieve({ pathParams: { id: props.affaireId } })
+    const notes = useApiNotesAffaireList({  pathParams: { affaireId: props.affaireId } })
 
 	return <Box className='not-striped' w='100%'>
+
         <Table<FicheDetail>
-            data={data?.fiches || []}
+            data={fiches.data?.fiches || []}
             columns={columns}
-            loading={isLoading}
+            loading={fiches.isLoading}
             header={{
                 title: 'Fiches',
-                customComponent: () => <AddFicheModele affaireId={props.affaireId} refetch={refetch}/>
+                customComponent: () => <HStack>
+                    <AddFicheModele affaireId={props.affaireId} refetch={fiches.refetch}/>
+                    <Button onClick={notesDrawer.onOpen} variant='outline' colorScheme='black'  size='sm'>
+                        Notes <Icon as={HiOutlineMenu} ml='1em'/>
+                    </Button>
+                </HStack>
+
             }}
             editable
             sortable
             newRow={() => {
                 fetchApiFichesCreate({
                     body: { affaire: props.affaireId }
-                }).then(() => refetch())
+                }).then(() => fiches.refetch())
             }}
             rowSelection={{
                 enabled: true,
@@ -91,7 +105,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                                     }
                                 }).then(() => {
                                     resetSelection()
-                                    refetch()
+                                    fiches.refetch()
                                 })
                             }}
                         >Supprimer</Button>
@@ -102,11 +116,23 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                 container: {
                     minHeight: 'unset'
                 },
-                table: {
-                    variant: 'unstyled'
-                }
             }}
             loadingSkeletonRowsCount={3}
-        />     
+        />  
+
+        <Drawer placement='right' onClose={notesDrawer.onClose} isOpen={notesDrawer.isOpen}>
+            <DrawerOverlay />
+            <DrawerContent>
+                <DrawerBody
+                    paddingY='2em'
+                    paddingX='2em'
+                >
+                    {notes.isLoading && <Spinner />}
+                    {notes.isError && <p>Erreur lors du chargement des notes</p>}
+                    {notes.data && <AffaireNotes notes={notes.data} affaireId={props.affaireId} refetch={notes.refetch}/>}
+                </DrawerBody>
+            </DrawerContent>
+        </Drawer>   
+
     </Box>
 }

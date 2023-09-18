@@ -11,23 +11,51 @@ type Correspondances = {
 }
 
 export type MetaEditable<TData extends Types> = TData extends 'select' ? {
+    /**
+     * The type of the editable data
+     */
     type: TData
+    /**
+     * Custom validation function to apply when editing a cell
+     * The value parameter type is automatically inferred from the type field
+     */
     customValidation?: (value: Correspondances[TData]) => Result<boolean>
+    /**
+     * The choices to display if the type is `select`
+     */
     choices: string[]
 } : {
+    /**
+     * The type of the editable data
+     */
     type: TData
+    /**
+     * Custom validation function to apply when editing a cell
+     * The value parameter type is automatically inferred from the type field
+     */
     customValidation?: (value: Correspondances[TData]) => Result<boolean>
 }
 
 type MetaBase = {
+    /**
+     * Enables the column to be sortable
+     */
     sortable?: boolean
+    /**
+     * Disable warning notifications for this column
+     */
     disableWarnings?: boolean
-    // filterable?: boolean
 }
 
 export type Meta<TData extends Types> = ({
+    /**
+     * Is the column editable
+     */
     editable?: false
 } & MetaBase) | ({
+    /**
+     * Is the column editable
+     */
     editable: true
 } & MetaEditable<TData> & MetaBase)
 
@@ -36,7 +64,7 @@ export type RowSelectionActionComponentProps<TData> = React.FC<{
     resetSelection: () => void
 }>
 
-export const createMeta = <TData extends Types>(options: Meta<TData>) => {
+export const createColumnMeta = <TData extends Types>(options: Meta<TData>) => {
     return options
 }
 

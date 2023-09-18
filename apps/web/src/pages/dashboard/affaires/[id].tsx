@@ -1,40 +1,25 @@
+import { Box } from '@chakra-ui/react'
+import { useApiAffairesRetrieve } from '@sgm/openapi'
 import { useParams } from '@sgm/web/router'
 import React from 'react'
 import { DashboardLayout } from '../../../components/layouts'
 import { FichesTable } from '../../../components/modules'
-import { Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Icon, useDisclosure } from '@chakra-ui/react'
-import { HiOutlineMenu } from 'react-icons/hi'
 
 const AffairePage: React.FC = () => {
 
     const { id } = useParams('/dashboard/affaires/:id')
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const affaireId = parseInt(id)
+
+    const affaire = useApiAffairesRetrieve({ pathParams: { id: affaireId } })
 
 	return <>
         <DashboardLayout
-            title={`Détails affaire n°${id}`}
+            title={`Détails affaire n°${affaire.data?.num_affaire || ''}`}
             removePadding={true}
-            customHeader={
-                <Button
-                    variant='outline'
-                    color='white'
-                    onClick={onOpen}
-                >
-                    Notes <Icon as={HiOutlineMenu} ml='1em'/>
-                </Button>
-            }
         >
-            <FichesTable affaireId={parseInt(id)} />
-
-            <Drawer placement='right' onClose={onClose} isOpen={isOpen}>
-                <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerBody>
-
-                        
-                    </DrawerBody>
-                </DrawerContent>
-            </Drawer>
+            <Box padding='1em' w='100%'>
+                <FichesTable affaireId={affaireId} />
+            </Box>
         </DashboardLayout>
     </>
 }

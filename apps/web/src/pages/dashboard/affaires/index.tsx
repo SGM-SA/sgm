@@ -1,6 +1,6 @@
 import { Box, Progress } from '@chakra-ui/react'
 import { AffaireDetails, useApiAffairesList } from '@sgm/openapi'
-import { Table, createMeta, useTableQueryHelper } from '@sgm/ui'
+import { Table, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { DashboardLayout } from '../../../components/layouts'
@@ -22,7 +22,7 @@ const columns = [
                 {value.getValue()}
             </Link>,
         header: 'Numéro',
-        meta: createMeta({
+        meta: createColumnMeta({
             sortable: true,
             disableWarnings: true
         })
@@ -30,7 +30,7 @@ const columns = [
     columnHelper.accessor('description', {
         id: 'description',
         header: 'Description',
-        meta: createMeta({
+        meta: createColumnMeta({
             editable: true,
             type: 'text'
         })
@@ -51,12 +51,12 @@ const columns = [
     columnHelper.accessor('client', {
         id: 'client',
         header: 'Client',
-        meta: createMeta({
+        meta: createColumnMeta({
             editable: true,
             type: 'text'
         })
     }),
-    columnHelper.accessor(row => row.charge_affaire_detail ? `${row.charge_affaire_detail.prenom} ${row.charge_affaire_detail.nom}` : null, {
+    columnHelper.accessor(row => row.charge_affaire_detail ? `${row.charge_affaire_detail.surname} ${row.charge_affaire_detail.name}` : null, {
         id: 'charge_affaire',
         header: 'Chargé d\'affaire',
     }),
@@ -64,7 +64,7 @@ const columns = [
     columnHelper.accessor('date_rendu', { // TODO: date_rendu ou date_cloture ?
         id: 'date_rendu',
         header: 'Délais',
-        meta: createMeta({
+        meta: createColumnMeta({
             editable: true,
             type: 'date',
             sortable: true
@@ -73,7 +73,7 @@ const columns = [
     columnHelper.accessor('statut', {
         id: 'statut',
         header: 'Statut',
-        meta: createMeta({
+        meta: createColumnMeta({
             editable: true,
             type: 'select',
             choices: [
