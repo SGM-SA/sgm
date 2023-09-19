@@ -130,7 +130,7 @@ const AffairesPage: React.FC = () => {
                     }}
                     rowExpansion={{
                         enabled: true,
-                        renderSubComponent: ({ row }) => <FichesTable affaireId={row.original.id} />
+                        renderComponent: ({ row }) => <FichesTable affaireId={row.original.id} />
                     }}
                     rowAction={{
                         enableCtrlClick: true,

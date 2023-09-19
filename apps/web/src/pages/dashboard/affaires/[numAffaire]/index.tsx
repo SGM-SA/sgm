@@ -4,8 +4,8 @@ import { Navigate } from '@sgm/web/router'
 import React from 'react'
 import { LoaderFunction, useLoaderData } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
-import { DashboardLayout } from '../../../components/layouts'
-import { FichesTable } from '../../../components/modules'
+import { DashboardLayout } from '../../../../components/layouts'
+import { FichesTable } from '../../../../components/modules'
 
 export const Loader = (async ({ params }) => {
     if (!params.numAffaire) throw new Error('numAffaire is required')

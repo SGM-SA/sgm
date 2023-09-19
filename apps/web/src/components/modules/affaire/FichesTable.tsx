@@ -6,6 +6,7 @@ import React from 'react'
 import { AddFicheModele } from '../fiche/AddFicheModele'
 import { HiOutlineMenu } from 'react-icons/hi'
 import { AffaireNotes } from './AffaireNotes'
+import { useNavigate } from '@sgm/web/router'
 
 const columnHelper = createColumnHelper<FicheDetail>()
 
@@ -63,6 +64,7 @@ type FichesTableProps = {
 export const FichesTable: React.FC<FichesTableProps> = (props) => {
 
     const notesDrawer = useDisclosure()
+    const navigate = useNavigate()
     const fiches = useApiAffairesFichesRetrieve({ pathParams: { id: props.affaireId } })
     const notes = useApiNotesAffaireList({  pathParams: { affaireId: props.affaireId } })
 
@@ -111,6 +113,15 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                         >Supprimer</Button>
                     </Box>
                 }
+            }}
+            rowAction={{
+                enableCtrlClick: true,
+                actionFn: (row) => navigate('/dashboard/affaires/:numAffaire/fiches/:id', {
+                    params: {
+                        numAffaire: `${row.original.num_affaire}`,
+                        id: `${row.original.id}`
+                    }
+                })
             }}
             styling={{
                 container: {

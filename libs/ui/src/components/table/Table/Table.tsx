@@ -52,7 +52,7 @@ type BaseTableProps<TData> = {
      */
     rowExpansion?: {
         enabled: boolean
-        renderSubComponent?: React.FC<{ row: Row<TData> }>
+        renderComponent?: React.FC<{ row: Row<TData> }>
     }
     /**
      * Should the table cells be editable
@@ -375,14 +375,14 @@ export function Table<TData>(props: TableProps<TData>) {
                                 ))}
                             </Tr>
 
-                            {(row.getIsExpanded() && props.rowExpansion?.renderSubComponent) && (
+                            {(row.getIsExpanded() && props.rowExpansion?.renderComponent) && (
                                 <Tr {...getTrProps(row)}>
                                     <Td 
                                         colSpan={row.getVisibleCells().length + 2}
                                         p={0}
                                     >
                                         <TableSubComponentLayout>
-                                            {props.rowExpansion.renderSubComponent({ row })}
+                                            {props.rowExpansion.renderComponent({ row })}
                                         </TableSubComponentLayout>
                                     </Td>
                                 </Tr>

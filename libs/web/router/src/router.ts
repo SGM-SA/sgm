@@ -10,9 +10,14 @@ export type Path =
 	| `/dashboard`
 	| `/dashboard/affaires`
 	| `/dashboard/affaires/:numAffaire`
+	| `/dashboard/affaires/:numAffaire/fiches/:id`
 
 export type Params = {
 	'/dashboard/affaires/:numAffaire': { numAffaire: string }
+	'/dashboard/affaires/:numAffaire/fiches/:id': {
+		numAffaire: string
+		id: string
+	}
 }
 
 export type ModalPath = never
