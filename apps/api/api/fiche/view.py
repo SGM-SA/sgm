@@ -170,6 +170,9 @@ class FichesMachineAPlanifier(generics.ListAPIView):
     filter_backends = [EtapeMachinePlanifierFilter]
 
 
+@extend_schema(
+    tags=["Fiche"], description="Permet de récupérer pour une semaine donnée, "
+)
 class FicheEtEtapes(generics.RetrieveAPIView):
     queryset = Fiche.objects.all()
     serializer_class = FicheEtEtapesAjustageSerializer
@@ -204,7 +207,7 @@ class FicheCreateView(generics.CreateAPIView):
         description="Cette opération permet de mettre à jour partiellement une fiche spécifique en utilisant son ID.",
         tags=["Fiche"],
     ),
-    destroy=extend_schema(
+    delete=extend_schema(
         summary="Supprimer une fiche",
         description="Cette opération permet de supprimer une fiche spécifique en utilisant son ID.",
         tags=["Fiche"],

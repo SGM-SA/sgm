@@ -4,6 +4,10 @@ from api.user.models import CustomUser
 from api.user.serializer import CustomUserDetailSerializer, CustomUserGroupsSerializer
 
 
+@extend_schema(
+    tags=["User"],
+    description="Informations utilisateurs",
+)
 class ProfileView(generics.RetrieveAPIView):
     serializer_class = CustomUserGroupsSerializer
     permission_classes = [permissions.IsAuthenticated]
