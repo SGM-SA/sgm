@@ -191,6 +191,17 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     # OTHER SETTINGS
     "COMPONENT_SPLIT_REQUEST": True,
+    "SWAGGER_UI_SETTINGS": {
+        "filter": True,
+        "docExpansion": "none",
+        "operationsSorter": "alpha",
+        "showRequestHeaders": True,
+        "tagsSorter": "alpha",
+        "validatorUrl": None,
+        "displayOperationId": True,
+        "deepLinking": True,
+        "persistAuthorization": True,
+    },
 }
 
 
