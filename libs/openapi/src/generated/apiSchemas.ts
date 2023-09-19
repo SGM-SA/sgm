@@ -983,7 +983,7 @@ export type NoteCreate = {
 	id: number
 	contenu: string
 	/**
-	 * @format date
+	 * @format date-time
 	 */
 	date_creation: string
 	affaire: number
@@ -1002,7 +1002,7 @@ export type NoteDetail = {
 	user: string
 	contenu: string
 	/**
-	 * @format date
+	 * @format date-time
 	 */
 	date_creation: string
 }

@@ -15,7 +15,7 @@ class Note(models.Model):
         CustomUser, on_delete=models.CASCADE, related_name="user_notes"
     )
     contenu = models.TextField()
-    date_creation = models.DateField(auto_now_add=True)
+    date_creation = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user.name}: {self.contenu[:10]}..."
