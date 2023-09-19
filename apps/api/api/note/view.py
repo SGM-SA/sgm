@@ -5,6 +5,7 @@ from .serializer import NoteDetail, NoteCreate
 from drf_spectacular.utils import extend_schema
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from datetime import datetime, time
 
 
 @extend_schema(
@@ -50,7 +51,7 @@ class AffaireNotesListView(APIView):
         # ajout de la description de l'affaire en première note
         description_as_note = Note(
             contenu=affaire.description,
-            date_creation=None,
+            date_creation=datetime.combine(affaire.date_creation, time.min),
             user=None,
         )
         return NoteDetail([description_as_note] + list(notes), many=True).data
