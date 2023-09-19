@@ -50,7 +50,7 @@ class AffaireNotesListView(APIView):
         # ajout de la description de l'affaire en première note
         description_as_note = Note(
             contenu=affaire.description,
-            date_creation=affaire.date_creation,
+            date_creation=None,
             user=None,
         )
         return NoteDetail([description_as_note] + list(notes), many=True).data
