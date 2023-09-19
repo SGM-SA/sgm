@@ -56,6 +56,6 @@ class AffaireNotesListView(APIView):
         return NoteDetail([description_as_note] + list(notes), many=True).data
 
     def get(self, request, *args, **kwargs):
-      queryset = self.get_queryset()
+        queryset = self.get_queryset()
 
-      return Response(queryset)
+        return Response(queryset)

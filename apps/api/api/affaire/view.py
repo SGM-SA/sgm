@@ -121,6 +121,7 @@ class AffaireNumAffaire(generics.RetrieveAPIView):
     """
     Permet de récupérer une affaire à partir de son numéro d'affaire
     """
+
     queryset = Affaire.objects.all()
     serializer_class = AffaireDetailsSerializer
     lookup_field = "num_affaire"

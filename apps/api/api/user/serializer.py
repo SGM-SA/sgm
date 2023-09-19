@@ -15,22 +15,22 @@ class CustomUserDetailSerializer(serializers.ModelSerializer):
 
 
 class CustomUserGroupsSerializer(serializers.ModelSerializer):
-  """
-  test
-  """
+    """
+    test
+    """
 
-  groups = serializers.SerializerMethodField()
+    groups = serializers.SerializerMethodField()
 
-  @extend_schema_field(serializers.ListSerializer(child=serializers.CharField()))
-  def get_groups(self, obj):
-    return obj.groups.values_list("name", flat=True)
+    @extend_schema_field(serializers.ListSerializer(child=serializers.CharField()))
+    def get_groups(self, obj):
+        return obj.groups.values_list("name", flat=True)
 
-  class Meta:
-    model = CustomUser
+    class Meta:
+        model = CustomUser
 
-    fields = [
-      "email",
-      "name",
-      "surname",
-      "groups",
-    ]
+        fields = [
+            "email",
+            "name",
+            "surname",
+            "groups",
+        ]

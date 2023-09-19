@@ -50,4 +50,3 @@ admin.site.register(CustomUser)
 admin.site.register(Note)
 admin.site.site_header = "SGM Administration"
 admin.site.site_title = "SGM Administration"
-
