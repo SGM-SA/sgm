@@ -1,4 +1,4 @@
-from django.http import  HttpResponse
+from django.http import HttpResponse
 from django.contrib.staticfiles import finders
 from reportlab.lib.pagesizes import landscape, A4
 from reportlab.pdfgen import canvas
@@ -48,11 +48,12 @@ def export_pdf(fiche: Fiche):
         styleN,
     )
 
-
-    logo_path = finders.find('sgmlogo.jpeg')
+    logo_path = finders.find("sgmlogo.jpeg")
     # AFFAIRE + LOGO from static
     logo = Image(logo_path, width=80, height=30)
-    affaire_title = Paragraph("SGM \n Affaire: {}".format(fiche.affaire.num_affaire), styleN)
+    affaire_title = Paragraph(
+        "SGM \n Affaire: {}".format(fiche.affaire.num_affaire), styleN
+    )
     combined_elements = [logo, Spacer(1, 10), affaire_title]
 
     # CREATION TABLE HEADER
@@ -107,10 +108,7 @@ def export_pdf(fiche: Fiche):
     all_data = [header_data] + data
 
     # CREATION TABLE BODY
-    new_table = Table(
-        all_data, colWidths=col_widths
-    )
-
+    new_table = Table(all_data, colWidths=col_widths)
 
     new_table_style = TableStyle(
         [
@@ -171,27 +169,29 @@ def generate_qr_code(content, qr_size):
     bounds = qr_code.getBounds()
     w = bounds[2] - bounds[0]
     h = bounds[3] - bounds[1]
-    d = Drawing(
-        qr_size, qr_size, transform=[qr_size / w, 0, 0, qr_size / h, 0, 0]
-    )
+    d = Drawing(qr_size, qr_size, transform=[qr_size / w, 0, 0, qr_size / h, 0, 0])
     d.add(qr_code)
 
     return d
 
 
 def table_content(etapes, qr_size):
-    return [
-        [
-            etape.num_etape,
-            etape.plan,
-            etape.groupe_machine.nom_groupe,
-            Paragraph(etape.description),
-            etape.quantite,
-            etape.temps,
-            generate_qr_code(f"ET:{etape.num_etape}", qr_size),
-        ]
-        for etape in etapes
-    ]
+    liste_etapes = []
+    for etape in etapes:
+        groupe = ""
+        if etape.groupe_machine:
+            groupe = etape.groupe_machine.nom_groupe
 
+        liste_etapes.append(
+            [
+                etape.num_etape,
+                etape.plan,
+                groupe,
+                Paragraph(etape.description),
+                etape.quantite,
+                etape.temps,
+                generate_qr_code(f"ET:{etape.num_etape}", qr_size),
+            ]
+        )
 
-
+        return liste_etapes
