@@ -11,8 +11,9 @@ from api.fiche.serializer import FicheEtEtapesAjustageSerializer, FicheCRUDSeria
 from api.fiche.export import export_pdf
 from rest_framework import generics, filters, status, serializers, permissions
 from drf_spectacular.utils import (
-  extend_schema_view,
-  extend_schema, OpenApiParameter,
+    extend_schema_view,
+    extend_schema,
+    OpenApiParameter,
 )
 from django.db.models import Prefetch, Count, Q
 from constance import config
@@ -229,7 +230,6 @@ class FicheBulkDelete(BulkDeleteView):
     queryset = Fiche.objects.all()
 
 
-
 @extend_schema_view(
     get=extend_schema(
         summary="Export fiches",
@@ -248,7 +248,7 @@ class ExportFicheEtapesView(APIView):
     Endpoint pour exporter les pointages
     """
 
-    #permission_classes = [permissions.IsAdminUser]
+    # permission_classes = [permissions.IsAdminUser]
 
     @extend_schema(
         responses={200: None, 400: None},

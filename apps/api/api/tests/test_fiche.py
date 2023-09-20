@@ -449,51 +449,51 @@ class FichesMachineAPlanifierTest(TestCase):
         # 2 étapes pour affaire 3 fiches 2
         self.assertEqual(len(response.data["results"][1]["fiches"][0]["etapes"]), 2)
 
+
 class ExportPDFEtapeTest(TestCase):
-  def setUp(self):
-    self.zone = Zone.objects.create(nom="Zone 1", description="Description")
+    def setUp(self):
+        self.zone = Zone.objects.create(nom="Zone 1", description="Description")
 
-    self.affaire = Affaire.objects.create(num_affaire=1, validation_ingenieur=True)
-    self.affaire2 = Affaire.objects.create(num_affaire=2, validation_ingenieur=True)
-    self.affaire3 = Affaire.objects.create(num_affaire=3, validation_ingenieur=True)
+        self.affaire = Affaire.objects.create(num_affaire=1, validation_ingenieur=True)
+        self.affaire2 = Affaire.objects.create(num_affaire=2, validation_ingenieur=True)
+        self.affaire3 = Affaire.objects.create(num_affaire=3, validation_ingenieur=True)
 
-    # ne sera pas à planifier car l'affaire n'est pas validée
-    self.affaire_non_valide = Affaire.objects.create(
-      num_affaire=4, validation_ingenieur=False
-    )
+        # ne sera pas à planifier car l'affaire n'est pas validée
+        self.affaire_non_valide = Affaire.objects.create(
+            num_affaire=4, validation_ingenieur=False
+        )
 
-    self.groupe_machine = GroupeMachine.objects.create(
-      nom_groupe="Ajustage", prix_theorique=100
-    )
-    self.groupe_machine2 = GroupeMachine.objects.create(
-      nom_groupe="Scie", prix_theorique=1
-    )
+        self.groupe_machine = GroupeMachine.objects.create(
+            nom_groupe="Ajustage", prix_theorique=100
+        )
+        self.groupe_machine2 = GroupeMachine.objects.create(
+            nom_groupe="Scie", prix_theorique=1
+        )
 
-    self.fiche1 = Fiche.objects.create(
-      titre="Fiche test",
-      affaire=self.affaire,
-      fourniture=False,
-      id=1,
-    )
+        self.fiche1 = Fiche.objects.create(
+            titre="Fiche test",
+            affaire=self.affaire,
+            fourniture=False,
+            id=1,
+        )
 
+        self.etape1 = Etape.objects.create(
+            fiche=self.fiche1,
+            groupe_machine=self.groupe_machine,
+            num_etape=1,
+            description="Description",
+            temps=10,
+        )
+        # sans description et sans groupe machine
+        self.etape2 = Etape.objects.create(
+            fiche=self.fiche1,
+            num_etape=1,
+            terminee=True,
+        )
 
-    self.etape1 = Etape.objects.create(
-      fiche=self.fiche1, groupe_machine=self.groupe_machine, num_etape=1, description="Description", temps=10
-    )
-    # sans description et sans groupe machine
-    self.etape2 = Etape.objects.create(
-      fiche=self.fiche1,
-      num_etape=1,
-      terminee=True,
-    )
+    def test_export_pdf_etape(self):
+        url = "/api/fiches/export?fiche_id={}".format(1)
+        response = self.client.get(url)
 
-
-
-  def test_export_pdf_etape(self):
-      url = "/api/fiches/export?fiche_id={}".format(1)
-      response = self.client.get(url)
-
-      self.assertEqual(response.status_code, status.HTTP_200_OK)
-      self.assertEqual(response["Content-Type"], "application/pdf")
-
-
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response["Content-Type"], "application/pdf")

@@ -6,7 +6,7 @@ from api.fiche.view import (
     FichesAjustageAPlanifier,
     FichesMachineAPlanifier,
     FicheBulkDelete,
-    ExportFicheEtapesView
+    ExportFicheEtapesView,
 )
 
 urlpatterns = [
