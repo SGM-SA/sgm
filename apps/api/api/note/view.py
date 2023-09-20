@@ -37,14 +37,18 @@ class NoteRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
     description="Récupère toutes les notes associées à une affaire donnée, ordonnées par date de création. La première note est la description de l'affaire.",
     tags=["Note"],
     # affaire_id as path parameter
-    responses={200: NoteDetail(many=True)},
+    responses={200: NoteDetail(many=True), 404: "Affaire non trouvée"},
 )
 class AffaireNotesListView(APIView):
     serializer_class = NoteDetail(many=True)
 
     def get_queryset(self):
         affaire_id = self.kwargs["affaire_id"]
-        affaire = Affaire.objects.get(pk=affaire_id)
+
+        try:
+            affaire = Affaire.objects.get(pk=affaire_id)
+        except Affaire.DoesNotExist:
+            return Response(status=404, data={"detail": "Affaire non trouvée"})
 
         notes = Note.objects.filter(affaire=affaire).order_by("date_creation")
 
