@@ -45,10 +45,7 @@ class AffaireNotesListView(APIView):
     def get_queryset(self):
         affaire_id = self.kwargs["affaire_id"]
 
-        try:
-            affaire = Affaire.objects.get(pk=affaire_id)
-        except Affaire.DoesNotExist:
-            return Response(status=404, data={"detail": "Affaire non trouvée"})
+        affaire = Affaire.objects.get(id=affaire_id)
 
         notes = Note.objects.filter(affaire=affaire).order_by("date_creation")
 
@@ -61,6 +58,14 @@ class AffaireNotesListView(APIView):
         return NoteDetail([description_as_note] + list(notes), many=True).data
 
     def get(self, request, *args, **kwargs):
+
+        affaire_id = self.kwargs["affaire_id"]
+
+        try:
+            affaire = Affaire.objects.get(id=affaire_id)
+        except Affaire.DoesNotExist:
+            return Response(status=404)
+
         queryset = self.get_queryset()
 
         return Response(queryset)
