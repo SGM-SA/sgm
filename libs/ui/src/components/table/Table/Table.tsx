@@ -1,6 +1,6 @@
 import { Box, Table as ChakraTable, TableProps as ChakraTableProps, Checkbox, Icon, IconButton, Skeleton, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
-import { Paginated } from '@sgm/utils'
-import { ColumnDef, PaginationState, Row, RowData, SortingState, flexRender, getCoreRowModel, getExpandedRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
+import { Paginated, createObjectFromPath } from '@sgm/utils'
+import { ColumnDef, DeepKeys, PaginationState, Row, RowData, SortingState, flexRender, getCoreRowModel, getExpandedRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 import React, { Fragment, MouseEvent, useEffect, useMemo, useState } from 'react'
 import { FaArrowDown, FaArrowUp, FaChevronDown, FaChevronRight, FaPlus } from 'react-icons/fa'
 import { RowSelectionActionComponentProps, getMetaFromColumn, resolveResults } from '../../../utils'
@@ -11,7 +11,7 @@ import { TableSubComponentLayout } from '../TableSubComponentLayout/TableSubComp
 
 declare module '@tanstack/react-table' {
     interface TableMeta<TData extends RowData> {
-        updateData: (rowIndex: number, columnId: string, value: unknown) => void
+        updateData: (row: Row<TData>, accessorKey: DeepKeys<TData>, value: unknown) => void
     }
 }
 
@@ -57,7 +57,10 @@ type BaseTableProps<TData> = {
     /**
      * Should the table cells be editable
      */
-    editable?: boolean
+    editable?: {
+        enabled: true,
+        onRowUpdate: (row: Row<TData>, newData: Partial<TData>) => void
+    }
     /**
      * If set to a boolean, the table will be sorted locally
      * 
@@ -191,13 +194,16 @@ export function Table<TData>(props: TableProps<TData>) {
             pageCount: (props.data?.count && tablePagination) ? Math.ceil(props.data.count / tablePagination.pageSize) : 0,
         } : {}),
         getExpandedRowModel: getExpandedRowModel(),
-        ...(props.editable ? {
+        ...(props.editable?.enabled ? {
             defaultColumn,
             meta: {
-                updateData: (rowIndex, columnId, value) => {
+                updateData: (row, accessorKey, newValue) => {
                     // Skip page index reset until after next rerender
                     skipAutoResetPageIndex()
-                    console.log('updateData', rowIndex, columnId, value)
+
+                    const newObject = createObjectFromPath<TData>(accessorKey, newValue)
+
+                    props.editable?.onRowUpdate(row, newObject)
                 }
             }
         } : {}),

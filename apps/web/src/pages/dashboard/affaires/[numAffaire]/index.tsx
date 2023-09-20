@@ -9,6 +9,7 @@ import { FichesTable } from '../../../../components/modules'
 
 export const Loader = (async ({ params }) => {
     if (!params.numAffaire) throw new Error('numAffaire is required')
+    
     return fetchApiAffairesNumsRetrieve({
         pathParams: {
             numAffaire: parseInt(params.numAffaire)

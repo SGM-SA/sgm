@@ -1,12 +1,13 @@
 import { Box, Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, HStack, Icon, Progress, Spinner, useDisclosure } from '@chakra-ui/react'
-import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteCreate, useApiAffairesFichesRetrieve, useApiNotesAffaireList } from '@sgm/openapi'
+import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteCreate, fetchApiFichesPartialUpdate, useApiAffairesFichesRetrieve, useApiNotesAffaireList } from '@sgm/openapi'
 import { Table, createColumnMeta } from '@sgm/ui'
+import { useNavigate } from '@sgm/web/router'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
-import { AddFicheModele } from '../fiche/AddFicheModele'
 import { HiOutlineMenu } from 'react-icons/hi'
+import { toast } from 'react-toastify'
+import { AddFicheModele } from '../fiche/AddFicheModele'
 import { AffaireNotes } from './AffaireNotes'
-import { useNavigate } from '@sgm/web/router'
 
 const columnHelper = createColumnHelper<FicheDetail>()
 
@@ -84,7 +85,18 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                 </HStack>
 
             }}
-            editable
+            editable={{
+                enabled: true,
+                onRowUpdate: async (row, newData) => {
+                    console.log(row.original.id, newData)
+                    fetchApiFichesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
+                        .then(() => {
+                            row.original = { ...row.original, ...newData }
+                            toast.success('Fiche mise à jour')
+                        })
+                        .catch(() => toast.error('Erreur lors de la mise à jour de la fiche'))
+                }
+            }}
             sortable
             newRow={() => {
                 fetchApiFichesCreate({
