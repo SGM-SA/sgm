@@ -2062,6 +2062,63 @@ export const useApiFichesEtapesRetrieve = <
 	})
 }
 
+export type ApiFichesExportRetrieveQueryParams = {
+	fiche_id: number
+}
+
+export type ApiFichesExportRetrieveError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiFichesExportRetrieveVariables = {
+	queryParams: ApiFichesExportRetrieveQueryParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Exporte les etapes d'une fiche
+ */
+export const fetchApiFichesExportRetrieve = (
+	variables: ApiFichesExportRetrieveVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		undefined,
+		ApiFichesExportRetrieveError,
+		undefined,
+		{},
+		ApiFichesExportRetrieveQueryParams,
+		{}
+	>({ url: '/api/fiches/export', method: 'get', ...variables, signal })
+
+/**
+ * Exporte les etapes d'une fiche
+ */
+export const useApiFichesExportRetrieve = <TData = undefined>(
+	variables: ApiFichesExportRetrieveVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			undefined,
+			ApiFichesExportRetrieveError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<undefined, ApiFichesExportRetrieveError, TData>({
+		queryKey: queryKeyFn({
+			path: '/api/fiches/export',
+			operationId: 'apiFichesExportRetrieve',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiFichesExportRetrieve(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
 export type ApiFichesMachineAPlanifierListQueryParams = {
 	/**
 	 * A page number within the paginated result set.
@@ -4769,6 +4826,11 @@ export type QueryOperation =
 			path: '/api/fiches/etapes/{id}'
 			operationId: 'apiFichesEtapesRetrieve'
 			variables: ApiFichesEtapesRetrieveVariables
+	  }
+	| {
+			path: '/api/fiches/export'
+			operationId: 'apiFichesExportRetrieve'
+			variables: ApiFichesExportRetrieveVariables
 	  }
 	| {
 			path: '/api/fiches/machine/a_planifier'

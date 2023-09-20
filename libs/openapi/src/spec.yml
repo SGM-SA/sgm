@@ -956,6 +956,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/FicheEtEtapesAjustage'
           description: ''
+  /api/fiches/export:
+    get:
+      operationId: api_fiches_export_retrieve
+      description: Exporte les etapes d'une fiche
+      summary: Export fiches
+      parameters:
+      - in: query
+        name: fiche_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Fiche
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+        '400':
+          description: No response body
   /api/fiches/machine/a_planifier:
     get:
       operationId: api_fiches_machine_a_planifier_list
@@ -1894,6 +1915,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/NoteDetail'
           description: ''
+        '404':
+          description: No response body
   /api/planning/machine:
     get:
       operationId: api_planning_machine_list

@@ -37,7 +37,7 @@ class NoteRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
     description="Récupère toutes les notes associées à une affaire donnée, ordonnées par date de création. La première note est la description de l'affaire.",
     tags=["Note"],
     # affaire_id as path parameter
-    responses={200: NoteDetail(many=True), 404: "Affaire non trouvée"},
+    responses={200: NoteDetail(many=True), 404: None},
 )
 class AffaireNotesListView(APIView):
     serializer_class = NoteDetail(many=True)
