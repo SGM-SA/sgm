@@ -6,6 +6,7 @@ from api.fiche.view import (
     FichesAjustageAPlanifier,
     FichesMachineAPlanifier,
     FicheBulkDelete,
+    ExportFicheEtapesView
 )
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     path("etapes/<int:pk>", FicheEtEtapes.as_view()),
     path("ajustage/a_planifier", FichesAjustageAPlanifier.as_view()),
     path("machine/a_planifier", FichesMachineAPlanifier.as_view()),
+    path("export", ExportFicheEtapesView.as_view()),
 ]
