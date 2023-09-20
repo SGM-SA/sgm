@@ -1,16 +1,19 @@
 from _datetime import datetime
+from drf_spectacular.types import OpenApiTypes
 from rest_framework.response import Response
 
-from api.commun.views import BulkDeleteView
+from api.commun.views import BulkDeleteView, APIView
 from api.fiche.models import Fiche
 from api.etape.models import Etape
 from api.affaire.models import Affaire
 from api.affaire.serializer import AffaireFichesEtapesSerializer
 from api.fiche.serializer import FicheEtEtapesAjustageSerializer, FicheCRUDSerializer
-from rest_framework import generics, filters, status, serializers
+from api.fiche.export import export_pdf
+from rest_framework import generics, filters, status, serializers, permissions
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
+    OpenApiParameter,
 )
 from django.db.models import Prefetch, Count, Q
 from constance import config
@@ -225,3 +228,43 @@ class FicheRUDView(generics.RetrieveUpdateDestroyAPIView):
 )
 class FicheBulkDelete(BulkDeleteView):
     queryset = Fiche.objects.all()
+
+
+@extend_schema_view(
+    get=extend_schema(
+        summary="Export fiches",
+        tags=["Fiche"],
+        parameters=[
+            OpenApiParameter(
+                name="fiche_id",
+                required=True,
+                type=OpenApiTypes.INT,
+            )
+        ],
+    )
+)
+class ExportFicheEtapesView(APIView):
+    """
+    Endpoint pour exporter les pointages
+    """
+
+    # permission_classes = [permissions.IsAdminUser]
+
+    @extend_schema(
+        responses={200: None, 400: None},
+    )
+    def get(self, request, *args, **kwargs):
+        """
+        Exporte les etapes d'une fiche
+        """
+        fiche_id = request.query_params.get("fiche_id")
+
+        # check if fiche exists
+        try:
+            fiche = Fiche.objects.get(id=fiche_id)
+        except Fiche.DoesNotExist:
+            return Response(
+                {"detail": "La fiche n'existe pas"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return export_pdf(fiche)
