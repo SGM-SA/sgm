@@ -2,6 +2,7 @@ import { Paginated, Result } from '@sgm/utils'
 import { Column, Row } from '@tanstack/react-table'
 
 type Types = 'text' | 'number' | 'date' | 'select' | 'boolean'
+
 type Correspondances = {
     'text': string
     'number': number
@@ -9,6 +10,13 @@ type Correspondances = {
     'select': string
     'boolean': boolean
 }
+
+export type Choice = string | {
+    label: React.ReactNode
+    value: string | number
+}
+
+export type ChoiceFn<TSchema> = (row: Row<TSchema>) => Promise<Choice[]>
 
 export type MetaEditable<TData extends Types> = TData extends 'select' ? {
     /**
@@ -23,7 +31,13 @@ export type MetaEditable<TData extends Types> = TData extends 'select' ? {
     /**
      * The choices to display if the type is `select`
      */
-    choices: string[]
+    choices: Choice[] | ChoiceFn<any>
+    /**
+     * Is the value nullable
+     * If true, the user can set the value to null with an additional empty select option
+     * @default true
+     */
+    nullable?: boolean
 } : {
     /**
      * The type of the editable data

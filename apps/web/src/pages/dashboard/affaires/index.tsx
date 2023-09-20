@@ -1,11 +1,13 @@
 import { Box, Progress } from '@chakra-ui/react'
-import { AffaireDetails, useApiAffairesList } from '@sgm/openapi'
+import { AffaireDetails, fetchApiAffairesPartialUpdate, useApiAffairesList } from '@sgm/openapi'
 import { Table, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { DashboardLayout } from '../../../components/layouts'
 import { AffaireSearch, FichesTable } from '../../../components/modules'
 import { Link, useNavigate } from '@sgm/web/router'
+import { LoaderFunction } from 'react-router-typesafe'
+import { toast } from 'react-toastify'
 
 const columnHelper = createColumnHelper<AffaireDetails>()
 
@@ -119,7 +121,17 @@ const AffairesPage: React.FC = () => {
                         state: pagination,
                         setState: setPagination
                     }}
-                    editable
+                    editable={{
+                        enabled: true,
+                        onRowUpdate: async (row, newData) => {
+                            fetchApiAffairesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
+                                .then(() => {
+                                    row.original = { ...row.original, ...newData }
+                                    toast.success('Affaire mise à jour')
+                                })
+                                .catch(() => toast.error('Erreur lors de la mise à jour de l\'affaire'))
+                        }
+                    }}
                     sortable={{
                         state: sorting,
                         setState: setSorting

@@ -1,24 +1,26 @@
 import { Box, Input, Select } from '@chakra-ui/react'
+import { Choice } from '../../../utils/table'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-
-type DefaultTableCellProps = {
-    getValue: () => unknown
-    row: any
-    column: any
-    table: any
-}
+import { Column, Row, Table } from '@tanstack/react-table'
 
 const fontSize = 'xs'
 
-export const DefaultTableCell: React.FC<DefaultTableCellProps> = (props) => {
-
-
-    if (props.column.columnDef.meta?.editable) return <EditableTableCell {...props} />
-    else return <RawTableCell {...props} />
+type DefaultTableCellProps<TData> = {
+    getValue: () => unknown
+    row: Row<TData>
+    column: any
+    table: Table<TData>
+    children?: React.ReactNode
 }
 
-export const RawTableCell: React.FC<DefaultTableCellProps> = (props) => {
+export function DefaultTableCell<TData>(props: DefaultTableCellProps<TData>) {
+
+    if (props.column.columnDef.meta?.editable) return <EditableTableCell<TData> {...props} />
+    else return <RawTableCell<TData> {...props} />
+}
+
+export function RawTableCell<TData>(props: DefaultTableCellProps<TData>) {
 
     const doubleClickHandler = () => {
         if (!props.column.columnDef.meta?.disableWarnings) toast.warn("Ce champs n'est pas éditable")
@@ -28,20 +30,21 @@ export const RawTableCell: React.FC<DefaultTableCellProps> = (props) => {
         fontSize={fontSize}
         onDoubleClick={doubleClickHandler}
     >
-        {props.getValue() as any}
+        {props.children || props.getValue() as any}
     </Box>
 }
 
-export const EditableTableCell: React.FC<DefaultTableCellProps> = ({ getValue, row: { index }, column, table }) => {
+export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
 
-    const initialValue = getValue()
-    const meta = column.columnDef.meta // not typed on purpose
+    const initialValue = props.getValue()
+    const meta = props.column.columnDef.meta // not typed on purpose
+    const accessorKey = props.column.columnDef.accessorKey
     
     // We need to keep and update the state of the cell normally
     const [value, setValue] = useState(initialValue)
 
     // When the input is blurred, we'll call our table meta's updateData function
-    const onBlur = () => {
+    const onUpdate = (overrideValue?: any) => {
 
         if (meta.customValidation) {
             const result = meta.customValidation(value)
@@ -52,7 +55,7 @@ export const EditableTableCell: React.FC<DefaultTableCellProps> = ({ getValue, r
             }
         }
 
-        table.options.meta?.updateData(index, column.id, value)
+        props.table.options.meta?.updateData(props.row, accessorKey, overrideValue || value)
     }
 
     // If the initialValue is changed external, sync it up with our state
@@ -72,15 +75,25 @@ export const EditableTableCell: React.FC<DefaultTableCellProps> = ({ getValue, r
                     fontSize={fontSize}
                     value={value as string || ''}
                     onChange={e => setValue(e.target.value)}
-                    onBlur={onBlur}
+                    onBlur={() => onUpdate()}
                 />
             )
             break
         case 'select':
             return (
-                <Select size={fontSize}>
-                    <option value={''}></option>
-                    {meta.choices?.map((choice: string) => <option key={choice} value={choice}>{choice}</option>)}
+                <Select 
+                    size={fontSize} 
+                    value={value as string}
+                    onChange={e => {
+                        setValue(e.target.value)
+                        onUpdate(e.target.value)
+                    }}
+                >
+                    {meta.nullable !== false && <option value={''}></option>}
+                    {meta.choices?.map((choice: Choice) => typeof choice === 'string' ?
+                        <option key={choice} value={choice}>{choice}</option> :
+                        <option key={choice.value} value={choice.value}>{choice.label}</option>
+                    )}
                 </Select>
             )
             break
@@ -92,7 +105,7 @@ export const EditableTableCell: React.FC<DefaultTableCellProps> = ({ getValue, r
                     fontSize={fontSize}
                     value={value as string || ''}
                     onChange={e => setValue(e.target.value)}
-                    onBlur={onBlur}
+                    onBlur={() => onUpdate()}
                 />
             )
         default:
@@ -101,7 +114,7 @@ export const EditableTableCell: React.FC<DefaultTableCellProps> = ({ getValue, r
                 value={value as string || ''}
                 fontSize={fontSize}
                 onChange={e => setValue(e.target.value)}
-                onBlur={onBlur}
+                onBlur={() => onUpdate()}
             />
     }
 }
