@@ -8,8 +8,7 @@ from api.affaire.models import Affaire
 from api.machine.models import Machine
 from api.groupe_machine.models import GroupeMachine
 from api.etape.models import Etape
-from api.affectation_etape_machine.models import AffectationMachine
-from api.affectation_etape_zone.models import AffectationAjustage
+from api.affectation.models import AffectationMachine, AffectationAjustage
 
 
 class FicheCreateViewTestCase(TestCase):

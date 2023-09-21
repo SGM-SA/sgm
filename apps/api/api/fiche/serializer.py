@@ -1,7 +1,5 @@
 from rest_framework import serializers
-from api.affectation_etape_zone.serializer import (
-    AffectationAjustageDetailSerializer,
-)
+from api.affectation.serializer import AffectationAjustageSerializer
 from api.etape.serializer import (
     EtapeDetailAjustage,
     EtapeDetailMachine,
@@ -22,7 +20,7 @@ class FicheCRUDSerializer(serializers.ModelSerializer):
 
 
 class FicheDetailSerializer(FicheCRUDSerializer):
-    affectation_zone = AffectationAjustageDetailSerializer(
+    affectation_zone = AffectationAjustageSerializer(
         source="affectationajustage", read_only=True
     )
     affaire_description = serializers.SlugRelatedField(

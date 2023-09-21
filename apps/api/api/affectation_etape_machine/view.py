@@ -1,9 +1,7 @@
 from drf_spectacular.utils import extend_schema
 
-from api.affectation_etape_machine.models import AffectationMachine
-from api.affectation_etape_machine.serializer import (
-    AffectationMachineDetailSerializer,
-)
+from api.affectation.models import AffectationMachine
+from api.affectation.serializer import AffectationMachineSerializer
 from rest_framework import generics
 
 
@@ -13,7 +11,7 @@ from rest_framework import generics
 )
 class AffectationMachineCreateList(generics.ListCreateAPIView):
     queryset = AffectationMachine.objects.all()
-    serializer_class = AffectationMachineDetailSerializer
+    serializer_class = AffectationMachineSerializer
 
 
 @extend_schema(
@@ -22,4 +20,4 @@ class AffectationMachineCreateList(generics.ListCreateAPIView):
 )
 class AffectationMachineCRUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = AffectationMachine.objects.all()
-    serializer_class = AffectationMachineDetailSerializer
+    serializer_class = AffectationMachineSerializer

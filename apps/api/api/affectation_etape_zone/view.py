@@ -1,9 +1,7 @@
 from drf_spectacular.utils import extend_schema
 
-from api.models import AffectationAjustage
-from api.affectation_etape_zone.serializer import (
-    AffectationAjustageDetailSerializer,
-)
+from api.affectation.models import AffectationAjustage
+from api.affectation.serializer import AffectationAjustageSerializer
 from rest_framework import generics
 
 
@@ -13,7 +11,7 @@ from rest_framework import generics
 )
 class AffectationAjustageCreateList(generics.ListCreateAPIView):
     queryset = AffectationAjustage.objects.all()
-    serializer_class = AffectationAjustageDetailSerializer
+    serializer_class = AffectationAjustageSerializer
 
 
 @extend_schema(
@@ -22,4 +20,4 @@ class AffectationAjustageCreateList(generics.ListCreateAPIView):
 )
 class AffectationAjustageCRUD(generics.RetrieveUpdateDestroyAPIView):
     queryset = AffectationAjustage.objects.all()
-    serializer_class = AffectationAjustageDetailSerializer
+    serializer_class = AffectationAjustageSerializer
