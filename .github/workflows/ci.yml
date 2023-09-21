@@ -1,0 +1,46 @@
+name: Intégration
+
+on:
+
+    push:
+        branches:
+            - dev
+            - main
+            - feat/ci-cd
+    pull_request:
+    # workflow_dispatch:
+    workflow_call:
+
+jobs:
+
+    ci:
+        name: CI
+        runs-on: ubuntu-latest
+        steps:
+
+          - uses: actions/checkout@v3
+            with:
+              fetch-depth: 0
+
+          - uses: nrwl/nx-set-shas@v3
+            with:
+              main-branch-name: ${{ github.event_name == 'pull_request' && github.base_ref || github.ref_name }}
+
+          - uses: pnpm/action-setup@v2
+            with:
+                version: 8
+
+          - name: Install dependencies
+            run: pnpm i
+
+          - name: (Debug) Show affected
+            run: pnpm nx show projects --affected
+
+          - name: Lint
+            run: pnpm nx affected -t lint
+
+          - name: Tests
+            run: pnpm nx affected -t test
+
+          - name: Build
+            run: pnpm nx affected -t build
