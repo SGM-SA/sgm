@@ -1,8 +1,5 @@
 from django.urls import path
-from api.affectation_etape_zone.view import (
-    AffectationAjustageCreateList,
-    AffectationAjustageCRUD,
-)
+from api.affectation.views import AffectationAjustageCreateList, AffectationAjustageCRUD
 
 urlpatterns = [
     path("", AffectationAjustageCreateList.as_view()),
