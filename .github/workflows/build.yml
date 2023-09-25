@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - dev
+      - feat/ci-cd
 
   pull_request:
 
@@ -13,24 +14,66 @@ on:
 
 jobs:
 
-  build:
-    name: Build
+  affected:
+    name: Get affected projects
     runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: nrwl/nx-set-shas@v3
+        id: set-shas
+        with:
+          main-branch-name: ${{ github.event_name == 'pull_request' && github.base_ref || github.ref_name }}
+  
+      - name: Install dependencies
+        run: pnpm install --ignore-scripts --frozen-lockfile
+
+      - name: Get projects to build
+        id: get-projects-to-build
+        run: echo "affected_projects=$(pnpm nx show projects --affected --json -p 'apps/*')" >> $GITHUB_OUTPUT
+    
+    outputs:
+      affected_projects: ${{ steps.get-projects-to-build.outputs.affected_projects }}
+      nx_base: ${{ steps.set-shas.outputs.base }}
+      nx_head: ${{ steps.set-shas.outputs.head }}
+
+  build:
+    name: Build - ${{ matrix.project }}
+    runs-on: ubuntu-latest
+    # ignore the error
+    if: needs.affected.outputs.affected_projects != '[]'
+    needs:
+      - affected
+    env: 
+      NX_BASE: ${{ needs.affected.outputs.nx_base }}
+      NX_HEAD: ${{ needs.affected.outputs.nx_head }}
+
+    strategy:
+      matrix:
+        project: ${{ needs.affected.outputs.affected_projects }}
+
     steps:
 
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - run: echo "${{ github.event_name == 'pull_request' && github.base_ref || github.ref_name }}"
-
-      - uses: nrwl/nx-set-shas@v3
-        with:
-          main-branch-name: ${{ github.event_name == 'pull_request' && github.base_ref || github.ref_name }}
-
       - uses: pnpm/action-setup@v2
         with:
           version: 8
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm i
@@ -39,10 +82,17 @@ jobs:
         run: pnpm nx show projects --affected
 
       - name: Lint
-        run: pnpm nx affected -t lint
+        run: pnpm nx affected -t lint --exclude '*,!${{ matrix.project }}'
 
       - name: Tests
-        run: pnpm nx affected -t test
+        run: pnpm nx affected -t test --exclude '*,!${{ matrix.project }}'
 
       - name: Build
-        run: pnpm nx affected -t build
+        run: pnpm nx affected -t build --exclude '*,!${{ matrix.project }}'
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ matrix.project }}
+          path: dist/
+          if-no-files-found: error
