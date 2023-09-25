@@ -1,6 +1,7 @@
-from api.etape.models import Etape
 from constance import config
 from django.contrib.admin import ModelAdmin
+
+from api.etape.models import Etape
 
 
 class AffectationMachineModelAdmin(ModelAdmin):

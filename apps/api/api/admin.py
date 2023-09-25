@@ -20,7 +20,7 @@ from api.zone.models import Zone
 from api.user.models import CustomUser
 from api.fiche_modele.models import FicheModele
 from api.etape_modele.models import EtapeModele
-from api.affectation_etape_machine.admin import AffectationMachineModelAdmin
+from .affectation.admin import AffectationMachineModelAdmin
 from api.note.models import Note
 from api.groupe_machine.models import GroupeMachine
 from api.pointage.models import PointageEtape
