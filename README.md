@@ -141,9 +141,4 @@ nx run openapi:generate
 ## Todo
 
 - [ ] Devops
-    - [ ] Docker
-    - [ ] Github actions
-- [ ] Tester `xstate`
-- [ ] Tester `@tanstack/query`
-- [ ] Tester `@tanstack/table`
-- [ ] Tester `react-hook-form`
+    - [ ] Staging env

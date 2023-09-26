@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 
 def week_to_date_range(year: int, week: int) -> (datetime, datetime):
     """
-    Convert a year and a week into a date range.
+    Convert a year and a week into a date range
     :param year: Year
     :param week: Week
     :return: Tuple (start date, end date)
