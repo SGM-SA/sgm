@@ -58,7 +58,7 @@ const LoginPage: React.FC = () => {
                     <Heading as='h1'
                         fontSize='1.5rem'
                     >
-                        Se connecter !
+                        Se connecter
                     </Heading>
 
                     <FormControl isRequired>

@@ -1,38 +1,39 @@
-name: deploy
+name: CD
 
 on:
-
-  push:
-    branches:
-      - main
-      - 'release/**'
-      - feat/ci-cd # TODO: remove
+  # Allows you to include this workflow in other workflows
+  workflow_call:
+    inputs:
+      affected_projects:
+        type: string
+        required: true
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
 
 jobs:
 
-  affected:
-    uses: ./.github/workflows/affected.yml
-
-  build:
-    uses: ./.github/workflows/build.yml
-
-
   deploy:
     name: Deploy - ${{ matrix.project }}
-    needs:
-      - affected
-      - build
     runs-on: ubuntu-latest
     env:
       TARGET_ENV: ${{ github.ref_name == 'main' && 'prod' || 'staging' }}
 
     strategy:
       matrix:
-        project: ${{ fromJson(needs.affected.outputs.affected_projects) }}
+        project: ${{ fromJson(inputs.affected_projects) }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ matrix.project }}-build
+          path: dist/
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -46,10 +47,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Debug
+        run: |
+          tree
+
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: ./apps/${{ matrix.project }}
+          context: .
           file: ./infra/docker/${{ matrix.project }}.Dockerfile
           push: true
-          tags: sgm/${{ matrix.project }}-${{ github.ref_name == 'main' && 'prod'  }}:latest
+          tags: aimerisson/sgm-${{ matrix.project }}-${{ github.ref_name == 'main' && 'prod' || 'staging' }}:latest
