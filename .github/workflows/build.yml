@@ -1,48 +1,27 @@
-name: CI
+name: build
 
 on:
 
   push:
     branches:
       - dev
-      - feat/ci-cd
 
   pull_request:
 
   # Allows you to include this workflow in other workflows
   workflow_call:
+    inputs:
+      externalCall:
+        description: 'To distinguish workflow_call from other triggers'
+        type: boolean
+        required: false
+        default: true
 
 jobs:
 
   affected:
-    name: Get affected projects
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - uses: nrwl/nx-set-shas@v3
-        id: set-shas
-        with:
-          main-branch-name: ${{ github.event_name == 'pull_request' && github.base_ref || github.ref_name }}
-  
-      - name: Install dependencies
-        run: pnpm install --ignore-scripts --frozen-lockfile
-
-      - name: Get projects to build
-        id: get-projects-to-build
-        run: echo "affected_projects=$(pnpm nx show projects --affected --json -p 'apps/*')" >> $GITHUB_OUTPUT
-    
-    outputs:
-      affected_projects: ${{ steps.get-projects-to-build.outputs.affected_projects }}
-      nx_base: ${{ steps.set-shas.outputs.base }}
-      nx_head: ${{ steps.set-shas.outputs.head }}
+    uses: ./.github/workflows/affected.yml
+    if: ${{ !inputs.externalCall }}
 
   build:
     name: Build - ${{ matrix.project }}
@@ -51,13 +30,13 @@ jobs:
     if: needs.affected.outputs.affected_projects != '[]'
     needs:
       - affected
-    env: 
+    env:
       NX_BASE: ${{ needs.affected.outputs.nx_base }}
       NX_HEAD: ${{ needs.affected.outputs.nx_head }}
 
     strategy:
       matrix:
-        project: ${{ needs.affected.outputs.affected_projects }}
+        project: ${{ fromJson(needs.affected.outputs.affected_projects) }}
 
     steps:
 
@@ -78,9 +57,6 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: (Debug) Show affected
-        run: pnpm nx show projects --affected
-
       - name: Lint
         run: pnpm nx affected -t lint --exclude '*,!${{ matrix.project }}'
 
@@ -88,7 +64,7 @@ jobs:
         run: pnpm nx affected -t test --exclude '*,!${{ matrix.project }}'
 
       - name: Build
-        run: pnpm nx affected -t build --exclude '*,!${{ matrix.project }}'
+        run: pnpm nx affected -t build --exclude '*,!${{ matrix.project }}' --verbose
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v3
