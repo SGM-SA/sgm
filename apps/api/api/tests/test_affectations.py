@@ -183,7 +183,7 @@ class AffectationAjustageTest(APITestCase):
         Teste la création d'une affectation ajustage
         """
 
-        url = "/api/affectations/ajustage"
+        url = "/api/affectations/ajustages"
         data = {
             "etape": self.etape1.id,
             "semaine_affectation": timezone.now().strftime("%Y-%m-%d"),
@@ -202,7 +202,7 @@ class AffectationAjustageTest(APITestCase):
             zone=self.zone,
         )
 
-        url = "/api/affectations/ajustage"
+        url = "/api/affectations/ajustages"
         response = self.client.get(url, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.json()["results"]), 1)
@@ -217,7 +217,7 @@ class AffectationAjustageTest(APITestCase):
             zone=self.zone,
         )
 
-        url = f"/api/affectations/ajustage/{affectation.id}"
+        url = f"/api/affectations/ajustages/{affectation.id}"
         response = self.client.get(url, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -231,13 +231,14 @@ class AffectationAjustageTest(APITestCase):
             zone=self.zone,
         )
 
-        url = f"/api/affectations/ajustage/{affectation.id}"
+        url = f"/api/affectations/ajustages/{affectation.id}"
         data = {
             "semaine_affectation": (
                 timezone.now() + timezone.timedelta(days=7)
             ).strftime("%Y-%m-%d")
         }
         response = self.client.patch(url, data, format="json")
+        print(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_affectation_ajustage(self):
@@ -250,6 +251,6 @@ class AffectationAjustageTest(APITestCase):
             zone=self.zone,
         )
 
-        url = f"/api/affectations/ajustage/{affectation.id}"
+        url = f"/api/affectations/ajustages/{affectation.id}"
         response = self.client.delete(url, format="json")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
