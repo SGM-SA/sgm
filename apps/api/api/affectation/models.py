@@ -27,6 +27,14 @@ class Affectation(models.Model):
         CustomUser, null=True, blank=True, on_delete=models.CASCADE
     )
 
+    previous = models.OneToOneField(
+        "self",
+        null=True,
+        blank=True,
+        related_name="next",
+        on_delete=models.SET_NULL,
+    )
+
     class Meta:
         abstract = True
         verbose_name = "Affectation"
