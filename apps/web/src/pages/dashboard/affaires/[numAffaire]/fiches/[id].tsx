@@ -1,12 +1,12 @@
-import { Textarea } from '@chakra-ui/react'
-import { EtapeDetail, EtapeDetailAjustage, fetchApiEtapesPartialUpdate, fetchApiGroupeMachineList, fetchApiGroupeMachineRetrieve, fetchApiMachinesRetrieve, useApiFichesEtapesRetrieve } from '@sgm/openapi'
-import { ChoiceFn, DefaultTableCell, Table, createColumnMeta } from '@sgm/ui'
+import { Box, Button, HStack, Textarea } from '@chakra-ui/react'
+import { EtapeDetail, EtapeDetailAjustage, fetchApiEtapesCreate, fetchApiEtapesDeleteCreate, fetchApiEtapesPartialUpdate, fetchApiGroupeMachineList, useApiFichesEtapesRetrieve } from '@sgm/openapi'
+import { DefaultTableCell, Table, createColumnMeta } from '@sgm/ui'
 import { useParams } from '@sgm/web/router'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
+import { LoaderFunction, useLoaderData } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
 import { DashboardLayout } from '../../../../../components/layouts'
-import { LoaderFunction, useLoaderData } from 'react-router-typesafe'
 
 export const Loader = (() => {
     return fetchApiGroupeMachineList({})
@@ -25,7 +25,7 @@ const FichePage: React.FC = () => {
 
     const groupeMachines = useLoaderData<typeof Loader>()
 
-    const { data, isLoading } = useApiFichesEtapesRetrieve({ pathParams: { id: ficheId }})
+    const { data, isLoading, refetch } = useApiFichesEtapesRetrieve({ pathParams: { id: ficheId }})
 
     const columns = [
         columnHelper.accessor('num_etape', {
@@ -106,6 +106,20 @@ const FichePage: React.FC = () => {
                 loading={isLoading}
                 header={{
                     title: 'Liste des étapes',
+                    customComponent: () => <HStack>
+                        <Button
+                            size='sm'
+                            colorScheme='blue'
+                            borderRadius='4px'
+                            variant='outline'
+                            onClick={() => {
+                                // TODO: implement
+                                window.print() // temporary
+                            }}
+                        >
+                            Imprimer
+                        </Button>
+                    </HStack>
                 }}
                 editable={{
                     enabled: true,
@@ -118,12 +132,58 @@ const FichePage: React.FC = () => {
                             .catch(() => toast.error('Erreur lors de la mise à jour de l\'étape'))
                     }
                 }}
+                newRow={() => {
+                    if (!data) return
+
+                    fetchApiEtapesCreate({
+                        body: {
+                            fiche: ficheId,
+                            num_etape: data.etapes.length + 1 || 1
+                        }
+                    })
+                        .then(() => {
+                            refetch()
+                            toast.success('Etape créée')
+                        })
+                        .catch(() => toast.error('Erreur lors de la création de l\'étape'))
+                }}
+                rowSelection={{
+                    enabled: true,
+                    selectionActionComponent: ({ checkedItems, resetSelection }) => <Box>
+                        <Button 
+                            size='sm'
+                            colorScheme='red'
+                            borderRadius='4px'
+                            variant='outline'
+                            onClick={async () => {
+                                fetchApiEtapesDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
+                                    .then(() => {
+                                        resetSelection()
+                                        refetch()
+                                        toast.success('Etapes supprimées avec succès')
+                                    })
+                                    .catch(() => toast.error('Erreur lors de la suppression des étapes'))
+                            }}
+                        >Supprimer</Button>
+                    </Box>
+                }}
                 rowExpansion={{
                     enabled: true,
-                    renderComponent: () => {
-                        return <Textarea>
-                            {data?.etapes[0].description}
-                        </Textarea>
+                    expandedByDefault: true,
+                    renderComponent: ({ row }) => {
+
+                        const handleUpdate = (description: string) => {
+                            fetchApiEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: { description } })
+                                .then(() => toast.success('Description mise à jour'))
+                                .catch(() => toast.error('Erreur lors de la mise à jour de la description'))
+                        }
+
+                        return <Textarea 
+                            defaultValue={row.original.description || ''}
+                            onBlur={(e) => handleUpdate(e.target.value)}
+                            rows={2}
+                            fontSize='sm'
+                        />
                     }
                 }}
             />

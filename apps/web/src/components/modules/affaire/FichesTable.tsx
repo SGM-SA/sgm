@@ -113,14 +113,13 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                             borderRadius='4px'
                             variant='outline'
                             onClick={async () => {
-                                fetchApiFichesDeleteCreate({
-                                    body: {
-                                        ids: checkedItems.map(item => item.original.id)
-                                    }
-                                }).then(() => {
+                                fetchApiFichesDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
+                                .then(() => {
                                     resetSelection()
                                     fiches.refetch()
+                                    toast.success('Etapes supprimées avec succès')
                                 })
+                                .catch(() => toast.error('Erreur lors de la suppression des étapes'))
                             }}
                         >Supprimer</Button>
                     </Box>
