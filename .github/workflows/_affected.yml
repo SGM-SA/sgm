@@ -1,3 +1,5 @@
+name: Component / Affected
+
 on:
   # Allows you to include this workflow in other workflows
   workflow_call:
