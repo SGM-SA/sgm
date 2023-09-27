@@ -52,6 +52,7 @@ type BaseTableProps<TData> = {
      */
     rowExpansion?: {
         enabled: boolean
+        expandedByDefault?: boolean
         renderComponent?: React.FC<{ row: Row<TData> }>
     }
     /**
@@ -248,6 +249,14 @@ export function Table<TData>(props: TableProps<TData>) {
 
     }, [internalSorting, props.sortable])
 
+    useEffect(() => {
+
+        console.log(props.rowExpansion?.expandedByDefault)
+        if (props.rowExpansion?.enabled && props.rowExpansion.expandedByDefault) {
+            table.toggleAllRowsExpanded()
+        }
+    }, [])
+
     const selectedRowsCount = table.getRowModel().rows.filter(row => row.getIsSelected()).length
 
 	return <>
@@ -301,14 +310,17 @@ export function Table<TData>(props: TableProps<TData>) {
 
             <ChakraTable
                 size='sm'
-                mb='auto'
+                // mb='auto'
                 {...props.styling?.table}
             >
                 
                 <Thead>
                     {table.getHeaderGroups().map(headerGroup => (
+
                         <Tr key={headerGroup.id}>
+                        
                             {props.rowExpansion?.enabled && <Th></Th>}
+                        
                             {headerGroup.headers.map(header => (
                                 <Th key={header.id} colSpan={header.colSpan}>
                                     <Box
@@ -395,6 +407,7 @@ export function Table<TData>(props: TableProps<TData>) {
                             )}
                         </Fragment>))}
                 </Tbody>
+
 
             </ChakraTable>
 
