@@ -11,6 +11,7 @@ export type Path =
 	| `/auth/login`
 	| `/auth/logout`
 	| `/machines`
+	| `/zones`
 
 export type Params = {
 	'/affaires/:numAffaire': { numAffaire: string }
