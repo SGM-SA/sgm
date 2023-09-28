@@ -1335,24 +1335,31 @@ paths:
                 $ref: '#/components/schemas/MachineDetail'
           description: ''
   /api/machines/delete:
-    delete:
-      operationId: api_machines_delete_destroy
-      description: Suppression d'une machine ou plusieurs machines, la machine est
-        désactivée et non supprimée pour garder l'historique
-      summary: Suppression
-      parameters:
-      - in: query
-        name: ids
-        schema:
-          type: string
-        required: true
+    post:
+      operationId: api_machines_delete_create
+      description: Bulk delete d'objets en fonction de leur id
+      summary: Bulk delete de Machines
       tags:
       - Machine
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteRequest'
+        required: true
       security:
       - jwtAuth: []
       - {}
       responses:
         '204':
+          description: No response body
+        '400':
           description: No response body
   /api/modeles/etapes/:
     get:

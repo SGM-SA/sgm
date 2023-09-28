@@ -2861,41 +2861,37 @@ export const useApiMachinesPartialUpdate = (
 	})
 }
 
-export type ApiMachinesDeleteDestroyQueryParams = {
-	ids: string
-}
+export type ApiMachinesDeleteCreateError = Fetcher.ErrorWrapper<undefined>
 
-export type ApiMachinesDeleteDestroyError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiMachinesDeleteDestroyVariables = {
-	queryParams: ApiMachinesDeleteDestroyQueryParams
+export type ApiMachinesDeleteCreateVariables = {
+	body: Schemas.BulkDeleteRequest
 } & ApiContext['fetcherOptions']
 
 /**
- * Suppression d'une machine ou plusieurs machines, la machine est désactivée et non supprimée pour garder l'historique
+ * Bulk delete d'objets en fonction de leur id
  */
-export const fetchApiMachinesDeleteDestroy = (
-	variables: ApiMachinesDeleteDestroyVariables,
+export const fetchApiMachinesDeleteCreate = (
+	variables: ApiMachinesDeleteCreateVariables,
 	signal?: AbortSignal
 ) =>
 	apiFetch<
 		undefined,
-		ApiMachinesDeleteDestroyError,
-		undefined,
+		ApiMachinesDeleteCreateError,
+		Schemas.BulkDeleteRequest,
 		{},
-		ApiMachinesDeleteDestroyQueryParams,
+		{},
 		{}
-	>({ url: '/api/machines/delete', method: 'delete', ...variables, signal })
+	>({ url: '/api/machines/delete', method: 'post', ...variables, signal })
 
 /**
- * Suppression d'une machine ou plusieurs machines, la machine est désactivée et non supprimée pour garder l'historique
+ * Bulk delete d'objets en fonction de leur id
  */
-export const useApiMachinesDeleteDestroy = (
+export const useApiMachinesDeleteCreate = (
 	options?: Omit<
 		reactQuery.UseMutationOptions<
 			undefined,
-			ApiMachinesDeleteDestroyError,
-			ApiMachinesDeleteDestroyVariables
+			ApiMachinesDeleteCreateError,
+			ApiMachinesDeleteCreateVariables
 		>,
 		'mutationFn'
 	>
@@ -2903,11 +2899,11 @@ export const useApiMachinesDeleteDestroy = (
 	const { fetcherOptions } = useApiContext()
 	return reactQuery.useMutation<
 		undefined,
-		ApiMachinesDeleteDestroyError,
-		ApiMachinesDeleteDestroyVariables
+		ApiMachinesDeleteCreateError,
+		ApiMachinesDeleteCreateVariables
 	>({
-		mutationFn: (variables: ApiMachinesDeleteDestroyVariables) =>
-			fetchApiMachinesDeleteDestroy({ ...fetcherOptions, ...variables }),
+		mutationFn: (variables: ApiMachinesDeleteCreateVariables) =>
+			fetchApiMachinesDeleteCreate({ ...fetcherOptions, ...variables }),
 		...options,
 	})
 }
