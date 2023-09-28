@@ -1,16 +1,16 @@
-import { MachineDetail, fetchApiMachinesDeleteDestroy, fetchApiMachinesPartialUpdate, useApiMachinesList } from '@sgm/openapi'
+import { ApiZonesUpdateVariables, ListZone, MachineDetail, fetchApiMachinesDeleteDestroy, fetchApiMachinesPartialUpdate, fetchApiZonesDeleteCreate, useApiMachinesList, useApiZonesList } from '@sgm/openapi'
 import { Table, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { DashboardLayout } from '../../components/layouts'
 import { toast } from 'react-toastify'
 import { Box, Button, HStack } from '@chakra-ui/react'
-import { MachineCreateForm } from '../../components/modules'
+import { MachineCreateForm, ZoneCreateForm } from '../../components/modules'
 
-const columnHelper = createColumnHelper<MachineDetail>()
+const columnHelper = createColumnHelper<ListZone>()
 
 const columns = [
-    columnHelper.accessor('nom_machine', {
+    columnHelper.accessor('nom', {
         header: 'Nom',
         meta: createColumnMeta({
             editable: true,
@@ -24,34 +24,27 @@ const columns = [
             type: 'text'
         })
     }),
-    columnHelper.accessor('fonctionnelle', {
-        header: 'Fonctionnelle',
-        meta: createColumnMeta({
-            editable: true,
-            type: 'boolean'
-        })
-    }),
 ]
 
 const MachinesPage: React.FC = () => {
 
     const { pagination, setPagination, fetchDataOptions } = useTableQueryHelper()
 
-    const { data, isLoading, refetch } = useApiMachinesList(fetchDataOptions)
+    const { data, isLoading, refetch } = useApiZonesList(fetchDataOptions)
 
 	return <>
         <DashboardLayout
-            title='Machines'
+            title='Zones'
             removePadding={true}
         >
-            <Table<MachineDetail> 
+            <Table<ListZone> 
                 columns={columns}
                 data={data}
                 loading={isLoading}
                 header={{
-                    title: 'Gestion des machines',
+                    title: 'Gestion des zones',
                     customComponent: () => <HStack>
-                        <MachineCreateForm refetch={refetch}/>
+                        <ZoneCreateForm refetch={refetch}/>
                     </HStack>
                 }}
                 pagination={{
@@ -64,10 +57,9 @@ const MachinesPage: React.FC = () => {
                         fetchApiMachinesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
                             .then(() => {
                                 row.original = { ...row.original, ...newData }
-                                if (newData.fonctionnelle !== undefined) refetch()
-                                toast.success('Machine mise à jour')
+                                toast.success('Zone mise à jour')
                             })
-                            .catch(() => toast.error('Erreur lors de la mise à jour de la machine'))
+                            .catch(() => toast.error('Erreur lors de la mise à jour de la zone'))
                     }
                 }}
                 rowSelection={{
@@ -80,25 +72,16 @@ const MachinesPage: React.FC = () => {
                             variant='outline'
                             onClick={async () => {
                                 // TODO: change implementation when backend is standardized
-                                fetchApiMachinesDeleteDestroy({ queryParams: { ids: checkedItems.map(item => item.original.id).join(',') } })
+                                fetchApiZonesDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
                                     .then(() => {
                                         resetSelection()
                                         refetch()
-                                        toast.success('Machines supprimées avec succès')
+                                        toast.success('Zones supprimées avec succès')
                                     })
-                                    .catch(() => toast.error('Erreur lors de la suppression des machines'))
+                                    .catch(() => toast.error('Erreur lors de la suppression des zones'))
                             }}
                         >Supprimer</Button>
                     </Box>
-                }}
-                styling={{
-                    row: (row) => {
-                        if (row.original?.fonctionnelle === false) {
-                            return {
-                                backgroundColor: 'red.100'
-                            }
-                        }
-                    }
                 }}
             />
 

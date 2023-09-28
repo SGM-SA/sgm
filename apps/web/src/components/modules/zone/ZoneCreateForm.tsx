@@ -1,24 +1,23 @@
 import { Button, Flex, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { fetchApiMachinesCreate } from '@sgm/openapi'
+import { fetchApiZonesCreate } from '@sgm/openapi'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 
-const machineFormSchema = z.object({
-    nom_machine: z.string(),
+const zoneFormSchema = z.object({
+    nom: z.string(),
     description: z.string(),
-    fonctionnelle: z.boolean()
 })
 
-type MachineFormSchema = z.infer<typeof machineFormSchema>
+type ZoneFormSchema = z.infer<typeof zoneFormSchema>
 
-type MachineCreateFormProps = {
+type ZoneCreateFormProps = {
     refetch: () => void
 }
 
-export const MachineCreateForm: React.FC<MachineCreateFormProps> = (props) => {
+export const ZoneCreateForm: React.FC<ZoneCreateFormProps> = (props) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -26,21 +25,18 @@ export const MachineCreateForm: React.FC<MachineCreateFormProps> = (props) => {
         register,
         handleSubmit,
         formState: { isSubmitting }
-    } = useForm<MachineFormSchema>({
-        resolver: zodResolver(machineFormSchema),
-        defaultValues: {
-            fonctionnelle: true
-        }
+    } = useForm<ZoneFormSchema>({
+        resolver: zodResolver(zoneFormSchema),
     })
 
-    const onSubmit: SubmitHandler<MachineFormSchema> = (newMachine) => {
-        fetchApiMachinesCreate({ body: newMachine })
+    const onSubmit: SubmitHandler<ZoneFormSchema> = (newZone) => {
+        fetchApiZonesCreate({ body: newZone })
             .then(() => {
                 props.refetch()
-                toast.success('Machine créée avec succès')
+                toast.success('Zone créée avec succès')
                 onClose()
             })
-            .catch(() => toast.error('Erreur lors de la création de la machine'))
+            .catch(() => toast.error('Erreur lors de la création de la zone'))
     }
 
 	return <>
@@ -49,14 +45,14 @@ export const MachineCreateForm: React.FC<MachineCreateFormProps> = (props) => {
             colorScheme='blue'
             variant='outline'
         >
-            Ajouter une machine
+            Ajouter une zone
         </Button>
 
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
-                    Créer une machine
+                    Créer une zone
                 </ModalHeader>
                 <ModalCloseButton />
 
@@ -68,21 +64,14 @@ export const MachineCreateForm: React.FC<MachineCreateFormProps> = (props) => {
                     >
 
                         <FormControl isRequired>
-                            <FormLabel>Nom machine</FormLabel>
-                            <Input placeholder="Tour" {...register('nom_machine', { required: true })}></Input>
+                            <FormLabel>Nom zone</FormLabel>
+                            <Input placeholder="" {...register('nom', { required: true })}></Input>
                         </FormControl>
 
                         <FormControl>
                             <FormLabel>Description</FormLabel>
-                            <Input placeholder="Description de la machine" {...register('description')}></Input>
+                            <Input placeholder="Description de la zone" {...register('description')}></Input>
                         </FormControl>
-
-                        <Flex as={FormControl}>
-                            <FormLabel mb='unset'>Fonctionnelle</FormLabel>
-                            <input {...register('fonctionnelle', { required: true, })}
-                                type="checkbox" 
-                            />
-                        </Flex>
                     
                         <Button
                             type='submit'
