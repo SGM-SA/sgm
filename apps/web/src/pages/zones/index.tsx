@@ -1,11 +1,11 @@
-import { ApiZonesUpdateVariables, ListZone, MachineDetail, fetchApiMachinesDeleteDestroy, fetchApiMachinesPartialUpdate, fetchApiZonesDeleteCreate, useApiMachinesList, useApiZonesList } from '@sgm/openapi'
+import { Box, Button, HStack } from '@chakra-ui/react'
+import { ListZone, fetchApiMachinesPartialUpdate, fetchApiZonesDeleteCreate, useApiZonesList } from '@sgm/openapi'
 import { Table, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
-import { DashboardLayout } from '../../components/layouts'
 import { toast } from 'react-toastify'
-import { Box, Button, HStack } from '@chakra-ui/react'
-import { MachineCreateForm, ZoneCreateForm } from '../../components/modules'
+import { DashboardLayout } from '../../components/layouts'
+import { ZoneCreateForm } from '../../components/modules'
 
 const columnHelper = createColumnHelper<ListZone>()
 
