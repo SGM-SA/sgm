@@ -1,10 +1,10 @@
-import { MachineDetail, fetchApiMachinesDeleteDestroy, fetchApiMachinesPartialUpdate, useApiMachinesList } from '@sgm/openapi'
+import { Box, Button, HStack } from '@chakra-ui/react'
+import { MachineDetail, fetchApiMachinesDeleteCreate, fetchApiMachinesPartialUpdate, useApiMachinesList } from '@sgm/openapi'
 import { Table, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
-import { DashboardLayout } from '../../components/layouts'
 import { toast } from 'react-toastify'
-import { Box, Button, HStack } from '@chakra-ui/react'
+import { DashboardLayout } from '../../components/layouts'
 import { MachineCreateForm } from '../../components/modules'
 
 const columnHelper = createColumnHelper<MachineDetail>()
@@ -79,8 +79,7 @@ const MachinesPage: React.FC = () => {
                             borderRadius='4px'
                             variant='outline'
                             onClick={async () => {
-                                // TODO: change implementation when backend is standardized
-                                fetchApiMachinesDeleteDestroy({ queryParams: { ids: checkedItems.map(item => item.original.id).join(',') } })
+                                fetchApiMachinesDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
                                     .then(() => {
                                         resetSelection()
                                         refetch()
