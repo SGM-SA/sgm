@@ -12,14 +12,13 @@ export const TableHeader: React.FC<TableHeaderProps> = (props) => {
         <Flex 
             w='100%' 
             justifyContent='space-between'
-            mb='2em'
+            p='2em'
         >
             {props.title && 
                 <Text as='h2' 
                     fontSize='xl'
                     fontWeight='normal'
                     mr='auto'
-                    padding='1em'
                 >
                     {props.title}
                 </Text>

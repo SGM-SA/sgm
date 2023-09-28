@@ -1,13 +1,12 @@
 import { Box, Progress } from '@chakra-ui/react'
 import { AffaireDetails, fetchApiAffairesPartialUpdate, useApiAffairesList } from '@sgm/openapi'
 import { Table, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
+import { Link, useNavigate } from '@sgm/web/router'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
-import { DashboardLayout } from '../../../components/layouts'
-import { AffaireSearch, FichesTable } from '../../../components/modules'
-import { Link, useNavigate } from '@sgm/web/router'
-import { LoaderFunction } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
+import { DashboardLayout } from '../../components/layouts'
+import { AffaireSearch, FichesTable } from '../../components/modules'
 
 const columnHelper = createColumnHelper<AffaireDetails>()
 
@@ -16,7 +15,7 @@ const columns = [
         id: 'num_affaire',
         cell: value => 
             <Link 
-                to='/dashboard/affaires/:numAffaire' 
+                to='/affaires/:numAffaire' 
                 params={{
                     numAffaire: `${value.row.original.num_affaire}`
                 }}
@@ -146,7 +145,7 @@ const AffairesPage: React.FC = () => {
                     }}
                     rowAction={{
                         enableCtrlClick: true,
-                        actionFn: (row) => navigate(`/dashboard/affaires/:numAffaire`, {
+                        actionFn: (row) => navigate(`/affaires/:numAffaire`, {
                             params: {
                                 numAffaire: `${row.original.num_affaire}`
                             }

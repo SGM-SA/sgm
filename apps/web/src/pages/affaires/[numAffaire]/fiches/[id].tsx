@@ -6,7 +6,7 @@ import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { LoaderFunction, useLoaderData } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
-import { DashboardLayout } from '../../../../../components/layouts'
+import { DashboardLayout } from '../../../../components/layouts'
 
 export const Loader = (() => {
     return fetchApiGroupeMachineList({})
@@ -20,7 +20,7 @@ const columnHelper = createColumnHelper<EtapeDetail>()
 
 const FichePage: React.FC = () => {
 
-    const params = useParams('/dashboard/affaires/:numAffaire/fiches/:id'),
+    const params = useParams('/affaires/:numAffaire/fiches/:id'),
           ficheId = parseInt(params.id)
 
     const groupeMachines = useLoaderData<typeof Loader>()

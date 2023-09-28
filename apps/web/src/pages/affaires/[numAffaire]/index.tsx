@@ -4,17 +4,13 @@ import { Navigate } from '@sgm/web/router'
 import React from 'react'
 import { LoaderFunction, useLoaderData } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
-import { DashboardLayout } from '../../../../components/layouts'
-import { FichesTable } from '../../../../components/modules'
+import { DashboardLayout } from '../../../components/layouts'
+import { FichesTable } from '../../../components/modules'
 
 export const Loader = (async ({ params }) => {
     if (!params.numAffaire) throw new Error('numAffaire is required')
     
-    return fetchApiAffairesNumsRetrieve({
-        pathParams: {
-            numAffaire: parseInt(params.numAffaire)
-        }
-    })
+    return fetchApiAffairesNumsRetrieve({ pathParams: { numAffaire: parseInt(params.numAffaire) } })
         .then(affaire => affaire)
         .catch(() => {
             toast.error('Affaire non trouvée')
@@ -22,7 +18,7 @@ export const Loader = (async ({ params }) => {
         })
 }) satisfies LoaderFunction
 
-export const Catch = () => <Navigate to='/dashboard/affaires' />
+export const Catch = () => <Navigate to='/affaires' />
 
 const AffairePage: React.FC = () => {
 
@@ -34,7 +30,7 @@ const AffairePage: React.FC = () => {
             removePadding={true}
         >
             <Box minH='70vh' w='100%'>
-                <Box padding='1em' w='100%'>
+                <Box w='100%'>
                     <FichesTable affaireId={affaire.id} />
                 </Box>
             </Box>
