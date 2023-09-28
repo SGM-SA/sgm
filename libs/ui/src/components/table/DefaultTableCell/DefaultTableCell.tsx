@@ -22,16 +22,32 @@ export function DefaultTableCell<TData>(props: DefaultTableCellProps<TData>) {
 
 export function RawTableCell<TData>(props: DefaultTableCellProps<TData>) {
 
+    const meta = props.column.columnDef.meta // not typed on purpose
+
     const doubleClickHandler = () => {
         if (!props.column.columnDef.meta?.disableWarnings) toast.warn("Ce champs n'est pas éditable")
     }
 
-    return <Box as='span' 
-        fontSize={fontSize}
-        onDoubleClick={doubleClickHandler}
-    >
-        {props.children || props.getValue() as any}
-    </Box>
+    switch(meta?.type) {
+
+        case 'boolean':
+            return <input 
+                type='checkbox'
+                style={{
+                    fontSize: fontSize,
+                }}
+                checked={!!props.children || props.getValue() as boolean}
+                disabled
+            />
+            break
+        default:
+            return <Box as='span' 
+                fontSize={fontSize}
+                onDoubleClick={doubleClickHandler}
+            >
+                {props.children || props.getValue() as any}
+            </Box>
+    }
 }
 
 export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
@@ -55,7 +71,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
             }
         }
 
-        props.table.options.meta?.updateData(props.row, accessorKey, overrideValue || value)
+        props.table.options.meta?.updateData(props.row, accessorKey, overrideValue ?? value)
     }
 
     // If the initialValue is changed external, sync it up with our state
@@ -99,17 +115,20 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
             break
         case 'boolean': 
             return (
-                <Input
+                <input
                     type='checkbox'
-                    variant='unstyled'
-                    fontSize={fontSize}
-                    value={value as string || ''}
-                    onChange={e => setValue(e.target.value)}
-                    onBlur={() => onUpdate()}
+                    style={{
+                        fontSize: fontSize,
+                    }}
+                    checked={value as boolean}
+                    onChange={e => {
+                        setValue(e.target.checked)
+                        onUpdate(e.target.checked)
+                    }}
                 />
             )
         default:
-            <Input
+            return <Input
                 variant='unstyled'
                 value={value as string || ''}
                 fontSize={fontSize}

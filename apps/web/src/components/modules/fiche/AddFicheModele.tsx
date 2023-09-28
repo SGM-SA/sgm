@@ -26,7 +26,7 @@ export const AddFicheModele: React.FC<AddFicheModeleProps> = (props) => {
             .catch(() => props.refetch())
     }
 
-	return <Box p='1em'>
+	return <Box>
         <Button
             size='sm'
             colorScheme='blue'

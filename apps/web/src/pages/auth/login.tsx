@@ -29,7 +29,6 @@ const LoginPage: React.FC = () => {
 
     const onSubmit: SubmitHandler<AuthFormSchema> = ({ email, password }) => {
 
-        // @ts-ignore
         fetchAuthTokenCreate({ body: { email, password } })
             .then(data => {
                 AuthService.login(data.access, data.refresh)
@@ -63,7 +62,7 @@ const LoginPage: React.FC = () => {
 
                     <FormControl isRequired>
                         <FormLabel>Email</FormLabel>
-                        <Input placeholder="Nom d'utilisateur" {...register('email', { required: true })}/>
+                        <Input placeholder="Email" {...register('email', { required: true })}/>
                     </FormControl>
 
                     <FormControl isRequired>

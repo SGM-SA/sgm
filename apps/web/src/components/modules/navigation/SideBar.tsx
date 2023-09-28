@@ -39,10 +39,14 @@ export const SideBar: React.FC<SideBarProps> = () => {
                     </SideBarSection>
 
                     <SideBarSection title='Affaires'>
-                        <SideBarLink icon={TfiMenuAlt} text='Liste' to='/dashboard/affaires' />
+                        <SideBarLink icon={TfiMenuAlt} text='Liste' to='/affaires' />
                     </SideBarSection>
 
                     <SideBarSection title='Machines'>
+                        <SideBarLink icon={BsGearFill} text='Gestion' to='/machines' />
+                    </SideBarSection>
+
+                    <SideBarSection title='Zones'>
                         <SideBarLink icon={BsGearFill} text='Gestion' to='/' />
                     </SideBarSection>
                 
