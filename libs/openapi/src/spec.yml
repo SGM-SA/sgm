@@ -2144,7 +2144,7 @@ paths:
   /api/zones/:
     get:
       operationId: api_zones_list
-      description: Lister les zones
+      description: Créer / Lister une zone
       parameters:
       - name: page
         required: false
@@ -2164,6 +2164,147 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedListZoneList'
           description: ''
+    post:
+      operationId: api_zones_create
+      description: Créer / Lister une zone
+      tags:
+      - Zone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListZoneRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ListZoneRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ListZoneRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListZone'
+          description: ''
+  /api/zones/{id}:
+    get:
+      operationId: api_zones_retrieve
+      description: Récupérer et Updater  une zone
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Zone
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListZone'
+          description: ''
+    put:
+      operationId: api_zones_update
+      description: Récupérer et Updater  une zone
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Zone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListZoneRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ListZoneRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ListZoneRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListZone'
+          description: ''
+    patch:
+      operationId: api_zones_partial_update
+      description: Récupérer et Updater  une zone
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Zone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedListZoneRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedListZoneRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedListZoneRequest'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListZone'
+          description: ''
+  /api/zones/delete:
+    post:
+      operationId: api_zones_delete_create
+      description: Bulk delete d'objets en fonction de leur id
+      summary: Bulk delete de Zone
+      tags:
+      - Zone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+        '400':
+          description: No response body
   /auth/token:
     post:
       operationId: auth_token_create
@@ -3770,6 +3911,20 @@ components:
       - description
       - id
       - nom
+    ListZoneRequest:
+      type: object
+      properties:
+        nom:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          minLength: 1
+          maxLength: 1000
+      required:
+      - description
+      - nom
     MachineDetail:
       type: object
       properties:
@@ -4377,6 +4532,17 @@ components:
         prix_theorique:
           type: integer
           title: Prix théorique / heure
+    PatchedListZoneRequest:
+      type: object
+      properties:
+        nom:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          minLength: 1
+          maxLength: 1000
     PatchedMachineDetailRequest:
       type: object
       properties:
