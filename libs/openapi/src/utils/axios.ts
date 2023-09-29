@@ -1,10 +1,8 @@
 import { AuthService } from '@sgm/web/auth'
 import { environment } from '@sgm/web/environments'
-import defaultAxios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
-import { ErrorWrapper } from '../generated/apiFetcher'
-import { fetchAuthTokenRefreshCreate } from '../generated/apiComponents'
+import defaultAxios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { toast } from 'react-toastify'
-import { log } from 'console'
+import { ErrorWrapper } from '../generated/apiFetcher'
 
 export const axiosInstance = defaultAxios.create({
 	baseURL: environment.apiBaseUrl, // Replace with your base URL
@@ -16,7 +14,6 @@ export const axiosInstance = defaultAxios.create({
 
 const refreshAuthLogic = async () => {
 
-	
 	const token = AuthService.getToken()
 	const refreshToken = AuthService.getRefreshToken()
 	
@@ -40,7 +37,7 @@ const refreshAuthLogic = async () => {
 
 		const { access: newToken } = await response.json()
 		
-		console.warn('refreshed token', newToken)
+		console.log('refreshed token', newToken)
 	
 		AuthService.login(newToken, refreshToken, false)
 	

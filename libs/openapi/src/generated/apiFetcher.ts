@@ -1,11 +1,7 @@
-import { environment } from '@sgm/web/environments'
-import { ApiContext } from './apiContext'
 import { AuthService } from '@sgm/web/auth';
-import { fetchAuthTokenRefreshCreate } from './apiComponents';
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig } from 'axios';
 import { axiosInstance } from '../utils/axios';
-
-const baseUrl = environment.apiBaseUrl
+import { ApiContext } from './apiContext';
 
 export type ErrorWrapper<TError> =
 	| TError
@@ -42,7 +38,7 @@ export async function apiFetch<
 	TQueryParams,
 	TPathParams
 >): Promise<TData> {
-
+	
 	const processedHeaders: HeadersInit = {
 		...axiosInstance.head,
 		...headers,
@@ -50,11 +46,12 @@ export async function apiFetch<
 
 	// TODO: useful with the js fetch API, check if it is still needed with axios
 	if (
-		processedHeaders['Content-Type']
-			?.toLowerCase()
-			.includes('multipart/form-data')
-	) {
-		delete processedHeaders['Content-Type']
+		processedHeaders['Content-Type']?.toLowerCase().includes('multipart/form-data')
+	) delete processedHeaders['Content-Type']
+	
+	if (processedHeaders['authorization'] === undefined) {
+		const token = AuthService.getToken()
+		if (token) processedHeaders['authorization'] = `Bearer ${token}`
 	}
 
 	const config: AxiosRequestConfig = {
@@ -64,6 +61,8 @@ export async function apiFetch<
 		signal: signal,
 		headers: processedHeaders
 	}
+
+	console.log('config', config)
 
 	return axiosInstance.request(config)
 }
