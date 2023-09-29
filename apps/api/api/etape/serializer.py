@@ -21,9 +21,11 @@ class EtapeDetail(serializers.ModelSerializer):
 
 
 class EtapeDetailAjustage(serializers.ModelSerializer):
-    machine = MachineDetailSerializer(read_only=True)
     affectation_id = serializers.SlugRelatedField(
         read_only=True, slug_field="id", source="affectationajustage"
+    )
+    user_id = serializers.SlugRelatedField(
+        read_only=True, slug_field="id", source="affectationajustage.user"
     )
 
     class Meta:
@@ -32,7 +34,6 @@ class EtapeDetailAjustage(serializers.ModelSerializer):
 
 
 class EtapeDetailMachine(serializers.ModelSerializer):
-    machine = MachineDetailSerializer(read_only=True)
     affectation_id = serializers.SlugRelatedField(
         read_only=True, slug_field="id", source="affectationmachine"
     )

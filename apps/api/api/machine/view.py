@@ -76,9 +76,7 @@ class MachineDelete(generics.DestroyAPIView):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             pk_ids = pk_ids.split(",")
             objs = self.get_queryset().filter(id__in=pk_ids)
-            print(objs)
             objs.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
-            print(e)
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"error": str(e)})

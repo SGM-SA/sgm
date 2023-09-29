@@ -5,8 +5,8 @@ from api.etape.urls import urlpatterns as etape_patterns
 from api.zone.urls import urlpatterns as zone_patterns
 from api.machine.urls import urlpatterns as machine_patterns
 from api.affectation.urls import urlpatterns as affectations_patterns
-from api.planning_zone.urls import urlpatterns as planning_zone_patterns
-from api.planning_machine.urls import urlpatterns as planning_machine_patterns
+from api.planning.planning_zone.urls import urlpatterns as planning_zone_patterns
+from api.planning.planning_machine.urls import urlpatterns as planning_machine_patterns
 from api.user.urls import urlpatterns as user_patterns, salarie_patterns
 from api.etape_modele.urls import urlpatterns as etape_modele_patterns
 from api.fiche_modele.urls import urlpatterns as fiche_modele_patterns

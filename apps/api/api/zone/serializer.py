@@ -19,11 +19,3 @@ class ZoneSerializer(serializers.ModelSerializer):
     class Meta:
         model = Zone
         fields = "__all__"
-
-
-def week_to_date_range(week) -> (datetime, datetime):
-    year = datetime.now().year
-    start = datetime.strptime(f"{year}-W{week}-{1}", "%Y-W%U-%w")
-    end = start + timedelta(weeks=1) - timedelta(days=1)
-
-    return start, end

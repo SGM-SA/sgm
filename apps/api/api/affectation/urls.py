@@ -1,15 +1,15 @@
 from django.urls import path
 
 from api.affectation.views import (
-    AffectationMachineCreateList,
+    AffectationMachineCreate,
     AffectationMachineCRUD,
-    AffectationAjustageCreateList,
+    AffectationAjustageCreate,
     AffectationAjustageCRUD,
 )
 
 urlpatterns = [
-    path("machines", AffectationMachineCreateList.as_view()),
+    path("machines", AffectationMachineCreate.as_view()),
     path("machines/<int:pk>", AffectationMachineCRUD.as_view()),
-    path("ajustages", AffectationAjustageCreateList.as_view()),
+    path("ajustages", AffectationAjustageCreate.as_view()),
     path("ajustages/<int:pk>", AffectationAjustageCRUD.as_view()),
 ]

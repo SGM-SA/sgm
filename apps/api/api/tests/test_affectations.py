@@ -77,28 +77,7 @@ class AffectationMachineTest(APITestCase):
             "semaine_affectation": timezone.now().strftime("%Y-%m-%d"),
         }
         response = self.client.post(url, data, format="json")
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_list_affectation_machine(self):
-        """
-        Teste la récupération de toutes les affectations machine
-        """
-        Etape.objects.create(
-            fiche=self.fiche,
-            groupe_machine=self.groupe_machine,
-            num_etape=1,
-        )
-        AffectationMachine.objects.create(
-            etape=self.etape1,
-            machine=self.machine_scie,
-            semaine_affectation=timezone.now().strftime("%Y-%m-%d"),
-        )
-
-        url = "/api/affectations/machines"
-        response = self.client.get(url, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.json()["results"]), 1)
 
     def test_retrieve_affectation_machine(self):
         Etape.objects.create(
@@ -192,21 +171,6 @@ class AffectationAjustageTest(APITestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_list_affectation_ajustage(self):
-        """
-        Teste la récupération de toutes les affectations ajustage
-        """
-        AffectationAjustage.objects.create(
-            etape=self.etape1,
-            semaine_affectation=timezone.now().strftime("%Y-%m-%d"),
-            zone=self.zone,
-        )
-
-        url = "/api/affectations/ajustages"
-        response = self.client.get(url, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.json()["results"]), 1)
-
     def test_retrieve_affectation_ajustage(self):
         """
         Teste la récupération d'une affectation ajustage
@@ -238,7 +202,6 @@ class AffectationAjustageTest(APITestCase):
             ).strftime("%Y-%m-%d")
         }
         response = self.client.patch(url, data, format="json")
-        print(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_affectation_ajustage(self):

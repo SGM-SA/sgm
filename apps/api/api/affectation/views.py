@@ -10,9 +10,9 @@ from api.affectation.serializer import (
 
 @extend_schema(
     tags=["Affectation Machine"],
-    description="Créer et lister une affectation machine",
+    description="Créer une affectation machine",
 )
-class AffectationMachineCreateList(generics.ListCreateAPIView):
+class AffectationMachineCreate(generics.CreateAPIView):
     queryset = AffectationMachine.objects.all()
     serializer_class = AffectationMachineSerializer
 
@@ -30,7 +30,7 @@ class AffectationMachineCRUD(generics.RetrieveUpdateDestroyAPIView):
     tags=["Affectation Ajustage"],
     description="Créer et lister une affectation ajustage",
 )
-class AffectationAjustageCreateList(generics.ListCreateAPIView):
+class AffectationAjustageCreate(generics.CreateAPIView):
     queryset = AffectationAjustage.objects.all()
     serializer_class = AffectationAjustageSerializer
 

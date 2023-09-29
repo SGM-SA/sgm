@@ -9,14 +9,15 @@ from datetime import datetime, timedelta
 # %u: The ISO 8601 weekday, where Monday is 1 and Sunday is 7.
 
 
-def week_to_date_range(year: int, week: int) -> (datetime, datetime):
+def week_to_date_range(date_str) -> (datetime, datetime):
     """
-    Convert a year and a week into a date range.
-    :param year: Year
-    :param week: Week
-    :return: Tuple (start date, end date)
+    Convertit une semaine en une plage de dates.
+    :param date_str: Semaine au format YYYY-MM-DD
+    :return: Tuple (lundi date, mardi date)
     """
-    start = datetime.strptime(f"{year}-W{week}-1", "%G-W%V-%u")
-    end = start + timedelta(weeks=1) - timedelta(days=1)
+    input_date = datetime.strptime(date_str, "%Y-%m-%d")
+    weekday = input_date.weekday()
+    lundi = input_date - timedelta(days=weekday)
+    dimanche = lundi + timedelta(days=6)
 
-    return start, end
+    return lundi, dimanche
