@@ -195,6 +195,12 @@ paths:
         description: A page number within the paginated result set.
         schema:
           type: integer
+      - name: per_page
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
       - in: query
         name: search
         schema:
@@ -851,6 +857,12 @@ paths:
         description: A page number within the paginated result set.
         schema:
           type: integer
+      - name: per_page
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
       tags:
       - Planning
       security:
@@ -943,6 +955,12 @@ paths:
         required: false
         in: query
         description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: per_page
+        required: false
+        in: query
+        description: Number of results to return per page.
         schema:
           type: integer
       tags:
@@ -1703,6 +1721,12 @@ paths:
         description: A page number within the paginated result set.
         schema:
           type: integer
+      - name: per_page
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
       tags:
       - Fiche Modele
       - Modele
@@ -2031,6 +2055,12 @@ paths:
         description: A page number within the paginated result set.
         schema:
           type: integer
+      - name: per_page
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
       tags:
       - Pointage
       security:
@@ -2052,6 +2082,12 @@ paths:
         required: false
         in: query
         description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: per_page
+        required: false
+        in: query
+        description: Number of results to return per page.
         schema:
           type: integer
       tags:
