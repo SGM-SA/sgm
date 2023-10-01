@@ -17,6 +17,7 @@ from drf_spectacular.utils import (
 )
 from django.db.models import Prefetch, Count, Q
 from constance import config
+from api.utils.view import LargeResultsSetPagination
 
 
 class EtapeAjustagePlanifierFilter(filters.BaseFilterBackend):
@@ -159,6 +160,7 @@ class FichesAjustageAPlanifier(generics.ListAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireFichesEtapesSerializer
     filter_backends = [EtapeAjustagePlanifierFilter]
+    pagination_class = LargeResultsSetPagination
 
 
 @extend_schema(
@@ -171,6 +173,7 @@ class FichesMachineAPlanifier(generics.ListAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireFichesEtapesSerializer
     filter_backends = [EtapeMachinePlanifierFilter]
+    pagination_class = LargeResultsSetPagination
 
 
 @extend_schema(

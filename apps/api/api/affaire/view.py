@@ -18,11 +18,7 @@ from drf_spectacular.utils import (
 )
 from django_filters.rest_framework import DjangoFilterBackend
 
-
-class LargeResultsSetPagination(pagination.PageNumberPagination):
-    page_size = 10
-    page_size_query_param = "per_page"
-    max_page_size = 100
+from api.utils.view import LargeResultsSetPagination
 
 
 @extend_schema_view(
@@ -95,6 +91,7 @@ class AffaireDetail(generics.RetrieveUpdateAPIView):
 class AffaireEtFichesList(generics.ListAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireFichesSerializer
+    pagination_class = LargeResultsSetPagination
 
 
 @extend_schema(
@@ -110,6 +107,7 @@ class AffaireDetailFiches(generics.RetrieveAPIView):
 class SmallPagination(pagination.PageNumberPagination):
     page_size = 5
     max_page_size = 5
+    page_size_query_param = "per_page"
 
 
 @extend_schema(

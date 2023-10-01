@@ -2,6 +2,7 @@ from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import generics, permissions
 from api.user.models import CustomUser
 from api.user.serializer import CustomUserDetailSerializer, CustomUserGroupsSerializer
+from api.utils.view import LargeResultsSetPagination
 
 
 @extend_schema(
@@ -26,3 +27,4 @@ class ProfileView(generics.RetrieveAPIView):
 class SalarieFormOptions(generics.ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserDetailSerializer
+    pagination_class = LargeResultsSetPagination
