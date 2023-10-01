@@ -339,6 +339,10 @@ export type ApiAffairesNumsListQueryParams = {
 	 */
 	page?: number
 	/**
+	 * Number of results to return per page.
+	 */
+	per_page?: number
+	/**
 	 * Recherche dans les champs num_affaire
 	 */
 	search?: string
@@ -1743,6 +1747,10 @@ export type ApiFichesAjustageAPlanifierListQueryParams = {
 	 * A page number within the paginated result set.
 	 */
 	page?: number
+	/**
+	 * Number of results to return per page.
+	 */
+	per_page?: number
 }
 
 export type ApiFichesAjustageAPlanifierListError =
@@ -1982,6 +1990,10 @@ export type ApiFichesMachineAPlanifierListQueryParams = {
 	 * A page number within the paginated result set.
 	 */
 	page?: number
+	/**
+	 * Number of results to return per page.
+	 */
+	per_page?: number
 }
 
 export type ApiFichesMachineAPlanifierListError =
@@ -3527,6 +3539,10 @@ export type ApiModelesFichesOptionsListQueryParams = {
 	 * A page number within the paginated result set.
 	 */
 	page?: number
+	/**
+	 * Number of results to return per page.
+	 */
+	per_page?: number
 }
 
 export type ApiModelesFichesOptionsListError = Fetcher.ErrorWrapper<undefined>
@@ -4205,6 +4221,10 @@ export type ApiPointagesListListQueryParams = {
 	 * A page number within the paginated result set.
 	 */
 	page?: number
+	/**
+	 * Number of results to return per page.
+	 */
+	per_page?: number
 }
 
 export type ApiPointagesListListError = Fetcher.ErrorWrapper<undefined>
@@ -4271,6 +4291,10 @@ export type ApiSalariesFormOptionsListQueryParams = {
 	 * A page number within the paginated result set.
 	 */
 	page?: number
+	/**
+	 * Number of results to return per page.
+	 */
+	per_page?: number
 }
 
 export type ApiSalariesFormOptionsListError = Fetcher.ErrorWrapper<undefined>
