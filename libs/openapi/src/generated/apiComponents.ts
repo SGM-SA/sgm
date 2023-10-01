@@ -585,82 +585,11 @@ export const useApiAffairesStatsRetrieve2 = <TData = Schemas.AffaireStats>(
 	})
 }
 
-export type ApiAffectationsAjustagesListQueryParams = {
-	/**
-	 * A page number within the paginated result set.
-	 */
-	page?: number
-}
-
-export type ApiAffectationsAjustagesListError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiAffectationsAjustagesListVariables = {
-	queryParams?: ApiAffectationsAjustagesListQueryParams
-} & ApiContext['fetcherOptions']
-
-/**
- * Créer et lister une affectation ajustage
- */
-export const fetchApiAffectationsAjustagesList = (
-	variables: ApiAffectationsAjustagesListVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		Schemas.PaginatedAffectationAjustageDetailList,
-		ApiAffectationsAjustagesListError,
-		undefined,
-		{},
-		ApiAffectationsAjustagesListQueryParams,
-		{}
-	>({
-		url: '/api/affectations/ajustages/',
-		method: 'get',
-		...variables,
-		signal,
-	})
-
-/**
- * Créer et lister une affectation ajustage
- */
-export const useApiAffectationsAjustagesList = <
-	TData = Schemas.PaginatedAffectationAjustageDetailList
->(
-	variables: ApiAffectationsAjustagesListVariables,
-	options?: Omit<
-		reactQuery.UseQueryOptions<
-			Schemas.PaginatedAffectationAjustageDetailList,
-			ApiAffectationsAjustagesListError,
-			TData
-		>,
-		'queryKey' | 'queryFn'
-	>
-) => {
-	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
-	return reactQuery.useQuery<
-		Schemas.PaginatedAffectationAjustageDetailList,
-		ApiAffectationsAjustagesListError,
-		TData
-	>({
-		queryKey: queryKeyFn({
-			path: '/api/affectations/ajustages/',
-			operationId: 'apiAffectationsAjustagesList',
-			variables,
-		}),
-		queryFn: ({ signal }) =>
-			fetchApiAffectationsAjustagesList(
-				{ ...fetcherOptions, ...variables },
-				signal
-			),
-		...options,
-		...queryOptions,
-	})
-}
-
 export type ApiAffectationsAjustagesCreateError =
 	Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffectationsAjustagesCreateVariables = {
-	body: Schemas.AffectationAjustageDetailRequest
+	body: Schemas.AffectationAjustageRequest
 } & ApiContext['fetcherOptions']
 
 /**
@@ -671,14 +600,14 @@ export const fetchApiAffectationsAjustagesCreate = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.AffectationAjustageDetail,
+		Schemas.AffectationAjustage,
 		ApiAffectationsAjustagesCreateError,
-		Schemas.AffectationAjustageDetailRequest,
+		Schemas.AffectationAjustageRequest,
 		{},
 		{},
 		{}
 	>({
-		url: '/api/affectations/ajustages/',
+		url: '/api/affectations/ajustages',
 		method: 'post',
 		...variables,
 		signal,
@@ -690,7 +619,7 @@ export const fetchApiAffectationsAjustagesCreate = (
 export const useApiAffectationsAjustagesCreate = (
 	options?: Omit<
 		reactQuery.UseMutationOptions<
-			Schemas.AffectationAjustageDetail,
+			Schemas.AffectationAjustage,
 			ApiAffectationsAjustagesCreateError,
 			ApiAffectationsAjustagesCreateVariables
 		>,
@@ -699,7 +628,7 @@ export const useApiAffectationsAjustagesCreate = (
 ) => {
 	const { fetcherOptions } = useApiContext()
 	return reactQuery.useMutation<
-		Schemas.AffectationAjustageDetail,
+		Schemas.AffectationAjustage,
 		ApiAffectationsAjustagesCreateError,
 		ApiAffectationsAjustagesCreateVariables
 	>({
@@ -731,7 +660,7 @@ export const fetchApiAffectationsAjustagesRetrieve = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.AffectationAjustageDetail,
+		Schemas.AffectationAjustage,
 		ApiAffectationsAjustagesRetrieveError,
 		undefined,
 		{},
@@ -748,12 +677,12 @@ export const fetchApiAffectationsAjustagesRetrieve = (
  * Récupérer, mettre à jour et supprimer une affectation ajustage
  */
 export const useApiAffectationsAjustagesRetrieve = <
-	TData = Schemas.AffectationAjustageDetail
+	TData = Schemas.AffectationAjustage
 >(
 	variables: ApiAffectationsAjustagesRetrieveVariables,
 	options?: Omit<
 		reactQuery.UseQueryOptions<
-			Schemas.AffectationAjustageDetail,
+			Schemas.AffectationAjustage,
 			ApiAffectationsAjustagesRetrieveError,
 			TData
 		>,
@@ -762,7 +691,7 @@ export const useApiAffectationsAjustagesRetrieve = <
 ) => {
 	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
 	return reactQuery.useQuery<
-		Schemas.AffectationAjustageDetail,
+		Schemas.AffectationAjustage,
 		ApiAffectationsAjustagesRetrieveError,
 		TData
 	>({
@@ -789,7 +718,7 @@ export type ApiAffectationsAjustagesUpdateError =
 	Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffectationsAjustagesUpdateVariables = {
-	body: Schemas.AffectationAjustageDetailRequest
+	body: Schemas.AffectationAjustageRequest
 	pathParams: ApiAffectationsAjustagesUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -801,9 +730,9 @@ export const fetchApiAffectationsAjustagesUpdate = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.AffectationAjustageDetail,
+		Schemas.AffectationAjustage,
 		ApiAffectationsAjustagesUpdateError,
-		Schemas.AffectationAjustageDetailRequest,
+		Schemas.AffectationAjustageRequest,
 		{},
 		{},
 		ApiAffectationsAjustagesUpdatePathParams
@@ -820,7 +749,7 @@ export const fetchApiAffectationsAjustagesUpdate = (
 export const useApiAffectationsAjustagesUpdate = (
 	options?: Omit<
 		reactQuery.UseMutationOptions<
-			Schemas.AffectationAjustageDetail,
+			Schemas.AffectationAjustage,
 			ApiAffectationsAjustagesUpdateError,
 			ApiAffectationsAjustagesUpdateVariables
 		>,
@@ -829,7 +758,7 @@ export const useApiAffectationsAjustagesUpdate = (
 ) => {
 	const { fetcherOptions } = useApiContext()
 	return reactQuery.useMutation<
-		Schemas.AffectationAjustageDetail,
+		Schemas.AffectationAjustage,
 		ApiAffectationsAjustagesUpdateError,
 		ApiAffectationsAjustagesUpdateVariables
 	>({
@@ -850,7 +779,7 @@ export type ApiAffectationsAjustagesPartialUpdateError =
 	Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffectationsAjustagesPartialUpdateVariables = {
-	body?: Schemas.PatchedAffectationAjustageDetailRequest
+	body?: Schemas.PatchedAffectationAjustageRequest
 	pathParams: ApiAffectationsAjustagesPartialUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -862,9 +791,9 @@ export const fetchApiAffectationsAjustagesPartialUpdate = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.AffectationAjustageDetail,
+		Schemas.AffectationAjustage,
 		ApiAffectationsAjustagesPartialUpdateError,
-		Schemas.PatchedAffectationAjustageDetailRequest,
+		Schemas.PatchedAffectationAjustageRequest,
 		{},
 		{},
 		ApiAffectationsAjustagesPartialUpdatePathParams
@@ -881,7 +810,7 @@ export const fetchApiAffectationsAjustagesPartialUpdate = (
 export const useApiAffectationsAjustagesPartialUpdate = (
 	options?: Omit<
 		reactQuery.UseMutationOptions<
-			Schemas.AffectationAjustageDetail,
+			Schemas.AffectationAjustage,
 			ApiAffectationsAjustagesPartialUpdateError,
 			ApiAffectationsAjustagesPartialUpdateVariables
 		>,
@@ -890,7 +819,7 @@ export const useApiAffectationsAjustagesPartialUpdate = (
 ) => {
 	const { fetcherOptions } = useApiContext()
 	return reactQuery.useMutation<
-		Schemas.AffectationAjustageDetail,
+		Schemas.AffectationAjustage,
 		ApiAffectationsAjustagesPartialUpdateError,
 		ApiAffectationsAjustagesPartialUpdateVariables
 	>({
@@ -965,111 +894,40 @@ export const useApiAffectationsAjustagesDestroy = (
 	})
 }
 
-export type ApiAffectationsMachinesListQueryParams = {
-	/**
-	 * A page number within the paginated result set.
-	 */
-	page?: number
-}
-
-export type ApiAffectationsMachinesListError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiAffectationsMachinesListVariables = {
-	queryParams?: ApiAffectationsMachinesListQueryParams
-} & ApiContext['fetcherOptions']
-
-/**
- * Créer et lister une affectation machine
- */
-export const fetchApiAffectationsMachinesList = (
-	variables: ApiAffectationsMachinesListVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		Schemas.PaginatedAffectationMachineDetailList,
-		ApiAffectationsMachinesListError,
-		undefined,
-		{},
-		ApiAffectationsMachinesListQueryParams,
-		{}
-	>({
-		url: '/api/affectations/machines/',
-		method: 'get',
-		...variables,
-		signal,
-	})
-
-/**
- * Créer et lister une affectation machine
- */
-export const useApiAffectationsMachinesList = <
-	TData = Schemas.PaginatedAffectationMachineDetailList
->(
-	variables: ApiAffectationsMachinesListVariables,
-	options?: Omit<
-		reactQuery.UseQueryOptions<
-			Schemas.PaginatedAffectationMachineDetailList,
-			ApiAffectationsMachinesListError,
-			TData
-		>,
-		'queryKey' | 'queryFn'
-	>
-) => {
-	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
-	return reactQuery.useQuery<
-		Schemas.PaginatedAffectationMachineDetailList,
-		ApiAffectationsMachinesListError,
-		TData
-	>({
-		queryKey: queryKeyFn({
-			path: '/api/affectations/machines/',
-			operationId: 'apiAffectationsMachinesList',
-			variables,
-		}),
-		queryFn: ({ signal }) =>
-			fetchApiAffectationsMachinesList(
-				{ ...fetcherOptions, ...variables },
-				signal
-			),
-		...options,
-		...queryOptions,
-	})
-}
-
 export type ApiAffectationsMachinesCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffectationsMachinesCreateVariables = {
-	body: Schemas.AffectationMachineDetailRequest
+	body: Schemas.AffectationMachineRequest
 } & ApiContext['fetcherOptions']
 
 /**
- * Créer et lister une affectation machine
+ * Créer une affectation machine
  */
 export const fetchApiAffectationsMachinesCreate = (
 	variables: ApiAffectationsMachinesCreateVariables,
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.AffectationMachineDetail,
+		Schemas.AffectationMachine,
 		ApiAffectationsMachinesCreateError,
-		Schemas.AffectationMachineDetailRequest,
+		Schemas.AffectationMachineRequest,
 		{},
 		{},
 		{}
 	>({
-		url: '/api/affectations/machines/',
+		url: '/api/affectations/machines',
 		method: 'post',
 		...variables,
 		signal,
 	})
 
 /**
- * Créer et lister une affectation machine
+ * Créer une affectation machine
  */
 export const useApiAffectationsMachinesCreate = (
 	options?: Omit<
 		reactQuery.UseMutationOptions<
-			Schemas.AffectationMachineDetail,
+			Schemas.AffectationMachine,
 			ApiAffectationsMachinesCreateError,
 			ApiAffectationsMachinesCreateVariables
 		>,
@@ -1078,7 +936,7 @@ export const useApiAffectationsMachinesCreate = (
 ) => {
 	const { fetcherOptions } = useApiContext()
 	return reactQuery.useMutation<
-		Schemas.AffectationMachineDetail,
+		Schemas.AffectationMachine,
 		ApiAffectationsMachinesCreateError,
 		ApiAffectationsMachinesCreateVariables
 	>({
@@ -1110,7 +968,7 @@ export const fetchApiAffectationsMachinesRetrieve = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.AffectationMachineDetail,
+		Schemas.AffectationMachine,
 		ApiAffectationsMachinesRetrieveError,
 		undefined,
 		{},
@@ -1127,12 +985,12 @@ export const fetchApiAffectationsMachinesRetrieve = (
  * Récupérer, mettre à jour et supprimer une affectation machine
  */
 export const useApiAffectationsMachinesRetrieve = <
-	TData = Schemas.AffectationMachineDetail
+	TData = Schemas.AffectationMachine
 >(
 	variables: ApiAffectationsMachinesRetrieveVariables,
 	options?: Omit<
 		reactQuery.UseQueryOptions<
-			Schemas.AffectationMachineDetail,
+			Schemas.AffectationMachine,
 			ApiAffectationsMachinesRetrieveError,
 			TData
 		>,
@@ -1141,7 +999,7 @@ export const useApiAffectationsMachinesRetrieve = <
 ) => {
 	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
 	return reactQuery.useQuery<
-		Schemas.AffectationMachineDetail,
+		Schemas.AffectationMachine,
 		ApiAffectationsMachinesRetrieveError,
 		TData
 	>({
@@ -1167,7 +1025,7 @@ export type ApiAffectationsMachinesUpdatePathParams = {
 export type ApiAffectationsMachinesUpdateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffectationsMachinesUpdateVariables = {
-	body: Schemas.AffectationMachineDetailRequest
+	body: Schemas.AffectationMachineRequest
 	pathParams: ApiAffectationsMachinesUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -1179,9 +1037,9 @@ export const fetchApiAffectationsMachinesUpdate = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.AffectationMachineDetail,
+		Schemas.AffectationMachine,
 		ApiAffectationsMachinesUpdateError,
-		Schemas.AffectationMachineDetailRequest,
+		Schemas.AffectationMachineRequest,
 		{},
 		{},
 		ApiAffectationsMachinesUpdatePathParams
@@ -1198,7 +1056,7 @@ export const fetchApiAffectationsMachinesUpdate = (
 export const useApiAffectationsMachinesUpdate = (
 	options?: Omit<
 		reactQuery.UseMutationOptions<
-			Schemas.AffectationMachineDetail,
+			Schemas.AffectationMachine,
 			ApiAffectationsMachinesUpdateError,
 			ApiAffectationsMachinesUpdateVariables
 		>,
@@ -1207,7 +1065,7 @@ export const useApiAffectationsMachinesUpdate = (
 ) => {
 	const { fetcherOptions } = useApiContext()
 	return reactQuery.useMutation<
-		Schemas.AffectationMachineDetail,
+		Schemas.AffectationMachine,
 		ApiAffectationsMachinesUpdateError,
 		ApiAffectationsMachinesUpdateVariables
 	>({
@@ -1228,7 +1086,7 @@ export type ApiAffectationsMachinesPartialUpdateError =
 	Fetcher.ErrorWrapper<undefined>
 
 export type ApiAffectationsMachinesPartialUpdateVariables = {
-	body?: Schemas.PatchedAffectationMachineDetailRequest
+	body?: Schemas.PatchedAffectationMachineRequest
 	pathParams: ApiAffectationsMachinesPartialUpdatePathParams
 } & ApiContext['fetcherOptions']
 
@@ -1240,9 +1098,9 @@ export const fetchApiAffectationsMachinesPartialUpdate = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.AffectationMachineDetail,
+		Schemas.AffectationMachine,
 		ApiAffectationsMachinesPartialUpdateError,
-		Schemas.PatchedAffectationMachineDetailRequest,
+		Schemas.PatchedAffectationMachineRequest,
 		{},
 		{},
 		ApiAffectationsMachinesPartialUpdatePathParams
@@ -1259,7 +1117,7 @@ export const fetchApiAffectationsMachinesPartialUpdate = (
 export const useApiAffectationsMachinesPartialUpdate = (
 	options?: Omit<
 		reactQuery.UseMutationOptions<
-			Schemas.AffectationMachineDetail,
+			Schemas.AffectationMachine,
 			ApiAffectationsMachinesPartialUpdateError,
 			ApiAffectationsMachinesPartialUpdateVariables
 		>,
@@ -1268,7 +1126,7 @@ export const useApiAffectationsMachinesPartialUpdate = (
 ) => {
 	const { fetcherOptions } = useApiContext()
 	return reactQuery.useMutation<
-		Schemas.AffectationMachineDetail,
+		Schemas.AffectationMachine,
 		ApiAffectationsMachinesPartialUpdateError,
 		ApiAffectationsMachinesPartialUpdateVariables
 	>({
@@ -4065,17 +3923,15 @@ export const useApiNotesAffaireList = <TData = ApiNotesAffaireListResponse>(
 
 export type ApiPlanningMachineListQueryParams = {
 	/**
-	 * annee
+	 * date
+	 *
+	 * @format date
 	 */
-	annee: number
+	date: string
 	/**
 	 * A page number within the paginated result set.
 	 */
 	page?: number
-	/**
-	 * numero semaine
-	 */
-	semaine: number
 }
 
 export type ApiPlanningMachineListError = Fetcher.ErrorWrapper<undefined>
@@ -4139,17 +3995,15 @@ export const useApiPlanningMachineList = <
 
 export type ApiPlanningZoneListQueryParams = {
 	/**
-	 * annee
+	 * date
+	 *
+	 * @format date
 	 */
-	annee: number
+	date: string
 	/**
 	 * A page number within the paginated result set.
 	 */
 	page?: number
-	/**
-	 * numero semaine
-	 */
-	semaine: number
 }
 
 export type ApiPlanningZoneListError = Fetcher.ErrorWrapper<undefined>
@@ -5036,19 +4890,9 @@ export type QueryOperation =
 			variables: ApiAffairesStatsRetrieve2Variables
 	  }
 	| {
-			path: '/api/affectations/ajustages/'
-			operationId: 'apiAffectationsAjustagesList'
-			variables: ApiAffectationsAjustagesListVariables
-	  }
-	| {
 			path: '/api/affectations/ajustages/{id}'
 			operationId: 'apiAffectationsAjustagesRetrieve'
 			variables: ApiAffectationsAjustagesRetrieveVariables
-	  }
-	| {
-			path: '/api/affectations/machines/'
-			operationId: 'apiAffectationsMachinesList'
-			variables: ApiAffectationsMachinesListVariables
 	  }
 	| {
 			path: '/api/affectations/machines/{id}'

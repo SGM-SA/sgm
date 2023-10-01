@@ -13,6 +13,12 @@ from django.utils import timezone
 from typing import Dict
 
 
+class AffaireDefaultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Affaire
+        fields = ["id", "num_affaire"]
+
+
 class AffaireDetailsSerializer(serializers.ModelSerializer):
     """
     Serializer pour l'affichage des affaires

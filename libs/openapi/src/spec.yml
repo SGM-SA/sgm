@@ -275,29 +275,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/AffaireStats'
           description: ''
-  /api/affectations/ajustages/:
-    get:
-      operationId: api_affectations_ajustages_list
-      description: Créer et lister une affectation ajustage
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      tags:
-      - Affectation Ajustage
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedAffectationAjustageDetailList'
-          description: ''
+  /api/affectations/ajustages:
     post:
       operationId: api_affectations_ajustages_create
       description: Créer et lister une affectation ajustage
@@ -307,13 +285,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
+              $ref: '#/components/schemas/AffectationAjustageRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
+              $ref: '#/components/schemas/AffectationAjustageRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
+              $ref: '#/components/schemas/AffectationAjustageRequest'
         required: true
       security:
       - jwtAuth: []
@@ -323,7 +301,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AffectationAjustageDetail'
+                $ref: '#/components/schemas/AffectationAjustage'
           description: ''
   /api/affectations/ajustages/{id}:
     get:
@@ -345,7 +323,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AffectationAjustageDetail'
+                $ref: '#/components/schemas/AffectationAjustage'
           description: ''
     put:
       operationId: api_affectations_ajustages_update
@@ -362,13 +340,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
+              $ref: '#/components/schemas/AffectationAjustageRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
+              $ref: '#/components/schemas/AffectationAjustageRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageDetailRequest'
+              $ref: '#/components/schemas/AffectationAjustageRequest'
         required: true
       security:
       - jwtAuth: []
@@ -378,7 +356,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AffectationAjustageDetail'
+                $ref: '#/components/schemas/AffectationAjustage'
           description: ''
     patch:
       operationId: api_affectations_ajustages_partial_update
@@ -395,13 +373,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationAjustageDetailRequest'
+              $ref: '#/components/schemas/PatchedAffectationAjustageRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationAjustageDetailRequest'
+              $ref: '#/components/schemas/PatchedAffectationAjustageRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationAjustageDetailRequest'
+              $ref: '#/components/schemas/PatchedAffectationAjustageRequest'
       security:
       - jwtAuth: []
       - {}
@@ -410,7 +388,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AffectationAjustageDetail'
+                $ref: '#/components/schemas/AffectationAjustage'
           description: ''
     delete:
       operationId: api_affectations_ajustages_destroy
@@ -429,45 +407,23 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/affectations/machines/:
-    get:
-      operationId: api_affectations_machines_list
-      description: Créer et lister une affectation machine
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      tags:
-      - Affectation Machine
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedAffectationMachineDetailList'
-          description: ''
+  /api/affectations/machines:
     post:
       operationId: api_affectations_machines_create
-      description: Créer et lister une affectation machine
+      description: Créer une affectation machine
       tags:
       - Affectation Machine
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetailRequest'
+              $ref: '#/components/schemas/AffectationMachineRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetailRequest'
+              $ref: '#/components/schemas/AffectationMachineRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetailRequest'
+              $ref: '#/components/schemas/AffectationMachineRequest'
         required: true
       security:
       - jwtAuth: []
@@ -477,7 +433,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AffectationMachineDetail'
+                $ref: '#/components/schemas/AffectationMachine'
           description: ''
   /api/affectations/machines/{id}:
     get:
@@ -499,7 +455,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AffectationMachineDetail'
+                $ref: '#/components/schemas/AffectationMachine'
           description: ''
     put:
       operationId: api_affectations_machines_update
@@ -516,13 +472,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetailRequest'
+              $ref: '#/components/schemas/AffectationMachineRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetailRequest'
+              $ref: '#/components/schemas/AffectationMachineRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationMachineDetailRequest'
+              $ref: '#/components/schemas/AffectationMachineRequest'
         required: true
       security:
       - jwtAuth: []
@@ -532,7 +488,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AffectationMachineDetail'
+                $ref: '#/components/schemas/AffectationMachine'
           description: ''
     patch:
       operationId: api_affectations_machines_partial_update
@@ -549,13 +505,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationMachineDetailRequest'
+              $ref: '#/components/schemas/PatchedAffectationMachineRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationMachineDetailRequest'
+              $ref: '#/components/schemas/PatchedAffectationMachineRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationMachineDetailRequest'
+              $ref: '#/components/schemas/PatchedAffectationMachineRequest'
       security:
       - jwtAuth: []
       - {}
@@ -564,7 +520,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AffectationMachineDetail'
+                $ref: '#/components/schemas/AffectationMachine'
           description: ''
     delete:
       operationId: api_affectations_machines_destroy
@@ -1932,10 +1888,11 @@ paths:
       summary: Planning machine avec fiches
       parameters:
       - in: query
-        name: annee
+        name: date
         schema:
-          type: integer
-        description: annee
+          type: string
+          format: date
+        description: date
         required: true
       - name: page
         required: false
@@ -1943,12 +1900,6 @@ paths:
         description: A page number within the paginated result set.
         schema:
           type: integer
-      - in: query
-        name: semaine
-        schema:
-          type: integer
-        description: numero semaine
-        required: true
       tags:
       - Planning
       security:
@@ -1968,10 +1919,11 @@ paths:
         et leurs fiches à traiter dans chaque zone
       parameters:
       - in: query
-        name: annee
+        name: date
         schema:
-          type: integer
-        description: annee
+          type: string
+          format: date
+        description: date
         required: true
       - name: page
         required: false
@@ -1979,12 +1931,6 @@ paths:
         description: A page number within the paginated result set.
         schema:
           type: integer
-      - in: query
-        name: semaine
-        schema:
-          type: integer
-        description: numero semaine
-        required: true
       tags:
       - Planning
       security:
@@ -2551,78 +2497,6 @@ components:
       - charge_affaire_detail
       - fiches
       - id
-    AffaireFichesEtapesAjustage:
-      type: object
-      description: Serializer pour récupérer une affaire avec ses fiches et ses étapes
-        ajustage
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        num_affaire:
-          type: integer
-          minimum: 0
-          nullable: true
-          title: Numéro d'affaire correspondant à l'affaire dans la base de données
-            de SGM
-        validation_ingenieur:
-          type: boolean
-          title: Validation de l'ingénieur
-        description:
-          type: string
-          nullable: true
-          title: Description de l'affaire
-          maxLength: 10000
-        fiches:
-          type: array
-          items:
-            $ref: '#/components/schemas/FicheEtEtapesAjustage'
-          readOnly: true
-        charge_affaire:
-          type: string
-          nullable: true
-          title: Nom
-          readOnly: true
-      required:
-      - charge_affaire
-      - fiches
-      - id
-    AffaireFichesEtapesMachine:
-      type: object
-      description: Serializer pour récupérer une affaire avec ses fiches et ses étapes
-        machine
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        num_affaire:
-          type: integer
-          minimum: 0
-          nullable: true
-          title: Numéro d'affaire correspondant à l'affaire dans la base de données
-            de SGM
-        validation_ingenieur:
-          type: boolean
-          title: Validation de l'ingénieur
-        description:
-          type: string
-          nullable: true
-          title: Description de l'affaire
-          maxLength: 10000
-        fiches:
-          type: array
-          items:
-            $ref: '#/components/schemas/FicheEtEtapesMachine'
-          readOnly: true
-        charge_affaire:
-          type: string
-          nullable: true
-          title: Nom
-          readOnly: true
-      required:
-      - charge_affaire
-      - fiches
-      - id
     AffaireNumAffaire:
       type: object
       description: Serializer permettant de récuper uniquement l'id et le numéro d'affaire
@@ -2688,8 +2562,47 @@ components:
       - par_statut
       - terminees_cette_semaine
       - terminees_semaine_der
-    AffectationAjustageDetail:
+    AffectationAjustage:
       type: object
+      description: Serializer pour l'affectation d'un ajustage à une étape
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        etape:
+          type: integer
+        zone:
+          type: integer
+        semaine_affectation:
+          type: string
+          format: date
+          title: Semaine d'affectation de l'étape
+        previous:
+          type: integer
+          nullable: true
+      required:
+      - id
+      - semaine_affectation
+    AffectationAjustageRequest:
+      type: object
+      description: Serializer pour l'affectation d'un ajustage à une étape
+      properties:
+        etape:
+          type: integer
+        zone:
+          type: integer
+        semaine_affectation:
+          type: string
+          format: date
+          title: Semaine d'affectation de l'étape
+        previous:
+          type: integer
+          nullable: true
+      required:
+      - semaine_affectation
+    AffectationMachine:
+      type: object
+      description: Serializer pour l'affectation d'une machine à une étape
       properties:
         id:
           type: integer
@@ -2700,58 +2613,35 @@ components:
           title: Semaine d'affectation de l'étape
         etape:
           type: integer
-        zone:
+        user:
+          type: integer
+          nullable: true
+        previous:
+          type: integer
+          nullable: true
+        machine:
           type: integer
       required:
       - id
       - semaine_affectation
-    AffectationAjustageDetailRequest:
+    AffectationMachineRequest:
       type: object
+      description: Serializer pour l'affectation d'une machine à une étape
       properties:
         semaine_affectation:
           type: string
           format: date
           title: Semaine d'affectation de l'étape
         etape:
-          type: integer
-        zone:
-          type: integer
-      required:
-      - semaine_affectation
-    AffectationMachineDetail:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        semaine_affectation:
-          type: string
-          format: date
-          title: Semaine d'affectation de l'étape
-        etape:
-          type: integer
-        machine:
           type: integer
         user:
           type: integer
           nullable: true
-      required:
-      - id
-      - semaine_affectation
-    AffectationMachineDetailRequest:
-      type: object
-      properties:
-        semaine_affectation:
-          type: string
-          format: date
-          title: Semaine d'affectation de l'étape
-        etape:
-          type: integer
-        machine:
-          type: integer
-        user:
+        previous:
           type: integer
           nullable: true
+        machine:
+          type: integer
       required:
       - semaine_affectation
     BulkDeleteRequest:
@@ -3039,11 +2929,10 @@ components:
         id:
           type: integer
           readOnly: true
-        machine:
-          allOf:
-          - $ref: '#/components/schemas/MachineDetail'
-          readOnly: true
         affectation_id:
+          type: integer
+          readOnly: true
+        user_id:
           type: integer
           readOnly: true
         num_etape:
@@ -3105,17 +2994,13 @@ components:
       - date_modification
       - fiche
       - id
-      - machine
       - num_etape
+      - user_id
     EtapeDetailMachine:
       type: object
       properties:
         id:
           type: integer
-          readOnly: true
-        machine:
-          allOf:
-          - $ref: '#/components/schemas/MachineDetail'
           readOnly: true
         affectation_id:
           type: integer
@@ -3182,7 +3067,6 @@ components:
       - date_modification
       - fiche
       - id
-      - machine
       - num_etape
       - user_id
     EtapeModeleDetail:
@@ -3466,7 +3350,7 @@ components:
           default: 0.0
         affectation_zone:
           allOf:
-          - $ref: '#/components/schemas/AffectationAjustageDetail'
+          - $ref: '#/components/schemas/AffectationAjustage'
           readOnly: true
         affaire_description:
           type: string
@@ -3545,7 +3429,7 @@ components:
           default: 0.0
         affectation_zone:
           allOf:
-          - $ref: '#/components/schemas/AffectationAjustageDetail'
+          - $ref: '#/components/schemas/AffectationAjustage'
           readOnly: true
         affaire_description:
           type: string
@@ -3630,7 +3514,7 @@ components:
           default: 0.0
         affectation_zone:
           allOf:
-          - $ref: '#/components/schemas/AffectationAjustageDetail'
+          - $ref: '#/components/schemas/AffectationAjustage'
           readOnly: true
         affaire_description:
           type: string
@@ -3651,91 +3535,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EtapeDetailAjustage'
-          readOnly: true
-        titre:
-          type: string
-          maxLength: 100
-        description:
-          type: string
-          nullable: true
-        observation:
-          type: string
-          nullable: true
-          maxLength: 1000
-        ref_doc:
-          type: string
-          nullable: true
-          maxLength: 200
-        terminee:
-          type: boolean
-          title: Fiche terminée
-        fourniture:
-          type: boolean
-          title: Fournitures arrivées
-        date_creation:
-          type: string
-          format: date
-          readOnly: true
-          title: Date de création
-        date_modification:
-          type: string
-          format: date-time
-          readOnly: true
-          title: Date de modification
-        date_cloture:
-          type: string
-          format: date
-          nullable: true
-          title: Date de clôture
-        affaire:
-          type: integer
-      required:
-      - affaire
-      - affaire_description
-      - affaire_id
-      - affectation_zone
-      - avancement_fiche
-      - date_creation
-      - date_modification
-      - etapes
-      - id
-      - num_affaire
-    FicheEtEtapesMachine:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        avancement_fiche:
-          type: number
-          format: double
-          maximum: 1
-          minimum: 0
-          readOnly: true
-          default: 0.0
-        affectation_zone:
-          allOf:
-          - $ref: '#/components/schemas/AffectationAjustageDetail'
-          readOnly: true
-        affaire_description:
-          type: string
-          nullable: true
-          title: Description de l'affaire
-          readOnly: true
-        num_affaire:
-          type: integer
-          minimum: 0
-          nullable: true
-          title: Numéro d'affaire correspondant à l'affaire dans la base de données
-            de SGM
-          readOnly: true
-        affaire_id:
-          type: integer
-          readOnly: true
-        etapes:
-          type: array
-          items:
-            $ref: '#/components/schemas/EtapeDetailMachine'
           readOnly: true
         titre:
           type: string
@@ -4093,46 +3892,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AffaireNumAffaire'
-    PaginatedAffectationAjustageDetailList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AffectationAjustageDetail'
-    PaginatedAffectationMachineDetailList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AffectationMachineDetail'
     PaginatedCustomUserDetailList:
       type: object
       properties:
@@ -4381,19 +4140,24 @@ components:
           format: date
           nullable: true
           title: Date de clôture de l'affaire (terminée)
-    PatchedAffectationAjustageDetailRequest:
+    PatchedAffectationAjustageRequest:
       type: object
+      description: Serializer pour l'affectation d'un ajustage à une étape
       properties:
-        semaine_affectation:
-          type: string
-          format: date
-          title: Semaine d'affectation de l'étape
         etape:
           type: integer
         zone:
           type: integer
-    PatchedAffectationMachineDetailRequest:
+        semaine_affectation:
+          type: string
+          format: date
+          title: Semaine d'affectation de l'étape
+        previous:
+          type: integer
+          nullable: true
+    PatchedAffectationMachineRequest:
       type: object
+      description: Serializer pour l'affectation d'une machine à une étape
       properties:
         semaine_affectation:
           type: string
@@ -4401,11 +4165,14 @@ components:
           title: Semaine d'affectation de l'étape
         etape:
           type: integer
-        machine:
-          type: integer
         user:
           type: integer
           nullable: true
+        previous:
+          type: integer
+          nullable: true
+        machine:
+          type: integer
     PatchedEtapeCreateRequest:
       type: object
       properties:
@@ -4584,13 +4351,13 @@ components:
         nom_machine:
           type: string
           maxLength: 100
-        affaires:
+        affectations:
           type: array
           items:
-            $ref: '#/components/schemas/AffaireFichesEtapesMachine'
+            $ref: '#/components/schemas/TotalAffaire'
           readOnly: true
       required:
-      - affaires
+      - affectations
       - id
       - nom_machine
     PlanningZone:
@@ -4603,17 +4370,13 @@ components:
         nom:
           type: string
           maxLength: 200
-        description:
-          type: string
-          maxLength: 1000
-        affaires:
+        affectations:
           type: array
           items:
-            $ref: '#/components/schemas/AffaireFichesEtapesAjustage'
+            $ref: '#/components/schemas/TotalAffaireAjustage'
           readOnly: true
       required:
-      - affaires
-      - description
+      - affectations
       - id
       - nom
     Pointage:
@@ -4738,6 +4501,96 @@ components:
           minLength: 1
       required:
       - refresh
+    TotalAffaire:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        num_affaire:
+          type: integer
+          minimum: 0
+          nullable: true
+          title: Numéro d'affaire correspondant à l'affaire dans la base de données
+            de SGM
+        fiches:
+          type: array
+          items:
+            $ref: '#/components/schemas/TotalFichePlanning'
+          readOnly: true
+      required:
+      - fiches
+      - id
+    TotalAffaireAjustage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        num_affaire:
+          type: integer
+          minimum: 0
+          nullable: true
+          title: Numéro d'affaire correspondant à l'affaire dans la base de données
+            de SGM
+        fiches:
+          type: array
+          items:
+            $ref: '#/components/schemas/TotalFichePlanningAjustage'
+          readOnly: true
+      required:
+      - fiches
+      - id
+    TotalFichePlanning:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        titre:
+          type: string
+          maxLength: 100
+        avancement_fiche:
+          type: number
+          format: double
+          maximum: 1
+          minimum: 0
+          readOnly: true
+          default: 0.0
+        etapes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EtapeDetailMachine'
+          readOnly: true
+      required:
+      - avancement_fiche
+      - etapes
+      - id
+    TotalFichePlanningAjustage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        titre:
+          type: string
+          maxLength: 100
+        avancement_fiche:
+          type: number
+          format: double
+          maximum: 1
+          minimum: 0
+          readOnly: true
+          default: 0.0
+        etapes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EtapeDetailAjustage'
+          readOnly: true
+      required:
+      - avancement_fiche
+      - etapes
+      - id
   securitySchemes:
     jwtAuth:
       type: http

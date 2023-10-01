@@ -11,17 +11,16 @@ from .models import (
     TypeFourniture,
     AchatFourniture,
     Machine,
-    AffectationAjustage,
 )
 from api.affaire.models import Affaire
+from api.affectation.models import AffectationAjustage, AffectationMachine
 from api.fiche.models import Fiche
 from api.etape.models import Etape
 from api.zone.models import Zone
 from api.user.models import CustomUser
 from api.fiche_modele.models import FicheModele
 from api.etape_modele.models import EtapeModele
-from api.affectation_etape_machine.models import AffectationMachine
-from api.affectation_etape_machine.admin import AffectationMachineModelAdmin
+from .affectation.admin import AffectationMachineModelAdmin
 from api.note.models import Note
 from api.groupe_machine.models import GroupeMachine
 from api.pointage.models import PointageEtape

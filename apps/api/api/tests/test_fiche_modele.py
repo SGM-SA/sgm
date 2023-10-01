@@ -2,15 +2,11 @@ from datetime import timezone, timedelta, datetime
 
 from rest_framework import status
 from django.test import TestCase
-from api.zone.models import Zone
-from api.fiche.models import Fiche
 from api.affaire.models import Affaire
 from api.machine.models import Machine
 from api.groupe_machine.models import GroupeMachine
 from api.fiche_modele.models import FicheModele
 from api.etape_modele.models import EtapeModele
-from api.affectation_etape_machine.models import AffectationMachine
-from api.affectation_etape_zone.models import AffectationAjustage
 
 
 class FicheModeleCopyViewTestCase(TestCase):

@@ -4,12 +4,9 @@ from api.fiche.urls import urlpatterns as fiche_patterns
 from api.etape.urls import urlpatterns as etape_patterns
 from api.zone.urls import urlpatterns as zone_patterns
 from api.machine.urls import urlpatterns as machine_patterns
-from api.affectation_etape_zone.urls import urlpatterns as affectation_patterns
-from api.affectation_etape_machine.urls import (
-    urlpatterns as affectation_machine_patterns,
-)
-from api.planning_zone.urls import urlpatterns as planning_zone_patterns
-from api.planning_machine.urls import urlpatterns as planning_machine_patterns
+from api.affectation.urls import urlpatterns as affectations_patterns
+from api.planning.planning_zone.urls import urlpatterns as planning_zone_patterns
+from api.planning.planning_machine.urls import urlpatterns as planning_machine_patterns
 from api.user.urls import urlpatterns as user_patterns, salarie_patterns
 from api.etape_modele.urls import urlpatterns as etape_modele_patterns
 from api.fiche_modele.urls import urlpatterns as fiche_modele_patterns
@@ -26,8 +23,7 @@ urlpatterns = [
     path("zones/", include(zone_patterns)),
     path("groupe_machine/", include(groupe_machine_patterns)),
     path("machines/", include(machine_patterns)),
-    path("affectations/ajustages/", include(affectation_patterns)),
-    path("affectations/machines/", include(affectation_machine_patterns)),
+    path("affectations/", include(affectations_patterns)),
     path("pointages/", include(pointage_patterns)),
     path("planning/", include(planning_zone_patterns)),
     path("planning/", include(planning_machine_patterns)),
