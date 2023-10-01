@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
-
+from datetime import datetime
 from api.affaire.models import Affaire
 from api.affectation.models import AffectationMachine, AffectationAjustage
 from api.etape.models import Etape
@@ -153,23 +153,121 @@ class AffectationAjustageTest(APITestCase):
         self.etape2 = Etape.objects.create(
             fiche=self.fiche,
             groupe_machine=self.groupe_machine_ajustage,
-            num_etape=1,
+            num_etape=2,
             terminee=True,
         )
 
     def test_create_affectation_ajustage(self):
         """
-        Teste la création d'une affectation ajustage
+        Teste la création d'une affectation ajustage, quand la zone ne possède aucune affectation à cette date
         """
 
         url = "/api/affectations/ajustages"
         data = {
             "etape": self.etape1.id,
-            "semaine_affectation": timezone.now().strftime("%Y-%m-%d"),
+            "semaine_affectation": "2021-01-01",
             "zone": self.zone.id,
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        aff: AffectationAjustage = AffectationAjustage.objects.all().first()
+        self.assertEqual(AffectationAjustage.objects.all().first().previous, None)
+
+    def test_create_affectation_ajustage_haut_liste(self):
+        """
+        Teste la création d'une affectation ajustage, quand la zone ne possède déjà une affectation à cette date
+        """
+
+        aff1 = AffectationAjustage.objects.create(
+            etape=self.etape1,
+            semaine_affectation="2021-01-01",
+            zone=self.zone,
+        )
+
+        url = "/api/affectations/ajustages"
+        data = {
+            "etape": self.etape2.id,
+            "semaine_affectation": "2021-01-01",
+            "zone": self.zone.id,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        aff_id = response.data["id"]
+        aff: AffectationAjustage = AffectationAjustage.objects.get(id=aff_id)
+        aff1.refresh_from_db()
+        self.assertEqual(aff1.previous, aff)
+
+    def test_create_affectation_ajustage_milieu_liste(self):
+        """
+        Teste la création d'une affectation ajustage entre 2 affectations
+        """
+
+        etape3 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine_ajustage,
+            num_etape=3,
+        )
+
+        aff1 = AffectationAjustage.objects.create(
+            etape=self.etape1,
+            semaine_affectation="2021-01-01",
+            zone=self.zone,
+        )
+
+        aff2 = AffectationAjustage.objects.create(
+            etape=self.etape2,
+            semaine_affectation="2021-01-01",
+            zone=self.zone,
+            previous=aff1,
+        )
+
+        url = "/api/affectations/ajustages"
+        data = {
+            "etape": etape3.id,
+            "semaine_affectation": "2021-01-01",
+            "zone": self.zone.id,
+            "previous": aff1.id,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        affecation_id = response.data["id"]
+        aff3: AffectationAjustage = AffectationAjustage.objects.get(id=affecation_id)
+        aff1.refresh_from_db()
+        aff2.refresh_from_db()
+
+        self.assertEqual(aff3.previous, aff1)
+        self.assertEqual(aff3.next.first(), aff2)
+        self.assertEqual(aff2.previous, aff3)
+        self.assertEqual(aff1.next.first(), aff3)
+
+    def test_create_affectation_ajustage_fin_liste(self):
+        """
+        Teste la création d'une affectation ajustage, quand la zone ne possède déjà une affectation à cette date
+        """
+
+        aff1 = AffectationAjustage.objects.create(
+            etape=self.etape1,
+            semaine_affectation="2021-01-01",
+            zone=self.zone,
+        )
+
+        url = "/api/affectations/ajustages"
+        data = {
+            "etape": self.etape2.id,
+            "semaine_affectation": "2021-01-01",
+            "zone": self.zone.id,
+            "previous": aff1.id,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        aff: AffectationAjustage = AffectationAjustage.objects.get(
+            id=response.data["id"]
+        )
+        aff1.refresh_from_db()
+
+        self.assertEqual(aff.previous, aff1)
+        self.assertEqual(aff1.next.first(), aff)
 
     def test_retrieve_affectation_ajustage(self):
         """

@@ -173,6 +173,7 @@ export type AffectationAjustage = {
 	 * @format date
 	 */
 	semaine_affectation: string
+	previous?: number | null
 }
 
 /**
@@ -185,6 +186,7 @@ export type AffectationAjustageRequest = {
 	 * @format date
 	 */
 	semaine_affectation: string
+	previous?: number | null
 }
 
 /**
@@ -1234,6 +1236,7 @@ export type PatchedAffectationAjustageRequest = {
 	 * @format date
 	 */
 	semaine_affectation?: string
+	previous?: number | null
 }
 
 /**

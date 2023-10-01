@@ -27,7 +27,7 @@ class Affectation(models.Model):
         CustomUser, null=True, blank=True, on_delete=models.CASCADE
     )
 
-    previous = models.OneToOneField(
+    previous = models.ForeignKey(
         "self",
         null=True,
         blank=True,

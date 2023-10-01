@@ -19,4 +19,4 @@ class AffectationAjustageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AffectationAjustage
-        fields = ["id", "etape", "zone", "semaine_affectation"]
+        fields = ["id", "etape", "zone", "semaine_affectation", "previous"]

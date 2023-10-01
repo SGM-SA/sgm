@@ -2429,6 +2429,9 @@ components:
           type: string
           format: date
           title: Semaine d'affectation de l'étape
+        previous:
+          type: integer
+          nullable: true
       required:
       - id
       - semaine_affectation
@@ -2444,6 +2447,9 @@ components:
           type: string
           format: date
           title: Semaine d'affectation de l'étape
+        previous:
+          type: integer
+          nullable: true
       required:
       - semaine_affectation
     AffectationMachine:
@@ -3984,6 +3990,9 @@ components:
           type: string
           format: date
           title: Semaine d'affectation de l'étape
+        previous:
+          type: integer
+          nullable: true
     PatchedAffectationMachineRequest:
       type: object
       description: Serializer pour l'affectation d'une machine à une étape
