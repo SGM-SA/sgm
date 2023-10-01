@@ -2719,41 +2719,37 @@ export const useApiMachinesPartialUpdate = (
 	})
 }
 
-export type ApiMachinesDeleteDestroyQueryParams = {
-	ids: string
-}
+export type ApiMachinesDeleteCreateError = Fetcher.ErrorWrapper<undefined>
 
-export type ApiMachinesDeleteDestroyError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiMachinesDeleteDestroyVariables = {
-	queryParams: ApiMachinesDeleteDestroyQueryParams
+export type ApiMachinesDeleteCreateVariables = {
+	body: Schemas.BulkDeleteRequest
 } & ApiContext['fetcherOptions']
 
 /**
- * Suppression d'une machine ou plusieurs machines, la machine est désactivée et non supprimée pour garder l'historique
+ * Bulk delete d'objets en fonction de leur id
  */
-export const fetchApiMachinesDeleteDestroy = (
-	variables: ApiMachinesDeleteDestroyVariables,
+export const fetchApiMachinesDeleteCreate = (
+	variables: ApiMachinesDeleteCreateVariables,
 	signal?: AbortSignal
 ) =>
 	apiFetch<
 		undefined,
-		ApiMachinesDeleteDestroyError,
-		undefined,
+		ApiMachinesDeleteCreateError,
+		Schemas.BulkDeleteRequest,
 		{},
-		ApiMachinesDeleteDestroyQueryParams,
+		{},
 		{}
-	>({ url: '/api/machines/delete', method: 'delete', ...variables, signal })
+	>({ url: '/api/machines/delete', method: 'post', ...variables, signal })
 
 /**
- * Suppression d'une machine ou plusieurs machines, la machine est désactivée et non supprimée pour garder l'historique
+ * Bulk delete d'objets en fonction de leur id
  */
-export const useApiMachinesDeleteDestroy = (
+export const useApiMachinesDeleteCreate = (
 	options?: Omit<
 		reactQuery.UseMutationOptions<
 			undefined,
-			ApiMachinesDeleteDestroyError,
-			ApiMachinesDeleteDestroyVariables
+			ApiMachinesDeleteCreateError,
+			ApiMachinesDeleteCreateVariables
 		>,
 		'mutationFn'
 	>
@@ -2761,11 +2757,11 @@ export const useApiMachinesDeleteDestroy = (
 	const { fetcherOptions } = useApiContext()
 	return reactQuery.useMutation<
 		undefined,
-		ApiMachinesDeleteDestroyError,
-		ApiMachinesDeleteDestroyVariables
+		ApiMachinesDeleteCreateError,
+		ApiMachinesDeleteCreateVariables
 	>({
-		mutationFn: (variables: ApiMachinesDeleteDestroyVariables) =>
-			fetchApiMachinesDeleteDestroy({ ...fetcherOptions, ...variables }),
+		mutationFn: (variables: ApiMachinesDeleteCreateVariables) =>
+			fetchApiMachinesDeleteCreate({ ...fetcherOptions, ...variables }),
 		...options,
 	})
 }
@@ -4460,7 +4456,7 @@ export type ApiZonesListVariables = {
 } & ApiContext['fetcherOptions']
 
 /**
- * Lister les zones
+ * Créer / Lister une zone
  */
 export const fetchApiZonesList = (
 	variables: ApiZonesListVariables,
@@ -4476,7 +4472,7 @@ export const fetchApiZonesList = (
 	>({ url: '/api/zones/', method: 'get', ...variables, signal })
 
 /**
- * Lister les zones
+ * Créer / Lister une zone
  */
 export const useApiZonesList = <TData = Schemas.PaginatedListZoneList>(
 	variables: ApiZonesListVariables,
@@ -4504,6 +4500,258 @@ export const useApiZonesList = <TData = Schemas.PaginatedListZoneList>(
 			fetchApiZonesList({ ...fetcherOptions, ...variables }, signal),
 		...options,
 		...queryOptions,
+	})
+}
+
+export type ApiZonesCreateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiZonesCreateVariables = {
+	body: Schemas.ListZoneRequest
+} & ApiContext['fetcherOptions']
+
+/**
+ * Créer / Lister une zone
+ */
+export const fetchApiZonesCreate = (
+	variables: ApiZonesCreateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.ListZone,
+		ApiZonesCreateError,
+		Schemas.ListZoneRequest,
+		{},
+		{},
+		{}
+	>({ url: '/api/zones/', method: 'post', ...variables, signal })
+
+/**
+ * Créer / Lister une zone
+ */
+export const useApiZonesCreate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			Schemas.ListZone,
+			ApiZonesCreateError,
+			ApiZonesCreateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		Schemas.ListZone,
+		ApiZonesCreateError,
+		ApiZonesCreateVariables
+	>({
+		mutationFn: (variables: ApiZonesCreateVariables) =>
+			fetchApiZonesCreate({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
+export type ApiZonesRetrievePathParams = {
+	id: number
+}
+
+export type ApiZonesRetrieveError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiZonesRetrieveVariables = {
+	pathParams: ApiZonesRetrievePathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Récupérer et Updater  une zone
+ */
+export const fetchApiZonesRetrieve = (
+	variables: ApiZonesRetrieveVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.ListZone,
+		ApiZonesRetrieveError,
+		undefined,
+		{},
+		{},
+		ApiZonesRetrievePathParams
+	>({ url: '/api/zones/{id}', method: 'get', ...variables, signal })
+
+/**
+ * Récupérer et Updater  une zone
+ */
+export const useApiZonesRetrieve = <TData = Schemas.ListZone>(
+	variables: ApiZonesRetrieveVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			Schemas.ListZone,
+			ApiZonesRetrieveError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<Schemas.ListZone, ApiZonesRetrieveError, TData>({
+		queryKey: queryKeyFn({
+			path: '/api/zones/{id}',
+			operationId: 'apiZonesRetrieve',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiZonesRetrieve({ ...fetcherOptions, ...variables }, signal),
+		...options,
+		...queryOptions,
+	})
+}
+
+export type ApiZonesUpdatePathParams = {
+	id: number
+}
+
+export type ApiZonesUpdateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiZonesUpdateVariables = {
+	body: Schemas.ListZoneRequest
+	pathParams: ApiZonesUpdatePathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Récupérer et Updater  une zone
+ */
+export const fetchApiZonesUpdate = (
+	variables: ApiZonesUpdateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.ListZone,
+		ApiZonesUpdateError,
+		Schemas.ListZoneRequest,
+		{},
+		{},
+		ApiZonesUpdatePathParams
+	>({ url: '/api/zones/{id}', method: 'put', ...variables, signal })
+
+/**
+ * Récupérer et Updater  une zone
+ */
+export const useApiZonesUpdate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			Schemas.ListZone,
+			ApiZonesUpdateError,
+			ApiZonesUpdateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		Schemas.ListZone,
+		ApiZonesUpdateError,
+		ApiZonesUpdateVariables
+	>({
+		mutationFn: (variables: ApiZonesUpdateVariables) =>
+			fetchApiZonesUpdate({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
+export type ApiZonesPartialUpdatePathParams = {
+	id: number
+}
+
+export type ApiZonesPartialUpdateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiZonesPartialUpdateVariables = {
+	body?: Schemas.PatchedListZoneRequest
+	pathParams: ApiZonesPartialUpdatePathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Récupérer et Updater  une zone
+ */
+export const fetchApiZonesPartialUpdate = (
+	variables: ApiZonesPartialUpdateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.ListZone,
+		ApiZonesPartialUpdateError,
+		Schemas.PatchedListZoneRequest,
+		{},
+		{},
+		ApiZonesPartialUpdatePathParams
+	>({ url: '/api/zones/{id}', method: 'patch', ...variables, signal })
+
+/**
+ * Récupérer et Updater  une zone
+ */
+export const useApiZonesPartialUpdate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			Schemas.ListZone,
+			ApiZonesPartialUpdateError,
+			ApiZonesPartialUpdateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		Schemas.ListZone,
+		ApiZonesPartialUpdateError,
+		ApiZonesPartialUpdateVariables
+	>({
+		mutationFn: (variables: ApiZonesPartialUpdateVariables) =>
+			fetchApiZonesPartialUpdate({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
+export type ApiZonesDeleteCreateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiZonesDeleteCreateVariables = {
+	body: Schemas.BulkDeleteRequest
+} & ApiContext['fetcherOptions']
+
+/**
+ * Bulk delete d'objets en fonction de leur id
+ */
+export const fetchApiZonesDeleteCreate = (
+	variables: ApiZonesDeleteCreateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		undefined,
+		ApiZonesDeleteCreateError,
+		Schemas.BulkDeleteRequest,
+		{},
+		{},
+		{}
+	>({ url: '/api/zones/delete', method: 'post', ...variables, signal })
+
+/**
+ * Bulk delete d'objets en fonction de leur id
+ */
+export const useApiZonesDeleteCreate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			undefined,
+			ApiZonesDeleteCreateError,
+			ApiZonesDeleteCreateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		undefined,
+		ApiZonesDeleteCreateError,
+		ApiZonesDeleteCreateVariables
+	>({
+		mutationFn: (variables: ApiZonesDeleteCreateVariables) =>
+			fetchApiZonesDeleteCreate({ ...fetcherOptions, ...variables }),
+		...options,
 	})
 }
 
@@ -4770,4 +5018,9 @@ export type QueryOperation =
 			path: '/api/zones/'
 			operationId: 'apiZonesList'
 			variables: ApiZonesListVariables
+	  }
+	| {
+			path: '/api/zones/{id}'
+			operationId: 'apiZonesRetrieve'
+			variables: ApiZonesRetrieveVariables
 	  }

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Table } from './Table'
-import { createMeta } from '../../../utils/table'
+import { createColumnMeta } from '../../../utils/table'
 import { createColumnHelper } from '@tanstack/react-table'
 import { Err, Ok } from '@sgm/utils'
 
@@ -32,7 +32,7 @@ const columns = [
     columnHelper.accessor('firstName', {
         id: 'firstName',
         header: 'Prénom',
-		meta: createMeta({
+		meta: createColumnMeta({
 			editable: true,
 			type: 'text'
 		})
@@ -40,7 +40,7 @@ const columns = [
 	columnHelper.accessor('lastName', {
 		id: 'lastName',
 		header: 'Nom',
-		meta: createMeta({
+		meta: createColumnMeta({
 			editable: true,
 			type: 'text'
 		})
@@ -48,7 +48,7 @@ const columns = [
 	columnHelper.accessor('age', {
 		id: 'age',
 		header: 'Age',
-		meta: createMeta({
+		meta: createColumnMeta({
 			editable: true,
 			type: 'number',
 			customValidation: (age) => (age < 1 || age > 120)  ? Err('L\'âge doit être compris entre 1 et 120 ans') : Ok(true)
@@ -57,7 +57,7 @@ const columns = [
 	columnHelper.accessor('creation', {
 		id: 'creation',
 		header: 'Date de création',
-		meta: createMeta({
+		meta: createColumnMeta({
 			editable: true,
 			type: 'date'
 		})
@@ -65,7 +65,7 @@ const columns = [
 	columnHelper.accessor('role', {
 		id: 'role',
 		header: 'Rôle',
-		meta: createMeta({
+		meta: createColumnMeta({
 			editable: true,
 			type: 'select',
 			choices: [
@@ -105,13 +105,18 @@ const generateMockUsers = (): User[] => {
 /**
  * Stories
  */
-type Story = StoryObj<typeof Table>
+type Story = StoryObj<typeof Table<User>>
 
 export const Primary: Story = {
 	args: {
 		columns,
 		data: generateMockUsers(),
-		editable: true,
+		editable: {
+			enabled: true,
+			onRowUpdate: (row, newData) => {
+				console.log(`${row.original.firstName} ${row.original.lastName}`, newData)
+			}
+		},
 		sortable: true,
 		rowSelection: {
 			enabled: true,
@@ -119,7 +124,7 @@ export const Primary: Story = {
 		},
 		rowExpansion: {
 			enabled: true,
-			renderSubComponent: () => <div>Row expansion</div>
+			renderComponent: () => <div>Row expansion</div>
 		},
 		loading: false,
 		header: {

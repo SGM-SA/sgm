@@ -5,19 +5,17 @@ import { components, hooks, utils } from '@generouted/react-router/client'
 
 export type Path =
 	| `/`
+	| `/affaires`
+	| `/affaires/:numAffaire`
+	| `/affaires/:numAffaire/fiches/:id`
 	| `/auth/login`
 	| `/auth/logout`
-	| `/dashboard`
-	| `/dashboard/affaires`
-	| `/dashboard/affaires/:numAffaire`
-	| `/dashboard/affaires/:numAffaire/fiches/:id`
+	| `/machines`
+	| `/zones`
 
 export type Params = {
-	'/dashboard/affaires/:numAffaire': { numAffaire: string }
-	'/dashboard/affaires/:numAffaire/fiches/:id': {
-		numAffaire: string
-		id: string
-	}
+	'/affaires/:numAffaire': { numAffaire: string }
+	'/affaires/:numAffaire/fiches/:id': { numAffaire: string; id: string }
 }
 
 export type ModalPath = never

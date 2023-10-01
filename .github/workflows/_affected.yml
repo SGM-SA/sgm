@@ -1,0 +1,69 @@
+name: Component / Affected
+
+on:
+  # Allows you to include this workflow in other workflows
+  workflow_call:
+    outputs:
+      affected_projects:
+        description: 'Affected projects'
+        value: ${{ jobs.affected.outputs.affected_projects }}
+      nx_base:
+        description: 'Base SHA for Nx'
+        value: ${{ jobs.affected.outputs.nx_base }}
+      nx_head:
+        description: 'Head SHA for Nx'
+        value: ${{ jobs.affected.outputs.nx_head }}
+
+jobs:
+
+  affected:
+    name: Get affected projects
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get Nx affected base and head
+        uses: nrwl/nx-set-shas@v3
+        id: set-shas
+        with:
+          main-branch-name: ${{ github.event_name == 'pull_request' && github.base_ref || github.ref_name }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+            echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+              ${{ runner.os }}-pnpm-store-
+
+      - name: Install Node dependencies
+        run: pnpm install
+
+      - name: Get projects to build
+        id: get-projects-to-build
+        run: |
+          affected_projects=$(pnpm nx show projects --affected --json -p 'apps/*' | jq -c)
+          echo "Affected projects : ${affected_projects}"
+          echo "affected_projects=${affected_projects}" >> $GITHUB_OUTPUT
+
+    outputs:
+      affected_projects: ${{ steps.get-projects-to-build.outputs.affected_projects }}
+      nx_base: ${{ steps.set-shas.outputs.base }}
+      nx_head: ${{ steps.set-shas.outputs.head }}

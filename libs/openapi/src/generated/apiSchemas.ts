@@ -890,6 +890,19 @@ export type ListZone = {
 	description: string
 }
 
+export type ListZoneRequest = {
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	nom: string
+	/**
+	 * @minLength 1
+	 * @maxLength 1000
+	 */
+	description: string
+}
+
 export type MachineDetail = {
 	id: number
 	/**
@@ -1348,6 +1361,19 @@ export type PatchedGroupeMachineRequest = {
 	 */
 	nom_groupe?: string
 	prix_theorique?: number
+}
+
+export type PatchedListZoneRequest = {
+	/**
+	 * @minLength 1
+	 * @maxLength 200
+	 */
+	nom?: string
+	/**
+	 * @minLength 1
+	 * @maxLength 1000
+	 */
+	description?: string
 }
 
 export type PatchedMachineDetailRequest = {

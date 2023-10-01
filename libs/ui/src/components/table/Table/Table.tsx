@@ -1,4 +1,4 @@
-import { Box, Table as ChakraTable, TableProps as ChakraTableProps, Checkbox, Icon, IconButton, Skeleton, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
+import { Box, Button, ChakraProps, Table as ChakraTable, TableProps as ChakraTableProps, Checkbox, Icon, IconButton, Skeleton, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import { Paginated, createObjectFromPath } from '@sgm/utils'
 import { ColumnDef, DeepKeys, PaginationState, Row, RowData, SortingState, flexRender, getCoreRowModel, getExpandedRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 import React, { Fragment, MouseEvent, useEffect, useMemo, useState } from 'react'
@@ -52,6 +52,7 @@ type BaseTableProps<TData> = {
      */
     rowExpansion?: {
         enabled: boolean
+        expandedByDefault?: boolean
         renderComponent?: React.FC<{ row: Row<TData> }>
     }
     /**
@@ -104,7 +105,8 @@ type BaseTableProps<TData> = {
      */
     styling?: {
         table?: ChakraTableProps
-        container?: ChakraTableProps
+        container?: ChakraProps
+        row?: ChakraProps | ((row: Row<TData>) => ChakraProps | undefined)
     }
     /**
      * Overrides the number of rows displayed in the skeleton loader
@@ -157,6 +159,7 @@ export function Table<TData>(props: TableProps<TData>) {
                     isChecked={table.getIsAllRowsSelected()}
                     isIndeterminate={table.getIsSomeRowsSelected()}
                     onChange={table.getToggleAllRowsSelectedHandler()}
+                    borderColor='tertiary'
                 />
             ),
             cell: ({ row }) => (
@@ -166,6 +169,7 @@ export function Table<TData>(props: TableProps<TData>) {
                         isIndeterminate={row.getIsSomeSelected()}
                         onChange={row.getToggleSelectedHandler()}
                         disabled={!row.getCanSelect()}
+                        borderColor='tertiary'
                     />
                 </div>
             ),
@@ -248,6 +252,14 @@ export function Table<TData>(props: TableProps<TData>) {
 
     }, [internalSorting, props.sortable])
 
+    useEffect(() => {
+
+        console.log(props.rowExpansion?.expandedByDefault)
+        if (props.rowExpansion?.enabled && props.rowExpansion.expandedByDefault) {
+            table.toggleAllRowsExpanded()
+        }
+    }, [])
+
     const selectedRowsCount = table.getRowModel().rows.filter(row => row.getIsSelected()).length
 
 	return <>
@@ -301,14 +313,17 @@ export function Table<TData>(props: TableProps<TData>) {
 
             <ChakraTable
                 size='sm'
-                mb='auto'
+                // mb='auto'
                 {...props.styling?.table}
             >
                 
                 <Thead>
                     {table.getHeaderGroups().map(headerGroup => (
+
                         <Tr key={headerGroup.id}>
+                        
                             {props.rowExpansion?.enabled && <Th></Th>}
+                        
                             {headerGroup.headers.map(header => (
                                 <Th key={header.id} colSpan={header.colSpan}>
                                     <Box
@@ -353,48 +368,52 @@ export function Table<TData>(props: TableProps<TData>) {
                             </Flex>
                         </Tr>
                     } */}
-                        {table.getRowModel().rows.map(row => (<Fragment key={row.id}>
+                        {table.getRowModel().rows.map(row => {
+
+                            return (<Fragment key={row.id}>
                     
-                            <Tr {...getTrProps(row)}>
-
-                                {props.rowExpansion?.enabled && (
-                                    props.loading ? 
-                                    <Td></Td>
-                                    :
-                                    <Td onClick={row.getCanExpand() ? row.getToggleExpandedHandler() : undefined}
-                                        _hover={{ cursor: row.getCanExpand() ? 'pointer' : undefined }}
-                                    >
-                                        {row.getIsExpanded() ? 
-                                            <Icon as={FaChevronDown} fontSize='xs'/>
-                                            :
-                                            <Icon as={FaChevronRight} fontSize='xs'/>
-                                        }
-                                    </Td>
-                                )}
-                                {row.getVisibleCells().map(cell => (
-                                    <Td key={cell.id}>
-                                        {flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext()
-                                            )}
-                                    </Td>
-                                ))}
-                            </Tr>
-
-                            {(row.getIsExpanded() && props.rowExpansion?.renderComponent) && (
-                                <Tr {...getTrProps(row)}>
-                                    <Td 
-                                        colSpan={row.getVisibleCells().length + 2}
-                                        p={0}
-                                    >
-                                        <TableSubComponentLayout>
-                                            {props.rowExpansion.renderComponent({ row })}
-                                        </TableSubComponentLayout>
-                                    </Td>
+                                <Tr {...getTrProps(row)} {...getRowStyleProps(row, props.styling?.row)}>
+    
+                                    {props.rowExpansion?.enabled && (
+                                        props.loading ? 
+                                        <Td></Td>
+                                        :
+                                        <Td onClick={row.getCanExpand() ? row.getToggleExpandedHandler() : undefined}
+                                            _hover={{ cursor: row.getCanExpand() ? 'pointer' : undefined }}
+                                        >
+                                            {row.getIsExpanded() ? 
+                                                <Icon as={FaChevronDown} fontSize='xs'/>
+                                                :
+                                                <Icon as={FaChevronRight} fontSize='xs'/>
+                                            }
+                                        </Td>
+                                    )}
+                                    {row.getVisibleCells().map(cell => (
+                                        <Td key={cell.id}>
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                                )}
+                                        </Td>
+                                    ))}
                                 </Tr>
-                            )}
-                        </Fragment>))}
+    
+                                {(row.getIsExpanded() && props.rowExpansion?.renderComponent) && (
+                                    <Tr {...getTrProps(row)}>
+                                        <Td 
+                                            colSpan={row.getVisibleCells().length + 2}
+                                            p={0}
+                                        >
+                                            <TableSubComponentLayout>
+                                                {props.rowExpansion.renderComponent({ row })}
+                                            </TableSubComponentLayout>
+                                        </Td>
+                                    </Tr>
+                                )}
+                            </Fragment>)
+                        })}
                 </Tbody>
+
 
             </ChakraTable>
 
@@ -412,14 +431,20 @@ export function Table<TData>(props: TableProps<TData>) {
             }
 
             {props.pagination && 
-                <Pagination
-                    table={table}
-                />
+                <Box marginTop='auto' w='100%'>
+                    <Pagination
+                        table={table}
+                    />
+                </Box>
             }
 
         </TableContainer>
     </>
 }
+
+/**
+ * Utils functions
+ */
 
 const isServerSorted = (sorting: TableProps<any>['sortable']): sorting is {
     state: string
@@ -430,4 +455,11 @@ const isServerSorted = (sorting: TableProps<any>['sortable']): sorting is {
 
 const isLocalSorted = (sorting: TableProps<any>['sortable']): sorting is boolean => {
     return sorting !== undefined && typeof sorting === 'boolean'
+}
+
+const getRowStyleProps = (row: Row<any>, style?: ChakraProps | ((row: Row<any>) => ChakraProps | undefined)) => {
+    if (!style) return {}
+
+    if (typeof style === 'function') return style(row) || {}
+    else return style
 }

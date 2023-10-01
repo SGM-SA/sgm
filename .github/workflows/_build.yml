@@ -1,0 +1,132 @@
+name: Component / Build & Test 
+
+on:
+  # Allows you to include this workflow in other workflows
+  workflow_call:
+    inputs:
+      affected_projects:
+        type: string
+        required: true
+      nx_base:
+        type: string
+        required: true
+      nx_head:
+        type: string
+        required: true
+      should_upload_artifacts:
+        type: boolean
+        required: true
+
+jobs:
+
+  build:
+    name: Build - ${{ matrix.project }}
+    runs-on: ubuntu-latest
+    # ignore the error
+    if: inputs.affected_projects != '[]'
+    env:
+      NX_BASE: ${{ inputs.nx_base }}
+      NX_HEAD: ${{ inputs.nx_head }}
+      ENV: DEV # for the api project
+
+    strategy:
+      matrix:
+        project: ${{ fromJson(inputs.affected_projects) }}
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      #---------------------------
+      #       Node.js
+      #---------------------------
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+            echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+              ${{ runner.os }}-pnpm-store-
+
+      - name: Install Node dependencies
+        run: pnpm install
+
+      #---------------------------
+      #       Python
+      #---------------------------
+
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install required system packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz libgraphviz-dev pkg-config
+
+      - name: Install Python dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: pnpm nx run api:install
+
+      #---------------------------
+      #        NX
+      #---------------------------
+
+      - name: Lint
+        if: matrix.project != 'api'
+        run: pnpm nx affected -t lint --exclude '*,!${{ matrix.project }}'
+
+      - name: Build
+        run: pnpm nx affected -t build --exclude '*,!${{ matrix.project }}'
+
+      - name: Test
+        run: pnpm nx affected -t test --exclude '*,!${{ matrix.project }}'
+
+      #---------------------------
+      #        Artifacts
+      #---------------------------
+
+      - name: Upload artifacts
+        if: ${{ inputs.should_upload_artifacts }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.project }}-build
+          path: dist/

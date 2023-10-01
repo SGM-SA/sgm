@@ -77,7 +77,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
             loading={fiches.isLoading}
             header={{
                 title: 'Fiches',
-                customComponent: () => <HStack>
+                customComponent: () => <HStack spacing='1em'>
                     <AddFicheModele affaireId={props.affaireId} refetch={fiches.refetch}/>
                     <Button onClick={notesDrawer.onOpen} variant='outline' colorScheme='black'  size='sm'>
                         Notes <Icon as={HiOutlineMenu} ml='1em'/>
@@ -105,30 +105,25 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
             }}
             rowSelection={{
                 enabled: true,
-                selectionActionComponent: ({ checkedItems, resetSelection }) => {
-                    return <Box>
-                        <Button 
-                            size='sm'
-                            colorScheme='red'
-                            borderRadius='4px'
-                            variant='outline'
-                            onClick={async () => {
-                                fetchApiFichesDeleteCreate({
-                                    body: {
-                                        ids: checkedItems.map(item => item.original.id)
-                                    }
-                                }).then(() => {
-                                    resetSelection()
-                                    fiches.refetch()
-                                })
-                            }}
-                        >Supprimer</Button>
-                    </Box>
-                }
+                selectionActionComponent: ({ checkedItems, resetSelection }) => <Button 
+                    size='sm'
+                    colorScheme='red'
+                    borderRadius='4px'
+                    variant='outline'
+                    onClick={async () => {
+                        fetchApiFichesDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
+                        .then(() => {
+                            resetSelection()
+                            fiches.refetch()
+                            toast.success('Etapes supprimées avec succès')
+                        })
+                        .catch(() => toast.error('Erreur lors de la suppression des étapes'))
+                    }}
+                >Supprimer</Button>
             }}
             rowAction={{
                 enableCtrlClick: true,
-                actionFn: (row) => navigate('/dashboard/affaires/:numAffaire/fiches/:id', {
+                actionFn: (row) => navigate('/affaires/:numAffaire/fiches/:id', {
                     params: {
                         numAffaire: `${row.original.num_affaire}`,
                         id: `${row.original.id}`
