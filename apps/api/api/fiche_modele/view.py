@@ -1,6 +1,5 @@
 from drf_spectacular.types import OpenApiTypes
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from api.fiche_modele.models import FicheModele
 from api.fiche.models import Fiche
@@ -12,12 +11,14 @@ from api.fiche_modele.serializer import (
     FicheModeleOptionsSerializer,
     CopyFicheSerializer,
 )
-from rest_framework import generics, status, pagination
+from rest_framework import generics, status
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
     OpenApiParameter,
 )
+
+from api.utils.view import SmallPagination
 
 
 @extend_schema_view(
@@ -45,11 +46,6 @@ class FicheModeleListCreateView(generics.ListCreateAPIView):
 class FicheModeleDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = FicheModele.objects.all()
     serializer_class = FicheModeleEtEtapes
-
-
-class SmallPagination(pagination.PageNumberPagination):
-    page_size = 5
-    max_page_size = 5
 
 
 @extend_schema(

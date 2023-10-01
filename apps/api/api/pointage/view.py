@@ -9,6 +9,7 @@ from api.pointage.models import PointageEtape
 
 from api.pointage.serializer import ReadPointageSerializer, PointageSerializer
 from api.pointage.export import export_pointages
+from api.utils.view import LargeResultsSetPagination
 
 
 class PointageFilterBackend(filters.BaseFilterBackend):
@@ -54,6 +55,7 @@ class PointageList(generics.ListAPIView):
     serializer_class = ReadPointageSerializer
     permission_classes = [permissions.IsAdminUser]  # only admin can see all pointages
     filter_backends = [PointageFilterBackend]
+    pagination_class = LargeResultsSetPagination
 
 
 class PointageAdminUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
