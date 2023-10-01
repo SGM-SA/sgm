@@ -59,6 +59,103 @@ class AffectationMachineTest(APITestCase):
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+        affectation = AffectationMachine.objects.get(id=response.data["id"])
+        self.assertEqual(affectation.previous, None)
+
+    def test_create_affectation_machine_haut_liste(self):
+        """
+        Teste la création d'une affectation machine, quand la machine déjà une affectation à cette date
+        """
+
+        aff1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            semaine_affectation="2021-01-01",
+            machine=self.machine_scie,
+        )
+
+        url = "/api/affectations/machines"
+        data = {
+            "etape": self.etape2.id,
+            "semaine_affectation": "2021-01-01",
+            "machine": self.machine_scie.id,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        aff_id = response.data["id"]
+        aff: AffectationMachine = AffectationMachine.objects.get(id=aff_id)
+        aff1.refresh_from_db()
+        self.assertEqual(aff1.previous, aff)
+
+    def test_create_affectation_ajustage_milieu_liste(self):
+        """
+        Teste la création d'une affectation machine entre 2 affectations
+        """
+
+        etape3 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine,
+            num_etape=3,
+        )
+
+        aff1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            semaine_affectation="2021-01-01",
+            machine=self.machine_scie,
+        )
+
+        aff2 = AffectationMachine.objects.create(
+            etape=self.etape2,
+            semaine_affectation="2021-01-01",
+            machine=self.machine_scie,
+            previous=aff1,
+        )
+
+        url = "/api/affectations/machines"
+        data = {
+            "etape": etape3.id,
+            "semaine_affectation": "2021-01-01",
+            "machine": self.machine_scie.id,
+            "previous": aff1.id,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        affecation_id = response.data["id"]
+        aff3: AffectationMachine = AffectationMachine.objects.get(id=affecation_id)
+        aff1.refresh_from_db()
+        aff2.refresh_from_db()
+
+        self.assertEqual(aff3.previous, aff1)
+        self.assertEqual(aff3.next.first(), aff2)
+        self.assertEqual(aff2.previous, aff3)
+        self.assertEqual(aff1.next.first(), aff3)
+
+    def test_create_affectation_ajustage_fin_liste(self):
+        """
+        Teste la création d'une affectation machine, ajout en fin de liste
+        """
+
+        aff1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            semaine_affectation="2021-01-01",
+            machine=self.machine_scie,
+        )
+
+        url = "/api/affectations/machines"
+        data = {
+            "etape": self.etape2.id,
+            "semaine_affectation": "2021-01-01",
+            "machine": self.machine_scie.id,
+            "previous": aff1.id,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        aff: AffectationMachine = AffectationMachine.objects.get(id=response.data["id"])
+        aff1.refresh_from_db()
+
+        self.assertEqual(aff.previous, aff1)
+        self.assertEqual(aff1.next.first(), aff)
+
     def test_create_affectation_machine_etape_deja_affectee(self):
         """
         Teste la création d'une affectation machine
