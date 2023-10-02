@@ -36,9 +36,6 @@ const refreshAuthLogic = async () => {
 		})
 
 		const { access: newToken } = await response.json()
-		
-		console.log('refreshed token', newToken)
-	
 		AuthService.login(newToken, refreshToken, false)
 	
 		return newToken

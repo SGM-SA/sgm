@@ -62,8 +62,6 @@ export async function apiFetch<
 		headers: processedHeaders
 	}
 
-	console.log('config', config)
-
 	return axiosInstance.request(config)
 }
 

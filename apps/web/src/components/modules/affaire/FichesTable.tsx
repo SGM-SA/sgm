@@ -88,8 +88,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                 editable={{
                     enabled: true,
                     onRowUpdate: async (row, newData) => {
-                        console.log(row.original.id, newData)
-                        fetchApiFichesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
+                            fetchApiFichesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
                             .then(() => {
                                 row.original = { ...row.original, ...newData }
                                 toast.success('Fiche mise à jour')

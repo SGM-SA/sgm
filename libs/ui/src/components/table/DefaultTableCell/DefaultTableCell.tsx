@@ -1,8 +1,8 @@
 import { Box, Input, Select } from '@chakra-ui/react'
-import { Choice } from '../../../utils/table'
+import { Row, Table } from '@tanstack/react-table'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { Column, Row, Table } from '@tanstack/react-table'
+import { Choice } from '../../../utils/table'
 
 const fontSize = 'xs'
 
@@ -62,8 +62,11 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
     // When the input is blurred, we'll call our table meta's updateData function
     const onUpdate = (overrideValue?: any) => {
 
+        const newValue = overrideValue ?? value
+        if (newValue === initialValue) return
+
         if (meta.customValidation) {
-            const result = meta.customValidation(value)
+            const result = meta.customValidation(newValue)
             if (result.type === 'error') {
                 setValue(initialValue)
                 toast.error(result.message)
@@ -71,7 +74,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
             }
         }
 
-        props.table.options.meta?.updateData(props.row, accessorKey, overrideValue ?? value)
+        return props.table.options.meta?.updateData(props.row, accessorKey, newValue)
     }
 
     // If the initialValue is changed external, sync it up with our state
@@ -99,7 +102,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
             return (
                 <Select 
                     size={fontSize} 
-                    value={value as string}
+                    value={value as string || ''}
                     onChange={e => {
                         setValue(e.target.value)
                         onUpdate(e.target.value)

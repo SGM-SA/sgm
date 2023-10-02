@@ -173,10 +173,13 @@ const FichePage: React.FC = () => {
                         expandedByDefault: true,
                         renderComponent: ({ row }) => {
 
-                            const handleUpdate = (description: string) => {
-                                fetchApiEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: { description } })
-                                    .then(() => toast.success('Description mise à jour'))
-                                    .catch(() => toast.error('Erreur lors de la mise à jour de la description'))
+                            const handleUpdate = (newDescription: string) => {
+                                
+                                if (row.original.description !== newDescription) {
+                                    fetchApiEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: { description: newDescription } })
+                                        .then(() => toast.success('Description mise à jour'))
+                                        .catch(() => toast.error('Erreur lors de la mise à jour de la description'))
+                                }
                             }
 
                             return <Textarea 

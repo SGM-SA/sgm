@@ -26,7 +26,7 @@ export const AffaireNote: React.FC<AffaireNoteProps> = (props) => {
 
         {/* Header */}
         <HStack>
-            <Text fontWeight='bold'>{props.note.user}</Text>
+            <Text fontWeight='bold' fontSize='.9em'>{props.note.user}</Text>
             <Tooltip label={readableDate}>
                 <Text color='gray' fontSize='.8em'>{timeFromNoteCreation}</Text>
             </Tooltip>
