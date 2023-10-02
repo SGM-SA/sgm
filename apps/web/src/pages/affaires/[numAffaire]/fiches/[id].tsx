@@ -1,6 +1,6 @@
 import { Box, Button, HStack, Textarea } from '@chakra-ui/react'
 import { EtapeDetail, EtapeDetailAjustage, fetchApiEtapesCreate, fetchApiEtapesDeleteCreate, fetchApiEtapesPartialUpdate, fetchApiGroupeMachineList, useApiFichesEtapesRetrieve } from '@sgm/openapi'
-import { DefaultTableCell, Table, createColumnMeta } from '@sgm/ui'
+import { DefaultTableCell, Table, TableLayout, createColumnMeta } from '@sgm/ui'
 import { useParams } from '@sgm/web/router'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
@@ -96,17 +96,12 @@ const FichePage: React.FC = () => {
     ]
 
 	return <>
-        <DashboardLayout
-            title={'Fiche'}
-        >
+        <DashboardLayout title={'Fiche'} >
 
-            <Table<EtapeDetailAjustage>
-                columns={columns}
-                data={data?.etapes}
-                loading={isLoading}
+            <TableLayout
                 header={{
                     title: 'Liste des étapes',
-                    customComponent: () => <HStack>
+                    customComponent: <HStack>
                         <Button
                             size='sm'
                             colorScheme='blue'
@@ -121,72 +116,81 @@ const FichePage: React.FC = () => {
                         </Button>
                     </HStack>
                 }}
-                editable={{
-                    enabled: true,
-                    onRowUpdate: async (row, newData) => {
-                        fetchApiEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
-                            .then(() => {
-                                row.original = { ...row.original, ...newData }
-                                toast.success('Etape mise à jour')
-                            })
-                            .catch(() => toast.error('Erreur lors de la mise à jour de l\'étape'))
-                    }
-                }}
-                newRow={() => {
-                    if (!data) return
+            >
 
-                    fetchApiEtapesCreate({
-                        body: {
-                            fiche: ficheId,
-                            num_etape: data.etapes.length + 1 || 1
+                <Table<EtapeDetailAjustage>
+                    columns={columns}
+                    data={data?.etapes}
+                    loading={isLoading}
+                    editable={{
+                        enabled: true,
+                        onRowUpdate: async (row, newData) => {
+                            fetchApiEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
+                                .then(() => {
+                                    row.original = { ...row.original, ...newData }
+                                    toast.success('Etape mise à jour')
+                                })
+                                .catch(() => toast.error('Erreur lors de la mise à jour de l\'étape'))
                         }
-                    })
-                        .then(() => {
-                            refetch()
-                            toast.success('Etape créée')
+                    }}
+                    newRow={() => {
+                        if (!data) return
+
+                        fetchApiEtapesCreate({
+                            body: {
+                                fiche: ficheId,
+                                num_etape: data.etapes.length + 1 || 1
+                            }
                         })
-                        .catch(() => toast.error('Erreur lors de la création de l\'étape'))
-                }}
-                rowSelection={{
-                    enabled: true,
-                    selectionActionComponent: ({ checkedItems, resetSelection }) => <Box>
-                        <Button 
-                            size='sm'
-                            colorScheme='red'
-                            borderRadius='4px'
-                            variant='outline'
-                            onClick={async () => {
-                                fetchApiEtapesDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
-                                    .then(() => {
-                                        resetSelection()
-                                        refetch()
-                                        toast.success('Etapes supprimées avec succès')
-                                    })
-                                    .catch(() => toast.error('Erreur lors de la suppression des étapes'))
-                            }}
-                        >Supprimer</Button>
-                    </Box>
-                }}
-                rowExpansion={{
-                    enabled: true,
-                    expandedByDefault: true,
-                    renderComponent: ({ row }) => {
+                            .then(() => {
+                                refetch()
+                                toast.success('Etape créée')
+                            })
+                            .catch(() => toast.error('Erreur lors de la création de l\'étape'))
+                    }}
+                    rowSelection={{
+                        enabled: true,
+                        selectionActionComponent: ({ checkedItems, resetSelection }) => <Box>
+                            <Button 
+                                size='sm'
+                                colorScheme='red'
+                                borderRadius='4px'
+                                variant='outline'
+                                onClick={async () => {
+                                    fetchApiEtapesDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
+                                        .then(() => {
+                                            resetSelection()
+                                            refetch()
+                                            toast.success('Etapes supprimées avec succès')
+                                        })
+                                        .catch(() => toast.error('Erreur lors de la suppression des étapes'))
+                                }}
+                            >Supprimer</Button>
+                        </Box>
+                    }}
+                    rowExpansion={{
+                        enabled: true,
+                        expandedByDefault: true,
+                        renderComponent: ({ row }) => {
 
-                        const handleUpdate = (description: string) => {
-                            fetchApiEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: { description } })
-                                .then(() => toast.success('Description mise à jour'))
-                                .catch(() => toast.error('Erreur lors de la mise à jour de la description'))
+                            const handleUpdate = (description: string) => {
+                                fetchApiEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: { description } })
+                                    .then(() => toast.success('Description mise à jour'))
+                                    .catch(() => toast.error('Erreur lors de la mise à jour de la description'))
+                            }
+
+                            return <Textarea 
+                                defaultValue={row.original.description || ''}
+                                onBlur={(e) => handleUpdate(e.target.value)}
+                                rows={2}
+                                fontSize='sm'
+                            />
                         }
+                    }}
+                />
 
-                        return <Textarea 
-                            defaultValue={row.original.description || ''}
-                            onBlur={(e) => handleUpdate(e.target.value)}
-                            rows={2}
-                            fontSize='sm'
-                        />
-                    }
-                }}
-            />
+            </TableLayout>
+
 
         </DashboardLayout>
     </>

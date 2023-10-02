@@ -15,7 +15,9 @@ export const TableHeader: React.FC<TableHeaderProps> = (props) => {
             p='2em'
         >
             {props.title && 
-                <Text as='h2' 
+                <Text as='h2'
+                    display='flex'
+                    alignItems='center' 
                     fontSize='xl'
                     fontWeight='normal'
                     mr='auto'

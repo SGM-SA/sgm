@@ -1,6 +1,6 @@
 import { Box, Progress } from '@chakra-ui/react'
 import { AffaireDetails, fetchApiAffairesPartialUpdate, useApiAffairesList } from '@sgm/openapi'
-import { Table, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
+import { Table, TableLayout, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
 import { Link, useNavigate } from '@sgm/web/router'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
@@ -115,10 +115,15 @@ const AffairesPage: React.FC = () => {
     const { data, isLoading } = useApiAffairesList(fetchDataOptions)
 
 	return <>
-    	<DashboardLayout 
-			title="Affaires"
-            removePadding={true}
-		>
+    	<DashboardLayout title="Affaires">
+            
+            <TableLayout
+                header={{
+                    title: 'Liste des affaires',
+                    customComponent: <AffaireSearch filters={filters} setFilters={setFilters} />
+                }}
+            >
+
                 <Table<AffaireDetails>
                     columns={columns}
                     data={data}
@@ -142,10 +147,6 @@ const AffairesPage: React.FC = () => {
                         state: sorting,
                         setState: setSorting
                     }}
-                    header={{
-                        title: 'Liste des affaires',
-                        customComponent: () => <AffaireSearch filters={filters} setFilters={setFilters}/>
-                    }}
                     rowExpansion={{
                         enabled: true,
                         renderComponent: ({ row }) => <FichesTable affaireId={row.original.id} />
@@ -164,6 +165,7 @@ const AffairesPage: React.FC = () => {
                         }
                     }}
                 />
+            </TableLayout>
         </DashboardLayout>
     </>
 }
