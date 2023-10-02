@@ -1,6 +1,6 @@
 import { Box, Button, HStack } from '@chakra-ui/react'
 import { MachineDetail, fetchApiMachinesDeleteCreate, fetchApiMachinesPartialUpdate, useApiMachinesList } from '@sgm/openapi'
-import { Table, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
+import { Table, TableLayout, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { toast } from 'react-toastify'
@@ -40,66 +40,70 @@ const MachinesPage: React.FC = () => {
     const { data, isLoading, refetch } = useApiMachinesList(fetchDataOptions)
 
 	return <>
-        <DashboardLayout
-            title='Machines'
-            removePadding={true}
-        >
-            <Table<MachineDetail> 
-                columns={columns}
-                data={data}
-                loading={isLoading}
+        <DashboardLayout title='Machines' >
+
+            <TableLayout
                 header={{
                     title: 'Gestion des machines',
-                    customComponent: () => <HStack>
+                    customComponent: <HStack>
                         <MachineCreateForm refetch={refetch}/>
                     </HStack>
                 }}
-                pagination={{
-                    state: pagination,
-                    setState: setPagination
-                }}
-                editable={{
-                    enabled: true,
-                    onRowUpdate: async (row, newData) => {
-                        fetchApiMachinesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
-                            .then(() => {
-                                row.original = { ...row.original, ...newData }
-                                if (newData.fonctionnelle !== undefined) refetch()
-                                toast.success('Machine mise à jour')
-                            })
-                            .catch(() => toast.error('Erreur lors de la mise à jour de la machine'))
-                    }
-                }}
-                rowSelection={{
-                    enabled: true,
-                    selectionActionComponent: ({ checkedItems, resetSelection }) => <Box>
-                        <Button 
-                            size='sm'
-                            colorScheme='red'
-                            borderRadius='4px'
-                            variant='outline'
-                            onClick={async () => {
-                                fetchApiMachinesDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
-                                    .then(() => {
-                                        resetSelection()
-                                        refetch()
-                                        toast.success('Machines supprimées avec succès')
-                                    })
-                                    .catch(() => toast.error('Erreur lors de la suppression des machines'))
-                            }}
-                        >Supprimer</Button>
-                    </Box>
-                }}
-                styling={{
-                    row: (row) => {
-                        if (row.original?.fonctionnelle === false) {
-                            return {
-                                backgroundColor: 'red.100'
+            >
+
+                <Table<MachineDetail> 
+                    columns={columns}
+                    data={data}
+                    loading={isLoading}
+
+                    pagination={{
+                        state: pagination,
+                        setState: setPagination
+                    }}
+                    editable={{
+                        enabled: true,
+                        onRowUpdate: async (row, newData) => {
+                            fetchApiMachinesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
+                                .then(() => {
+                                    row.original = { ...row.original, ...newData }
+                                    if (newData.fonctionnelle !== undefined) refetch()
+                                    toast.success('Machine mise à jour')
+                                })
+                                .catch(() => toast.error('Erreur lors de la mise à jour de la machine'))
+                        }
+                    }}
+                    rowSelection={{
+                        enabled: true,
+                        selectionActionComponent: ({ checkedItems, resetSelection }) => <Box>
+                            <Button 
+                                size='sm'
+                                colorScheme='red'
+                                borderRadius='4px'
+                                variant='outline'
+                                onClick={async () => {
+                                    fetchApiMachinesDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
+                                        .then(() => {
+                                            resetSelection()
+                                            refetch()
+                                            toast.success('Machines supprimées avec succès')
+                                        })
+                                        .catch(() => toast.error('Erreur lors de la suppression des machines'))
+                                }}
+                            >Supprimer</Button>
+                        </Box>
+                    }}
+                    styling={{
+                        row: (row) => {
+                            if (row.original?.fonctionnelle === false) {
+                                return {
+                                    backgroundColor: 'red.100'
+                                }
                             }
                         }
-                    }
-                }}
-            />
+                    }}
+                />
+            </TableLayout>
+
 
         </DashboardLayout>
     </>

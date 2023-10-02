@@ -94,18 +94,10 @@ type BaseTableProps<TData> = {
      */
     newRow?: () => void
     /**
-     * Personalize the table header with either a title, a custom component displayed on its right or both
-     */
-    header?: {
-        title?: string
-        customComponent?: React.FC
-    }
-    /**
      * Styling
      */
     styling?: {
         table?: ChakraTableProps
-        container?: ChakraProps
         row?: ChakraProps | ((row: Row<TData>) => ChakraProps | undefined)
     }
     /**
@@ -263,11 +255,6 @@ export function Table<TData>(props: TableProps<TData>) {
     const selectedRowsCount = table.getRowModel().rows.filter(row => row.getIsSelected()).length
 
 	return <>
-        <TableContainer 
-            w='100%' minH='70vh'
-            display='flex' flexDirection='column' justifyContent='flex-start' alignItems='center' 
-            {...props.styling?.container}
-        >
 
             {(props.rowSelection?.selectionActionComponent && (table.getIsSomeRowsSelected() || table.getIsAllRowsSelected())) &&
                 <Box className='Toastify__toast-container Toastify__toast-container--bottom-center'
@@ -299,17 +286,6 @@ export function Table<TData>(props: TableProps<TData>) {
                     </Box>
                 </Box>
             }
-            
-            <Box w='100%' position='relative'>
-
-                <TableHeader
-                    title={props.header?.title}
-                >
-                    {props.header?.customComponent &&
-                        <props.header.customComponent />
-                    }
-                </TableHeader>
-            </Box>
 
             <ChakraTable
                 size='sm'
@@ -437,8 +413,6 @@ export function Table<TData>(props: TableProps<TData>) {
                     />
                 </Box>
             }
-
-        </TableContainer>
     </>
 }
 

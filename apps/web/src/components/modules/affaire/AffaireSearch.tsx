@@ -1,7 +1,7 @@
 import { Flex, HStack, Input } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import debounce from 'debounce'
-import React, { BaseSyntheticEvent } from 'react'
+import React, { BaseSyntheticEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -36,12 +36,11 @@ export const AffaireSearch: React.FC<AffaireSearchProps> = (props) => {
 	return <Flex
             w='100%'
             justifyContent='flex-end'
-            p='1em'
         >
             <HStack>
                 
                 <Input 
-                    placeholder='N° Affaire' 
+                    placeholder='N° Affaire'
                     type='number'
                     // size='sm'
                     {...register('num_affaire', { 

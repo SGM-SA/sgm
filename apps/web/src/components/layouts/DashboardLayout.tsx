@@ -11,7 +11,7 @@ const ignoredRoutes = [
 type DashboardLayoutProps = {
 	title: React.ReactNode
 	children: React.ReactNode
-	removePadding?: boolean
+	addPadding?: boolean
 	customHeader?: React.ReactNode
 }
 
@@ -87,7 +87,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
 				<VStack
 					as='main'
 					w='100%'
-					padding={props.removePadding ? '0' : '2rem'}
+					padding={props.addPadding ? '2em' : '0'}
 					backgroundColor='secondary'
 					border='1px solid'
 					borderColor='gray.200'

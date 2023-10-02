@@ -25,10 +25,7 @@ const AffairePage: React.FC = () => {
     const affaire = useLoaderData<typeof Loader>()
 
 	return <>
-        <DashboardLayout
-            title={`Détails affaire n°${affaire.num_affaire}`}
-            removePadding={true}
-        >
+        <DashboardLayout title={`Détails affaire n°${affaire.num_affaire}`}>
             <Box minH='70vh' w='100%'>
                 <Box w='100%'>
                     <FichesTable affaireId={affaire.id} />
