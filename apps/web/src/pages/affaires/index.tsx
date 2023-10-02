@@ -6,7 +6,7 @@ import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { toast } from 'react-toastify'
 import { DashboardLayout } from '../../components/layouts'
-import { AffaireSearch, FichesTable } from '../../components/modules'
+import { AffaireNotesDrawer, AffaireSearch, FichesTable } from '../../components/modules'
 
 const columnHelper = createColumnHelper<AffaireDetails>()
 
@@ -97,6 +97,13 @@ const columns = [
                 'ECH',
             ],
         }),
+    }),
+    columnHelper.display({
+        id: 'notes',
+        cell: value => {
+            console.log(value.row.original.id)
+            return <AffaireNotesDrawer affaireId={value.row.original.id}/>
+        }
     })
 ]
 
