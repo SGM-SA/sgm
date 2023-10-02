@@ -1,13 +1,12 @@
-import { Box, Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, HStack, Icon, Progress, Spinner, useDisclosure } from '@chakra-ui/react'
-import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteCreate, fetchApiFichesPartialUpdate, useApiAffairesFichesRetrieve, useApiNotesAffaireList } from '@sgm/openapi'
+import { Box, Button, HStack, Progress } from '@chakra-ui/react'
+import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteCreate, fetchApiFichesPartialUpdate, useApiAffairesFichesRetrieve } from '@sgm/openapi'
 import { Table, createColumnMeta } from '@sgm/ui'
 import { useNavigate } from '@sgm/web/router'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
-import { HiOutlineMenu } from 'react-icons/hi'
 import { toast } from 'react-toastify'
 import { AddFicheModele } from '../fiche/AddFicheModele'
-import { AffaireNotes } from './AffaireNotes'
+import { AffaireNotesDrawer } from './AffaireNotesDrawer'
 
 const columnHelper = createColumnHelper<FicheDetail>()
 
@@ -64,10 +63,8 @@ type FichesTableProps = {
 
 export const FichesTable: React.FC<FichesTableProps> = (props) => {
 
-    const notesDrawer = useDisclosure()
     const navigate = useNavigate()
     const fiches = useApiAffairesFichesRetrieve({ pathParams: { id: props.affaireId } })
-    const notes = useApiNotesAffaireList({  pathParams: { affaireId: props.affaireId } })
 
 	return <Box className='not-striped' w='100%'>
 
@@ -79,9 +76,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                 title: 'Fiches',
                 customComponent: () => <HStack spacing='1em'>
                     <AddFicheModele affaireId={props.affaireId} refetch={fiches.refetch}/>
-                    <Button onClick={notesDrawer.onOpen} variant='outline' colorScheme='black'  size='sm'>
-                        Notes <Icon as={HiOutlineMenu} ml='1em'/>
-                    </Button>
+                    <AffaireNotesDrawer affaireId={props.affaireId}/>
                 </HStack>
 
             }}
@@ -137,20 +132,6 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
             }}
             loadingSkeletonRowsCount={3}
         />  
-
-        <Drawer placement='right' onClose={notesDrawer.onClose} isOpen={notesDrawer.isOpen}>
-            <DrawerOverlay />
-            <DrawerContent>
-                <DrawerBody
-                    paddingY='2em'
-                    paddingX='2em'
-                >
-                    {notes.isLoading && <Spinner />}
-                    {notes.isError && <p>Erreur lors du chargement des notes</p>}
-                    {notes.data && <AffaireNotes notes={notes.data} affaireId={props.affaireId} refetch={notes.refetch}/>}
-                </DrawerBody>
-            </DrawerContent>
-        </Drawer>   
 
     </Box>
 }
