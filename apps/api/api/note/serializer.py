@@ -3,7 +3,7 @@ from .models import Note
 
 
 class NoteDetail(serializers.ModelSerializer):
-    user = serializers.CharField(source="user.name", read_only=True)
+    user = serializers.SlugRelatedField(read_only=True, slug_field="name")
 
     class Meta:
         model = Note

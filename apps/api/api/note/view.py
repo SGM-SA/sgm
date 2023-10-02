@@ -36,7 +36,6 @@ class NoteRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
     summary="Liste des Notes par Affaire",
     description="Récupère toutes les notes associées à une affaire donnée, ordonnées par date de création. La première note est la description de l'affaire.",
     tags=["Note"],
-    # affaire_id as path parameter
     responses={200: NoteDetail(many=True), 404: None},
 )
 class AffaireNotesListView(APIView):
@@ -49,7 +48,6 @@ class AffaireNotesListView(APIView):
 
         notes = Note.objects.filter(affaire=affaire).order_by("date_creation")
 
-        # ajout de la description de l'affaire en première note
         description_as_note = Note(
             contenu=affaire.description,
             date_creation=datetime.combine(affaire.date_creation, time.min),
@@ -58,11 +56,10 @@ class AffaireNotesListView(APIView):
         return NoteDetail([description_as_note] + list(notes), many=True).data
 
     def get(self, request, *args, **kwargs):
-
         affaire_id = self.kwargs["affaire_id"]
 
         try:
-            affaire = Affaire.objects.get(id=affaire_id)
+            Affaire.objects.get(id=affaire_id)
         except Affaire.DoesNotExist:
             return Response(status=404)
 
