@@ -245,8 +245,6 @@ export function Table<TData>(props: TableProps<TData>) {
     }, [internalSorting, props.sortable])
 
     useEffect(() => {
-
-        console.log(props.rowExpansion?.expandedByDefault)
         if (props.rowExpansion?.enabled && props.rowExpansion.expandedByDefault) {
             table.toggleAllRowsExpanded()
         }
