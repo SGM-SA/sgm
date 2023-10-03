@@ -1,0 +1,1 @@
+export const reverse = (array: Array<any>) => array.map(array.pop, [... array])
