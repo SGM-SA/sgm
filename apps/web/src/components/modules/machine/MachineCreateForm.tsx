@@ -52,7 +52,7 @@ export const MachineCreateForm: React.FC<MachineCreateFormProps> = (props) => {
             Ajouter une machine
         </Button>
 
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>

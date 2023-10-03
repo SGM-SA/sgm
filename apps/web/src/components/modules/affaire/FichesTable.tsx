@@ -100,7 +100,10 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                 newRow={() => {
                     fetchApiFichesCreate({
                         body: { affaire: props.affaireId }
-                    }).then(() => fiches.refetch())
+                    }).then(() => {
+                        fiches.refetch()
+                        toast.success('Fiche créée')
+                    })
                 }}
                 rowSelection={{
                     enabled: true,

@@ -680,7 +680,12 @@ paths:
   /api/etapes/delete:
     post:
       operationId: api_etapes_delete_create
-      description: Bulk delete d'objets en fonction de leur id
+      description: |-
+        Bulk delete d'objets en fonction de leur id,
+        permet de supprimer plusieurs objets en même temps ou de les désactiver
+        query_set: queryset des objets à supprimer
+        disable: booléen, si True désactive les objets au lieu de les supprimer
+        disable_field: champ à modifier pour désactiver les objets
       summary: Bulk delete d'Etapes
       tags:
       - Etape
@@ -1311,7 +1316,12 @@ paths:
   /api/machines/delete:
     post:
       operationId: api_machines_delete_create
-      description: Bulk delete d'objets en fonction de leur id
+      description: |-
+        Bulk delete d'objets en fonction de leur id,
+        permet de supprimer plusieurs objets en même temps ou de les désactiver
+        query_set: queryset des objets à supprimer
+        disable: booléen, si True désactive les objets au lieu de les supprimer
+        disable_field: champ à modifier pour désactiver les objets
       summary: Bulk delete de Machines
       tags:
       - Machine
@@ -1482,24 +1492,37 @@ paths:
               schema:
                 $ref: '#/components/schemas/EtapeModeleDetail'
           description: ''
-    delete:
-      operationId: api_modeles_etapes_destroy
-      description: gestion étape modèle
-      summary: Etape Modele
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
+  /api/modeles/etapes/delete:
+    post:
+      operationId: api_modeles_etapes_delete_create
+      description: |-
+        Bulk delete d'objets en fonction de leur id,
+        permet de supprimer plusieurs objets en même temps ou de les désactiver
+        query_set: queryset des objets à supprimer
+        disable: booléen, si True désactive les objets au lieu de les supprimer
+        disable_field: champ à modifier pour désactiver les objets
+      summary: Bulk delete d'Etapes Modele
       tags:
       - Etape Modele
-      - Modele
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteRequest'
+        required: true
       security:
       - jwtAuth: []
       - {}
       responses:
         '204':
+          description: No response body
+        '400':
           description: No response body
   /api/modeles/fiches/:
     get:
@@ -1567,7 +1590,6 @@ paths:
         required: true
       tags:
       - Fiche Modele
-      - Modele
       security:
       - jwtAuth: []
       - {}
@@ -1590,7 +1612,6 @@ paths:
         required: true
       tags:
       - Fiche Modele
-      - Modele
       requestBody:
         content:
           application/json:
@@ -1624,7 +1645,6 @@ paths:
         required: true
       tags:
       - Fiche Modele
-      - Modele
       requestBody:
         content:
           application/json:
@@ -1646,25 +1666,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/FicheModeleEtEtapes'
           description: ''
-    delete:
-      operationId: api_modeles_fiches_destroy
-      description: Permet de gérer une fiche modèle
-      summary: Fiche Modele
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - Fiche Modele
-      - Modele
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '204':
-          description: No response body
   /api/modeles/fiches/copy:
     post:
       operationId: api_modeles_fiches_copy_create
@@ -1685,7 +1686,6 @@ paths:
         required: true
       tags:
       - Fiche Modele
-      - Modele
       security:
       - jwtAuth: []
       - {}
@@ -1708,6 +1708,38 @@ paths:
               schema:
                 type: string
           description: ''
+  /api/modeles/fiches/delete:
+    post:
+      operationId: api_modeles_fiches_delete_create
+      description: |-
+        Bulk delete d'objets en fonction de leur id,
+        permet de supprimer plusieurs objets en même temps ou de les désactiver
+        query_set: queryset des objets à supprimer
+        disable: booléen, si True désactive les objets au lieu de les supprimer
+        disable_field: champ à modifier pour désactiver les objets
+      summary: Bulk delete de Fiches Modèle
+      tags:
+      - Fiche Modele
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BulkDeleteRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+        '400':
+          description: No response body
   /api/modeles/fiches/options:
     get:
       operationId: api_modeles_fiches_options_list
@@ -1729,7 +1761,6 @@ paths:
           type: integer
       tags:
       - Fiche Modele
-      - Modele
       security:
       - jwtAuth: []
       - {}
@@ -2270,7 +2301,12 @@ paths:
   /api/zones/delete:
     post:
       operationId: api_zones_delete_create
-      description: Bulk delete d'objets en fonction de leur id
+      description: |-
+        Bulk delete d'objets en fonction de leur id,
+        permet de supprimer plusieurs objets en même temps ou de les désactiver
+        query_set: queryset des objets à supprimer
+        disable: booléen, si True désactive les objets au lieu de les supprimer
+        disable_field: champ à modifier pour désactiver les objets
       summary: Bulk delete de Zone
       tags:
       - Zone
@@ -3848,6 +3884,8 @@ components:
           readOnly: true
         user:
           type: string
+          nullable: true
+          title: Nom
           readOnly: true
         contenu:
           type: string

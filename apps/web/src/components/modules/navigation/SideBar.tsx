@@ -56,7 +56,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
                     </SideBarSection>
 
                     <SideBarSection title='Modèles'>
-                        <SideBarLink icon={HiTemplate} text='Fiches modèles' to='/' />
+                        <SideBarLink icon={HiTemplate} text='Fiches modèles' to='/modeles' />
                     </SideBarSection>
 
                     <SideBarSection separator={false}>

@@ -953,7 +953,7 @@ export type NoteCreateRequest = {
 
 export type NoteDetail = {
 	id: number
-	user: string
+	user: string | null
 	contenu: string
 	/**
 	 * @format date-time

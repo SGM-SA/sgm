@@ -1,6 +1,7 @@
-import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
 import { fetchApiModelesFichesCopyCreate, useApiModelesFichesOptionsList } from '@sgm/openapi'
 import React, { useState } from 'react'
+import { Select } from 'chakra-react-select'
 
 type AddFicheModeleProps = {
     affaireId: number
@@ -36,7 +37,7 @@ export const AddFicheModele: React.FC<AddFicheModeleProps> = (props) => {
             Ajouter fiche modèle
         </Button>
 
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>
@@ -45,15 +46,13 @@ export const AddFicheModele: React.FC<AddFicheModeleProps> = (props) => {
                 <ModalCloseButton />
 
                 <ModalBody>
-                    <Select placeholder='Choisir un modèle' onChange={(e) => {
-                        const value = e.target.value 
-                        if (value === '') setSelectedModele(null)
-                        else setSelectedModele(parseInt(value))
-                    }}>
-                        {data?.results?.map((modele) => (
-                            <option value={modele.value}>{modele.name}</option>
-                        ))}
-                    </Select>
+                    <Select 
+                        placeholder='Choisir un modèle' 
+                        options={data?.results?.map((modele) => ({ value: modele.value, label: modele.name }))}
+                        onChange={(data) => {
+                            setSelectedModele(data ? parseInt(data.value) : null)
+                        }}
+                    />
                 </ModalBody>
 
                 <ModalFooter>
