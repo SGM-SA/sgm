@@ -2,6 +2,7 @@ import { Button, Textarea, VStack } from '@chakra-ui/react'
 import { NoteDetail, fetchApiNotesCreate } from '@sgm/openapi'
 import React, { KeyboardEvent, useRef } from 'react'
 import { AffaireNote } from './AffaireNote'
+import { reverse } from '@sgm/utils'
 
 type AffaireNotesProps = {
     notes: NoteDetail[]
@@ -41,14 +42,22 @@ export const AffaireNotes: React.FC<AffaireNotesProps> = (props) => {
 
 	return <VStack
         spacing={4}
-        w='100%'
+        h='100%'
+        position='relative'
     >
         
         {/* Display notes */}
-        {props.notes.map(note => <AffaireNote key={note.user + note.date_creation} note={note} />)}
+        <VStack
+            spacing={4}
+            h='auto'
+            w='100%'
+            overflowY='scroll'
+        >
+            {reverse(props.notes).map(note => <AffaireNote key={note.user + note.date_creation} note={note} />)}
+        </VStack>
 
         {/* Add note */}
-        <VStack w='100%'>
+        <VStack h='auto' w='100%'>
             <Textarea 
                 ref={textareaRef}
                 placeholder='Ajouter une note' 
