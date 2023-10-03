@@ -48,6 +48,9 @@ class MachineTest(APITestCase):
         self.assertEqual(response.data["nom_machine"], "machine1_updated")
 
     def test_bulk_delete(self):
+        """
+        Test bulk delete, les machines ne doivent pas être supprimées, mais seulement désactivées
+        """
         response = self.client.post(
             "/api/machines/delete",
             {
@@ -55,6 +58,6 @@ class MachineTest(APITestCase):
             },
             format="json",
         )
-        print(Machine.objects.all())
         self.assertEqual(response.status_code, 204)
-        self.assertEqual(Machine.objects.count(), 0)
+        self.assertEqual(Machine.objects.count(), 2)
+        self.assertEqual(Machine.objects.filter(est_active=True).count(), 0)
