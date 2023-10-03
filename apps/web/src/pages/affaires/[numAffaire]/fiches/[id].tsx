@@ -38,9 +38,10 @@ const FichePage: React.FC = () => {
         }),
         columnHelper.accessor('groupe_machine', {
             header: 'Groupe machine',
-            cell: (cell) => <DefaultTableCell {...cell}>
-                {groupeMachines.results?.find(groupeMachine => groupeMachine.id === cell.getValue())?.nom_groupe || ''}
-            </DefaultTableCell>,
+            cell: (cell) => 
+                <DefaultTableCell {...cell}>
+                    {groupeMachines.results?.find(groupeMachine => groupeMachine.id === cell.getValue())?.nom_groupe || ''}
+                </DefaultTableCell>,
             meta: createColumnMeta({
                 editable: true,
                 type: 'select',
@@ -62,7 +63,7 @@ const FichePage: React.FC = () => {
             })
         }),
         columnHelper.accessor('plan', {
-            header: 'REP',
+            header: 'Plan',
             meta: createColumnMeta({
                 editable: true,
                 type: 'text',

@@ -1442,7 +1442,11 @@ export type ApiEtapesDeleteCreateVariables = {
 } & ApiContext['fetcherOptions']
 
 /**
- * Bulk delete d'objets en fonction de leur id
+ * Bulk delete d'objets en fonction de leur id,
+ * permet de supprimer plusieurs objets en même temps ou de les désactiver
+ * query_set: queryset des objets à supprimer
+ * disable: booléen, si True désactive les objets au lieu de les supprimer
+ * disable_field: champ à modifier pour désactiver les objets
  */
 export const fetchApiEtapesDeleteCreate = (
 	variables: ApiEtapesDeleteCreateVariables,
@@ -1458,7 +1462,11 @@ export const fetchApiEtapesDeleteCreate = (
 	>({ url: '/api/etapes/delete', method: 'post', ...variables, signal })
 
 /**
- * Bulk delete d'objets en fonction de leur id
+ * Bulk delete d'objets en fonction de leur id,
+ * permet de supprimer plusieurs objets en même temps ou de les désactiver
+ * query_set: queryset des objets à supprimer
+ * disable: booléen, si True désactive les objets au lieu de les supprimer
+ * disable_field: champ à modifier pour désactiver les objets
  */
 export const useApiEtapesDeleteCreate = (
 	options?: Omit<
@@ -2738,7 +2746,11 @@ export type ApiMachinesDeleteCreateVariables = {
 } & ApiContext['fetcherOptions']
 
 /**
- * Bulk delete d'objets en fonction de leur id
+ * Bulk delete d'objets en fonction de leur id,
+ * permet de supprimer plusieurs objets en même temps ou de les désactiver
+ * query_set: queryset des objets à supprimer
+ * disable: booléen, si True désactive les objets au lieu de les supprimer
+ * disable_field: champ à modifier pour désactiver les objets
  */
 export const fetchApiMachinesDeleteCreate = (
 	variables: ApiMachinesDeleteCreateVariables,
@@ -2754,7 +2766,11 @@ export const fetchApiMachinesDeleteCreate = (
 	>({ url: '/api/machines/delete', method: 'post', ...variables, signal })
 
 /**
- * Bulk delete d'objets en fonction de leur id
+ * Bulk delete d'objets en fonction de leur id,
+ * permet de supprimer plusieurs objets en même temps ou de les désactiver
+ * query_set: queryset des objets à supprimer
+ * disable: booléen, si True désactive les objets au lieu de les supprimer
+ * disable_field: champ à modifier pour désactiver les objets
  */
 export const useApiMachinesDeleteCreate = (
 	options?: Omit<
@@ -3064,46 +3080,50 @@ export const useApiModelesEtapesPartialUpdate = (
 	})
 }
 
-export type ApiModelesEtapesDestroyPathParams = {
-	id: number
-}
+export type ApiModelesEtapesDeleteCreateError = Fetcher.ErrorWrapper<undefined>
 
-export type ApiModelesEtapesDestroyError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiModelesEtapesDestroyVariables = {
-	pathParams: ApiModelesEtapesDestroyPathParams
+export type ApiModelesEtapesDeleteCreateVariables = {
+	body: Schemas.BulkDeleteRequest
 } & ApiContext['fetcherOptions']
 
 /**
- * gestion étape modèle
+ * Bulk delete d'objets en fonction de leur id,
+ * permet de supprimer plusieurs objets en même temps ou de les désactiver
+ * query_set: queryset des objets à supprimer
+ * disable: booléen, si True désactive les objets au lieu de les supprimer
+ * disable_field: champ à modifier pour désactiver les objets
  */
-export const fetchApiModelesEtapesDestroy = (
-	variables: ApiModelesEtapesDestroyVariables,
+export const fetchApiModelesEtapesDeleteCreate = (
+	variables: ApiModelesEtapesDeleteCreateVariables,
 	signal?: AbortSignal
 ) =>
 	apiFetch<
 		undefined,
-		ApiModelesEtapesDestroyError,
-		undefined,
+		ApiModelesEtapesDeleteCreateError,
+		Schemas.BulkDeleteRequest,
 		{},
 		{},
-		ApiModelesEtapesDestroyPathParams
+		{}
 	>({
-		url: '/api/modeles/etapes/{id}',
-		method: 'delete',
+		url: '/api/modeles/etapes/delete',
+		method: 'post',
 		...variables,
 		signal,
 	})
 
 /**
- * gestion étape modèle
+ * Bulk delete d'objets en fonction de leur id,
+ * permet de supprimer plusieurs objets en même temps ou de les désactiver
+ * query_set: queryset des objets à supprimer
+ * disable: booléen, si True désactive les objets au lieu de les supprimer
+ * disable_field: champ à modifier pour désactiver les objets
  */
-export const useApiModelesEtapesDestroy = (
+export const useApiModelesEtapesDeleteCreate = (
 	options?: Omit<
 		reactQuery.UseMutationOptions<
 			undefined,
-			ApiModelesEtapesDestroyError,
-			ApiModelesEtapesDestroyVariables
+			ApiModelesEtapesDeleteCreateError,
+			ApiModelesEtapesDeleteCreateVariables
 		>,
 		'mutationFn'
 	>
@@ -3111,11 +3131,14 @@ export const useApiModelesEtapesDestroy = (
 	const { fetcherOptions } = useApiContext()
 	return reactQuery.useMutation<
 		undefined,
-		ApiModelesEtapesDestroyError,
-		ApiModelesEtapesDestroyVariables
+		ApiModelesEtapesDeleteCreateError,
+		ApiModelesEtapesDeleteCreateVariables
 	>({
-		mutationFn: (variables: ApiModelesEtapesDestroyVariables) =>
-			fetchApiModelesEtapesDestroy({ ...fetcherOptions, ...variables }),
+		mutationFn: (variables: ApiModelesEtapesDeleteCreateVariables) =>
+			fetchApiModelesEtapesDeleteCreate({
+				...fetcherOptions,
+				...variables,
+			}),
 		...options,
 	})
 }
@@ -3408,62 +3431,6 @@ export const useApiModelesFichesPartialUpdate = (
 	})
 }
 
-export type ApiModelesFichesDestroyPathParams = {
-	id: number
-}
-
-export type ApiModelesFichesDestroyError = Fetcher.ErrorWrapper<undefined>
-
-export type ApiModelesFichesDestroyVariables = {
-	pathParams: ApiModelesFichesDestroyPathParams
-} & ApiContext['fetcherOptions']
-
-/**
- * Permet de gérer une fiche modèle
- */
-export const fetchApiModelesFichesDestroy = (
-	variables: ApiModelesFichesDestroyVariables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		undefined,
-		ApiModelesFichesDestroyError,
-		undefined,
-		{},
-		{},
-		ApiModelesFichesDestroyPathParams
-	>({
-		url: '/api/modeles/fiches/{id}',
-		method: 'delete',
-		...variables,
-		signal,
-	})
-
-/**
- * Permet de gérer une fiche modèle
- */
-export const useApiModelesFichesDestroy = (
-	options?: Omit<
-		reactQuery.UseMutationOptions<
-			undefined,
-			ApiModelesFichesDestroyError,
-			ApiModelesFichesDestroyVariables
-		>,
-		'mutationFn'
-	>
-) => {
-	const { fetcherOptions } = useApiContext()
-	return reactQuery.useMutation<
-		undefined,
-		ApiModelesFichesDestroyError,
-		ApiModelesFichesDestroyVariables
-	>({
-		mutationFn: (variables: ApiModelesFichesDestroyVariables) =>
-			fetchApiModelesFichesDestroy({ ...fetcherOptions, ...variables }),
-		...options,
-	})
-}
-
 export type ApiModelesFichesCopyCreateQueryParams = {
 	/**
 	 * id de l'affaire vers laquelle copier la fiche modèle
@@ -3527,6 +3494,69 @@ export const useApiModelesFichesCopyCreate = (
 	>({
 		mutationFn: (variables: ApiModelesFichesCopyCreateVariables) =>
 			fetchApiModelesFichesCopyCreate({
+				...fetcherOptions,
+				...variables,
+			}),
+		...options,
+	})
+}
+
+export type ApiModelesFichesDeleteCreateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiModelesFichesDeleteCreateVariables = {
+	body: Schemas.BulkDeleteRequest
+} & ApiContext['fetcherOptions']
+
+/**
+ * Bulk delete d'objets en fonction de leur id,
+ * permet de supprimer plusieurs objets en même temps ou de les désactiver
+ * query_set: queryset des objets à supprimer
+ * disable: booléen, si True désactive les objets au lieu de les supprimer
+ * disable_field: champ à modifier pour désactiver les objets
+ */
+export const fetchApiModelesFichesDeleteCreate = (
+	variables: ApiModelesFichesDeleteCreateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		undefined,
+		ApiModelesFichesDeleteCreateError,
+		Schemas.BulkDeleteRequest,
+		{},
+		{},
+		{}
+	>({
+		url: '/api/modeles/fiches/delete',
+		method: 'post',
+		...variables,
+		signal,
+	})
+
+/**
+ * Bulk delete d'objets en fonction de leur id,
+ * permet de supprimer plusieurs objets en même temps ou de les désactiver
+ * query_set: queryset des objets à supprimer
+ * disable: booléen, si True désactive les objets au lieu de les supprimer
+ * disable_field: champ à modifier pour désactiver les objets
+ */
+export const useApiModelesFichesDeleteCreate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			undefined,
+			ApiModelesFichesDeleteCreateError,
+			ApiModelesFichesDeleteCreateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		undefined,
+		ApiModelesFichesDeleteCreateError,
+		ApiModelesFichesDeleteCreateVariables
+	>({
+		mutationFn: (variables: ApiModelesFichesDeleteCreateVariables) =>
+			fetchApiModelesFichesDeleteCreate({
 				...fetcherOptions,
 				...variables,
 			}),
@@ -4739,7 +4769,11 @@ export type ApiZonesDeleteCreateVariables = {
 } & ApiContext['fetcherOptions']
 
 /**
- * Bulk delete d'objets en fonction de leur id
+ * Bulk delete d'objets en fonction de leur id,
+ * permet de supprimer plusieurs objets en même temps ou de les désactiver
+ * query_set: queryset des objets à supprimer
+ * disable: booléen, si True désactive les objets au lieu de les supprimer
+ * disable_field: champ à modifier pour désactiver les objets
  */
 export const fetchApiZonesDeleteCreate = (
 	variables: ApiZonesDeleteCreateVariables,
@@ -4755,7 +4789,11 @@ export const fetchApiZonesDeleteCreate = (
 	>({ url: '/api/zones/delete', method: 'post', ...variables, signal })
 
 /**
- * Bulk delete d'objets en fonction de leur id
+ * Bulk delete d'objets en fonction de leur id,
+ * permet de supprimer plusieurs objets en même temps ou de les désactiver
+ * query_set: queryset des objets à supprimer
+ * disable: booléen, si True désactive les objets au lieu de les supprimer
+ * disable_field: champ à modifier pour désactiver les objets
  */
 export const useApiZonesDeleteCreate = (
 	options?: Omit<
