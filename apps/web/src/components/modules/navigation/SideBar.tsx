@@ -1,4 +1,4 @@
-import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, IconButton, Image, useDisclosure } from '@chakra-ui/react'
+import { Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerOverlay, IconButton, Image, useDisclosure } from '@chakra-ui/react'
 import React from 'react'
 import { BsFillCalendar2WeekFill, BsGearFill } from 'react-icons/bs'
 import { RiComputerLine } from 'react-icons/ri'
@@ -64,6 +64,18 @@ export const SideBar: React.FC<SideBarProps> = () => {
                     </SideBarSection>
 
                 </DrawerBody>
+
+                <DrawerFooter justifyContent='center'>
+                    <Button as='a'
+                        colorScheme='blue'
+                        backgroundColor='primary'
+                        w='100%'
+                        href='mailto:contact@cloudflow.info'
+                        target='_blank'
+                    >
+                        Contacter le support
+                    </Button>
+                </DrawerFooter>
             </DrawerContent>
 
         </Drawer>
