@@ -21,7 +21,7 @@ from drf_spectacular.utils import (
     ),
 )
 class MachineListCreate(generics.ListCreateAPIView):
-    queryset = Machine.objects.all().filter(est_active=True)
+    queryset = Machine.objects.all().filter(est_active=True).order_by("nom_machine")
     serializer_class = MachineDetailSerializer
 
 
@@ -53,3 +53,5 @@ class MachineDetail(generics.RetrieveUpdateAPIView):
 )
 class MachinesBulkDelete(BulkDeleteView):
     queryset = Machine.objects.all()
+    disable = True
+    active_field = "est_active"

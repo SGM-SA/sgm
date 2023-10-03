@@ -1,3 +1,4 @@
+from api.commun.views import BulkDeleteView
 from api.etape_modele.models import EtapeModele
 from api.etape_modele.serializer import (
     EtapeModeleDetail,
@@ -22,6 +23,11 @@ class EtapeModeleListCreate(generics.ListCreateAPIView):
     description="gestion étape modèle",
     tags=["Etape Modele", "Modele"],
 )
-class EtapeModeleRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+class EtapeModeleRetrieveUpdate(generics.RetrieveUpdateAPIView):
     queryset = EtapeModele.objects.all()
     serializer_class = EtapeModeleDetail
+
+
+@extend_schema(summary="Bulk delete d'Etapes Modele", tags=["Etape Modele"])
+class EtapeModeleBulkDelete(BulkDeleteView):
+    queryset = EtapeModele.objects.all()

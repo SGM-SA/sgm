@@ -1,6 +1,7 @@
 from drf_spectacular.types import OpenApiTypes
 from rest_framework.response import Response
 
+from api.commun.views import BulkDeleteView
 from api.fiche_modele.models import FicheModele
 from api.fiche.models import Fiche
 from api.etape.models import Etape
@@ -41,9 +42,9 @@ class FicheModeleListCreateView(generics.ListCreateAPIView):
 @extend_schema(
     summary="Fiche Modele",
     description="Permet de gérer une fiche modèle",
-    tags=["Fiche Modele", "Modele"],
+    tags=["Fiche Modele"],
 )
-class FicheModeleDetailView(generics.RetrieveUpdateDestroyAPIView):
+class FicheModeleDetailView(generics.RetrieveUpdateAPIView):
     queryset = FicheModele.objects.all()
     serializer_class = FicheModeleEtEtapes
 
@@ -51,7 +52,7 @@ class FicheModeleDetailView(generics.RetrieveUpdateDestroyAPIView):
 @extend_schema(
     summary="Fiche Modele Titre",
     description="Permet de récupérer les titres des fiches modèle sous formes d'options pour un select",
-    tags=["Fiche Modele", "Modele"],
+    tags=["Fiche Modele"],
 )
 class FicheModeleOptionsView(generics.ListAPIView):
     queryset = FicheModele.objects.all()
@@ -65,7 +66,7 @@ class FicheModeleOptionsView(generics.ListAPIView):
     post=extend_schema(
         summary="Copie Fiche Modele",
         description="Permet de copier une fiche modèle vers une affaire",
-        tags=["Fiche Modele", "Modele"],
+        tags=["Fiche Modele"],
         parameters=[
             OpenApiParameter(
                 name="affaire",
@@ -143,3 +144,11 @@ class CopieModeleToAffaire(generics.GenericAPIView):
             )
         except Exception as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@extend_schema(
+    summary="Bulk delete de Fiches Modèle",
+    tags=["Fiche Modele"],
+)
+class FicheModeleBulkDelete(BulkDeleteView):
+    queryset = FicheModele.objects.all()

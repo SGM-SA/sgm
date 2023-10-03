@@ -5,6 +5,7 @@ from api.fiche_modele.view import (
     FicheModeleDetailView,
     CopieModeleToAffaire,
     FicheModeleOptionsView,
+    FicheModeleBulkDelete,
 )
 
 urlpatterns = [
@@ -12,4 +13,5 @@ urlpatterns = [
     path("fiches/<int:pk>", FicheModeleDetailView.as_view()),
     path("fiches/copy", CopieModeleToAffaire.as_view()),
     path("fiches/options", FicheModeleOptionsView.as_view()),
+    path("fiches/delete", FicheModeleBulkDelete.as_view()),
 ]
