@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: http-ingress
+  namespace: sgm-staging
+spec:
+  rules:
+  - http:
+      paths:
+      # pour l'instant, on ne fait pas de sous-domaine
+      - path: /sgm/
+        pathType: Prefix
+        backend:
+          service:
+            name: sgm-api-staging-service
+            port:
+              number: 8000
