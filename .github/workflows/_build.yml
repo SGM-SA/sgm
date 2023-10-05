@@ -7,12 +7,6 @@ on:
       affected_projects:
         type: string
         required: true
-      nx_base:
-        type: string
-        required: true
-      nx_head:
-        type: string
-        required: true
       should_upload_artifacts:
         type: boolean
         required: true
@@ -25,8 +19,6 @@ jobs:
     # ignore the error
     if: inputs.affected_projects != '[]'
     env:
-      NX_BASE: ${{ inputs.nx_base }}
-      NX_HEAD: ${{ inputs.nx_head }}
       ENV: DEV # for the api project
 
     strategy:
@@ -112,13 +104,13 @@ jobs:
 
       - name: Lint
         if: matrix.project != 'api'
-        run: pnpm nx affected -t lint --exclude '*,!${{ matrix.project }}'
+        run: pnpm nx run ${{ matrix.project }}:lint
 
       - name: Build
-        run: pnpm nx affected -t build --exclude '*,!${{ matrix.project }}'
+        run: pnpm nx run ${{ matrix.project }}:build
 
       - name: Test
-        run: pnpm nx affected -t test --exclude '*,!${{ matrix.project }}'
+        run: pnpm nx run ${{ matrix.project }}:test
 
       #---------------------------
       #        Artifacts

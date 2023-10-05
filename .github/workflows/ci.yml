@@ -15,7 +15,5 @@ jobs:
     uses: ./.github/workflows/_build.yml
     with:
       affected_projects: ${{ needs.affected.outputs.affected_projects }}
-      nx_head: ${{ needs.affected.outputs.nx_head }}
-      nx_base: ${{ needs.affected.outputs.nx_base }}
       should_upload_artifacts: false
     needs: affected

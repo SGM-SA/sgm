@@ -3,6 +3,7 @@ name: Component / Affected
 on:
   # Allows you to include this workflow in other workflows
   workflow_call:
+    
     outputs:
       affected_projects:
         description: 'Affected projects'
@@ -13,6 +14,11 @@ on:
       nx_head:
         description: 'Head SHA for Nx'
         value: ${{ jobs.affected.outputs.nx_head }}
+    
+    inputs:
+      all_projects:
+        type: boolean
+        required: false
 
 jobs:
 
@@ -64,6 +70,6 @@ jobs:
           echo "affected_projects=${affected_projects}" >> $GITHUB_OUTPUT
 
     outputs:
-      affected_projects: ${{ steps.get-projects-to-build.outputs.affected_projects }}
+      affected_projects: ${{ inputs.all_projects && '["api","web"]' || steps.get-projects-to-build.outputs.affected_projects}}
       nx_base: ${{ steps.set-shas.outputs.base }}
       nx_head: ${{ steps.set-shas.outputs.head }}
