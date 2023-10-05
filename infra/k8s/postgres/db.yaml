@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: sgm-staging
+  labels:
+    app: postgres
+    name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+      task: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+        task: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: kartoza/postgis:12.0
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                  secretKeyRef:
+                      name: postgres-secret
+                      key: POSTGRES_NAME
+            - name: POSTGRES_USER
+              valueFrom:
+                  secretKeyRef:
+                      name: postgres-secret
+                      key: POSTGRES_USER
+            - name: POSTGRES_PASS
+              valueFrom:
+                  secretKeyRef:
+                      name: postgres-secret
+                      key: POSTGRES_PASSWORD
+
+            - name: --auth
+              value: "md5"
+            - name: POSTGRES_MULTIPLE_EXTENSIONS
+              value: "postgis,hstore,postgis_topology"
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "250m"
+            limits:
+              memory: "200Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-pvc
