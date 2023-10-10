@@ -1,17 +1,20 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
-  name: http-ingress
+  name: api-ingress
   namespace: sgm-staging
+
 spec:
-  rules:
-  - http:
-      paths:
-      # pour l'instant, on ne fait pas de sous-domaine
-      - path: /sgm/
-        pathType: Prefix
-        backend:
-          service:
-            name: sgm-api-staging-service
-            port:
-              number: 8000
+  entryPoints:
+    - web
+    - websecure
+  routes:
+  - match: Host(`sgm-staging-api.cloudflow.info`)
+    kind: Rule
+    services:
+    - name: sgm-api-staging-service
+      port: 8000
+
+  tls:
+    secretName: cloudflow-api-certificate
+
