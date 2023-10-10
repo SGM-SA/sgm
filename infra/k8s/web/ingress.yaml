@@ -1,7 +1,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: api-ingress
+  name: web-ingress
   namespace: sgm-staging
 
 spec:
@@ -9,12 +9,11 @@ spec:
     - web
     - websecure
   routes:
-  - match: Host(`sgm-staging-api.cloudflow.info`)
+  - match: Host(`sgm.cloudflow.info`)
     kind: Rule
     services:
-    - name: sgm-api-staging-service
-      port: 8000
+    - name: sgm-web-staging-service
+      port: 80
 
   tls:
-    secretName: cloudflow-api-certificate
-
+      secretName: cloudflow-web-certificate
