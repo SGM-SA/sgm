@@ -5,20 +5,21 @@ on:
     branches:
       - 'main'
       - 'release/**'
+  workflow_dispatch:
 
 jobs:
 
   affected:
     uses: ./.github/workflows/_affected.yml
+    with:
+      all_projects: true
 
   build:
     uses: ./.github/workflows/_build.yml
     with:
       affected_projects: ${{ needs.affected.outputs.affected_projects }}
-      nx_head: ${{ needs.affected.outputs.nx_head }}
-      nx_base: ${{ needs.affected.outputs.nx_base }}
       should_upload_artifacts: true
-    needs: 
+    needs:
       - affected
 
   deploy:

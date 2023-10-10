@@ -25,7 +25,6 @@ export const SideBar: React.FC<SideBarProps> = () => {
             top='1rem'
             left='1rem'
             zIndex={1}
-            
         />
 
         <Drawer placement='left' onClose={onClose} isOpen={isOpen} >
