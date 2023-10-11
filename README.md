@@ -53,6 +53,7 @@ This ensures that the client is always up to date with the API.
 
 The output of the codegen is located in `libs/openapi/src/generated` and the openapi specification is located in `libs/openapi/src/openapi.yaml`.
 
+
 Concretly, the codegen generates :
 - `apiSchemas.ts`: all the typescript models synced on the request input and response data output of the api controllers.
 - `apiComponents.ts`: `@tanstack/query` (previously `react-query`) hooks for each API endpoint their associated fetch functions for classic async/await calls.
