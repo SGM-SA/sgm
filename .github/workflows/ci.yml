@@ -16,4 +16,5 @@ jobs:
     with:
       affected_projects: ${{ needs.affected.outputs.affected_projects }}
       should_upload_artifacts: false
+      node_env: development
     needs: affected
