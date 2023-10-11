@@ -10,6 +10,9 @@ on:
       should_upload_artifacts:
         type: boolean
         required: true
+      node_env:
+        type: string
+        required: true
 
 jobs:
 
@@ -20,6 +23,7 @@ jobs:
     if: inputs.affected_projects != '[]'
     env:
       ENV: DEV # for the api project
+      NODE_ENV: ${{ inputs.node_env }}
 
     strategy:
       matrix:
