@@ -1,5 +1,5 @@
 import { EnvironmentConfig } from './type'
 
 export const environment: EnvironmentConfig = {
-    apiBaseUrl: 'http://sgm-staging-api.cloudflow.fr',
+    apiBaseUrl: 'https://sgm-staging-api.cloudflow.info',
 }
