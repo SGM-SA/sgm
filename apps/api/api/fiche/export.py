@@ -105,7 +105,10 @@ def export_pdf(fiche: Fiche):
     data = table_content(etapes, width / 15)
 
     # MERGE DU HEADER ET DE LA DATA
-    all_data = [header_data] + data
+    if data:
+        all_data = [header_data] + data
+    else:
+        all_data = [header_data]
 
     # CREATION TABLE BODY
     new_table = Table(all_data, colWidths=col_widths)
