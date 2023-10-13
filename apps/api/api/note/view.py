@@ -53,7 +53,18 @@ class AffaireNotesListView(APIView):
             date_creation=datetime.combine(affaire.date_creation, time.min),
             user=None,
         )
-        return NoteDetail([description_as_note] + list(notes), many=True).data
+
+        observation_as_note = Note(
+            contenu="" if affaire.observation is None else affaire.observation,
+            date_creation=datetime.combine(affaire.date_creation, time.min),
+            user=None,
+        )
+
+        obervation_description = [description_as_note]
+        if affaire.observation is not "":
+            obervation_description.append(observation_as_note)
+
+        return NoteDetail(obervation_description + list(notes), many=True).data
 
     def get(self, request, *args, **kwargs):
         affaire_id = self.kwargs["affaire_id"]
