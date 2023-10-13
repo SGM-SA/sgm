@@ -1,8 +1,7 @@
 import { Button, Textarea, VStack } from '@chakra-ui/react'
 import { NoteDetail, fetchApiNotesCreate } from '@sgm/openapi'
-import React, { KeyboardEvent, useRef } from 'react'
+import React, { KeyboardEvent, useEffect, useRef } from 'react'
 import { AffaireNote } from './AffaireNote'
-import { reverse } from '@sgm/utils'
 
 type AffaireNotesProps = {
     notes: NoteDetail[]
@@ -13,6 +12,11 @@ type AffaireNotesProps = {
 export const AffaireNotes: React.FC<AffaireNotesProps> = (props) => {
 
     const textareaRef = useRef<HTMLTextAreaElement>(null)
+    const scrollRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }, [props.notes])
 
     const onEnterPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -48,12 +52,13 @@ export const AffaireNotes: React.FC<AffaireNotesProps> = (props) => {
         
         {/* Display notes */}
         <VStack
+            ref={scrollRef}
             spacing={4}
             h='auto'
             w='100%'
             overflowY='scroll'
         >
-            {reverse(props.notes).map(note => <AffaireNote key={note.user + note.date_creation} note={note} />)}
+            {props.notes.map(note => <AffaireNote key={note.user + note.date_creation} note={note} />)}
         </VStack>
 
         {/* Add note */}
