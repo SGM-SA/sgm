@@ -228,7 +228,7 @@ class FichesAjustageAPlanifierTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # 2 affaires avec des fiches d'ajustage à planifier
-        self.assertEqual(len(response.data["results"]), 2)
+        self.assertEqual(len(response.data), 2)
 
     def test_retour_fiche(self):
         """
@@ -239,13 +239,13 @@ class FichesAjustageAPlanifierTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # 2 affaires avec des fiches d'ajustage à planifier
-        self.assertEqual(len(response.data["results"]), 2)
+        self.assertEqual(len(response.data), 2)
 
         # 1 fiche pour l'affaire 1
-        self.assertEqual(len(response.data["results"][0]["fiches"]), 1)
+        self.assertEqual(len(response.data[0]["fiches"]), 1)
 
         # 2 fiches pour l'affaire 2
-        self.assertEqual(len(response.data["results"][1]["fiches"]), 2)
+        self.assertEqual(len(response.data[1]["fiches"]), 2)
 
     def test_retour_etape(self):
         """
@@ -257,13 +257,13 @@ class FichesAjustageAPlanifierTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # 1 étape pour la fiche 1
-        self.assertEqual(len(response.data["results"][0]["fiches"][0]["etapes"]), 1)
+        self.assertEqual(len(response.data[0]["fiches"][0]["etapes"]), 1)
 
         # 2 étapes pour la fiche 2
-        self.assertEqual(len(response.data["results"][1]["fiches"][0]["etapes"]), 2)
+        self.assertEqual(len(response.data[1]["fiches"][0]["etapes"]), 2)
 
         # 1 étape pour la fiche 3
-        self.assertEqual(len(response.data["results"][1]["fiches"][1]["etapes"]), 1)
+        self.assertEqual(len(response.data[1]["fiches"][1]["etapes"]), 1)
 
     def test_fiches_ajustage_a_planifier(self):
         url = "/api/fiches/ajustage/a_planifier"
@@ -276,7 +276,7 @@ class FichesAjustageAPlanifierTest(TestCase):
             self.etape1.id,
             [
                 etape["id"]
-                for etape in response.data["results"][0]["fiches"][0]["etapes"]
+                for etape in response.data[0]["fiches"][0]["etapes"]
             ],
         )
 
@@ -285,7 +285,7 @@ class FichesAjustageAPlanifierTest(TestCase):
             self.etape2.id,
             [
                 etape["id"]
-                for etape in response.data["results"][1]["fiches"][0]["etapes"]
+                for etape in response.data[1]["fiches"][0]["etapes"]
             ],
         )
 
@@ -294,7 +294,7 @@ class FichesAjustageAPlanifierTest(TestCase):
             self.etape3.id,
             [
                 etape["id"]
-                for etape in response.data["results"][1]["fiches"][0]["etapes"]
+                for etape in response.data[1]["fiches"][0]["etapes"]
             ],
         )
 
@@ -419,7 +419,7 @@ class FichesMachineAPlanifierTest(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # 2 affaires avec étape machines, une sans étape machine, une non validée
-        self.assertEqual(len(response.data["results"]), 2)
+        self.assertEqual(len(response.data), 2)
 
     def test_retour_fiche(self):
         """
@@ -429,10 +429,10 @@ class FichesMachineAPlanifierTest(TestCase):
         response = self.client.get(url)
 
         # 1 fiche pour affaire 2
-        self.assertEqual(len(response.data["results"][0]["fiches"]), 1)
+        self.assertEqual(len(response.data[0]["fiches"]), 1)
 
         # 1 fiches pour affaire 3 car 2 fiches mais une avec étape planifiée
-        self.assertEqual(len(response.data["results"][1]["fiches"]), 1)
+        self.assertEqual(len(response.data[1]["fiches"]), 1)
 
     def test_retour_etape(self):
         """
@@ -443,10 +443,10 @@ class FichesMachineAPlanifierTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # affaire 2 possède 2 etapes une non affectée et une affectée mais date dépassée
-        self.assertEqual(len(response.data["results"][0]["fiches"][0]["etapes"]), 2)
+        self.assertEqual(len(response.data[0]["fiches"][0]["etapes"]), 2)
 
         # 2 étapes pour affaire 3 fiches 2
-        self.assertEqual(len(response.data["results"][1]["fiches"][0]["etapes"]), 2)
+        self.assertEqual(len(response.data[1]["fiches"][0]["etapes"]), 2)
 
 
 class ExportPDFEtapeTest(TestCase):
