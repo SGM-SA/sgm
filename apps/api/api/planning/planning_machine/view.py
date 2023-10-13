@@ -26,3 +26,4 @@ from drf_spectacular.utils import (
 class PlanningMachineAvecFiches(generics.ListAPIView):
     queryset = Machine.objects.all().order_by("nom_machine")
     serializer_class = PlanningMachineSerializer
+    pagination_class = None

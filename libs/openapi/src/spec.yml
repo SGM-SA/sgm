@@ -855,19 +855,6 @@ paths:
       operationId: api_fiches_ajustage_a_planifier_list
       description: Permet de récupérer pour une semaine donnée, chaque affaires et
         leurs fiches / étapes ajustage à traiter dans chaque zone
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      - name: per_page
-        required: false
-        in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
       tags:
       - Planning
       security:
@@ -878,7 +865,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedAffaireFichesEtapesList'
+                type: array
+                items:
+                  $ref: '#/components/schemas/AffaireFichesEtapes'
           description: ''
   /api/fiches/delete/:
     post:
@@ -955,19 +944,6 @@ paths:
       operationId: api_fiches_machine_a_planifier_list
       description: Permet de récupérer pour une semaine donnée, chaque affaires et
         leurs fiches / étapes machine à traiter
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      - name: per_page
-        required: false
-        in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
       tags:
       - Planning
       security:
@@ -978,7 +954,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedAffaireFichesEtapesList'
+                type: array
+                items:
+                  $ref: '#/components/schemas/AffaireFichesEtapes'
           description: ''
   /api/groupe_machine/:
     get:
@@ -1949,12 +1927,6 @@ paths:
           format: date
         description: date
         required: true
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       tags:
       - Planning
       security:
@@ -1965,7 +1937,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedPlanningMachineList'
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlanningMachine'
           description: ''
   /api/planning/zone:
     get:
@@ -1980,12 +1954,6 @@ paths:
           format: date
         description: date
         required: true
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
       tags:
       - Planning
       security:
@@ -1996,7 +1964,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedPlanningZoneList'
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlanningZone'
           description: ''
   /api/pointages/:
     post:
@@ -3920,26 +3890,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AffaireDetails'
-    PaginatedAffaireFichesEtapesList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AffaireFichesEtapes'
     PaginatedAffaireNumAffaireList:
       type: object
       properties:
@@ -4100,46 +4050,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MachineDetail'
-    PaginatedPlanningMachineList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlanningMachine'
-    PaginatedPlanningZoneList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlanningZone'
     PaginatedReadPointageList:
       type: object
       properties:

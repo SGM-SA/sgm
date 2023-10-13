@@ -989,24 +989,6 @@ export type PaginatedAffaireDetailsList = {
 	results?: AffaireDetails[]
 }
 
-export type PaginatedAffaireFichesEtapesList = {
-	/**
-	 * @example 123
-	 */
-	count?: number
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=4
-	 */
-	next?: string | null
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=2
-	 */
-	previous?: string | null
-	results?: AffaireFichesEtapes[]
-}
-
 export type PaginatedAffaireNumAffaireList = {
 	/**
 	 * @example 123
@@ -1149,42 +1131,6 @@ export type PaginatedMachineDetailList = {
 	 */
 	previous?: string | null
 	results?: MachineDetail[]
-}
-
-export type PaginatedPlanningMachineList = {
-	/**
-	 * @example 123
-	 */
-	count?: number
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=4
-	 */
-	next?: string | null
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=2
-	 */
-	previous?: string | null
-	results?: PlanningMachine[]
-}
-
-export type PaginatedPlanningZoneList = {
-	/**
-	 * @example 123
-	 */
-	count?: number
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=4
-	 */
-	next?: string | null
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=2
-	 */
-	previous?: string | null
-	results?: PlanningZone[]
 }
 
 export type PaginatedReadPointageList = {
