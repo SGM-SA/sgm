@@ -1,5 +1,5 @@
 import { Box, Button, HStack, Progress } from '@chakra-ui/react'
-import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteCreate, fetchApiFichesPartialUpdate, useApiAffairesFichesRetrieve } from '@sgm/openapi'
+import { FicheDetail, fetchApiFichesCreate, fetchApiFichesDeleteCreate, fetchApiFichesPartialUpdate, fetchApiGroupeMachineList, useApiAffairesFichesRetrieve } from '@sgm/openapi'
 import { Table, TableLayout, createColumnMeta } from '@sgm/ui'
 import { useNavigate } from '@sgm/web/router'
 import { createColumnHelper } from '@tanstack/react-table'
@@ -7,6 +7,16 @@ import React from 'react'
 import { toast } from 'react-toastify'
 import { AddFicheModele } from '../fiche/AddFicheModele'
 import { AffaireNotesDrawer } from './AffaireNotesDrawer'
+import { EtapesTable } from '../fiche/EtapesTable'
+import { LoaderFunction, useLoaderData } from 'react-router-typesafe'
+
+export const Loader = (() => {
+    return fetchApiGroupeMachineList({})
+}) satisfies LoaderFunction
+
+export const Catch = (() => {
+    return <div>Erreur</div>
+})
 
 const columnHelper = createColumnHelper<FicheDetail>()
 
@@ -62,6 +72,8 @@ type FichesTableProps = {
 }
 
 export const FichesTable: React.FC<FichesTableProps> = (props) => {
+
+    const groupesMachines = useLoaderData<typeof Loader>()
 
     const navigate = useNavigate()
     const fiches = useApiAffairesFichesRetrieve({ pathParams: { id: props.affaireId } })
@@ -131,6 +143,10 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                             id: `${row.original.id}`
                         }
                     })
+                }}
+                rowExpansion={{
+                    enabled: true,
+                    renderComponent: ({ row }) => <EtapesTable ficheId={row.original.id} groupesMachines={groupesMachines?.results || []} />
                 }}
                 loadingSkeletonRowsCount={3}
             />  
