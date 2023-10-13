@@ -382,7 +382,7 @@ class PlanningMachineTest(APITestCase):
         query_param = {"date": "2021-01-01"}
         response = self.client.get(url, query_param)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        affectations_machine_1 = response.json()["results"][0]["affectations"]
+        affectations_machine_1 = response.json()[0]["affectations"]
 
         # séparer les affectations suivant l'ordre et leur affaire
         self.assertEqual(len(affectations_machine_1), 3)

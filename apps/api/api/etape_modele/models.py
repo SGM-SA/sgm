@@ -21,7 +21,7 @@ class EtapeModele(models.Model):
     )
     terminee = models.BooleanField("Terminée ?", default=False, null=False, blank=False)
     description = models.TextField(
-        "Description", max_length=10000, null=True, blank=True
+        "Description", max_length=10000, default=""
     )
 
     date_creation = models.DateField("date de création", auto_now_add=True)

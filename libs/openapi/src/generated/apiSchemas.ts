@@ -291,7 +291,7 @@ export type EtapeCreate = {
 	/**
 	 * @maxLength 10000
 	 */
-	description?: string | null
+	description?: string
 	/**
 	 * @maxLength 2000
 	 */
@@ -330,9 +330,10 @@ export type EtapeCreateRequest = {
 	num_etape: number
 	terminee?: boolean
 	/**
+	 * @minLength 1
 	 * @maxLength 10000
 	 */
-	description?: string | null
+	description?: string
 	/**
 	 * @maxLength 2000
 	 */
@@ -368,7 +369,7 @@ export type EtapeDetail = {
 	/**
 	 * @maxLength 10000
 	 */
-	description?: string | null
+	description?: string
 	/**
 	 * @maxLength 2000
 	 */
@@ -412,7 +413,7 @@ export type EtapeDetailAjustage = {
 	/**
 	 * @maxLength 10000
 	 */
-	description?: string | null
+	description?: string
 	/**
 	 * @maxLength 2000
 	 */
@@ -456,7 +457,7 @@ export type EtapeDetailMachine = {
 	/**
 	 * @maxLength 10000
 	 */
-	description?: string | null
+	description?: string
 	/**
 	 * @maxLength 2000
 	 */
@@ -509,7 +510,7 @@ export type EtapeModeleDetail = {
 	/**
 	 * @maxLength 10000
 	 */
-	description?: string | null
+	description?: string
 	/**
 	 * @format date
 	 */
@@ -536,9 +537,10 @@ export type EtapeModeleDetailRequest = {
 	rep?: string | null
 	terminee?: boolean
 	/**
+	 * @minLength 1
 	 * @maxLength 10000
 	 */
-	description?: string | null
+	description?: string
 	fiche_modele: number
 	groupe_machine?: number | null
 }
@@ -560,7 +562,7 @@ export type EtapeModeleListCreate = {
 	/**
 	 * @maxLength 10000
 	 */
-	description?: string | null
+	description?: string
 	/**
 	 * @format date
 	 */
@@ -587,9 +589,10 @@ export type EtapeModeleListCreateRequest = {
 	rep?: string | null
 	terminee?: boolean
 	/**
+	 * @minLength 1
 	 * @maxLength 10000
 	 */
-	description?: string | null
+	description?: string
 	fiche_modele: number
 	groupe_machine?: number | null
 }
@@ -986,24 +989,6 @@ export type PaginatedAffaireDetailsList = {
 	results?: AffaireDetails[]
 }
 
-export type PaginatedAffaireFichesEtapesList = {
-	/**
-	 * @example 123
-	 */
-	count?: number
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=4
-	 */
-	next?: string | null
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=2
-	 */
-	previous?: string | null
-	results?: AffaireFichesEtapes[]
-}
-
 export type PaginatedAffaireNumAffaireList = {
 	/**
 	 * @example 123
@@ -1148,42 +1133,6 @@ export type PaginatedMachineDetailList = {
 	results?: MachineDetail[]
 }
 
-export type PaginatedPlanningMachineList = {
-	/**
-	 * @example 123
-	 */
-	count?: number
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=4
-	 */
-	next?: string | null
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=2
-	 */
-	previous?: string | null
-	results?: PlanningMachine[]
-}
-
-export type PaginatedPlanningZoneList = {
-	/**
-	 * @example 123
-	 */
-	count?: number
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=4
-	 */
-	next?: string | null
-	/**
-	 * @format uri
-	 * @example http://api.example.org/accounts/?page=2
-	 */
-	previous?: string | null
-	results?: PlanningZone[]
-}
-
 export type PaginatedReadPointageList = {
 	/**
 	 * @example 123
@@ -1270,9 +1219,10 @@ export type PatchedEtapeCreateRequest = {
 	num_etape?: number
 	terminee?: boolean
 	/**
+	 * @minLength 1
 	 * @maxLength 10000
 	 */
-	description?: string | null
+	description?: string
 	/**
 	 * @maxLength 2000
 	 */
@@ -1313,9 +1263,10 @@ export type PatchedEtapeModeleDetailRequest = {
 	rep?: string | null
 	terminee?: boolean
 	/**
+	 * @minLength 1
 	 * @maxLength 10000
 	 */
-	description?: string | null
+	description?: string
 	fiche_modele?: number
 	groupe_machine?: number | null
 }

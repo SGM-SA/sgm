@@ -27,3 +27,4 @@ from drf_spectacular.utils import (
 class PlanningZoneAvecFiches(generics.ListAPIView):
     queryset = Zone.objects.all()
     serializer_class = PlanningZoneSerializer
+    pagination_class = None

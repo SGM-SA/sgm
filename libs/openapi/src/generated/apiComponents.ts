@@ -1750,23 +1750,14 @@ export const useApiFichesDestroy = (
 	})
 }
 
-export type ApiFichesAjustageAPlanifierListQueryParams = {
-	/**
-	 * A page number within the paginated result set.
-	 */
-	page?: number
-	/**
-	 * Number of results to return per page.
-	 */
-	per_page?: number
-}
-
 export type ApiFichesAjustageAPlanifierListError =
 	Fetcher.ErrorWrapper<undefined>
 
-export type ApiFichesAjustageAPlanifierListVariables = {
-	queryParams?: ApiFichesAjustageAPlanifierListQueryParams
-} & ApiContext['fetcherOptions']
+export type ApiFichesAjustageAPlanifierListResponse =
+	Schemas.AffaireFichesEtapes[]
+
+export type ApiFichesAjustageAPlanifierListVariables =
+	ApiContext['fetcherOptions']
 
 /**
  * Permet de récupérer pour une semaine donnée, chaque affaires et leurs fiches / étapes ajustage à traiter dans chaque zone
@@ -1776,11 +1767,11 @@ export const fetchApiFichesAjustageAPlanifierList = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.PaginatedAffaireFichesEtapesList,
+		ApiFichesAjustageAPlanifierListResponse,
 		ApiFichesAjustageAPlanifierListError,
 		undefined,
 		{},
-		ApiFichesAjustageAPlanifierListQueryParams,
+		{},
 		{}
 	>({
 		url: '/api/fiches/ajustage/a_planifier',
@@ -1793,12 +1784,12 @@ export const fetchApiFichesAjustageAPlanifierList = (
  * Permet de récupérer pour une semaine donnée, chaque affaires et leurs fiches / étapes ajustage à traiter dans chaque zone
  */
 export const useApiFichesAjustageAPlanifierList = <
-	TData = Schemas.PaginatedAffaireFichesEtapesList
+	TData = ApiFichesAjustageAPlanifierListResponse
 >(
 	variables: ApiFichesAjustageAPlanifierListVariables,
 	options?: Omit<
 		reactQuery.UseQueryOptions<
-			Schemas.PaginatedAffaireFichesEtapesList,
+			ApiFichesAjustageAPlanifierListResponse,
 			ApiFichesAjustageAPlanifierListError,
 			TData
 		>,
@@ -1807,7 +1798,7 @@ export const useApiFichesAjustageAPlanifierList = <
 ) => {
 	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
 	return reactQuery.useQuery<
-		Schemas.PaginatedAffaireFichesEtapesList,
+		ApiFichesAjustageAPlanifierListResponse,
 		ApiFichesAjustageAPlanifierListError,
 		TData
 	>({
@@ -1993,23 +1984,14 @@ export const useApiFichesExportRetrieve = <TData = undefined>(
 	})
 }
 
-export type ApiFichesMachineAPlanifierListQueryParams = {
-	/**
-	 * A page number within the paginated result set.
-	 */
-	page?: number
-	/**
-	 * Number of results to return per page.
-	 */
-	per_page?: number
-}
-
 export type ApiFichesMachineAPlanifierListError =
 	Fetcher.ErrorWrapper<undefined>
 
-export type ApiFichesMachineAPlanifierListVariables = {
-	queryParams?: ApiFichesMachineAPlanifierListQueryParams
-} & ApiContext['fetcherOptions']
+export type ApiFichesMachineAPlanifierListResponse =
+	Schemas.AffaireFichesEtapes[]
+
+export type ApiFichesMachineAPlanifierListVariables =
+	ApiContext['fetcherOptions']
 
 /**
  * Permet de récupérer pour une semaine donnée, chaque affaires et leurs fiches / étapes machine à traiter
@@ -2019,11 +2001,11 @@ export const fetchApiFichesMachineAPlanifierList = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.PaginatedAffaireFichesEtapesList,
+		ApiFichesMachineAPlanifierListResponse,
 		ApiFichesMachineAPlanifierListError,
 		undefined,
 		{},
-		ApiFichesMachineAPlanifierListQueryParams,
+		{},
 		{}
 	>({
 		url: '/api/fiches/machine/a_planifier',
@@ -2036,12 +2018,12 @@ export const fetchApiFichesMachineAPlanifierList = (
  * Permet de récupérer pour une semaine donnée, chaque affaires et leurs fiches / étapes machine à traiter
  */
 export const useApiFichesMachineAPlanifierList = <
-	TData = Schemas.PaginatedAffaireFichesEtapesList
+	TData = ApiFichesMachineAPlanifierListResponse
 >(
 	variables: ApiFichesMachineAPlanifierListVariables,
 	options?: Omit<
 		reactQuery.UseQueryOptions<
-			Schemas.PaginatedAffaireFichesEtapesList,
+			ApiFichesMachineAPlanifierListResponse,
 			ApiFichesMachineAPlanifierListError,
 			TData
 		>,
@@ -2050,7 +2032,7 @@ export const useApiFichesMachineAPlanifierList = <
 ) => {
 	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
 	return reactQuery.useQuery<
-		Schemas.PaginatedAffaireFichesEtapesList,
+		ApiFichesMachineAPlanifierListResponse,
 		ApiFichesMachineAPlanifierListError,
 		TData
 	>({
@@ -3974,13 +3956,11 @@ export type ApiPlanningMachineListQueryParams = {
 	 * @format date
 	 */
 	date: string
-	/**
-	 * A page number within the paginated result set.
-	 */
-	page?: number
 }
 
 export type ApiPlanningMachineListError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiPlanningMachineListResponse = Schemas.PlanningMachine[]
 
 export type ApiPlanningMachineListVariables = {
 	queryParams: ApiPlanningMachineListQueryParams
@@ -3994,7 +3974,7 @@ export const fetchApiPlanningMachineList = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.PaginatedPlanningMachineList,
+		ApiPlanningMachineListResponse,
 		ApiPlanningMachineListError,
 		undefined,
 		{},
@@ -4006,12 +3986,12 @@ export const fetchApiPlanningMachineList = (
  * Permet de récupérer pour une semaine donnée, chaque affaires et leurs fiches à traiter pour chaque machine
  */
 export const useApiPlanningMachineList = <
-	TData = Schemas.PaginatedPlanningMachineList
+	TData = ApiPlanningMachineListResponse
 >(
 	variables: ApiPlanningMachineListVariables,
 	options?: Omit<
 		reactQuery.UseQueryOptions<
-			Schemas.PaginatedPlanningMachineList,
+			ApiPlanningMachineListResponse,
 			ApiPlanningMachineListError,
 			TData
 		>,
@@ -4020,7 +4000,7 @@ export const useApiPlanningMachineList = <
 ) => {
 	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
 	return reactQuery.useQuery<
-		Schemas.PaginatedPlanningMachineList,
+		ApiPlanningMachineListResponse,
 		ApiPlanningMachineListError,
 		TData
 	>({
@@ -4046,13 +4026,11 @@ export type ApiPlanningZoneListQueryParams = {
 	 * @format date
 	 */
 	date: string
-	/**
-	 * A page number within the paginated result set.
-	 */
-	page?: number
 }
 
 export type ApiPlanningZoneListError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiPlanningZoneListResponse = Schemas.PlanningZone[]
 
 export type ApiPlanningZoneListVariables = {
 	queryParams: ApiPlanningZoneListQueryParams
@@ -4066,7 +4044,7 @@ export const fetchApiPlanningZoneList = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.PaginatedPlanningZoneList,
+		ApiPlanningZoneListResponse,
 		ApiPlanningZoneListError,
 		undefined,
 		{},
@@ -4077,13 +4055,11 @@ export const fetchApiPlanningZoneList = (
 /**
  * Permet de récupérer pour une année et semaine donnée, chaque affaires et leurs fiches à traiter dans chaque zone
  */
-export const useApiPlanningZoneList = <
-	TData = Schemas.PaginatedPlanningZoneList
->(
+export const useApiPlanningZoneList = <TData = ApiPlanningZoneListResponse>(
 	variables: ApiPlanningZoneListVariables,
 	options?: Omit<
 		reactQuery.UseQueryOptions<
-			Schemas.PaginatedPlanningZoneList,
+			ApiPlanningZoneListResponse,
 			ApiPlanningZoneListError,
 			TData
 		>,
@@ -4092,7 +4068,7 @@ export const useApiPlanningZoneList = <
 ) => {
 	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
 	return reactQuery.useQuery<
-		Schemas.PaginatedPlanningZoneList,
+		ApiPlanningZoneListResponse,
 		ApiPlanningZoneListError,
 		TData
 	>({

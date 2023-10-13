@@ -14,7 +14,7 @@ class Etape(models.Model):
     num_etape = models.IntegerField("N°Étape")
     terminee = models.BooleanField("Terminée ?", default=False, null=False, blank=False)
     description = models.TextField(
-        "Description", max_length=10000, null=True, blank=True, default=""
+        "Description", max_length=10000, default=""
     )
     ref_doc = models.CharField(max_length=2000, null=True, blank=True, default="")
     nom_piece = models.CharField(

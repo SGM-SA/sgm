@@ -160,7 +160,7 @@ class FichesAjustageAPlanifier(generics.ListAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireFichesEtapesSerializer
     filter_backends = [EtapeAjustagePlanifierFilter]
-    pagination_class = LargeResultsSetPagination
+    pagination_class = None
 
 
 @extend_schema(
@@ -173,7 +173,7 @@ class FichesMachineAPlanifier(generics.ListAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireFichesEtapesSerializer
     filter_backends = [EtapeMachinePlanifierFilter]
-    pagination_class = LargeResultsSetPagination
+    pagination_class = None
 
 
 @extend_schema(
