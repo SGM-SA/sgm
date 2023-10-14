@@ -1,12 +1,12 @@
 import { Box, Progress } from '@chakra-ui/react'
-import { AffaireDetails, fetchApiAffairesPartialUpdate, useApiAffairesList } from '@sgm/openapi'
+import { AffaireDetails, affaireStatus, fetchApiAffairesPartialUpdate, useApiAffairesList } from '@sgm/openapi'
 import { Table, TableLayout, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
 import { Link, useNavigate } from '@sgm/web/router'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { toast } from 'react-toastify'
 import { DashboardLayout } from '../../components/layouts'
-import { AffaireNotesDrawer, AffaireSearch, FichesTable } from '../../components/modules'
+import { AffaireNotesDrawer, AffairesFilters, FichesTable } from '../../components/modules'
 
 const columnHelper = createColumnHelper<AffaireDetails>()
 
@@ -77,25 +77,7 @@ const columns = [
         meta: createColumnMeta({
             editable: true,
             type: 'select',
-            choices: [
-                'S00',
-                'A00',
-                'EHA',
-                'EAA',
-                'EAC',
-                'P00',
-                'T00',
-                'E00',
-                'ECC',
-                'INT',
-                'ECA',
-                'ED',
-                'D00',
-                'G00',
-                'SV0',
-                'EST',
-                'ECH',
-            ],
+            choices: affaireStatus
         }),
     }),
     columnHelper.display({
@@ -120,7 +102,7 @@ const AffairesPage: React.FC = () => {
             <TableLayout
                 header={{
                     title: 'Liste des affaires',
-                    customComponent: <AffaireSearch filters={filters} setFilters={setFilters} />
+                    customComponent: <AffairesFilters filters={filters} setFilters={setFilters} />
                 }}
             >
 

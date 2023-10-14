@@ -1,0 +1,1 @@
+export const affaireStatus = [ 'S00', 'A00', 'EHA', 'EAA', 'EAC', 'P00', 'T00', 'E00', 'ECC', 'INT', 'ECA', 'ED', 'D00', 'G00', 'SV0', 'EST', 'ECH' ]
