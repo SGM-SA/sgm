@@ -160,8 +160,11 @@ const AffairesPage: React.FC = () => {
                         })
                     }}
                     styling={{
-                        table: {
-                            variant: 'simple'
+                        table: { variant: 'simple' },
+                        row: (row) => {
+                            if (row.original.en_retard) return {
+                                background: '#f28b82'
+                            }
                         }
                     }}
                 />
