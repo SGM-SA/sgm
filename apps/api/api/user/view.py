@@ -27,4 +27,4 @@ class ProfileView(generics.RetrieveAPIView):
 class SalarieFormOptions(generics.ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserDetailSerializer
-    pagination_class = LargeResultsSetPagination
+    pagination_class = None
