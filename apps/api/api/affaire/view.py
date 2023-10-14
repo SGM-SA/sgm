@@ -59,7 +59,7 @@ from api.utils.view import LargeResultsSetPagination
     )
 )
 class AffaireList(generics.ListAPIView):
-    queryset = Affaire.objects.all()
+    queryset = Affaire.objects.all().order_by("date_rendu")
     serializer_class = AffaireDetailsSerializer
     pagination_class = LargeResultsSetPagination
     filter_backends = [
@@ -69,7 +69,10 @@ class AffaireList(generics.ListAPIView):
     ]
 
     filterset_fields = ["num_affaire", "statut"]
-    ordering_fields = ["num_affaire", "date_rendu"]
+    ordering_fields = [
+        "date_rendu",
+        "num_affaire",
+    ]
     search_fields = ["num_affaire", "client", "description"]
 
 

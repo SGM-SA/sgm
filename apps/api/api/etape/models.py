@@ -20,7 +20,7 @@ class Etape(models.Model):
     nom_piece = models.CharField(
         "Nom de la pièce", max_length=2000, null=True, blank=True
     )
-    quantite = models.IntegerField("Quantité", default=0)
+    quantite = models.IntegerField("Quantité", default=1)
     groupe_machine = models.ForeignKey(
         GroupeMachine, on_delete=models.PROTECT, null=True, blank=True
     )

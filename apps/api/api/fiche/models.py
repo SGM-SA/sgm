@@ -48,7 +48,7 @@ class Fiche(models.Model):
         """
         return sum(
             [
-                e.temps
+                e.temps * e.quantite
                 for e in self.etapes.all().filter(
                     groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID
                 )
@@ -62,7 +62,7 @@ class Fiche(models.Model):
         """
         return sum(
             [
-                e.temps
+                e.temps * e.quantite
                 for e in self.etapes.all().exclude(
                     groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID
                 )
@@ -74,4 +74,4 @@ class Fiche(models.Model):
         Temps restant de la fiche
         :return: int
         """
-        return sum([e.temps for e in self.etapes.all().filter(terminee=False)])
+        return sum([e.temps * e.quantite for e in self.etapes.all().filter(terminee=False)])

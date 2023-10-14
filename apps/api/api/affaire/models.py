@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone
+from datetime import datetime, timedelta
 from django.core.validators import MinValueValidator
 from api.user.models import CustomUser
 
@@ -106,12 +106,59 @@ class Affaire(models.Model):
         blank=True,
     )
 
+    def couleur_affichage(self):
+        """
+        Permet de définir la couleur d'affichage de l'affaire dans le tableau des affaires.
+        """
+
+        # si retard rouge
+        if self.en_retard():
+            return "#FED7D7"
+
+        else:
+            return ""
+
     def en_retard(self):
         """
-        Permet de savoir si la date de rendu a été dépassée
-        :return:
+        Permet de savoir si le temps restant est inférieur au temps disponible.
+        On travaille 21h par jour, 5j/semaine.
+        :return: bool - True si en retard, False sinon.
         """
-        return self.date_rendu < timezone.now() and self.date_cloture is None
+
+        if self.avancement_affaire() == 100:
+            return False
+
+        if self.date_rendu is None or self.date_rendu < datetime.date(datetime.now()):
+            return True
+
+        nombre_heures_jusqua_delai = (
+            self.jours_ouvrables_restants() * 21
+        )  # 21 heures par jour
+        print(nombre_heures_jusqua_delai, "tempsr")
+        print(self.temps_restant())
+        return self.temps_restant() > nombre_heures_jusqua_delai
+
+    def jours_ouvrables_restants(self):
+        """
+        Calcule le nombre de jours ouvrables restants jusqu'à la date de rendu.
+        :return: int - Nombre de jours ouvrables.
+        """
+        if not self.date_rendu:
+            return 0
+
+        aujourd_hui = datetime.date(datetime.now())
+
+        if self.date_rendu < aujourd_hui:
+            return 0
+
+        jours = (self.date_rendu - aujourd_hui).days
+        jours_ouvrables = 0
+        for i in range(jours):
+            jour = (aujourd_hui + timedelta(days=i)).weekday()
+            # weekday() renvoie 0 pour lundi et 6 pour dimanche
+            if jour < 5:  # Lundi à Vendredi
+                jours_ouvrables += 1
+        return jours_ouvrables
 
     def avancement_affaire(self):
         """
