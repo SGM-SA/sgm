@@ -12,7 +12,7 @@ class EtapeModele(models.Model):
         related_name="etapes_modele",
     )
     num_etape = models.IntegerField("N°Étape")
-    quantite = models.IntegerField("Quantité", default=0)
+    quantite = models.IntegerField("Quantité", default=1)
     temps = models.IntegerField("Temps nécessaire", default=0)
     plan = models.CharField(max_length=2000, null=True, blank=True)
     rep = models.CharField(max_length=2000, null=True, blank=True)

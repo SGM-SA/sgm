@@ -28,6 +28,10 @@ class AffaireDetailsSerializer(serializers.ModelSerializer):
         read_only=True, default=0, max_value=1, min_value=0
     )
 
+    en_retard = serializers.BooleanField(read_only=True)
+
+    couleur_affichage = serializers.CharField(read_only=True)
+
     charge_affaire_detail = CustomUserDetailSerializer(
         source="charge_affaire",
         read_only=True,
@@ -39,6 +43,8 @@ class AffaireDetailsSerializer(serializers.ModelSerializer):
             "id",
             "num_affaire",
             "validation_ingenieur",
+            "en_retard",
+            "couleur_affichage",
             "description",
             "observation",
             "client",

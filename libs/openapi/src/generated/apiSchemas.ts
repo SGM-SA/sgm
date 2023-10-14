@@ -13,6 +13,8 @@ export type AffaireDetails = {
 	 */
 	num_affaire?: number | null
 	validation_ingenieur?: boolean
+	en_retard: boolean
+	couleur_affichage: string
 	/**
 	 * @maxLength 10000
 	 */

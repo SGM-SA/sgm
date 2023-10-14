@@ -2372,6 +2372,12 @@ components:
         validation_ingenieur:
           type: boolean
           title: Validation de l'ingénieur
+        en_retard:
+          type: boolean
+          readOnly: true
+        couleur_affichage:
+          type: string
+          readOnly: true
         description:
           type: string
           nullable: true
@@ -2426,7 +2432,9 @@ components:
       required:
       - avancement_affaire
       - charge_affaire_detail
+      - couleur_affichage
       - date_modification
+      - en_retard
       - id
     AffaireDetailsRequest:
       type: object
