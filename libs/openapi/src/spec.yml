@@ -2078,19 +2078,6 @@ paths:
       operationId: api_salaries_form_options_list
       description: Permet de récupérer les options pour les formulaires
       summary: Salarie form options
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      - name: per_page
-        required: false
-        in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
       tags:
       - Salarie
       security:
@@ -2101,7 +2088,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedCustomUserDetailList'
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomUserDetail'
           description: ''
   /api/tasks/resync_data_sgm:
     post:
@@ -3910,26 +3899,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AffaireNumAffaire'
-    PaginatedCustomUserDetailList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomUserDetail'
     PaginatedEtapeModeleListCreateList:
       type: object
       properties:
