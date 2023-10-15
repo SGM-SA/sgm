@@ -4311,6 +4311,8 @@ components:
           items:
             $ref: '#/components/schemas/TotalAffaire'
           readOnly: true
+        fonctionnelle:
+          type: boolean
       required:
       - affectations
       - id

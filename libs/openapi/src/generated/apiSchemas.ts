@@ -1343,6 +1343,7 @@ export type PlanningMachine = {
 	 */
 	nom_machine: string
 	affectations: TotalAffaire[]
+	fonctionnelle?: boolean
 }
 
 /**
