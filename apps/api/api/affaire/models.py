@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime, timedelta
 from django.core.validators import MinValueValidator
 from api.user.models import CustomUser
+from constance import config
 
 
 class Affaire(models.Model):
@@ -113,7 +114,7 @@ class Affaire(models.Model):
 
         # si retard rouge
         if self.en_retard():
-            return "#FED7D7"
+            return config.COULEUR_AFFAIRE_RETARD
 
         else:
             return ""
