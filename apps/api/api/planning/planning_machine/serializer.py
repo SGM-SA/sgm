@@ -57,4 +57,4 @@ class PlanningMachineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Machine
-        fields = ("id", "nom_machine", "affectations")
+        fields = ("id", "nom_machine", "affectations", "fonctionnelle")
