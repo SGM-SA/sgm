@@ -163,7 +163,7 @@ const AffairesPage: React.FC = () => {
                         table: { variant: 'simple' },
                         row: (row) => {
                             if (row.original.en_retard) return {
-                                background: '#f28b82'
+                                background: row.original.couleur_affichage
                             }
                         }
                     }}
