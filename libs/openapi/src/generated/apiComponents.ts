@@ -4292,22 +4292,11 @@ export const useApiPointagesListList = <
 	})
 }
 
-export type ApiSalariesFormOptionsListQueryParams = {
-	/**
-	 * A page number within the paginated result set.
-	 */
-	page?: number
-	/**
-	 * Number of results to return per page.
-	 */
-	per_page?: number
-}
-
 export type ApiSalariesFormOptionsListError = Fetcher.ErrorWrapper<undefined>
 
-export type ApiSalariesFormOptionsListVariables = {
-	queryParams?: ApiSalariesFormOptionsListQueryParams
-} & ApiContext['fetcherOptions']
+export type ApiSalariesFormOptionsListResponse = Schemas.CustomUserDetail[]
+
+export type ApiSalariesFormOptionsListVariables = ApiContext['fetcherOptions']
 
 /**
  * Permet de récupérer les options pour les formulaires
@@ -4317,11 +4306,11 @@ export const fetchApiSalariesFormOptionsList = (
 	signal?: AbortSignal
 ) =>
 	apiFetch<
-		Schemas.PaginatedCustomUserDetailList,
+		ApiSalariesFormOptionsListResponse,
 		ApiSalariesFormOptionsListError,
 		undefined,
 		{},
-		ApiSalariesFormOptionsListQueryParams,
+		{},
 		{}
 	>({
 		url: '/api/salaries/form-options',
@@ -4334,12 +4323,12 @@ export const fetchApiSalariesFormOptionsList = (
  * Permet de récupérer les options pour les formulaires
  */
 export const useApiSalariesFormOptionsList = <
-	TData = Schemas.PaginatedCustomUserDetailList
+	TData = ApiSalariesFormOptionsListResponse
 >(
 	variables: ApiSalariesFormOptionsListVariables,
 	options?: Omit<
 		reactQuery.UseQueryOptions<
-			Schemas.PaginatedCustomUserDetailList,
+			ApiSalariesFormOptionsListResponse,
 			ApiSalariesFormOptionsListError,
 			TData
 		>,
@@ -4348,7 +4337,7 @@ export const useApiSalariesFormOptionsList = <
 ) => {
 	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
 	return reactQuery.useQuery<
-		Schemas.PaginatedCustomUserDetailList,
+		ApiSalariesFormOptionsListResponse,
 		ApiSalariesFormOptionsListError,
 		TData
 	>({
