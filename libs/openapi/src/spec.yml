@@ -2418,10 +2418,15 @@ components:
           minimum: 0
           readOnly: true
           default: 0.0
+        cout_affaire:
+          type: number
+          format: double
+          readOnly: true
       required:
       - avancement_affaire
       - charge_affaire_detail
       - couleur_affichage
+      - cout_affaire
       - date_modification
       - en_retard
       - id
@@ -2900,6 +2905,10 @@ components:
         affectation_id:
           type: integer
           readOnly: true
+        cout_etape:
+          type: number
+          format: double
+          readOnly: true
         num_etape:
           type: integer
           title: N°Étape
@@ -2954,6 +2963,7 @@ components:
           nullable: true
       required:
       - affectation_id
+      - cout_etape
       - date_creation
       - date_modification
       - fiche
@@ -2972,6 +2982,10 @@ components:
         user_id:
           type: integer
           readOnly: true
+        cout_etape:
+          type: number
+          format: double
+          readOnly: true
         num_etape:
           type: integer
           title: N°Étape
@@ -3026,6 +3040,7 @@ components:
           nullable: true
       required:
       - affectation_id
+      - cout_etape
       - date_creation
       - date_modification
       - fiche
@@ -3114,6 +3129,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/MachineDetail'
           readOnly: true
+        cout_etape:
+          type: number
+          format: double
+          readOnly: true
         num_etape:
           type: integer
           title: N°Étape
@@ -3153,6 +3172,7 @@ components:
           type: integer
           nullable: true
       required:
+      - cout_etape
       - date_creation
       - date_modification
       - fiche_modele
@@ -3200,6 +3220,10 @@ components:
         id:
           type: integer
           readOnly: true
+        cout_etape:
+          type: number
+          format: double
+          readOnly: true
         num_etape:
           type: integer
           title: N°Étape
@@ -3239,6 +3263,7 @@ components:
           type: integer
           nullable: true
       required:
+      - cout_etape
       - date_creation
       - date_modification
       - fiche_modele
@@ -3400,6 +3425,10 @@ components:
         affaire_id:
           type: integer
           readOnly: true
+        cout_fiche:
+          type: number
+          format: double
+          readOnly: true
         titre:
           type: string
           maxLength: 100
@@ -3443,6 +3472,7 @@ components:
       - affaire_id
       - affectation_zone
       - avancement_fiche
+      - cout_fiche
       - date_creation
       - date_modification
       - id
@@ -3478,6 +3508,10 @@ components:
           readOnly: true
         affaire_id:
           type: integer
+          readOnly: true
+        cout_fiche:
+          type: number
+          format: double
           readOnly: true
         etapes:
           type: array
@@ -3527,6 +3561,7 @@ components:
       - affaire_id
       - affectation_zone
       - avancement_fiche
+      - cout_fiche
       - date_creation
       - date_modification
       - etapes
@@ -3563,6 +3598,10 @@ components:
           readOnly: true
         affaire_id:
           type: integer
+          readOnly: true
+        cout_fiche:
+          type: number
+          format: double
           readOnly: true
         etapes:
           type: array
@@ -3612,6 +3651,7 @@ components:
       - affaire_id
       - affectation_zone
       - avancement_fiche
+      - cout_fiche
       - date_creation
       - date_modification
       - etapes
@@ -3622,6 +3662,10 @@ components:
       properties:
         id:
           type: integer
+          readOnly: true
+        cout_fiche:
+          type: number
+          format: double
           readOnly: true
         date_creation:
           type: string
@@ -3638,6 +3682,7 @@ components:
           type: boolean
           title: Fournitures arrivées
       required:
+      - cout_fiche
       - date_creation
       - id
     FicheModeleDetailRequest:
@@ -3659,6 +3704,10 @@ components:
         id:
           type: integer
           readOnly: true
+        cout_fiche:
+          type: number
+          format: double
+          readOnly: true
         etapes_modele:
           type: array
           items:
@@ -3679,6 +3728,7 @@ components:
           type: boolean
           title: Fournitures arrivées
       required:
+      - cout_fiche
       - date_creation
       - etapes_modele
       - id

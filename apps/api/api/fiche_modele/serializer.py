@@ -7,13 +7,18 @@ from api.etape_modele.models import EtapeModele
 
 
 class FicheModeleDetail(serializers.ModelSerializer):
+
+    cout_fiche = serializers.FloatField(read_only=True)
+
     class Meta:
         model = FicheModele
         fields = "__all__"
 
 
 class FicheModeleEtEtapes(FicheModeleDetail):
+
     etapes_modele = EtapeModeleDetail(EtapeModele, many=True, read_only=True)
+    cout_fiche = serializers.FloatField(read_only=True)
 
     class Meta:
         model = FicheModele

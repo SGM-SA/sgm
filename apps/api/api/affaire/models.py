@@ -119,6 +119,13 @@ class Affaire(models.Model):
         else:
             return ""
 
+    def cout_affaire(self) -> float:
+        """
+        Cout total d'une affaire
+        :return: float
+        """
+        return sum([fiche.cout_fiche() for fiche in self.fiches.all()])
+
     def en_retard(self):
         """
         Permet de savoir si le temps restant est inférieur au temps disponible.

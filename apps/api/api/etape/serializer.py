@@ -15,6 +15,8 @@ class EtapeDetail(serializers.ModelSerializer):
         read_only=True, slug_field="id", source="affectationajustage"
     )
 
+    cout_etape = serializers.FloatField(read_only=True)
+
     class Meta:
         model = Etape
         fields = "__all__"
@@ -27,6 +29,8 @@ class EtapeDetailAjustage(serializers.ModelSerializer):
     user_id = serializers.SlugRelatedField(
         read_only=True, slug_field="id", source="affectationajustage.user"
     )
+
+    cout_etape = serializers.FloatField(read_only=True)
 
     class Meta:
         model = Etape

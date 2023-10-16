@@ -53,6 +53,10 @@ export type AffaireDetails = {
 	 * @default 0
 	 */
 	avancement_affaire: number
+	/**
+	 * @format double
+	 */
+	cout_affaire: number
 }
 
 /**
@@ -366,6 +370,10 @@ export type EtapeDetail = {
 	id: number
 	machine: MachineDetail
 	affectation_id: number
+	/**
+	 * @format double
+	 */
+	cout_etape: number
 	num_etape: number
 	terminee?: boolean
 	/**
@@ -410,6 +418,10 @@ export type EtapeDetailAjustage = {
 	id: number
 	affectation_id: number
 	user_id: number
+	/**
+	 * @format double
+	 */
+	cout_etape: number
 	num_etape: number
 	terminee?: boolean
 	/**
@@ -497,6 +509,10 @@ export type EtapeDetailMachine = {
 export type EtapeModeleDetail = {
 	id: number
 	machine: MachineDetail
+	/**
+	 * @format double
+	 */
+	cout_etape: number
 	num_etape: number
 	quantite?: number
 	temps?: number
@@ -549,6 +565,10 @@ export type EtapeModeleDetailRequest = {
 
 export type EtapeModeleListCreate = {
 	id: number
+	/**
+	 * @format double
+	 */
+	cout_etape: number
 	num_etape: number
 	quantite?: number
 	temps?: number
@@ -682,6 +702,10 @@ export type FicheDetail = {
 	num_affaire: number | null
 	affaire_id: number
 	/**
+	 * @format double
+	 */
+	cout_fiche: number
+	/**
 	 * @maxLength 100
 	 */
 	titre?: string
@@ -730,6 +754,10 @@ export type FicheEtEtapes = {
 	 */
 	num_affaire: number | null
 	affaire_id: number
+	/**
+	 * @format double
+	 */
+	cout_fiche: number
 	etapes: EtapeDetail[]
 	/**
 	 * @maxLength 100
@@ -780,6 +808,10 @@ export type FicheEtEtapesAjustage = {
 	 */
 	num_affaire: number | null
 	affaire_id: number
+	/**
+	 * @format double
+	 */
+	cout_fiche: number
 	etapes: EtapeDetailAjustage[]
 	/**
 	 * @maxLength 100
@@ -814,6 +846,10 @@ export type FicheEtEtapesAjustage = {
 export type FicheModeleDetail = {
 	id: number
 	/**
+	 * @format double
+	 */
+	cout_fiche: number
+	/**
 	 * @format date
 	 */
 	date_creation: string
@@ -837,6 +873,10 @@ export type FicheModeleDetailRequest = {
 
 export type FicheModeleEtEtapes = {
 	id: number
+	/**
+	 * @format double
+	 */
+	cout_fiche: number
 	etapes_modele: EtapeModeleDetail[]
 	/**
 	 * @format date
