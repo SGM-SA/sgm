@@ -13,9 +13,7 @@ class Etape(models.Model):
     )
     num_etape = models.IntegerField("N°Étape")
     terminee = models.BooleanField("Terminée ?", default=False, null=False, blank=False)
-    description = models.TextField(
-        "Description", max_length=10000, default=""
-    )
+    description = models.TextField("Description", max_length=10000, default="")
     ref_doc = models.CharField(max_length=2000, null=True, blank=True, default="")
     nom_piece = models.CharField(
         "Nom de la pièce", max_length=2000, null=True, blank=True
@@ -24,13 +22,23 @@ class Etape(models.Model):
     groupe_machine = models.ForeignKey(
         GroupeMachine, on_delete=models.PROTECT, null=True, blank=True
     )
-    temps = models.IntegerField("Temps nécessaire", default=0)
+    temps = models.IntegerField("Temps nécessaire", default=1)
     plan = models.CharField(max_length=2000, null=True, blank=True, default="")
     rep = models.CharField(max_length=2000, null=True, blank=True, default="")
 
     date_creation = models.DateField("date de création", auto_now_add=True)
     date_modification = models.DateTimeField("date de modification", auto_now=True)
     date_cloture = models.DateField("date de clôture", null=True, blank=True)
+
+    def cout_etape(self) -> float:
+        """
+        Coût de l'étape
+        :return: float
+        """
+        if self.groupe_machine is None:
+            return 0
+
+        return self.quantite * self.temps * self.groupe_machine.prix_theorique
 
     def __str__(self):
         return f"Fiche : {self.fiche.id} - etape : {self.num_etape} - terminée : {self.terminee}"

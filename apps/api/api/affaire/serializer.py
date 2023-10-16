@@ -55,6 +55,7 @@ class AffaireDetailsSerializer(serializers.ModelSerializer):
             "date_cloture",
             "charge_affaire_detail",
             "avancement_affaire",
+            "cout_affaire",
         ]
 
 

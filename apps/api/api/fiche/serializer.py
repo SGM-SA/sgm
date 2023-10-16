@@ -33,6 +33,8 @@ class FicheDetailSerializer(FicheCRUDSerializer):
         read_only=True, slug_field="id", source="affaire"
     )
 
+    cout_fiche = serializers.FloatField(read_only=True)
+
     class Meta:
         model = Fiche
         fields = "__all__"

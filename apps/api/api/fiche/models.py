@@ -29,6 +29,13 @@ class Fiche(models.Model):
     def __str__(self):
         return f"Fiche : {self.description}"
 
+    def cout_fiche(self) -> float:
+        """
+        Coût de la fiche
+        :return: float
+        """
+        return sum([e.cout_etape() for e in self.etapes.all()])
+
     def avancement_fiche(self):
         """
         % des etape terminées = avancement de la fiche
@@ -74,4 +81,6 @@ class Fiche(models.Model):
         Temps restant de la fiche
         :return: int
         """
-        return sum([e.temps * e.quantite for e in self.etapes.all().filter(terminee=False)])
+        return sum(
+            [e.temps * e.quantite for e in self.etapes.all().filter(terminee=False)]
+        )

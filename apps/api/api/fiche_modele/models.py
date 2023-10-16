@@ -13,6 +13,13 @@ class FicheModele(models.Model):
         "Fournitures arrivées", default=False, null=False, blank=False
     )
 
+    def cout_fiche(self) -> float:
+        """
+        Coût de la fiche
+        :return: float
+        """
+        return sum([e.cout_etape() for e in self.etapes_modele.all()])
+
     class Meta:
         verbose_name = "Fiche modèle"
         verbose_name_plural = "Fiches modèle"
