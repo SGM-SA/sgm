@@ -1,21 +1,20 @@
-import React from 'react'
-import { BaseBoardCardType } from '../../../utils'
-import { useSortable } from '@dnd-kit/sortable'
 import { Box, ChakraProps } from '@chakra-ui/react'
+import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { BaseBoardCardType, Collapsable } from '../../../utils'
 
 type BoardCardProps<TData extends BaseBoardCardType> = {
-    id: number
-    data: TData
+    card: TData
     renderCard: (card: TData) => JSX.Element
+    collapse?: Collapsable
     chakraProps?: ChakraProps
 }
 
 export function BoardCard<TData extends BaseBoardCardType>(props: BoardCardProps<TData>) {
 
-    const { attributes, listeners, setNodeRef, transform } = useSortable({
-        id: props.id,
-    })
+    const id = props.card.id
+
+    const { attributes, listeners, setNodeRef, transform } = useSortable({ id })
 
 	return <>
         <Box ref={setNodeRef} {...attributes} {...listeners}
@@ -26,7 +25,7 @@ export function BoardCard<TData extends BaseBoardCardType>(props: BoardCardProps
             transform={CSS.Transform.toString(transform)}
             {...props.chakraProps}
         >
-            {props.renderCard(props.data)}
+            {props.renderCard(props.card)}
         </Box>
     </>
 }

@@ -1,59 +1,90 @@
-import { Box, ChakraProps, Heading, VStack } from '@chakra-ui/react'
+import { Box, ChakraProps, HStack, Heading, VStack } from '@chakra-ui/react'
 import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
-import { BaseBoardCardType, BoardColumnType, getCardStyleProps } from '../../../utils'
-import { BoardCard } from '../BoardCard/BoardCard'
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { BaseBoardCardType, BoardColumnType, Collapsable } from '../../../utils'
 
 type BoardColumnProps<TData extends BaseBoardCardType> = {
     column: BoardColumnType<TData>
-    renderCard: (card: TData) => JSX.Element
-    renderColumnHeader?: (column: BoardColumnType<TData>) => JSX.Element
-    cardStyling?: ChakraProps | ((card: TData) => ChakraProps | undefined)
+    children: React.ReactNode
+    renderHeader?: (column: BoardColumnType<TData>) => JSX.Element
     chakraProps?: ChakraProps
+    collapse?: Collapsable
 }
 
 export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnProps<TData>) {
-
+    
     const { setNodeRef } = useDroppable({ id: props.column.id })
+    
+    const toggleCollapse = () => {
+        if (props.collapse === undefined) return
 
-	return (
-        <SortableContext 
-            id={props.column.id}
-            items={props.column.cards}
-            strategy={rectSortingStrategy}
-        >
-            <Box
-                ref={setNodeRef}
-                w='200px'
+        props.collapse.setCollapsed(prevState => {
+            return props.collapse?.collapsed === false ?
+            [...prevState, props.column.id]
+            :
+            prevState.filter((id) => id !== props.column.id)
+        })
+    }
+
+    const isCollapsed = props.collapse?.collapsed ?? false
+
+    if (isCollapsed) {
+        return <>
+            <VStack
                 minH='80vh'
                 bg='gray.100'
-                mr='10px'
-                p='1em'
-                borderRadius='5px'
-                {...props.chakraProps}
+                width='2em'
+                padding='1em'
             >
-                {/* Header */}
-                <VStack>
-                    {props.renderColumnHeader !== undefined ? 
-                        props.renderColumnHeader(props.column)
-                        :
-                        <Heading as='h3' fontSize='1.2em'>{props.column.title}</Heading>
-                    }
-                </VStack>
-                
-                {/* Cards */}
-                {props.column.cards.map((card) => (
-                    <BoardCard 
-                        key={card.id} 
-                        id={card.id} 
-                        data={card} 
-                        renderCard={props.renderCard}
-                        chakraProps={getCardStyleProps(card, props.cardStyling)}
-                    />
-                ))}
+                <FaChevronRight onClick={toggleCollapse} cursor='pointer'/>
+                <Heading
+                    as='h3'
+                    fontSize='1em'
+                    userSelect='none'
+                    css={{
+                        writingMode: 'vertical-rl',
+                    }}
+                >
+                    {props.column.title}
+                </Heading>
+            </VStack>
+        </>
+    } else {
 
-            </Box>
+        return (
+            <SortableContext 
+                id={String(props.column.id)}
+                items={props.column.cards}
+                strategy={rectSortingStrategy}
+            >
+                <Box
+                    ref={setNodeRef}
+                    width='400px'
+                    minHeight='80vh'
+                    bg='gray.100'
+                    padding='1em'
+                    borderRadius='5px'
+                    {...props.chakraProps}
+                >
+                    {/* Header */}
+                    <VStack>
+                        {props.renderHeader !== undefined ? 
+                            props.renderHeader(props.column)
+                            :
+                            <HStack w='100%' justifyContent='space-between'>
+                                <Heading as='h3' fontSize='1em'>{props.column.title}</Heading>
+                                <FaChevronLeft onClick={toggleCollapse} cursor='pointer'/>
+                            </HStack>
+                        }
+                    </VStack>
+                    
+                    {/* Cards */}
+                    {!isCollapsed && props.children}
 
-        </SortableContext>
-    )
+                </Box>
+
+            </SortableContext>
+        )
+    }
 }

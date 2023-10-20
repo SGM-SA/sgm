@@ -1,15 +1,26 @@
 import { ChakraProps } from "@chakra-ui/react"
+import { UniqueIdentifier } from "@dnd-kit/core"
+import { Dispatch, SetStateAction } from "react"
+
+// Types
 
 export type BoardColumnType<TData extends BaseBoardCardType> = {
-    id: string
+    id: UniqueIdentifier
     title: string
     cards: TData[]
     meta?: any
 }
 
 export type BaseBoardCardType = {
-    id: number
+    id: UniqueIdentifier
 }
+
+export type Collapsable = {
+    collapsed: boolean
+    setCollapsed: Dispatch<SetStateAction<UniqueIdentifier[]>>
+}
+
+// Functions
 
 export const getColumnStyleProps = (column: BoardColumnType<any>, style?: ChakraProps | ((column: BoardColumnType<any>) => ChakraProps | undefined)) => {
     if (!style) return {}

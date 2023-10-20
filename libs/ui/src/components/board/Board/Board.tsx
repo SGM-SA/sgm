@@ -1,8 +1,9 @@
-import { ChakraProps, Flex } from '@chakra-ui/react'
-import { DndContext, DragEndEvent, DragOverEvent, KeyboardSensor, PointerSensor, closestCorners, useSensor, useSensors } from '@dnd-kit/core'
+import { ChakraProps, HStack } from '@chakra-ui/react'
+import { DndContext, DragEndEvent, DragOverEvent, KeyboardSensor, PointerSensor, UniqueIdentifier, closestCorners, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import { useEffect, useState } from 'react'
-import { BaseBoardCardType, BoardColumnType, getColumnStyleProps } from '../../../utils'
+import { useState } from 'react'
+import { BaseBoardCardType, BoardColumnType, getCardStyleProps, getColumnStyleProps } from '../../../utils'
+import { BoardCard } from '../BoardCard/BoardCard'
 import { BoardColumn } from '../BoardColumn/BoardColumn'
 
 type BoardProps<TData extends BaseBoardCardType> = {
@@ -29,11 +30,8 @@ type BoardProps<TData extends BaseBoardCardType> = {
 export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>) {
 
 	const [columns, setColumns] = useState(props.initialData)
-
-	useEffect(() => {
-		
-		console.log('state column', columns)
-	}, [columns])
+	const [collapsedColumns, setCollapsedColumns] = useState<UniqueIdentifier[]>([])
+	const [collapsedCards, setCollapsedCards] = useState<UniqueIdentifier[]>([])
 
 	const findColumn = (unique: string | null) => {
 
@@ -146,23 +144,35 @@ export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>)
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
 		>
-			<Flex p='20px'>
-				{columns.map((column) => {
+			<HStack w='100%' gap='1em'>
+				{columns.map((column) => (
+					
+					<BoardColumn<TData>
+						key={column.id}
+						column={column}
+						renderHeader={props.renderColumnHeader}
+						chakraProps={getColumnStyleProps(column, props.styling?.column)}
+						collapse={{
+							collapsed: collapsedColumns.includes(column.id),
+							setCollapsed: setCollapsedColumns
+						}}
+					>
 
-					console.log('column', column)
-
-					return (
-						<BoardColumn<TData>
-							key={column.id}
-							column={column}
-							renderCard={props.renderCard}
-							renderColumnHeader={props.renderColumnHeader}
-							cardStyling={props.styling?.card}
-							chakraProps={getColumnStyleProps(column, props.styling?.column)}
-						/>
-					)
-				})}
-			</Flex>
+						{column.cards.map((card) => (
+							<BoardCard 
+								key={card.id} 
+								card={card} 
+								renderCard={props.renderCard}
+								chakraProps={getCardStyleProps(card, props.styling?.card)}
+								collapse={{
+									collapsed: collapsedCards.includes(card.id),
+									setCollapsed: setCollapsedCards
+								}}
+							/>
+						))}
+					</BoardColumn>
+				))}
+			</HStack>
 		</DndContext>
 	)
 }
