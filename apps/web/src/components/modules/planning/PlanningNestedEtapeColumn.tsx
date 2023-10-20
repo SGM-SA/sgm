@@ -38,6 +38,7 @@ export const PlanningNestedEtapeColumn: React.FC<PlanningNestedEtapeColumnProps>
                         {groupEtapeByAffaireAndFiche(props.column.cards).map(affaire => (
 
                             <CollapsableElement
+                                key={affaire.numAffaire}
                                 title={`Affaire n°${affaire.numAffaire}`}
                                 bg='white'
                                 p='.5em'
@@ -46,6 +47,7 @@ export const PlanningNestedEtapeColumn: React.FC<PlanningNestedEtapeColumnProps>
                                 {affaire.fiches.map(fiche => (
                                     
                                     <CollapsableElement
+                                        key={fiche.id}
                                         title={fiche.name || fiche.id}
                                         bg='gray.100'
                                         p='.5em'
@@ -63,7 +65,8 @@ export const PlanningNestedEtapeColumn: React.FC<PlanningNestedEtapeColumnProps>
                                                     p: '.25em .5em',
                                                     mt: '1em'
                                                 }}
-                                                title={`Etape n°${etape.numEtape}${etape.temps ? ` - ${etape.temps}(h)` : ''}${etape.groupeMachineId ? ` - ${etape.groupeMachineId}` : ''}`}
+                                                disableSortingAnimation={true}
+                                                // title={}
                                                 // renderCardBody={props.renderCard}
                                             />
                                         ))}
@@ -73,7 +76,9 @@ export const PlanningNestedEtapeColumn: React.FC<PlanningNestedEtapeColumnProps>
                             </CollapsableElement>
                         ))}
 
-                        {provided.placeholder}
+                        <Box display='none'>
+                            {provided.placeholder}
+                        </Box>
 
                     </Box>
                 )}

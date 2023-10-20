@@ -1,5 +1,5 @@
-import { Box, ChakraProps } from '@chakra-ui/react'
-import { Draggable } from 'react-beautiful-dnd'
+import { Box, ChakraProps, Flex, Spinner } from '@chakra-ui/react'
+import { Draggable, DraggableStateSnapshot } from 'react-beautiful-dnd'
 import { BaseBoardCardType } from '../../../utils'
 import { CollapsableElement } from '../../layout/CollapsableElement/CollapsableElement'
 
@@ -11,6 +11,7 @@ type BoardCardProps<TData extends BaseBoardCardType> = {
     title?: React.ReactNode
     collapse?: boolean
     chakraProps?: ChakraProps
+    disableSortingAnimation?: boolean
 }
 
 export function BoardCard<TData extends BaseBoardCardType>(props: BoardCardProps<TData>) {
@@ -28,15 +29,38 @@ export function BoardCard<TData extends BaseBoardCardType>(props: BoardCardProps
                     bg='gray.300'
                     borderRadius='2px'
                     {...props.chakraProps}
+                    {...(props.disableSortingAnimation ? {
+                        style: getStyle(provided.draggableProps.style, snapshot)
+                    } : {})}
                 >
-                    <CollapsableElement
-                        title={props.title || props.card.title}
-                        collapsable={props.collapse ?? false}
-                    >
-                        {props.renderCardBody?.(props.card)}
-                    </CollapsableElement>
+                    {props.card.isLoading && 
+                        <Flex w='100%' justifyContent='center'>
+                            <Spinner />
+                        </Flex>
+                    }
+                    {!props.card.isLoading &&
+                        <CollapsableElement
+                            title={props.title || props.card.title}
+                            collapsable={props.collapse ?? false}
+                        >
+                            {props.renderCardBody?.(props.card)}
+                        </CollapsableElement>
+                    }
                 </Box>
             )}
         </Draggable>
     </>
 }
+
+const getStyle = (style: any, snapshot: DraggableStateSnapshot) => {
+    if (!snapshot.isDragging) return {};
+    if (!snapshot.isDropAnimating) {
+      return style;
+    }
+  
+    return {
+      ...style,
+      // cannot be 0, but make it super tiny
+      transitionDuration: `0.001s`
+    };
+  }

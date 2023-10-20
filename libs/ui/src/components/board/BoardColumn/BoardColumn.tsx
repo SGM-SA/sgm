@@ -25,6 +25,7 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                 bg='gray.100'
                 width='2em'
                 padding='1em'
+                {...props.chakraProps}
             >
                 <FaChevronRight onClick={e => setCollapsed(false)} cursor='pointer'/>
                 <Heading

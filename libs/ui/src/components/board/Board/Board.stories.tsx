@@ -130,7 +130,7 @@ export const Primary: Story = {
 	args: {
 		columns: data,
 		renderCardBody: (card) => <div>{card.title}</div>,
-		onCardMove: (card, to) => {
+		onCardMove: ({ card, to }) => {
 			console.log(card, to)
 		},
 		collapsable: {

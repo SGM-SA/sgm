@@ -1,7 +1,7 @@
 import { ChakraProps, HStack } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
-import { BaseBoardCardType, BaseBoardColumnProps, BoardColumnType, getCardStyleProps, getColumnStyleProps, onDragEnd } from '../../../utils'
+import { BaseBoardCardType, BaseBoardColumnProps, BoardColumnType, OnCardMoveSignature, getCardStyleProps, getColumnStyleProps, onDragEnd } from '../../../utils'
 import { BoardCard } from '../BoardCard/BoardCard'
 import { BoardColumn } from '../BoardColumn/BoardColumn'
 
@@ -10,15 +10,13 @@ type BoardProps<TData extends BaseBoardCardType> = {
 	 * Column data
 	 */
 	columns: BoardColumnType<TData>[]
+	setColumns: React.Dispatch<React.SetStateAction<BoardColumnType<TData>[] | undefined>>
 	/**
 	 * Callback for when a card is moved
 	 * @param card The card that was moved
 	 * @param to The column and index the card was moved to
 	 */
-	onCardMove?: (card: TData, to: {
-		column: BoardColumnType<TData>
-		index: number
-	}) => void
+	onCardMove?: OnCardMoveSignature<TData>
 	/**
 	 * Render the card body
 	 * @optional
@@ -58,17 +56,15 @@ type BoardProps<TData extends BaseBoardCardType> = {
 
 export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>) {
 
-	const [columns, setColumns] = useState(props.columns)
-
 	const { firstColumnComponent: FirstColumnComponent } = props
 
 	return (
 		<DragDropContext
-            onDragEnd={result => onDragEnd(result, columns, setColumns, props.onCardMove)}
+            onDragEnd={result => onDragEnd(result, props.columns, props.setColumns, props.onCardMove)}
 		>
 			<HStack w='100%' gap='1em' overflowX='scroll'>
 
-				{columns.map((column, index) => (
+				{props.columns.map((column, index) => (
 					
 					index === 0 && FirstColumnComponent !== undefined ?
 						<FirstColumnComponent 

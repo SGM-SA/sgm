@@ -15,6 +15,7 @@ export type BoardColumnType<TData extends BaseBoardCardType> = {
 export type BaseBoardCardType = {
 	id: number
 	title: ReactNode
+    isLoading: boolean
 }
 
 export type Collapsable = {
@@ -30,6 +31,23 @@ export type BaseBoardColumnProps<TData extends BaseBoardCardType> = {
         cards?: boolean
     }
 }
+
+export type OnCardMoveSignature<TData extends BaseBoardCardType> = (data: {
+    card: TData
+    to: {
+        column: BoardColumnType<TData>
+        index: number
+    }
+    from: {
+        column: BoardColumnType<TData>
+        index: number
+    }
+    isChangingLane: boolean
+}) => void
+
+// Data
+
+export const CUSTOM_FIRST_COLUMN_ID = -1
 
 // Functions
 
@@ -58,24 +76,18 @@ export const getCardStyleProps = <TData extends BaseBoardCardType>(
 export const onDragEnd = <TData extends BaseBoardCardType>(
     result: DropResult, 
     columns: BoardColumnType<TData>[], 
-    setColumns: Dispatch<SetStateAction<BoardColumnType<TData>[]>>,
-    onCardMoveHandler?: (card: TData, to: { column: BoardColumnType<TData>, index: number }) => void
+    setColumns: Dispatch<SetStateAction<BoardColumnType<TData>[] | undefined>>,
+    onCardMoveHandler?: OnCardMoveSignature<TData>
 ) => {
 
-	if (!result.destination) return
+    if (!result.destination) return
 	const { source, destination } = result
-
+    
     const sourceId = parseInt(source.droppableId)
     const destId = parseInt(destination.droppableId)
-
-    // if (props.onCardMove) {
-    //     props.onCardMove(activeColumn.cards[activeIndex], {
-    //         column: activeColumn,
-    //         index: activeIndex,
-    //     })
-    // }
-
+    
 	if (sourceId !== destId) {
+        // Changing lane
 
 		const sourceColumn = columns.find((column) => column.id === sourceId)
 		const destColumn = columns.find((column) => column.id === destId)
@@ -83,42 +95,64 @@ export const onDragEnd = <TData extends BaseBoardCardType>(
 
 		const sourceItems = [...sourceColumn.cards]
 		const destItems = [...destColumn.cards]
-		const [removed] = sourceItems.splice(source.index, 1)
+		
+        const [removed] = sourceItems.splice(source.index, 1)
+        if (
+            sourceColumn.id === CUSTOM_FIRST_COLUMN_ID
+            || destColumn.id === CUSTOM_FIRST_COLUMN_ID    
+        ) removed.isLoading = true
 
 		destItems.splice(destination.index, 0, removed)
 
-        setColumns((prev) => prev.map((column) => {
+        setColumns((prev) => prev?.map((column) => {
             if (column.id === sourceId) return { ...column, cards: sourceItems }
             else if (column.id === destId) return { ...column, cards: destItems }
             else return column
         }))
 
         if (onCardMoveHandler) {
-            onCardMoveHandler(sourceColumn.cards[source.index], {
-                column: destColumn,
-                index: destination.index,
+            onCardMoveHandler({
+                card: sourceColumn.cards[source.index],
+                to: {
+                    column: destColumn,
+                    index: destination.index,
+                },
+                from: {
+                    column: sourceColumn,
+                    index: source.index,
+                },
+                isChangingLane: true,
             })
         }
 
 	} else {
+        // Changing position in the same lane
 
 		const column = columns.find((column) => column.id === sourceId)
         if (!column) return
 
 		const copiedItems = [...column.cards]
 		const [removed] = copiedItems.splice(source.index, 1)
-		
+
         copiedItems.splice(destination.index, 0, removed)
 
-        setColumns((prev) => prev.map((column) => {
+        setColumns((prev) => prev?.map((column) => {
             if (column.id === sourceId) return { ...column, cards: copiedItems }
             else return column
         }))
 
         if (onCardMoveHandler) {
-            onCardMoveHandler(column.cards[source.index], {
-                column,
-                index: destination.index,
+            onCardMoveHandler({
+                card: column.cards[source.index],
+                to: {
+                    column,
+                    index: destination.index,
+                },
+                from: {
+                    column,
+                    index: source.index,
+                },
+                isChangingLane: false,
             })
         }
 	
