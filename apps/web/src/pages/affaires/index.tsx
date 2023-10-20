@@ -1,6 +1,6 @@
 import { Box, Progress } from '@chakra-ui/react'
 import { AffaireDetails, affaireStatus, fetchApiAffairesPartialUpdate, fetchApiGroupeMachineList, useApiAffairesList } from '@sgm/openapi'
-import { DefaultTableCell, Table, TableLayout, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
+import { DefaultTableCell, Table, TableLayout, TextLink, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
 import { Link, useNavigate } from '@sgm/web/router'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
@@ -20,7 +20,7 @@ const columns = [
                     numAffaire: `${value.row.original.num_affaire}`
                 }}
             >
-                {value.getValue()}
+                <TextLink>{value.getValue()}</TextLink>
             </Link>,
         header: 'Numéro',
         meta: createColumnMeta({

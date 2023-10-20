@@ -26,6 +26,7 @@ export function BoardCard<TData extends BaseBoardCardType>(props: BoardCardProps
     }
 
     const isCollapsable = props.collapse !== undefined && props.renderCardBody
+    const shouldDisplayBody = (isCollapsable && !props.collapse?.collapsed) || props.collapse === undefined
 
 	return <>
         <Draggable
@@ -42,9 +43,9 @@ export function BoardCard<TData extends BaseBoardCardType>(props: BoardCardProps
                     {...props.chakraProps}
                 >
                     {/* Header */}
-                    <HStack justifyContent='space-between'>
+                    <HStack justifyContent='space-between' alignItems='flex-start'>
                         {/* Title */}
-                        <Text fontWeight='bold'>{props.card.title}</Text>
+                        <Text>{props.card.title}</Text>
 
                         {/* Collapse button */}
                         {isCollapsable &&
@@ -57,8 +58,8 @@ export function BoardCard<TData extends BaseBoardCardType>(props: BoardCardProps
                     </HStack>
 
                     {/* Body */}
-                    {(isCollapsable && !props.collapse?.collapsed) &&
-                        <Box>
+                    {shouldDisplayBody &&
+                        <Box mt='1em'>
                             {props.renderCardBody?.(props.card)}
                         </Box>
                     }
