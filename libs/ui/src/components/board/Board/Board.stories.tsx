@@ -136,6 +136,7 @@ export const Primary: Story = {
 		collapsable: {
 			cards: true,
 			columns: true,
-		}
+		},
+		pinFirstColumn: true
 	},
 }

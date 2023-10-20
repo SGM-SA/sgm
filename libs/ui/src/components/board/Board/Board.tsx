@@ -18,8 +18,8 @@ type BoardProps<TData extends BaseBoardCardType> = {
 		columns?: boolean
 		cards?: boolean
 	}
-	// TODO: implement
 	pinFirstColumn?: boolean
+	// TODO: implement
 	styling?: {
 		column?: ChakraProps | ((column: BoardColumnType<TData>) => ChakraProps | undefined)
 		card?: ChakraProps | ((card: TData) => ChakraProps | undefined)
@@ -37,14 +37,22 @@ export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>)
 		<DragDropContext
             onDragEnd={result => onDragEnd(result, columns, setColumns, props.onCardMove)}
 		>
-			<HStack w='100%' gap='1em'>	
-				{columns.map((column) => (
+			<HStack w='100%' gap='1em' overflowX='scroll'>
+
+				{columns.map((column, index) => (
 					
 					<BoardColumn<TData>
 						key={column.id}
 						column={column}
 						renderHeader={props.renderColumnHeader}
-						chakraProps={getColumnStyleProps(column, props.styling?.column)}
+						chakraProps={{
+							...getColumnStyleProps(column, props.styling?.column),
+							...(props.pinFirstColumn && index === 0 ? { 
+								position: 'sticky', 
+								left: 0,
+								zIndex: 2
+							} : {})
+						}}
 						collapse={props.collapsable?.columns ? {
 							collapsed: collapsedColumns.includes(column.id),
 							setCollapsed: setCollapsedColumns

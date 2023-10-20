@@ -58,6 +58,7 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                     <Box
                         ref={provided.innerRef}
                         width='400px'
+                        minWidth='400px'
                         minHeight='80vh'
                         bg='gray.100'
                         padding='1em'
