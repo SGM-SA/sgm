@@ -19,11 +19,9 @@ type BoardProps<TData extends BaseBoardCardType> = {
 		cards?: boolean
 	}
 	pinFirstColumn?: boolean
-	// TODO: implement
 	styling?: {
 		column?: ChakraProps | ((column: BoardColumnType<TData>) => ChakraProps | undefined)
 		card?: ChakraProps | ((card: TData) => ChakraProps | undefined)
-		// TODO: faire comme pour le styling dynamique de Table
 	}
 }
 

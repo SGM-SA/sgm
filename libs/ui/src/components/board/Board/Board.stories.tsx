@@ -137,6 +137,14 @@ export const Primary: Story = {
 			cards: true,
 			columns: true,
 		},
-		pinFirstColumn: true
+		pinFirstColumn: true,
+		styling: {
+			column: (column) => ({
+				bg: column.id % 2 === 0 ? 'red.100' : 'blue.100',
+			}),
+			card: (card) => ({
+				bg: card.id % 2 === 0 ? 'red.200' : 'blue.200',
+			}),
+		}
 	},
 }

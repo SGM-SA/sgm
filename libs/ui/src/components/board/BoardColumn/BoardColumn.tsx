@@ -63,6 +63,7 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                         bg='gray.100'
                         padding='1em'
                         borderRadius='5px'
+                        opacity={snapshot.isDraggingOver ? 0.8 : 1}
                         {...props.chakraProps}
                         {...provided.droppableProps}
                     >
