@@ -21,10 +21,12 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
             <Box
                 ref={setNodeRef}
                 w='200px'
-                bg='secondary'
+                minH='80vh'
+                bg='gray.100'
                 mr='10px'
+                p='1em'
             >
-                <Heading as='h3'>{props.title}</Heading>
+                <Heading as='h3' fontSize='1.2em'>{props.title}</Heading>
                 {props.cards.map((card) => (
                     <BoardCard key={card.id} id={card.id} data={card} renderCard={props.renderCard} />
                 ))}

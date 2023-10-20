@@ -20,7 +20,8 @@ export function BoardCard<TData extends BaseBoardCardType>(props: BoardCardProps
         <Box ref={setNodeRef} {...attributes} {...listeners}
             m='1em' p='1em'
             opacity={1}
-            bg='white'
+            bg='gray.300'
+            borderRadius='0.5em'
             transform={CSS.Transform.toString(transform)}
         >
             {props.renderCard(props.data)}

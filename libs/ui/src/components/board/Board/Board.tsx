@@ -1,25 +1,21 @@
-import React, { useState } from 'react'
-import { BoardColumn } from '../BoardColumn/BoardColumn'
-import { BoardColumnType, BaseBoardCardType } from '../../../utils'
-import {
-	closestCorners,
-	DndContext,
-	KeyboardSensor,
-	PointerSensor,
-	useSensor,
-	useSensors,
-	DragEndEvent,
-	DragOverEvent,
-} from '@dnd-kit/core'
-import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { Flex } from '@chakra-ui/react'
+import { DndContext, DragEndEvent, DragOverEvent, KeyboardSensor, PointerSensor, closestCorners, useSensor, useSensors } from '@dnd-kit/core'
+import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
+import { useState } from 'react'
+import { BaseBoardCardType, BoardColumnType } from '../../../utils'
+import { BoardColumn } from '../BoardColumn/BoardColumn'
 
 type BoardProps<TData extends BaseBoardCardType> = {
 	initialData: BoardColumnType<TData>[]
     renderCard: (card: TData) => JSX.Element
+	onCardMove?: (card: TData, to: {
+		column: BoardColumnType<TData>
+		index: number
+	}) => void
 }
 
 export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>) {
+
 	const [columns, setColumns] = useState(props.initialData)
 
 	const findColumn = (unique: string | null) => {
@@ -65,6 +61,7 @@ export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>)
 			}
 
 			return prevState.map((column) => {
+
 				if (column.id === activeColumn.id) {
 					column.cards = activeItems.filter((item) => String(item.id) !== activeId)
 					return column
@@ -85,6 +82,7 @@ export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>)
 	const handleDragEnd = (event: DragEndEvent) => {
 
 		const { active, over } = event
+
 		const activeId = String(active.id)
 		const overId = over ? String(over.id) : null
 		const activeColumn = findColumn(activeId)
@@ -93,22 +91,27 @@ export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>)
         
 		const activeIndex = activeColumn.cards.findIndex((card) => String(card.id) === activeId)
 		const overIndex = overColumn.cards.findIndex((card) => String(card.id) === overId)
+
+		if (props.onCardMove) {
+			props.onCardMove(activeColumn.cards[activeIndex], {
+				column: activeColumn,
+				index: activeIndex,
+			})
+		}
 		
         if (activeIndex !== overIndex) {
-			setColumns((prevState) => {
-				return prevState.map((column) => {
-					if (column.id === activeColumn.id) {
-						column.cards = arrayMove(
-							overColumn.cards,
-							activeIndex,
-							overIndex
-						)
-						return column
-					} else {
-						return column
-					}
-				})
-			})
+
+			setColumns(prevState => prevState.map((column) => {
+
+				if (column.id === activeColumn.id) {
+					column.cards = arrayMove(
+						overColumn.cards,
+						activeIndex,
+						overIndex
+					)	
+				}
+				return column
+			}))
 		}
 	}
 
