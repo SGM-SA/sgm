@@ -7,18 +7,46 @@ import { BoardCard } from '../BoardCard/BoardCard'
 import { BoardColumn } from '../BoardColumn/BoardColumn'
 
 type BoardProps<TData extends BaseBoardCardType> = {
-	initialData: BoardColumnType<TData>[]
+	/**
+	 * Column data
+	 */
+	columns: BoardColumnType<TData>[]
+	/**
+	 * Callback for when a card is moved
+	 * @param card The card that was moved
+	 * @param to The column and index the card was moved to
+	 */
 	onCardMove?: (card: TData, to: {
 		column: BoardColumnType<TData>
 		index: number
 	}) => void
+	/**
+	 * Render the card body
+	 * @optional
+	 */
 	renderCardBody?: (card: TData) => JSX.Element
+	/**
+	 * Render the column header
+	 * @optional
+	 */
 	renderColumnHeader?: (column: BoardColumnType<TData>) => JSX.Element
+	/**
+	 * Collapse columns and/or cards
+	 * @optional
+	 */
 	collapsable?: {
 		columns?: boolean
 		cards?: boolean
 	}
+	/**
+	 * Pin the first column to the left of the screen
+	 * @optional
+	 */
 	pinFirstColumn?: boolean
+	/**
+	 * Dynamic styling for columns and cards
+	 * @optional
+	 */
 	styling?: {
 		column?: ChakraProps | ((column: BoardColumnType<TData>) => ChakraProps | undefined)
 		card?: ChakraProps | ((card: TData) => ChakraProps | undefined)
@@ -27,7 +55,7 @@ type BoardProps<TData extends BaseBoardCardType> = {
 
 export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>) {
 
-	const [columns, setColumns] = useState(props.initialData)
+	const [columns, setColumns] = useState(props.columns)
 	const [collapsedColumns, setCollapsedColumns] = useState<UniqueIdentifier[]>([])
 	const [collapsedCards, setCollapsedCards] = useState<UniqueIdentifier[]>([])
 

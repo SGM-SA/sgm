@@ -128,7 +128,7 @@ type Story = StoryObj<typeof Board<CardType>>
 
 export const Primary: Story = {
 	args: {
-		initialData: data,
+		columns: data,
 		renderCardBody: (card) => <div>{card.title}</div>,
 		onCardMove: (card, to) => {
 			console.log(card, to)
