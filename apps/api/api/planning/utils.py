@@ -21,7 +21,6 @@ def sort_affectations_by_previous(affectations: List[Affectation]):
                 sorted_affectations.append(affectation)
                 del lookup[id]
 
-    sorted_affectations.reverse()  # On inverse l'ordre pour avoir le bon ordre de planification
     return sorted_affectations
 
 

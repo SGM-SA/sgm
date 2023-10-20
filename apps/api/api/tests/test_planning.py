@@ -67,10 +67,13 @@ class UtilsPlanningTestCase(TestCase):
             # previous=affectation3,
         )
 
-        affectation2.previous = affectation3
+        affectation3.previous = affectation2
+        affectation3.save()
+
+        affectation2.previous = affectation1
         affectation2.save()
 
-        affectation1.previous = affectation2
+        affectation1.previous = None
         affectation1.save()
 
         sorted_affecations = sort_affectations_by_previous(
@@ -143,16 +146,19 @@ class UtilsPlanningTestCase(TestCase):
             semaine_affectation="2021-01-03",
         )
 
-        affectation4.previous = affectation5
+        affectation5.previous = affectation4
+        affectation5.save()
+
+        affectation4.previous = affectation3
         affectation4.save()
 
-        affectation3.previous = affectation4
+        affectation3.previous = affectation2
         affectation3.save()
 
-        affectation2.previous = affectation3
+        affectation2.previous = affectation1
         affectation2.save()
 
-        affectation1.previous = affectation2
+        affectation1.previous = None
         affectation1.save()
 
         sorted_affectations = sort_affectations_by_previous(
@@ -364,16 +370,19 @@ class PlanningMachineTest(APITestCase):
             semaine_affectation="2021-01-03",
         )
 
-        affectation4.previous = affectation5
+        affectation5.previous = affectation4
+        affectation5.save()
+
+        affectation4.previous = affectation3
         affectation4.save()
 
-        affectation3.previous = affectation4
+        affectation3.previous = affectation2
         affectation3.save()
 
-        affectation2.previous = affectation3
+        affectation2.previous = affectation1
         affectation2.save()
 
-        affectation1.previous = affectation2
+        affectation1.previous = None
         affectation1.save()
 
     def test_retrieve_planning_machine_semaine(self):
