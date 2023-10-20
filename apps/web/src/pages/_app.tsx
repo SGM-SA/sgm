@@ -13,24 +13,22 @@ const queryClient = new QueryClient()
 
 const App: React.FC = () => {
 
-    const [token, setToken] = useState(localStorage.getItem('token'))
-        
-    return (
-        <StrictMode>
-            <AuthContext.Provider value={{ token, setToken }}>
-                <QueryClientProvider client={queryClient}>
-                    <AuthGuard>
-                        <ChakraProvider theme={theme}>
-                            <Outlet />
-                        </ChakraProvider>
-                    </AuthGuard>
-                </QueryClientProvider>
-            </AuthContext.Provider>
-            <ToastContainer 
-                position="bottom-center"
-            />
-        </StrictMode>
-    )
+	const [token, setToken] = useState(localStorage.getItem('token'))
+
+	return (
+		<StrictMode>
+			<AuthContext.Provider value={{ token, setToken }}>
+				<QueryClientProvider client={queryClient}>
+					<AuthGuard>
+						<ChakraProvider theme={theme}>
+							<Outlet />
+						</ChakraProvider>
+					</AuthGuard>
+				</QueryClientProvider>
+			</AuthContext.Provider>
+			<ToastContainer position='bottom-center' />
+		</StrictMode>
+	)
 }
 
 export default App

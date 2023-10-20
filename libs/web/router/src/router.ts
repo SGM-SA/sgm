@@ -12,6 +12,7 @@ export type Path =
 	| `/auth/logout`
 	| `/machines`
 	| `/modeles`
+	| `/planning/machines`
 	| `/zones`
 
 export type Params = {
