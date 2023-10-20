@@ -17,7 +17,7 @@ from drf_spectacular.utils import (
 )
 from django.db.models import Prefetch, Count, Q
 from constance import config
-from api.utils.view import LargeResultsSetPagination
+from api.utils.dates import week_to_date_range
 
 
 class EtapeAjustagePlanifierFilter(filters.BaseFilterBackend):
@@ -31,8 +31,9 @@ class EtapeAjustagePlanifierFilter(filters.BaseFilterBackend):
 
         * etape : renvoie uniquement les étapes ajustage à planifier avec ces critères
             - affectation__isnull=True : l'étape n'a pas d'affectation
+                ou si la date d'affectation est antérieur au lundi de cette la semaine en cours
             - groupe_machine=config.CONSTANTE : l'étape est un ajustage
-            - date affectation dépasée
+
     """
 
     def filter_queryset(self, request, queryset, view):
@@ -41,7 +42,11 @@ class EtapeAjustagePlanifierFilter(filters.BaseFilterBackend):
             & Q(groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID)
             & (
                 Q(affectationajustage__isnull=True)
-                | Q(affectationajustage__semaine_affectation__lt=datetime.now())
+                | Q(
+                    affectationajustage__semaine_affectation__lt=week_to_date_range(
+                        datetime.now().strftime("%Y-%m-%d")
+                    )[0]
+                )
             )
         )
 
@@ -93,10 +98,10 @@ class EtapeMachinePlanifierFilter(filters.BaseFilterBackend):
             - affaire validée par ingénieur
             - affaire qui a des fiches machines à planifier
 
-        * fiche : renvoie uniquement les fiches machines à planifier avec ces critères
-            - affectation__isnull=True : la fiche n'a pas d'affectation
-            - groupe_machine != 2 : la fiche n'est pas un ajustage
-            - data_affecation a été dépaséée
+        * etape : renvoie uniquement les étapes machines à planifier avec ces critères
+            - affectation__isnull=True : l'étape n'a pas d'affectation ou si la date d'affectation est antérieur au lundi de la semaine en cours
+                ou si la date d'affectation est antérieur au lundi de cette la semaine en cours
+            - groupe_machine!=config.GROUPE_AJUSTAGE_ID : l'étape n'est pas un ajustage
 
     """
 
@@ -106,7 +111,11 @@ class EtapeMachinePlanifierFilter(filters.BaseFilterBackend):
             & ~Q(groupe_machine=config.GROUPE_MACHINE_AJUSTAGE_ID)
             & (
                 Q(affectationmachine__isnull=True)
-                | Q(affectationmachine__semaine_affectation__lt=datetime.now())
+                | Q(
+                    affectationmachine__semaine_affectation__lt=week_to_date_range(
+                        datetime.now().strftime("%Y-%m-%d")
+                    )[0]
+                )
             )
         )
 
