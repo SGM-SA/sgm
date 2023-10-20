@@ -1,22 +1,39 @@
-import { Flex } from '@chakra-ui/react'
+import { ChakraProps, Flex } from '@chakra-ui/react'
 import { DndContext, DragEndEvent, DragOverEvent, KeyboardSensor, PointerSensor, closestCorners, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import { useState } from 'react'
-import { BaseBoardCardType, BoardColumnType } from '../../../utils'
+import { useEffect, useState } from 'react'
+import { BaseBoardCardType, BoardColumnType, getColumnStyleProps } from '../../../utils'
 import { BoardColumn } from '../BoardColumn/BoardColumn'
 
 type BoardProps<TData extends BaseBoardCardType> = {
 	initialData: BoardColumnType<TData>[]
-    renderCard: (card: TData) => JSX.Element
 	onCardMove?: (card: TData, to: {
 		column: BoardColumnType<TData>
 		index: number
 	}) => void
+	renderCard: (card: TData) => JSX.Element
+	renderColumnHeader?: (column: BoardColumnType<TData>) => JSX.Element
+	// TODO: implement
+	collapsable?: {
+		columns?: boolean
+		cards?: boolean
+	}
+	pinFirstColumn?: boolean
+	styling?: {
+		column?: ChakraProps | ((column: BoardColumnType<TData>) => ChakraProps | undefined)
+		card?: ChakraProps | ((card: TData) => ChakraProps | undefined)
+		// TODO: faire comme pour le styling dynamique de Table
+	}
 }
 
 export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>) {
 
 	const [columns, setColumns] = useState(props.initialData)
+
+	useEffect(() => {
+		
+		console.log('state column', columns)
+	}, [columns])
 
 	const findColumn = (unique: string | null) => {
 
@@ -130,13 +147,21 @@ export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>)
             onDragEnd={handleDragEnd}
 		>
 			<Flex p='20px'>
-				{columns.map((column) => (
-					<BoardColumn<TData>
-						key={column.id}
-						{...column}
-                        renderCard={props.renderCard}
-					/>
-				))}
+				{columns.map((column) => {
+
+					console.log('column', column)
+
+					return (
+						<BoardColumn<TData>
+							key={column.id}
+							column={column}
+							renderCard={props.renderCard}
+							renderColumnHeader={props.renderColumnHeader}
+							cardStyling={props.styling?.card}
+							chakraProps={getColumnStyleProps(column, props.styling?.column)}
+						/>
+					)
+				})}
 			</Flex>
 		</DndContext>
 	)

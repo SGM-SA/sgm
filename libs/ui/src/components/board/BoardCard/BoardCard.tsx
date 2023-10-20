@@ -1,13 +1,14 @@
 import React from 'react'
 import { BaseBoardCardType } from '../../../utils'
 import { useSortable } from '@dnd-kit/sortable'
-import { Box } from '@chakra-ui/react'
+import { Box, ChakraProps } from '@chakra-ui/react'
 import { CSS } from '@dnd-kit/utilities'
 
 type BoardCardProps<TData extends BaseBoardCardType> = {
     id: number
     data: TData
     renderCard: (card: TData) => JSX.Element
+    chakraProps?: ChakraProps
 }
 
 export function BoardCard<TData extends BaseBoardCardType>(props: BoardCardProps<TData>) {
@@ -21,8 +22,9 @@ export function BoardCard<TData extends BaseBoardCardType>(props: BoardCardProps
             m='1em' p='1em'
             opacity={1}
             bg='gray.300'
-            borderRadius='0.5em'
+            borderRadius='5px'
             transform={CSS.Transform.toString(transform)}
+            {...props.chakraProps}
         >
             {props.renderCard(props.data)}
         </Box>
