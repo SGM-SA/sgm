@@ -21,7 +21,7 @@ type CardType = {
 
 const data: BoardColumnType<CardType>[] = [
 	{
-		id: 'Column1',
+		id: 1,
 		title: 'Column1',
 		cards: [
 			{
@@ -35,7 +35,7 @@ const data: BoardColumnType<CardType>[] = [
 		],
 	},
 	{
-		id: 'Column2',
+		id: 2,
 		title: 'Column2',
 		cards: [
 			{
@@ -48,6 +48,77 @@ const data: BoardColumnType<CardType>[] = [
 			},
 		],
 	},
+	{
+		id: 3,
+		title: 'Column3',
+		cards: [
+			{
+				id: 5,
+				title: 'Card5',
+			},
+			{
+				id: 6,
+				title: 'Card6',
+			},
+		],
+	},
+	{
+		id: 4,
+		title: 'Column4',
+		cards: [
+			{
+				id: 7,
+				title: 'Card7',
+			},
+			{
+				id: 8,
+				title: 'Card8',
+			},
+		],
+	},
+	{
+		id: 5,
+		title: 'Column5',
+		cards: [
+			{
+				id: 9,
+				title: 'Card9',
+			},
+			{
+				id: 10,
+				title: 'Card10',
+			},
+		],
+	},
+	{
+		id: 6,
+		title: 'Column6',
+		cards: [
+			{
+				id: 11,
+				title: 'Card11',
+			},
+			{
+				id: 12,
+				title: 'Card12',
+			},
+		],
+	},
+	{
+		id: 7,
+		title: 'Column7',
+		cards: [
+			{
+				id: 13,
+				title: 'Card13',
+			},
+			{
+				id: 14,
+				title: 'Card14',
+			},
+		],
+	}
+
 ]
 
 /**

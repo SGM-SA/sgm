@@ -1,6 +1,5 @@
 import { Box, ChakraProps, HStack, Heading, VStack } from '@chakra-ui/react'
-import { useDroppable } from '@dnd-kit/core'
-import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
+import { Droppable } from 'react-beautiful-dnd'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { BaseBoardCardType, BoardColumnType, Collapsable } from '../../../utils'
 
@@ -13,8 +12,6 @@ type BoardColumnProps<TData extends BaseBoardCardType> = {
 }
 
 export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnProps<TData>) {
-    
-    const { setNodeRef } = useDroppable({ id: props.column.id })
     
     const toggleCollapse = () => {
         if (props.collapse === undefined) return
@@ -53,38 +50,43 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
     } else {
 
         return (
-            <SortableContext 
-                id={String(props.column.id)}
-                items={props.column.cards}
-                strategy={rectSortingStrategy}
+            <Droppable 
+                droppableId={String(props.column.id)}
+                key={String(props.column.id)}
             >
-                <Box
-                    ref={setNodeRef}
-                    width='400px'
-                    minHeight='80vh'
-                    bg='gray.100'
-                    padding='1em'
-                    borderRadius='5px'
-                    {...props.chakraProps}
-                >
-                    {/* Header */}
-                    <VStack>
-                        {props.renderHeader !== undefined ? 
-                            props.renderHeader(props.column)
-                            :
-                            <HStack w='100%' justifyContent='space-between'>
-                                <Heading as='h3' fontSize='1em'>{props.column.title}</Heading>
-                                {props.collapse && <FaChevronLeft onClick={toggleCollapse} cursor='pointer'/>}
-                            </HStack>
-                        }
-                    </VStack>
-                    
-                    {/* Cards */}
-                    {!isCollapsed && props.children}
+                {(provided, snapshot) => (
+                    <Box
+                        ref={provided.innerRef}
+                        width='400px'
+                        minHeight='80vh'
+                        bg='gray.100'
+                        padding='1em'
+                        borderRadius='5px'
+                        {...props.chakraProps}
+                        {...provided.droppableProps}
+                    >
+                        {/* Header */}
+                        <VStack>
+                            {props.renderHeader !== undefined ? 
+                                props.renderHeader(props.column)
+                                :
+                                <HStack w='100%' justifyContent='space-between'>
+                                    <Heading as='h3' fontSize='1em'>{props.column.title}</Heading>
+                                    {props.collapse && <FaChevronLeft onClick={toggleCollapse} cursor='pointer'/>}
+                                </HStack>
+                            }
+                        </VStack>
+                        
+                        {/* Cards */}
+                        {!isCollapsed && <>
+                            {props.children}
+                            {provided.placeholder}
+                        </>}
 
-                </Box>
+                    </Box>
+                )}
 
-            </SortableContext>
+            </Droppable>
         )
     }
 }
