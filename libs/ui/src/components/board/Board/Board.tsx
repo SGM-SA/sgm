@@ -12,13 +12,13 @@ type BoardProps<TData extends BaseBoardCardType> = {
 		column: BoardColumnType<TData>
 		index: number
 	}) => void
-	renderCard: (card: TData) => JSX.Element
+	renderCardBody?: (card: TData) => JSX.Element
 	renderColumnHeader?: (column: BoardColumnType<TData>) => JSX.Element
-	// TODO: implement
 	collapsable?: {
 		columns?: boolean
 		cards?: boolean
 	}
+	// TODO: implement
 	pinFirstColumn?: boolean
 	styling?: {
 		column?: ChakraProps | ((column: BoardColumnType<TData>) => ChakraProps | undefined)
@@ -131,7 +131,11 @@ export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>)
 	}
 
 	const sensors = useSensors(
-		useSensor(PointerSensor),
+		useSensor(PointerSensor, {
+			activationConstraint: {
+				distance: 20,
+			},
+		}),
 		useSensor(KeyboardSensor, {
 			coordinateGetter: sortableKeyboardCoordinates,
 		})
@@ -152,22 +156,22 @@ export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>)
 						column={column}
 						renderHeader={props.renderColumnHeader}
 						chakraProps={getColumnStyleProps(column, props.styling?.column)}
-						collapse={{
+						collapse={props.collapsable?.columns ? {
 							collapsed: collapsedColumns.includes(column.id),
 							setCollapsed: setCollapsedColumns
-						}}
+						} : undefined}
 					>
 
 						{column.cards.map((card) => (
 							<BoardCard 
 								key={card.id} 
 								card={card} 
-								renderCard={props.renderCard}
+								renderCardBody={props.renderCardBody}
 								chakraProps={getCardStyleProps(card, props.styling?.card)}
-								collapse={{
+								collapse={props.collapsable?.cards ? {
 									collapsed: collapsedCards.includes(card.id),
 									setCollapsed: setCollapsedCards
-								}}
+								} : undefined}
 							/>
 						))}
 					</BoardColumn>

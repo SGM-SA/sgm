@@ -74,7 +74,7 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                             :
                             <HStack w='100%' justifyContent='space-between'>
                                 <Heading as='h3' fontSize='1em'>{props.column.title}</Heading>
-                                <FaChevronLeft onClick={toggleCollapse} cursor='pointer'/>
+                                {props.collapse && <FaChevronLeft onClick={toggleCollapse} cursor='pointer'/>}
                             </HStack>
                         }
                     </VStack>

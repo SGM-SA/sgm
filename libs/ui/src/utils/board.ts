@@ -1,6 +1,6 @@
 import { ChakraProps } from "@chakra-ui/react"
 import { UniqueIdentifier } from "@dnd-kit/core"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, ReactNode, SetStateAction } from "react"
 
 // Types
 
@@ -13,6 +13,7 @@ export type BoardColumnType<TData extends BaseBoardCardType> = {
 
 export type BaseBoardCardType = {
     id: UniqueIdentifier
+    title: ReactNode
 }
 
 export type Collapsable = {
