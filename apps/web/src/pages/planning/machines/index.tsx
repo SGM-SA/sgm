@@ -44,6 +44,9 @@ const PlanningMachinesPage: React.FC = () => {
             const computedColumns: BoardColumnType<PlanningMachineCard>[] = machines.data.map((machine) => ({
                 id: machine.id,
                 title: machine.nom_machine,
+                meta: {
+                    fonctionnelle: machine.fonctionnelle
+                },
                 cards: machine.affectations?.flatMap(affaire => affaire.fiches?.flatMap(fiche => fiche.etapes.map(etape => ({
                     id: etape.id,
                     title: <VStack alignItems='flex-start' gap={0}>
@@ -138,6 +141,15 @@ const PlanningMachinesPage: React.FC = () => {
                                 }}
                             />
                         </>}
+                        styling={{
+                            column: (column) => {
+                                if (column.meta?.fonctionnelle === false) {
+                                    return {
+                                        backgroundColor: 'red.200'
+                                    }
+                                }
+                            }
+                        }}
                     />
                 }
             </Flex>
