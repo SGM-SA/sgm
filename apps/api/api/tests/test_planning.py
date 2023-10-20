@@ -269,7 +269,7 @@ class PlanningMachineTest(APITestCase):
                    etape_2:
                    etape_3:
         """
-        self.affaire = Affaire.objects.create(num_affaire=1)
+        self.affaire = Affaire.objects.create(num_affaire=1, validation_ingenieur=True)
         self.affaire2 = Affaire.objects.create(num_affaire=2)
         self.group_machine_ajustage = GroupeMachine.objects.create(
             nom_groupe="Ajustage"
@@ -300,7 +300,7 @@ class PlanningMachineTest(APITestCase):
         )
         self.etape1 = Etape.objects.create(
             num_etape=1,
-            terminee=True,
+            terminee=False,
             fiche=self.fiche,
             groupe_machine=self.group_machine,
         )
@@ -312,7 +312,7 @@ class PlanningMachineTest(APITestCase):
         )
         self.etape3 = Etape.objects.create(
             num_etape=3,
-            terminee=True,
+            terminee=False,
             fiche=self.fiche,
             groupe_machine=self.group_machine,
         )
@@ -416,6 +416,21 @@ class PlanningMachineTest(APITestCase):
         )
         self.assertEqual(affectations_machine_1[2]["fiches"][0]["etapes"][0]["id"], 2)
         self.assertEqual(affectations_machine_1[2]["fiches"][0]["etapes"][1]["id"], 3)
+
+    def test_a_planifier(self):
+        """
+        La semaine après le 2021-01-01, on doit retrouver 2 étapes à planifier, la 1 et la 2 car elles ne sont pas terminées
+        """
+
+        url = "/api/fiches/machine/a_planifier"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        a_planifier = response.json()
+        # meme affaire, meme fiche, 2 etapes
+        self.assertEqual(len(a_planifier), 1)
+        self.assertEqual(len(a_planifier[0]["fiches"][0]["etapes"]), 2)
+        self.assertEqual(a_planifier[0]["fiches"][0]["etapes"][0]["id"], 1)
+        self.assertEqual(a_planifier[0]["fiches"][0]["etapes"][1]["id"], 3)
 
 
 class PlanningAjustageTest(APITestCase):
