@@ -22,6 +22,15 @@ export type Collapsable = {
 	setCollapsed: Dispatch<SetStateAction<UniqueIdentifier[]>>
 }
 
+export type BaseBoardColumnProps<TData extends BaseBoardCardType> = {
+    column: BoardColumnType<TData>
+    renderCard?: (card: TData) => JSX.Element
+    collapsable?: {
+        columns?: boolean
+        cards?: boolean
+    }
+}
+
 // Functions
 
 export const getColumnStyleProps = (

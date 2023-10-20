@@ -8,17 +8,21 @@ import { Select } from 'chakra-react-select'
 import { LoaderFunction } from 'react-router-dom'
 import { useLoaderData } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
+import { PlanningNestedEtapeColumn } from '../../../components/modules'
 
 export const Loader = (() => {
     return fetchApiSalariesFormOptionsList({ queryParams: { per_page: 1000 } })
 }) satisfies LoaderFunction
 
-type PlanningMachineCard = BaseBoardCardType & {
+export type PlanningMachineCard = BaseBoardCardType & {
     affectationId: number
     numEtape: number
     numAffaire?: number | null
+    ficheId: number
     ficheName?: string
     responsible?: number
+    temps?: number
+    groupeMachineId?: number | null
 } 
 
 const PlanningMachinesPage: React.FC = () => {
@@ -56,8 +60,11 @@ const PlanningMachinesPage: React.FC = () => {
                     affectationId: etape.affectation_id,
                     numEtape: etape.num_etape,
                     numAffaire: affaire.num_affaire,
+                    ficheId: fiche.id,
                     ficheName: fiche.titre,
-                    responsible: etape.user_id
+                    responsible: etape.user_id,
+                    temps: etape.temps,
+                    groupeMachineId: etape.groupe_machine
                 }))) || [])
             })) || []
 
@@ -93,6 +100,7 @@ const PlanningMachinesPage: React.FC = () => {
                                 })
                                 .catch(() => toast.error('Erreur lors de la modification de l\'affectation'))
                         }}
+                        firstColumnComponent={PlanningNestedEtapeColumn}
                         collapsable={{
                             cards: true,
                             columns: true

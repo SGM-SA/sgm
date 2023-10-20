@@ -1,8 +1,7 @@
 import { ChakraProps, HStack } from '@chakra-ui/react'
-import { UniqueIdentifier } from '@dnd-kit/core'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
-import { BaseBoardCardType, BoardColumnType, getCardStyleProps, getColumnStyleProps, onDragEnd } from '../../../utils'
+import { BaseBoardCardType, BaseBoardColumnProps, BoardColumnType, getCardStyleProps, getColumnStyleProps, onDragEnd } from '../../../utils'
 import { BoardCard } from '../BoardCard/BoardCard'
 import { BoardColumn } from '../BoardColumn/BoardColumn'
 
@@ -31,6 +30,10 @@ type BoardProps<TData extends BaseBoardCardType> = {
 	 */
 	renderColumnHeader?: (column: BoardColumnType<TData>) => JSX.Element
 	/**
+	 * 
+	 */
+	firstColumnComponent?: React.FC<BaseBoardColumnProps<TData>>
+	/**
 	 * Collapse columns and/or cards
 	 * @optional
 	 */
@@ -56,8 +59,8 @@ type BoardProps<TData extends BaseBoardCardType> = {
 export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>) {
 
 	const [columns, setColumns] = useState(props.columns)
-	const [collapsedColumns, setCollapsedColumns] = useState<UniqueIdentifier[]>([])
-	const [collapsedCards, setCollapsedCards] = useState<UniqueIdentifier[]>([])
+
+	const { firstColumnComponent: FirstColumnComponent } = props
 
 	return (
 		<DragDropContext
@@ -67,38 +70,40 @@ export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>)
 
 				{columns.map((column, index) => (
 					
-					<BoardColumn<TData>
-						key={column.id}
-						column={column}
-						renderHeader={props.renderColumnHeader}
-						chakraProps={{
-							...getColumnStyleProps(column, props.styling?.column),
-							...(props.pinFirstColumn && index === 0 ? { 
-								position: 'sticky', 
-								left: 0,
-								zIndex: 2
-							} : {})
-						}}
-						collapse={props.collapsable?.columns ? {
-							collapsed: collapsedColumns.includes(column.id),
-							setCollapsed: setCollapsedColumns
-						} : undefined}
-					>
+					index === 0 && FirstColumnComponent !== undefined ?
+						<FirstColumnComponent 
+							key={column.id}
+							column={column}
+							renderCard={props.renderCardBody}
+							collapsable={props.collapsable}
+						/>
+						:
+						<BoardColumn<TData>
+							key={column.id}
+							column={column}
+							renderHeader={props.renderColumnHeader}
+							chakraProps={{
+								...getColumnStyleProps(column, props.styling?.column),
+								...(props.pinFirstColumn && index === 0 ? { 
+									position: 'sticky', 
+									left: 0,
+									zIndex: 2
+								} : {})
+							}}
+							collapsable={props.collapsable?.columns}
+						>
 
-						{column.cards.map((card, index) => (
-							<BoardCard 
-								key={card.id} 
-								card={card} 
-								index={index}
-								renderCardBody={props.renderCardBody}
-								chakraProps={getCardStyleProps(card, props.styling?.card)}
-								collapse={props.collapsable?.cards ? {
-									collapsed: collapsedCards.includes(card.id),
-									setCollapsed: setCollapsedCards
-								} : undefined}
-							/>
-						))}
-					</BoardColumn>
+							{column.cards.map((card, index) => (
+								<BoardCard 
+									key={card.id}
+									card={card} 
+									index={index}
+									renderCardBody={props.renderCardBody}
+									chakraProps={getCardStyleProps(card, props.styling?.card)}
+									collapse={props.collapsable?.cards}
+								/>
+							))}
+						</BoardColumn>
 				))}
 			</HStack>
 		</DragDropContext>

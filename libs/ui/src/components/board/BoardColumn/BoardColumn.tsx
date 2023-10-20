@@ -1,30 +1,22 @@
 import { Box, ChakraProps, HStack, Heading, VStack } from '@chakra-ui/react'
+import { useState } from 'react'
 import { Droppable } from 'react-beautiful-dnd'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-import { BaseBoardCardType, BoardColumnType, Collapsable } from '../../../utils'
+import { BaseBoardCardType, BoardColumnType } from '../../../utils'
 
 type BoardColumnProps<TData extends BaseBoardCardType> = {
     column: BoardColumnType<TData>
     children: React.ReactNode
     renderHeader?: (column: BoardColumnType<TData>) => JSX.Element
     chakraProps?: ChakraProps
-    collapse?: Collapsable
+    collapsable?: boolean
 }
 
 export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnProps<TData>) {
-    
-    const toggleCollapse = () => {
-        if (props.collapse === undefined) return
 
-        props.collapse.setCollapsed(prevState => {
-            return props.collapse?.collapsed === false ?
-            [...prevState, props.column.id]
-            :
-            prevState.filter((id) => id !== props.column.id)
-        })
-    }
+    const [collapsed, setCollapsed] = useState<boolean>(false)
 
-    const isCollapsed = props.collapse?.collapsed ?? false
+    const isCollapsed = !props.collapsable ? false : collapsed
 
     if (isCollapsed) {
         return <>
@@ -34,7 +26,7 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                 width='2em'
                 padding='1em'
             >
-                <FaChevronRight onClick={toggleCollapse} cursor='pointer'/>
+                <FaChevronRight onClick={e => setCollapsed(false)} cursor='pointer'/>
                 <Heading
                     as='h3'
                     fontSize='1em'
@@ -62,7 +54,7 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                         minHeight='80vh'
                         bg='gray.100'
                         padding='1em'
-                        borderRadius='5px'
+                        borderRadius='2px'
                         opacity={snapshot.isDraggingOver ? 0.8 : 1}
                         {...props.chakraProps}
                         {...provided.droppableProps}
@@ -74,7 +66,7 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                                 :
                                 <HStack w='100%' justifyContent='space-between'>
                                     <Heading as='h3' fontSize='1em'>{props.column.title}</Heading>
-                                    {props.collapse && <FaChevronLeft onClick={toggleCollapse} cursor='pointer'/>}
+                                    {props.collapsable && <FaChevronLeft onClick={e => setCollapsed(true)} cursor='pointer'/>}
                                 </HStack>
                             }
                         </VStack>
