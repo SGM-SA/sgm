@@ -15,26 +15,33 @@ def group_sorted_affectations_ajustage(sorted_affectations: List[Affectation]):
         affaire_key = affectation.etape.fiche.affaire.id
         fiche_key = affectation.etape.fiche.id
 
+        affaire_key = affectation.etape.fiche.affaire.id
+        fiche_key = affectation.etape.fiche.id
+
+        etape = EtapeDetailAjustage(affectation.etape).data
+        etape["affectation_id"] = affectation.id
+
+        if affectation.user:
+            etape["user_id"] = affectation.user.id
+        else:
+            etape["user_id"] = None
+
         if affaire_key == last_affaire_key:
             # Check if we can append to the existing fiche group within the affaire
             if fiche_key == last_fiche_key:
-                grouped_data[-1]["fiches"][-1]["etapes"].append(
-                    EtapeDetailAjustage(affectation.etape).data
-                )
+                grouped_data[-1]["fiches"][-1]["etapes"].append(etape)
             else:
                 # Start a new fiche group within the existing affaire
                 new_fiche_group = FichePlanningSerializer(affectation.etape.fiche).data
 
-                new_fiche_group["etapes"] = [
-                    EtapeDetailAjustage(affectation.etape).data
-                ]
+                new_fiche_group["etapes"] = [etape]
                 grouped_data[-1]["fiches"].append(new_fiche_group)
                 last_fiche_key = fiche_key
         else:
             # Start a new affaire group
             new_fiche_group = FichePlanningSerializer(affectation.etape.fiche).data
 
-            new_fiche_group["etapes"] = [EtapeDetailAjustage(affectation.etape).data]
+            new_fiche_group["etapes"] = [etape]
 
             new_affaire_group = AffaireDefaultSerializer(
                 affectation.etape.fiche.affaire
