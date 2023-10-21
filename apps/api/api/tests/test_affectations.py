@@ -41,7 +41,7 @@ class AffectationMachineTest(APITestCase):
         self.etape2 = Etape.objects.create(
             fiche=self.fiche,
             groupe_machine=self.groupe_machine,
-            num_etape=1,
+            num_etape=2,
             terminee=True,
         )
 
@@ -86,7 +86,7 @@ class AffectationMachineTest(APITestCase):
         aff1.refresh_from_db()
         self.assertEqual(aff1.previous, aff)
 
-    def test_create_affectation_ajustage_milieu_liste(self):
+    def test_create_affectation_machine_milieu_liste(self):
         """
         Teste la création d'une affectation machine entre 2 affectations
         """
@@ -129,7 +129,7 @@ class AffectationMachineTest(APITestCase):
         self.assertEqual(aff2.previous, aff3)
         self.assertEqual(aff1.next.first(), aff3)
 
-    def test_create_affectation_ajustage_fin_liste(self):
+    def test_create_affectation_machine_fin_liste(self):
         """
         Teste la création d'une affectation machine, ajout en fin de liste
         """
@@ -149,52 +149,58 @@ class AffectationMachineTest(APITestCase):
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
-        aff: AffectationMachine = AffectationMachine.objects.get(id=response.data["id"])
+        aff2: AffectationMachine = AffectationMachine.objects.get(
+            id=response.data["id"]
+        )
         aff1.refresh_from_db()
 
-        self.assertEqual(aff.previous, aff1)
-        self.assertEqual(aff1.next.first(), aff)
+        self.assertEqual(aff2.previous.id, aff1.id)
+        self.assertEqual(aff1.next.first(), aff2)
 
     def test_create_affectation_machine_etape_deja_affectee(self):
         """
-        Teste la création d'une affectation machine
+        Teste la création d'une affectation machine pour une étape déjà affectée à cette date / semaine
         """
 
         AffectationMachine.objects.create(
             etape=self.etape1,
             machine=self.machine_scie,
-            semaine_affectation=timezone.now().strftime("%Y-%m-%d"),
+            semaine_affectation="2021-01-01",
         )
 
         url = "/api/affectations/machines"
         data = {
             "etape": self.etape1.id,
             "machine": self.machine_scie.id,
-            "semaine_affectation": timezone.now().strftime("%Y-%m-%d"),
+            "semaine_affectation": "2021-01-01",
         }
         response = self.client.post(url, data, format="json")
+        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_retrieve_affectation_machine(self):
-        Etape.objects.create(
-            fiche=self.fiche,
-            groupe_machine=self.groupe_machine,
-            num_etape=1,
-        )
-        affectation = AffectationMachine.objects.create(
+    def test_create_affectation_machine_etape_deja_affectee_autre_semaine(self):
+        """
+        Teste la création d'une affectation machine pour une étape mais on change la semaine
+        """
+
+        AffectationMachine.objects.create(
             etape=self.etape1,
             machine=self.machine_scie,
-            semaine_affectation=timezone.now().strftime("%Y-%m-%d"),
+            semaine_affectation="2021-01-01",
         )
 
-        url = f"/api/affectations/machines/{affectation.id}"
-        response = self.client.get(url, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        url = "/api/affectations/machines"
+        data = {
+            "etape": self.etape1.id,
+            "machine": self.machine_scie.id,
+            "semaine_affectation": "2021-02-02",
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_update_affectation_machine(self):
         """
-        Teste la mise à jour d'une affectation machine
+        Teste la mise à jour d'une affectation machine, on ne peut pas changer la semaine
         """
         affectation = AffectationMachine.objects.create(
             etape=self.etape1,
@@ -209,7 +215,381 @@ class AffectationMachineTest(APITestCase):
             ).strftime("%Y-%m-%d"),
         }
         response = self.client.patch(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_update_previous_affectation_machine_de_bas_vers_haut_liste(self):
+        """
+        Teste la mise à jour du field previous de l'affectation, on la met en haut de la liste. Tout en bas vers tout en haut
+
+        """
+
+        affectation1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+        )
+
+        affectation2 = AffectationMachine.objects.create(
+            etape=self.etape2,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+
+        etape3 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine,
+            num_etape=3,
+        )
+
+        affectation3 = AffectationMachine.objects.create(
+            etape=etape3,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation2,
+        )
+
+        url = f"/api/affectations/machines/{affectation3.id}"
+        data = {
+            "previous": None,
+        }
+        response = self.client.patch(url, data, format="json")
+        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        affectation3.refresh_from_db()
+        affectation2.refresh_from_db()
+        affectation1.refresh_from_db()
+
+        print(affectation1.previous)
+
+        self.assertEqual(affectation1.previous.id, affectation3.id)
+        self.assertEqual(affectation2.previous.id, affectation1.id)
+        self.assertEqual(affectation3.previous, None)
+
+    def test_update_previous_affectation_machine_de_haut_vers_bas_liste(self):
+        """
+        Teste la mise à jour du field previous de l'affectation, de tout en haut de la liste vers tout en bas.
+
+        """
+
+        affectation1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+        )
+
+        affectation2 = AffectationMachine.objects.create(
+            etape=self.etape2,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+
+        url = f"/api/affectations/machines/{affectation1.id}"
+        data = {
+            "previous": affectation2.id,
+        }
+        response = self.client.patch(url, data, format="json")
+        print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        affectation1.refresh_from_db()
+        affectation2.refresh_from_db()
+
+        self.assertEqual(affectation1.previous.id, affectation2.id)
+        self.assertEqual(affectation2.previous, None)
+
+    def test_update_previous_affectation_machine_de_milieu_vers_bas_liste(self):
+        """
+        Teste la mise à jour du field previous de l'affectation, de milieu de la liste vers tout en bas.
+        """
+
+        affectation1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+        )
+
+        affectation2 = AffectationMachine.objects.create(
+            etape=self.etape2,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+        etape3 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine,
+            num_etape=3,
+        )
+        affectation3 = AffectationMachine.objects.create(
+            etape=etape3,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation2,
+        )
+
+        etape4 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine,
+            num_etape=5,
+        )
+
+        affectation4 = AffectationMachine.objects.create(
+            etape=etape4,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation3,
+        )
+
+        url = f"/api/affectations/machines/{affectation2.id}"
+        # on modifie l'affectation 2 pour qu'elle soit en bas de la liste
+        data = {
+            "previous": affectation4.id,
+        }
+        response = self.client.patch(url, data, format="json")
+
+        affectation1.refresh_from_db()
+        affectation2.refresh_from_db()
+        affectation3.refresh_from_db()
+        affectation4.refresh_from_db()
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(affectation2.previous, affectation4)
+
+        self.assertEqual(affectation4.previous, affectation3)
+        self.assertEqual(affectation3.previous, affectation1)
+        self.assertEqual(affectation1.previous, None)
+
+    def test_update_previous_affectation_machine_de_milieu_vers_haut_liste(self):
+        """
+        Teste la mise à jour du field previous de l'affectation, de milieu de la liste vers tout en haut.
+        """
+        affectation1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+        )
+
+        affectation2 = AffectationMachine.objects.create(
+            etape=self.etape2,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+        etape3 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine,
+            num_etape=3,
+        )
+        affectation3 = AffectationMachine.objects.create(
+            etape=etape3,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation2,
+        )
+
+        etape4 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine,
+            num_etape=4,
+        )
+
+        affectation4 = AffectationMachine.objects.create(
+            etape=etape4,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation3,
+        )
+
+        url = f"/api/affectations/machines/{affectation3.id}"
+        # on modifie l'affectation 3 pour qu'elle soit en haut de la liste
+        data = {
+            "previous": None,
+        }
+        response = self.client.patch(url, data, format="json")
+
+        affectation1.refresh_from_db()
+        affectation2.refresh_from_db()
+        affectation3.refresh_from_db()
+        affectation4.refresh_from_db()
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(affectation3.previous, None)
+
+        self.assertEqual(affectation1.previous, affectation3)
+        self.assertEqual(affectation2.previous, affectation1)
+        self.assertEqual(affectation4.previous, affectation2)
+
+    def test_update_previous_affectation_machine_de_milieu_vers_milieu_liste(self):
+        """
+        Teste la mise à jour du field previous de l'affectation, de milieu de la liste vers milieu de la liste.
+        """
+
+        affectation1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+        )
+
+        affectation2 = AffectationMachine.objects.create(
+            etape=self.etape2,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+        etape3 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine,
+            num_etape=3,
+        )
+        affectation3 = AffectationMachine.objects.create(
+            etape=etape3,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation2,
+        )
+
+        etape4 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine,
+            num_etape=4,
+        )
+
+        affectation4 = AffectationMachine.objects.create(
+            etape=etape4,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation3,
+        )
+
+        etape5 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine,
+            num_etape=5,
+        )
+        affectation5 = AffectationMachine.objects.create(
+            etape=etape5,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation4,
+        )
+
+        url = f"/api/affectations/machines/{affectation2.id}"
+        # on modifie l'affectation 2 pour qu'elle soit entre 4 et 5
+        data = {
+            "previous": affectation4.id,
+        }
+
+        response = self.client.patch(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        affectation1.refresh_from_db()
+        affectation2.refresh_from_db()
+        affectation3.refresh_from_db()
+        affectation4.refresh_from_db()
+        affectation5.refresh_from_db()
+
+        self.assertEqual(affectation2.previous, affectation4)
+
+        self.assertEqual(affectation1.previous, None)
+        self.assertEqual(affectation3.previous, affectation1)
+        self.assertEqual(affectation4.previous, affectation3)
+        self.assertEqual(affectation5.previous, affectation2)
+
+    def test_update_previous_affectation_machine_de_haut_vers_milieu_liste(self):
+        """
+        Teste la mise à jour du field previous de l'affectation, de haut de la liste vers milieu de la liste.
+        """
+
+        affectation1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+        )
+
+        affectation2 = AffectationMachine.objects.create(
+            etape=self.etape2,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+        etape3 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine,
+            num_etape=3,
+        )
+        affectation3 = AffectationMachine.objects.create(
+            etape=etape3,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation2,
+        )
+
+        url = f"/api/affectations/machines/{affectation1.id}"
+        # on modifie l'affectation 1 pour qu'elle soit entre 2 et 3
+        data = {
+            "previous": affectation2.id,
+        }
+
+        response = self.client.patch(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        affectation1.refresh_from_db()
+        affectation2.refresh_from_db()
+        affectation3.refresh_from_db()
+
+        self.assertEqual(affectation1.previous, affectation2)
+
+        self.assertEqual(affectation2.previous, None)
+        self.assertEqual(affectation3.previous, affectation1)
+
+    def test_update_previous_affectation_machine_de_bas_vers_milieu_liste(self):
+        """
+        Teste la mise à jour du field previous de l'affectation, de haut de la liste vers milieu de la liste.
+        """
+
+        affectation1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+        )
+
+        affectation2 = AffectationMachine.objects.create(
+            etape=self.etape2,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+        etape3 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine,
+            num_etape=3,
+        )
+        affectation3 = AffectationMachine.objects.create(
+            etape=etape3,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation2,
+        )
+
+        url = f"/api/affectations/machines/{affectation3.id}"
+        # on modifie l'affectation 3 pour qu'elle soit entre 1 et 2
+        data = {
+            "previous": affectation1.id,
+        }
+
+        response = self.client.patch(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        affectation1.refresh_from_db()
+        affectation2.refresh_from_db()
+        affectation3.refresh_from_db()
+
+        self.assertEqual(affectation3.previous, affectation1)
+
+        self.assertEqual(affectation1.previous, None)
+        self.assertEqual(affectation2.previous, affectation3)
 
     def test_delete_affectation_machine(self):
         """
