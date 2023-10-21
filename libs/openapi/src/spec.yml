@@ -291,13 +291,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageRequest'
+              $ref: '#/components/schemas/AffectationAjustageCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageRequest'
+              $ref: '#/components/schemas/AffectationAjustageCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationAjustageRequest'
+              $ref: '#/components/schemas/AffectationAjustageCreateRequest'
         required: true
       security:
       - jwtAuth: []
@@ -307,66 +307,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AffectationAjustage'
+                $ref: '#/components/schemas/AffectationAjustageCreate'
           description: ''
   /api/affectations/ajustages/{id}:
-    get:
-      operationId: api_affectations_ajustages_retrieve
-      description: Récupérer, mettre à jour et supprimer une affectation ajustage
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - Affectation Ajustage
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AffectationAjustage'
-          description: ''
-    put:
-      operationId: api_affectations_ajustages_update
-      description: Récupérer, mettre à jour et supprimer une affectation ajustage
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - Affectation Ajustage
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AffectationAjustageRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/AffectationAjustageRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/AffectationAjustageRequest'
-        required: true
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AffectationAjustage'
-          description: ''
     patch:
       operationId: api_affectations_ajustages_partial_update
-      description: Récupérer, mettre à jour et supprimer une affectation ajustage
+      description: Supprimer et mettre à jour une affectation ajustage
       parameters:
       - in: path
         name: id
@@ -379,13 +325,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationAjustageRequest'
+              $ref: '#/components/schemas/PatchedAffectationAjustageUpdateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationAjustageRequest'
+              $ref: '#/components/schemas/PatchedAffectationAjustageUpdateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationAjustageRequest'
+              $ref: '#/components/schemas/PatchedAffectationAjustageUpdateRequest'
       security:
       - jwtAuth: []
       - {}
@@ -394,11 +340,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AffectationAjustage'
+                $ref: '#/components/schemas/AffectationAjustageUpdate'
           description: ''
     delete:
       operationId: api_affectations_ajustages_destroy
-      description: Récupérer, mettre à jour et supprimer une affectation ajustage
+      description: Supprimer et mettre à jour une affectation ajustage
       parameters:
       - in: path
         name: id
@@ -423,13 +369,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AffectationMachineRequest'
+              $ref: '#/components/schemas/AffectationMachineCreateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/AffectationMachineRequest'
+              $ref: '#/components/schemas/AffectationMachineCreateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AffectationMachineRequest'
+              $ref: '#/components/schemas/AffectationMachineCreateRequest'
         required: true
       security:
       - jwtAuth: []
@@ -439,66 +385,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AffectationMachine'
+                $ref: '#/components/schemas/AffectationMachineCreate'
           description: ''
   /api/affectations/machines/{id}:
-    get:
-      operationId: api_affectations_machines_retrieve
-      description: Récupérer, mettre à jour et supprimer une affectation machine
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - Affectation Machine
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AffectationMachine'
-          description: ''
-    put:
-      operationId: api_affectations_machines_update
-      description: Récupérer, mettre à jour et supprimer une affectation machine
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - Affectation Machine
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AffectationMachineRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/AffectationMachineRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/AffectationMachineRequest'
-        required: true
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AffectationMachine'
-          description: ''
     patch:
       operationId: api_affectations_machines_partial_update
-      description: Récupérer, mettre à jour et supprimer une affectation machine
+      description: Supprimer et mettre à jour une affectation machine
       parameters:
       - in: path
         name: id
@@ -511,13 +403,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationMachineRequest'
+              $ref: '#/components/schemas/PatchedAffectationMachineUpdateRequest'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationMachineRequest'
+              $ref: '#/components/schemas/PatchedAffectationMachineUpdateRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PatchedAffectationMachineRequest'
+              $ref: '#/components/schemas/PatchedAffectationMachineUpdateRequest'
       security:
       - jwtAuth: []
       - {}
@@ -526,11 +418,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AffectationMachine'
+                $ref: '#/components/schemas/AffectationMachineUpdate'
           description: ''
     delete:
       operationId: api_affectations_machines_destroy
-      description: Récupérer, mettre à jour et supprimer une affectation machine
+      description: Supprimer et mettre à jour une affectation machine
       parameters:
       - in: path
         name: id
@@ -2606,7 +2498,7 @@ components:
       - par_statut
       - terminees_cette_semaine
       - terminees_semaine_der
-    AffectationAjustage:
+    AffectationAjustageCreate:
       type: object
       description: Serializer pour l'affectation d'un ajustage à une étape
       properties:
@@ -2627,7 +2519,7 @@ components:
       required:
       - id
       - semaine_affectation
-    AffectationAjustageRequest:
+    AffectationAjustageCreateRequest:
       type: object
       description: Serializer pour l'affectation d'un ajustage à une étape
       properties:
@@ -2644,7 +2536,24 @@ components:
           nullable: true
       required:
       - semaine_affectation
-    AffectationMachine:
+    AffectationAjustageUpdate:
+      type: object
+      description: Serializer pour la mise à jour d'une affectation d'ajustage
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+        zone:
+          type: integer
+        previous:
+          type: integer
+          nullable: true
+      required:
+      - id
+    AffectationMachineCreate:
       type: object
       description: Serializer pour l'affectation d'une machine à une étape
       properties:
@@ -2655,8 +2564,6 @@ components:
           type: string
           format: date
           title: Semaine d'affectation de l'étape
-        etape:
-          type: integer
         user:
           type: integer
           nullable: true
@@ -2665,10 +2572,12 @@ components:
           nullable: true
         machine:
           type: integer
+        etape:
+          type: integer
       required:
       - id
       - semaine_affectation
-    AffectationMachineRequest:
+    AffectationMachineCreateRequest:
       type: object
       description: Serializer pour l'affectation d'une machine à une étape
       properties:
@@ -2676,8 +2585,6 @@ components:
           type: string
           format: date
           title: Semaine d'affectation de l'étape
-        etape:
-          type: integer
         user:
           type: integer
           nullable: true
@@ -2686,8 +2593,27 @@ components:
           nullable: true
         machine:
           type: integer
+        etape:
+          type: integer
       required:
       - semaine_affectation
+    AffectationMachineUpdate:
+      type: object
+      description: Serializer pour la mise à jour d'une affectation de machine
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+          nullable: true
+        machine:
+          type: integer
+        previous:
+          type: integer
+          nullable: true
+      required:
+      - id
     BulkDeleteRequest:
       type: object
       properties:
@@ -2902,9 +2828,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/MachineDetail'
           readOnly: true
-        affectation_id:
-          type: integer
-          readOnly: true
         cout_etape:
           type: number
           format: double
@@ -2962,7 +2885,6 @@ components:
           type: integer
           nullable: true
       required:
-      - affectation_id
       - cout_etape
       - date_creation
       - date_modification
@@ -3408,7 +3330,7 @@ components:
           default: 0.0
         affectation_zone:
           allOf:
-          - $ref: '#/components/schemas/AffectationAjustage'
+          - $ref: '#/components/schemas/AffectationAjustageCreate'
           readOnly: true
         affaire_description:
           type: string
@@ -3492,7 +3414,7 @@ components:
           default: 0.0
         affectation_zone:
           allOf:
-          - $ref: '#/components/schemas/AffectationAjustage'
+          - $ref: '#/components/schemas/AffectationAjustageCreate'
           readOnly: true
         affaire_description:
           type: string
@@ -3582,7 +3504,7 @@ components:
           default: 0.0
         affectation_zone:
           allOf:
-          - $ref: '#/components/schemas/AffectationAjustage'
+          - $ref: '#/components/schemas/AffectationAjustageCreate'
           readOnly: true
         affaire_description:
           type: string
@@ -4145,39 +4067,30 @@ components:
           format: date
           nullable: true
           title: Date de clôture de l'affaire (terminée)
-    PatchedAffectationAjustageRequest:
+    PatchedAffectationAjustageUpdateRequest:
       type: object
-      description: Serializer pour l'affectation d'un ajustage à une étape
+      description: Serializer pour la mise à jour d'une affectation d'ajustage
       properties:
-        etape:
-          type: integer
-        zone:
-          type: integer
-        semaine_affectation:
-          type: string
-          format: date
-          title: Semaine d'affectation de l'étape
-        previous:
-          type: integer
-          nullable: true
-    PatchedAffectationMachineRequest:
-      type: object
-      description: Serializer pour l'affectation d'une machine à une étape
-      properties:
-        semaine_affectation:
-          type: string
-          format: date
-          title: Semaine d'affectation de l'étape
-        etape:
-          type: integer
         user:
           type: integer
           nullable: true
+        zone:
+          type: integer
         previous:
+          type: integer
+          nullable: true
+    PatchedAffectationMachineUpdateRequest:
+      type: object
+      description: Serializer pour la mise à jour d'une affectation de machine
+      properties:
+        user:
           type: integer
           nullable: true
         machine:
           type: integer
+        previous:
+          type: integer
+          nullable: true
     PatchedEtapeCreateRequest:
       type: object
       properties:
