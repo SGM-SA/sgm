@@ -8,7 +8,7 @@ from api.utils.dates import week_to_date_range
 from datetime import datetime
 
 
-class AffectationAbstractSerializer(serializers.ModelSerializer):
+class AffectationAbstractCreateSerializer(serializers.ModelSerializer):
     """
     Serializer abstract pour l'affectation d'une machine ou d'un ajustage à une étape, comprenant toute la logique
     """
@@ -82,8 +82,6 @@ class AffectationAbstractSerializer(serializers.ModelSerializer):
             # on récupère l'objet affectation précédent
             previous = previous_field
 
-            print(previous.id)
-
             # on vérifie qu'elle est bien dans la même range de date (week_to_date_range)
             if week_to_date_range(
                 previous.semaine_affectation.strftime("%Y-%m-%d")
@@ -105,6 +103,17 @@ class AffectationAbstractSerializer(serializers.ModelSerializer):
 
             return current
 
+
+class AffectationAbstractUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer pour la mise à jour d'une affectation. On ne peut modifier que le champ previous, user ou machine / zone.
+    On ne peut pas modifier la semaine d'affectation ou l'étape.
+    """
+
+    class Meta:
+        model = None
+        fields = ["id", "user", "previous"]
+
     def update(self, instance, validated_data):
         """
         Mise à jour d'une affectation. La logique est découpée en semaine.
@@ -120,6 +129,14 @@ class AffectationAbstractSerializer(serializers.ModelSerializer):
         :param validated_data: Données validées
         """
 
+        model_class = self.Meta.model
+        filter_field = "machine" if model_class == AffectationMachine else "zone"
+
+        # on met à jour tous les fields qui ne sont pas previous
+        for field in validated_data:
+            if field != "previous":
+                setattr(instance, field, validated_data[field])
+
         new_previous = validated_data.get("previous", None)
 
         # on récupère l'objet affectation précédent
@@ -130,26 +147,67 @@ class AffectationAbstractSerializer(serializers.ModelSerializer):
 
         # si le champ new_previous est null, on veut insérer en tête de liste
         if new_previous is None:
-            # si l'objet précédent est null, on est déjà en tête de liste
-            if previous is None:
+            head = instance.__class__.objects.filter(
+                previous__isnull=True,
+                semaine_affectation__range=week_to_date_range(
+                    instance.semaine_affectation.strftime("%Y-%m-%d")
+                ),
+                **{
+                    filter_field: getattr(instance, filter_field)
+                },  # on filtre par machine ou zone
+            ).first()
+
+            # si l'objet courant est en tête de liste, on ne fait rien
+            if head == instance:
                 return instance
 
-            # on met à jour le suivant pour qu'il pointe vers l'objet précédent
-            next.previous = previous
-            next.save()
+            # on met à jour l'objet next
+            if next is not None:
+                next.previous = instance.previous
+                next.save()
 
             # on met à jour l'objet courant
             instance.previous = None
             instance.save()
 
-            # on met à jour l'objet précédent
-            previous.previous = instance
-            previous.save()
+            # on met à jour l'objet head
+            if head is not None:
+                head.previous = instance
+                head.save()
+
+            return instance
+
+        # si le champ new_previous n'est pas null, on veut insérer entre deux affectations / en queue de liste
+        else:
+
+            # on vérifie qu'elle est bien dans la même range de date (week_to_date_range)
+            if week_to_date_range(
+                new_previous.semaine_affectation.strftime("%Y-%m-%d")
+            ) != week_to_date_range(instance.semaine_affectation.strftime("%Y-%m-%d")):
+                raise serializers.ValidationError(
+                    "L'affectation précédente n'est pas dans la même semaine"
+                )
+
+            if new_previous == instance:
+                return instance
+
+            if next is not None:
+                next.previous = instance.previous
+                next.save()
+
+            old_previous = new_previous.next.first()
+            if old_previous is not None:
+                old_previous.previous = instance
+                old_previous.save()
+
+            # on met à jour l'objet courant
+            instance.previous = new_previous
+            instance.save()
 
             return instance
 
 
-class AffectationMachineSerializer(AffectationAbstractSerializer):
+class AffectationMachineCreateSerializer(AffectationAbstractCreateSerializer):
     """
     Serializer pour l'affectation d'une machine à une étape
     """
@@ -162,7 +220,27 @@ class AffectationMachineSerializer(AffectationAbstractSerializer):
         return super().create(validated_data, AffectationMachine, "machine")
 
 
-class AffectationAjustageSerializer(AffectationAbstractSerializer):
+class AffectationMachineUpdateSerializer(AffectationAbstractUpdateSerializer):
+    """
+    Serializer pour la mise à jour d'une affectation de machine
+    """
+
+    class Meta:
+        model = AffectationMachine
+        fields = ["id", "user", "machine", "previous"]
+
+    def update(self, instance, validated_data):
+        request = self.context.get("request")
+        for field in request.data.keys():
+            if field not in self.Meta.fields:
+                raise serializers.ValidationError(
+                    {field: "Ce field ne peut pas être modifié"}
+                )
+
+        return super().update(instance, validated_data)
+
+
+class AffectationAjustageCreateSerializer(AffectationAbstractCreateSerializer):
     """
     Serializer pour l'affectation d'un ajustage à une étape
     """
@@ -173,3 +251,22 @@ class AffectationAjustageSerializer(AffectationAbstractSerializer):
 
     def create(self, validated_data):
         return super().create(validated_data, AffectationAjustage, "zone")
+
+
+class AffectationAjustageUpdateSerializer(AffectationAbstractUpdateSerializer):
+    """
+    Serializer pour la mise à jour d'une affectation d'ajustage
+    """
+
+    class Meta:
+        model = AffectationAjustage
+        fields = ["id", "user", "zone", "previous"]
+
+    def update(self, instance, validated_data):
+        request = self.context.get("request")
+        for field in request.data.keys():
+            if field not in self.Meta.fields:
+                raise serializers.ValidationError(
+                    {field: "Ce field ne peut pas être modifié"}
+                )
+        return super().update(instance, validated_data)
