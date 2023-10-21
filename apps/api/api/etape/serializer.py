@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from api.etape.models import Etape
 from api.machine.serializer import MachineDetailSerializer
 
@@ -11,9 +12,6 @@ class EtapeSerializer(serializers.ModelSerializer):
 
 class EtapeDetail(serializers.ModelSerializer):
     machine = MachineDetailSerializer(read_only=True)
-    affectation_id = serializers.SlugRelatedField(
-        read_only=True, slug_field="id", source="affectationajustage"
-    )
 
     cout_etape = serializers.FloatField(read_only=True)
 
@@ -23,13 +21,8 @@ class EtapeDetail(serializers.ModelSerializer):
 
 
 class EtapeDetailAjustage(serializers.ModelSerializer):
-    affectation_id = serializers.SlugRelatedField(
-        read_only=True, slug_field="id", source="affectationajustage"
-    )
-    user_id = serializers.SlugRelatedField(
-        read_only=True, slug_field="id", source="affectationajustage.user"
-    )
-
+    affectation_id = serializers.IntegerField(read_only=True)
+    user_id = serializers.IntegerField(read_only=True)
     cout_etape = serializers.FloatField(read_only=True)
 
     class Meta:
@@ -38,12 +31,8 @@ class EtapeDetailAjustage(serializers.ModelSerializer):
 
 
 class EtapeDetailMachine(serializers.ModelSerializer):
-    affectation_id = serializers.SlugRelatedField(
-        read_only=True, slug_field="id", source="affectationmachine"
-    )
-    user_id = serializers.SlugRelatedField(
-        read_only=True, slug_field="id", source="affectationmachine.user"
-    )
+    affectation_id = serializers.IntegerField(read_only=True)
+    user_id = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Etape
