@@ -78,7 +78,6 @@ class AffectationAbstractCreateSerializer(serializers.ModelSerializer):
             return current
 
         else:
-            print("ici")
             # on récupère l'objet affectation précédent
             previous = previous_field
 
