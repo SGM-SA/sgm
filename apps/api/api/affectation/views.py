@@ -1,10 +1,11 @@
 from drf_spectacular.utils import extend_schema
-from rest_framework import generics, status
-from rest_framework.response import Response
+from rest_framework import generics, mixins
+
 from api.affectation.models import AffectationMachine, AffectationAjustage
 from api.affectation.serializer import (
-    AffectationMachineSerializer,
-    AffectationAjustageSerializer,
+    AffectationMachineCreateSerializer,
+    AffectationMachineUpdateSerializer,
+    AffectationAjustageCreateSerializer,
 )
 
 
@@ -14,16 +15,27 @@ from api.affectation.serializer import (
 )
 class AffectationMachineCreate(generics.CreateAPIView):
     queryset = AffectationMachine.objects.all()
-    serializer_class = AffectationMachineSerializer
+    serializer_class = AffectationMachineCreateSerializer
 
 
 @extend_schema(
     tags=["Affectation Machine"],
-    description="Récupérer, mettre à jour et supprimer une affectation machine",
+    description="Supprimer et mettre à jour une affectation machine",
 )
-class AffectationMachineCRUD(generics.RetrieveUpdateDestroyAPIView):
+class AffectationMachineUpdateDelete(
+    mixins.DestroyModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView
+):
     queryset = AffectationMachine.objects.all()
-    serializer_class = AffectationMachineSerializer
+    serializer_class = AffectationMachineUpdateSerializer
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
 
 
 @extend_schema(

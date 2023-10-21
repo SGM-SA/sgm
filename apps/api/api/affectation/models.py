@@ -21,7 +21,7 @@ class Affectation(models.Model):
         null=False,
     )
 
-    etape = models.ForeignKey(Etape, null=True, blank=False, on_delete=models.CASCADE)
+    etape = models.ForeignKey(Etape, null=False, blank=False, on_delete=models.CASCADE)
 
     user = models.ForeignKey(
         CustomUser, null=True, blank=True, on_delete=models.CASCADE
@@ -63,6 +63,13 @@ class AffectationAjustage(Affectation):
     """
 
     zone = models.ForeignKey(Zone, null=False, default=False, on_delete=models.CASCADE)
+    etape = models.ForeignKey(
+        Etape,
+        null=False,
+        default=False,
+        on_delete=models.CASCADE,
+        related_name="affectationajustage",
+    )
 
     def __str__(self):
         return f"semaine : {self.semaine_affectation} - Affaire : {self.etape.fiche.affaire.num_affaire} - Fiche : {self.etape.fiche.titre} Etape : {self.etape.num_etape}"
@@ -79,6 +86,13 @@ class AffectationMachine(Affectation):
 
     machine = models.ForeignKey(
         Machine, null=False, default=False, on_delete=models.CASCADE
+    )
+    etape = models.ForeignKey(
+        Etape,
+        null=False,
+        default=False,
+        on_delete=models.CASCADE,
+        related_name="affectationmachine",
     )
 
     def __str__(self):
