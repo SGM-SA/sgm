@@ -584,9 +584,9 @@ class AffectationMachineTest(APITestCase):
         self.assertEqual(affectation1.previous, None)
         self.assertEqual(affectation2.previous, affectation3)
 
-    def test_delete_affectation_machine(self):
+    def test_delete_affectation_ajustage_seul(self):
         """
-        Teste la suppression d'une affectation machine
+        Teste la suppression d'une affectation ajustage
         """
         affectation = AffectationMachine.objects.create(
             etape=self.etape1,
@@ -597,3 +597,91 @@ class AffectationMachineTest(APITestCase):
         url = f"/api/affectations/machines/{affectation.id}"
         response = self.client.delete(url, format="json")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(AffectationMachine.objects.count(), 0)
+
+    def test_delete_affectation_ajustage_debut_liste(self):
+        """
+        Teste la suppression d'une affectation ajustage
+        """
+        affectation1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+        )
+        affectation2 = AffectationMachine.objects.create(
+            etape=self.etape2,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+
+        url = f"/api/affectations/machines/{affectation1.id}"
+        response = self.client.delete(url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(AffectationMachine.objects.count(), 1)
+
+        affectation2.refresh_from_db()
+        self.assertEqual(affectation2.previous, None)
+
+    def test_delete_affectation_ajustage_fin_liste(self):
+        """
+        Teste la suppression d'une affectation ajustage, fin de liste
+        """
+        affectation1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+        )
+        affectation2 = AffectationMachine.objects.create(
+            etape=self.etape2,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+
+        url = f"/api/affectations/machines/{affectation2.id}"
+        response = self.client.delete(url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(AffectationMachine.objects.count(), 1)
+
+        affectation1.refresh_from_db()
+        self.assertEqual(affectation1.previous, None)
+        self.assertEqual(affectation1.next.first(), None)
+
+    def test_delete_affectation_ajustage_milieu_liste(self):
+        """
+        Teste la suppression d'une affectation ajustage, milieu de liste
+        """
+        affectation1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+        )
+        affectation2 = AffectationMachine.objects.create(
+            etape=self.etape2,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+        self.etape3 = Etape.objects.create(
+            fiche=self.fiche,
+            groupe_machine=self.groupe_machine,
+            num_etape=3,
+        )
+        affectation3 = AffectationMachine.objects.create(
+            etape=self.etape3,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+            previous=affectation2,
+        )
+
+        url = f"/api/affectations/machines/{affectation2.id}"
+        response = self.client.delete(url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(AffectationMachine.objects.count(), 2)
+
+        affectation1.refresh_from_db()
+        affectation3.refresh_from_db()
+        self.assertEqual(affectation1.previous, None)
+        self.assertEqual(affectation3.previous, affectation1)
+        self.assertEqual(affectation3.next.first(), None)
