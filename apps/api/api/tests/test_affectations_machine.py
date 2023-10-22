@@ -685,3 +685,52 @@ class AffectationMachineTest(APITestCase):
         self.assertEqual(affectation1.previous, None)
         self.assertEqual(affectation3.previous, affectation1)
         self.assertEqual(affectation3.next.first(), None)
+
+    def test_affectation_pas_meme_semaine(self):
+        """
+        Teste la création d'une affectation machine avec une semaine différente. Impossible
+        """
+        affectation1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+        )
+
+        url = f"/api/affectations/machines"
+        data = {
+            "etape": self.etape1.id,
+            "machine": self.machine_scie.id,
+            "semaine_affectation": "2021-02-02",
+            "previous": affectation1.id,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(AffectationMachine.objects.count(), 1)
+
+    def test_affectation_pas_meme_semaine_non_liee(self):
+        """
+        Teste la création d'une affectation machine avec une semaine différente. Non liée donc ok
+        """
+        affectation1 = AffectationMachine.objects.create(
+            etape=self.etape1,
+            machine=self.machine_scie,
+            semaine_affectation="2021-01-01",
+        )
+
+        url = f"/api/affectations/machines"
+        data = {
+            "etape": self.etape1.id,
+            "machine": self.machine_scie.id,
+            "semaine_affectation": "2021-02-02",
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(AffectationMachine.objects.count(), 2)
+        self.assertEqual(
+            AffectationMachine.objects.get(id=response.data["id"]).previous, None
+        )
+        self.assertEqual(
+            AffectationMachine.objects.get(id=response.data["id"]).next.first(), None
+        )
+        affectation1.refresh_from_db()
+        self.assertEqual(affectation1.next.first(), None)
