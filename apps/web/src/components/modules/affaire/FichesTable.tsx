@@ -9,6 +9,7 @@ import { AddFicheModele } from '../fiche/AddFicheModele'
 import { AffaireNotesDrawer } from './AffaireNotesDrawer'
 import { EtapesTable } from '../fiche/EtapesTable'
 import { LoaderFunction, useLoaderData } from 'react-router-typesafe'
+import { PrintFicheButton } from '../fiche/PrintFicheButton'
 
 export const Loader = (() => {
     return fetchApiGroupeMachineList({})
@@ -21,11 +22,12 @@ export const Catch = (() => {
 const columnHelper = createColumnHelper<FicheDetail>()
 
 const columns = [
-    columnHelper.accessor('num_affaire', {
-        id: 'numero',
-        header: 'Numéro',
+    columnHelper.accessor('titre', {
+        header: 'Titre',
         meta: createColumnMeta({
-            disableWarnings: true
+            disableWarnings: true,
+            editable: true,
+            type: 'text'
         })
     }),
     columnHelper.accessor('description', {
@@ -37,7 +39,6 @@ const columns = [
         })
     }),
     columnHelper.accessor('avancement_fiche', {
-        id: 'avancement',
         header: 'Avancement',
         cell: value => <Box>
             <Box as='span' fontSize='xs'>{value.getValue()}%</Box>
@@ -49,13 +50,8 @@ const columns = [
             />
         </Box>,
     }),
-    columnHelper.accessor('fourniture', {
-        id: 'fourniture',
-        header: 'Fournitures',
-        meta: createColumnMeta({
-            editable: true,
-            type: 'boolean'
-        })
+    columnHelper.accessor('cout_fiche', {
+        header: 'Coût',
     }),
     columnHelper.accessor('terminee', {
         id: 'terminee',
@@ -65,6 +61,10 @@ const columns = [
             type: 'boolean'
         })
     }),
+    columnHelper.display({
+        id: 'print',
+        cell: cell => <PrintFicheButton ficheId={cell.row.original.id} buttonSize='xs'/>
+    })
 ]
 
 type FichesTableProps = {
@@ -110,8 +110,12 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
                 }}
                 sortable
                 newRow={() => {
+
                     fetchApiFichesCreate({
-                        body: { affaire: props.affaireId }
+                        body: { 
+                            affaire: props.affaireId,
+                            titre: `${fiches.data?.num_affaire || '???'} - `
+                        }
                     }).then(() => {
                         fiches.refetch()
                         toast.success('Fiche créée')

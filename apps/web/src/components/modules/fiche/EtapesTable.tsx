@@ -4,6 +4,7 @@ import { DefaultTableCell, Table, TableLayout, createColumnMeta } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { toast } from 'react-toastify'
+import { PrintFicheButton } from './PrintFicheButton'
 
 type EtapesTableProps = {
     ficheId: number
@@ -90,18 +91,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
             header={{
                 title: 'Liste des étapes',
                 customComponent: <HStack>
-                    <Button
-                        size='sm'
-                        colorScheme='blue'
-                        borderRadius='4px'
-                        variant='outline'
-                        onClick={() => {
-                            // TODO: implement
-                            window.print() // temporary
-                        }}
-                    >
-                        Imprimer
-                    </Button>
+                    <PrintFicheButton ficheId={props.ficheId}/>
                 </HStack>
             }}
         >

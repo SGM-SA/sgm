@@ -91,7 +91,6 @@ const columns = [
     columnHelper.display({
         id: 'notes',
         cell: value => {
-            console.log(value.row.original.id)
             return <AffaireNotesDrawer affaireId={value.row.original.id}/>
         }
     })
