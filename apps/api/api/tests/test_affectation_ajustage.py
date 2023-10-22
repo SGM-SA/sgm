@@ -683,3 +683,52 @@ class AffectationAjustageTest(APITestCase):
         self.assertEqual(affectation1.previous, None)
         self.assertEqual(affectation3.previous, affectation1)
         self.assertEqual(affectation3.next.first(), None)
+
+    def test_affectation_pas_meme_semaine(self):
+        """
+        Teste la création d'une affectation ajustage avec une semaine différente. Impossible
+        """
+        affectation1 = AffectationAjustage.objects.create(
+            etape=self.etape1,
+            zone=self.zone,
+            semaine_affectation="2021-01-01",
+        )
+
+        url = f"/api/affectations/ajustages"
+        data = {
+            "etape": self.etape1.id,
+            "zone": self.zone.id,
+            "semaine_affectation": "2021-02-02",
+            "previous": affectation1.id,
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(AffectationAjustage.objects.count(), 1)
+
+    def test_affectation_pas_meme_semaine_non_liee(self):
+        """
+        Teste la création d'une affectation ajustage avec une semaine différente. Non liée donc ok
+        """
+        affectation1 = AffectationAjustage.objects.create(
+            etape=self.etape1,
+            zone=self.zone,
+            semaine_affectation="2021-01-01",
+        )
+
+        url = f"/api/affectations/ajustages"
+        data = {
+            "etape": self.etape1.id,
+            "zone": self.zone.id,
+            "semaine_affectation": "2021-02-02",
+        }
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(AffectationAjustage.objects.count(), 2)
+        self.assertEqual(
+            AffectationAjustage.objects.get(id=response.data["id"]).previous, None
+        )
+        self.assertEqual(
+            AffectationAjustage.objects.get(id=response.data["id"]).next.first(), None
+        )
+        affectation1.refresh_from_db()
+        self.assertEqual(affectation1.next.first(), None)
