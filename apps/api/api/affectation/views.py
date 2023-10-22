@@ -1,5 +1,6 @@
 from drf_spectacular.utils import extend_schema
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, status
+from rest_framework.response import Response
 
 from api.affectation.models import AffectationMachine, AffectationAjustage
 from api.affectation.serializer import (
@@ -8,6 +9,26 @@ from api.affectation.serializer import (
     AffectationAjustageCreateSerializer,
     AffectationAjustageUpdateSerializer,
 )
+from api.affectation.utils import delete_affectation
+
+
+class AffectationAbstractUpdateDelete(
+    mixins.DestroyModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView
+):
+    queryset = None
+    serializer_class = None
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+    def perform_destroy(self, instance):
+        delete_affectation(instance)
 
 
 @extend_schema(
@@ -23,20 +44,9 @@ class AffectationMachineCreate(generics.CreateAPIView):
     tags=["Affectation Machine"],
     description="Supprimer et mettre à jour une affectation machine",
 )
-class AffectationMachineUpdateDelete(
-    mixins.DestroyModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView
-):
+class AffectationMachineUpdateDelete(AffectationAbstractUpdateDelete):
     queryset = AffectationMachine.objects.all()
     serializer_class = AffectationMachineUpdateSerializer
-
-    def get_serializer_context(self):
-        return {"request": self.request}
-
-    def patch(self, request, *args, **kwargs):
-        return self.partial_update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
 
 
 @extend_schema(
@@ -52,17 +62,6 @@ class AffectationAjustageCreate(generics.CreateAPIView):
     tags=["Affectation Ajustage"],
     description="Supprimer et mettre à jour une affectation ajustage",
 )
-class AffectationAjustageUpdateDelete(
-    mixins.DestroyModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView
-):
+class AffectationAjustageUpdateDelete(AffectationAbstractUpdateDelete):
     queryset = AffectationAjustage.objects.all()
     serializer_class = AffectationAjustageUpdateSerializer
-
-    def get_serializer_context(self):
-        return {"request": self.request}
-
-    def patch(self, request, *args, **kwargs):
-        return self.partial_update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
