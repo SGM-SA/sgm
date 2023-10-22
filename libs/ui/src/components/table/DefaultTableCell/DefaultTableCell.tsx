@@ -90,6 +90,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
             return (
                 <Input
                     type={meta.type}
+                    disabled={meta.disabled}
                     variant='unstyled'
                     fontSize={fontSize}
                     value={value as string || ''}
@@ -107,6 +108,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
                         setValue(e.target.value)
                         onUpdate(e.target.value)
                     }}
+                    disabled={meta.disabled}
                 >
                     {meta.nullable !== false && <option value={''}></option>}
                     {meta.choices?.map((choice: Choice) => typeof choice === 'string' ?
@@ -128,6 +130,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
                         setValue(e.target.checked)
                         onUpdate(e.target.checked)
                     }}
+                    disabled={meta.disabled}
                 />
             )
         default:
@@ -137,6 +140,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
                 fontSize={fontSize}
                 onChange={e => setValue(e.target.value)}
                 onBlur={() => onUpdate()}
+                disabled={meta.disabled}
             />
     }
 }

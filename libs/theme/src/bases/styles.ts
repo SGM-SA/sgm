@@ -1,4 +1,8 @@
-export const styles = {
+import { ChakraProps } from "@chakra-ui/react"
+
+type Styles = Record<string, Record<string, ChakraProps> | ((props: any) => Record<string, ChakraProps>)>
+
+export const styles: Styles = {
  
     global: (props: any) => ({
 
@@ -30,9 +34,14 @@ export const styles = {
             color: 'inherit',
             textDecoration: 'none',
         },
+
+        /**
+         * Scrollbar
+         */
         
         '::-webkit-scrollbar': {
-            width: '5px'
+            width: '5px',
+            height: '5px'   
         },
         '::-webkit-scrollbar-thumb': {
             borderRadius: '10px',
@@ -40,6 +49,17 @@ export const styles = {
         },
         '::-webkit-scrollbar-track': {
             background: 'rgba(0, 0, 0, 0)'
+        },
+
+        /**
+         * Misc
+         */
+
+        '.invisible-disabled input': {
+            opacity: '1 !important',
+            cursor: 'default !important',
         }
+
+
     })
 }

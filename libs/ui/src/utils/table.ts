@@ -38,6 +38,10 @@ export type MetaEditable<TData extends Types> = TData extends 'select' ? {
      * @default true
      */
     nullable?: boolean
+    /**
+     * Is the input disabled
+     */
+    disabled?: boolean
 } : {
     /**
      * The type of the editable data
@@ -48,6 +52,10 @@ export type MetaEditable<TData extends Types> = TData extends 'select' ? {
      * The value parameter type is automatically inferred from the type field
      */
     customValidation?: (value: Correspondances[TData]) => Result<boolean>
+    /**
+     * Is the input disabled
+     */
+    disabled?: boolean
 }
 
 type MetaBase = {
@@ -59,6 +67,10 @@ type MetaBase = {
      * Disable warning notifications for this column
      */
     disableWarnings?: boolean
+    /**
+     * The text to display when hovering over the cell
+     */
+    cellHoverText?: boolean
 }
 
 export type Meta<TData extends Types> = ({
@@ -82,7 +94,7 @@ export const createColumnMeta = <TData extends Types>(options: Meta<TData>) => {
     return options
 }
 
-export const getMetaFromColumn = (column: Column<any>): Meta<any> => {
+export const getMetaFromColumn = (column: Column<any>): Meta<any> | undefined => {
     return column.columnDef.meta as Meta<any>
 }
 

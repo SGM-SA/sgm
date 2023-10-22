@@ -1,6 +1,6 @@
 import { Box, Progress } from '@chakra-ui/react'
 import { AffaireDetails, affaireStatus, fetchApiAffairesPartialUpdate, useApiAffairesList } from '@sgm/openapi'
-import { Table, TableLayout, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
+import { DefaultTableCell, Table, TableLayout, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
 import { Link, useNavigate } from '@sgm/web/router'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
@@ -12,7 +12,6 @@ const columnHelper = createColumnHelper<AffaireDetails>()
 
 const columns = [
     columnHelper.accessor('num_affaire', {
-        id: 'num_affaire',
         cell: value => 
             <Link 
                 to='/affaires/:numAffaire' 
@@ -29,15 +28,18 @@ const columns = [
         })
     }),
     columnHelper.accessor('description', {
-        id: 'description',
         header: 'Description',
+        cell: cell => <DefaultTableCell {...cell}>
+            <Box maxW='20em' overflowX='auto' overflowY='hidden'>
+                {cell.getValue()}  
+            </Box>
+        </DefaultTableCell>,
         meta: createColumnMeta({
-            editable: true,
-            type: 'text'
+            cellHoverText: true,
+            disableWarnings: true
         })
     }),
     columnHelper.accessor('avancement_affaire', {
-        id: 'avancement_affaire',
         header: 'Avancement',
         cell: value => <Box>
             <Box as='span' fontSize='xs'>{value.getValue()}%</Box>
@@ -50,24 +52,23 @@ const columns = [
         </Box>
     }),
     columnHelper.accessor('client', {
-        id: 'client',
         header: 'Client',
-        meta: createColumnMeta({
-            editable: true,
-            type: 'text'
-        })
     }),
     columnHelper.accessor(row => row.charge_affaire_detail ? `${row.charge_affaire_detail.surname} ${row.charge_affaire_detail.name}` : null, {
         id: 'charge_affaire',
         header: 'Chargé d\'affaire',
     }),
-    // TODO: accessor sur la date de création (c'est quelle key ??)
-    columnHelper.accessor('date_rendu', { // TODO: date_rendu ou date_cloture ?
+    columnHelper.accessor('date_rendu', {
         id: 'date_rendu',
         header: 'Délais',
         meta: createColumnMeta({
-            editable: true,
-            type: 'date',
+            sortable: true
+        })
+    }),
+    columnHelper.accessor('cout_affaire', {
+        id: 'cout_affaire',
+        header: 'Coût',
+        meta: createColumnMeta({
             sortable: true
         })
     }),
@@ -78,6 +79,13 @@ const columns = [
             editable: true,
             type: 'select',
             choices: affaireStatus
+        }),
+    }),
+    columnHelper.accessor('validation_ingenieur', {
+        header: 'Validation ingénieur',
+        meta: createColumnMeta({
+            editable: true,
+            type: 'boolean',
         }),
     }),
     columnHelper.display({

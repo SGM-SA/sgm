@@ -26,7 +26,7 @@ export const TableLayout: React.FC<TableLayoutProps> = (props) => {
 
         <TableContainer 
             w='100%' minH='70vh'
-            display='flex' flexDirection='column' justifyContent='flex-start' alignItems='center' 
+            display='flex' flexDirection='column' justifyContent='flex-start' alignItems='flex-start' 
             {...props.chakraProps}
         >
 
