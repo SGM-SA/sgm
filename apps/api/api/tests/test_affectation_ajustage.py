@@ -582,7 +582,7 @@ class AffectationAjustageTest(APITestCase):
         self.assertEqual(affectation1.previous, None)
         self.assertEqual(affectation2.previous, affectation3)
 
-    def test_delete_affectation_ajustage(self):
+    def test_delete_affectation_ajustage_seul(self):
         """
         Teste la suppression d'une affectation ajustage
         """
@@ -595,3 +595,91 @@ class AffectationAjustageTest(APITestCase):
         url = f"/api/affectations/ajustages/{affectation.id}"
         response = self.client.delete(url, format="json")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(AffectationAjustage.objects.count(), 0)
+
+    def test_delete_affectation_ajustage_debut_liste(self):
+        """
+        Teste la suppression d'une affectation ajustage
+        """
+        affectation1 = AffectationAjustage.objects.create(
+            etape=self.etape1,
+            zone=self.zone,
+            semaine_affectation="2021-01-01",
+        )
+        affectation2 = AffectationAjustage.objects.create(
+            etape=self.etape2,
+            zone=self.zone,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+
+        url = f"/api/affectations/ajustages/{affectation1.id}"
+        response = self.client.delete(url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(AffectationAjustage.objects.count(), 1)
+
+        affectation2.refresh_from_db()
+        self.assertEqual(affectation2.previous, None)
+
+    def test_delete_affectation_ajustage_fin_liste(self):
+        """
+        Teste la suppression d'une affectation ajustage, fin de liste
+        """
+        affectation1 = AffectationAjustage.objects.create(
+            etape=self.etape1,
+            zone=self.zone,
+            semaine_affectation="2021-01-01",
+        )
+        affectation2 = AffectationAjustage.objects.create(
+            etape=self.etape2,
+            zone=self.zone,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+
+        url = f"/api/affectations/ajustages/{affectation2.id}"
+        response = self.client.delete(url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(AffectationAjustage.objects.count(), 1)
+
+        affectation1.refresh_from_db()
+        self.assertEqual(affectation1.previous, None)
+        self.assertEqual(affectation1.next.first(), None)
+
+    def test_delete_affectation_ajustage_milieu_liste(self):
+        """
+        Teste la suppression d'une affectation ajustage, milieu de liste
+        """
+        affectation1 = AffectationAjustage.objects.create(
+            etape=self.etape1,
+            zone=self.zone,
+            semaine_affectation="2021-01-01",
+        )
+        affectation2 = AffectationAjustage.objects.create(
+            etape=self.etape2,
+            zone=self.zone,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+        self.etape3 = Etape.objects.create(
+            fiche=self.fiche,
+            zone=self.zone,
+            num_etape=3,
+        )
+        affectation3 = AffectationAjustage.objects.create(
+            etape=self.etape3,
+            zone=self.zone,
+            semaine_affectation="2021-01-01",
+            previous=affectation2,
+        )
+
+        url = f"/api/affectations/ajustages/{affectation2.id}"
+        response = self.client.delete(url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(AffectationAjustage.objects.count(), 2)
+
+        affectation1.refresh_from_db()
+        affectation3.refresh_from_db()
+        self.assertEqual(affectation1.previous, None)
+        self.assertEqual(affectation3.previous, affectation1)
+        self.assertEqual(affectation3.next.first(), None)
