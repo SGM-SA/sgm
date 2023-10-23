@@ -1,5 +1,5 @@
-import { Box, Flex, HStack, Spinner, Text, VStack } from '@chakra-ui/react'
-import { fetchApiAffectationsAjustagesDestroy, fetchApiAffectationsMachinesCreate, fetchApiAffectationsMachinesDestroy, fetchApiAffectationsMachinesPartialUpdate, fetchApiSalariesFormOptionsList, useApiFichesMachineAPlanifierList, useApiPlanningMachineList } from '@sgm/openapi'
+import { Box, Flex, HStack, Input, Spinner, Text, VStack } from '@chakra-ui/react'
+import { fetchApiAffectationsMachinesCreate, fetchApiAffectationsMachinesDestroy, fetchApiAffectationsMachinesPartialUpdate, fetchApiSalariesFormOptionsList, useApiFichesMachineAPlanifierList, useApiPlanningMachineList } from '@sgm/openapi'
 import { BaseBoardCardType, Board, BoardColumnType, CUSTOM_FIRST_COLUMN_ID, TextLink } from '@sgm/ui'
 import { Link } from '@sgm/web/router'
 import { Select } from 'chakra-react-select'
@@ -9,34 +9,37 @@ import { useLoaderData } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
 import { DashboardLayout } from '../../../components/layouts'
 import { PlanningNestedEtapeColumn } from '../../../components/modules'
+import dayjs from 'dayjs'
 
 export const Loader = (() => {
     return fetchApiSalariesFormOptionsList({})
 }) satisfies LoaderFunction
 
 export type PlanningMachineCard = BaseBoardCardType & {
-    affectationId: number
     numEtape: number
+    affectationId?: number
     numAffaire?: number | null
     ficheId: number
     ficheName?: string
     responsible?: number
-} 
+}
 
-const mockedSemaineAffectation = '2023-10-21'
+const mockedSemaineAffectation = '2023-10-23'
 
 const PlanningMachinesPage: React.FC = () => {
 
     const employees = useLoaderData<typeof Loader>()
 
-    const machines = useApiPlanningMachineList({ queryParams: { date: mockedSemaineAffectation } })
+    const [date, setDate] = useState(dayjs())
+    // const [dateHasChanged, setDateHasChanged] = useState(false)
+    const machines = useApiPlanningMachineList({ queryParams: { date: date.format('YYYY-MM-DD') } })
     const itemsToPlan = useApiFichesMachineAPlanifierList({})
     const [canProcess, setCanProcess] = useState(true)
 
     const [columns, setColumns] = useState<BoardColumnType<PlanningMachineCard>[] | undefined>(undefined)
 
     useEffect(() => {
-        
+
         if (machines.data && itemsToPlan.data && canProcess) {
 
             const itemsToPlanColumn: BoardColumnType<PlanningMachineCard> = {
@@ -46,7 +49,6 @@ const PlanningMachinesPage: React.FC = () => {
                     id: etape.id,
                     title: `Etape n°${etape.num_etape}${etape.temps ? ` - ${etape.temps}(h)` : ''}${etape.groupe_machine ? ` - ${etape.groupe_machine}` : ''}`,
                     isLoading: false,
-                    affectationId: etape.affectation_id,
                     numEtape: etape.num_etape,
                     numAffaire: affaire.num_affaire,
                     ficheId: fiche.id,
@@ -64,9 +66,9 @@ const PlanningMachinesPage: React.FC = () => {
                     id: etape.id,
                     title: <VStack alignItems='flex-start' gap={0}>
                         <HStack justifyContent='flex-start'>
-                            {affaire.num_affaire && 
+                            {affaire.num_affaire &&
                                 <Link to='/affaires/:numAffaire' params={{ numAffaire: String(affaire.num_affaire) }}>
-                                    <TextLink>{affaire.num_affaire} /</TextLink>    
+                                    <TextLink>{affaire.num_affaire} /</TextLink>
                                 </Link>
                             }
                             {fiche.titre && <Text as='span'>{fiche.titre}</Text>}
@@ -88,21 +90,38 @@ const PlanningMachinesPage: React.FC = () => {
         }
 
     }, [machines, itemsToPlan])
-    
-	return <>
+
+    useEffect(() => {
+        setCanProcess(true) // TODO: check if it is still working with network latency
+    }, [date])
+
+	  return <>
         <DashboardLayout
             title='Planning machines'
         >
-            <Flex
+            <VStack
                 p='1em'
                 w='100%'
+                alignItems='flex-start'
             >
                 {!columns &&
                     <Flex w='100%' justifyContent='center' alignItems='center' minH='70vh'>
                         <Spinner />
                     </Flex>
                 }
-                {columns &&
+                {columns && <>
+
+                    <Input
+                        type='date'
+                        value={date.format('YYYY-MM-DD')}
+                        onChange={(e) => setDate(dayjs(e.target.value))}
+                        p='.5em'
+                        w='auto'
+                        variant='filled'
+                        fontSize='sm'
+                    />
+
+
                     <Board
                         columns={columns || []}
                         setColumns={setColumns}
@@ -130,11 +149,12 @@ const PlanningMachinesPage: React.FC = () => {
                                             itemsToPlan.refetch()
                                         ])
                                         setCanProcess(true)
-                                        // toast.success('Affectation créée')
+                                        toast.success('Affectation créée')
                                     })
                                     .catch(() => toast.error('Erreur lors de la création de l\'affectation'))
 
                             } else if (toUnplan) {
+                                if (!card.affectationId) return
 
                                 fetchApiAffectationsMachinesDestroy({ pathParams: { id: card.affectationId } })
                                     .then(async () => {
@@ -143,10 +163,11 @@ const PlanningMachinesPage: React.FC = () => {
                                             itemsToPlan.refetch()
                                         ])
                                         setCanProcess(true)
-                                        // toast.success('Affectation supprimée')
+                                        toast.success('Affectation supprimée')
                                     })
                                     .catch(() => toast.error('Erreur lors de la suppression de l\'affectation'))
                             } else {
+                                if (!card.affectationId) return
 
                                 fetchApiAffectationsMachinesPartialUpdate({
                                     pathParams: { id: card.affectationId },
@@ -158,7 +179,7 @@ const PlanningMachinesPage: React.FC = () => {
                                     .then(async () => {
                                         await machines.refetch()
                                         setCanProcess(true)
-                                        // toast.success('Affectation modifiée')
+                                        toast.success('Affectation modifiée')
                                     })
                                     .catch(() => toast.error('Erreur lors de la modification de l\'affectation'))
                             }
@@ -185,7 +206,7 @@ const PlanningMachinesPage: React.FC = () => {
                                     value: employee.id
                                 })) || []}
                                 onChange={(data) => {
-                                    if (!data?.value || data.value === card.responsible) return
+                                    if (!data?.value || data.value === card.responsible || !card.affectationId) return
 
                                     fetchApiAffectationsMachinesPartialUpdate({
                                         pathParams: { id: card.affectationId },
@@ -196,7 +217,7 @@ const PlanningMachinesPage: React.FC = () => {
                                         .then(async () => {
                                             await machines.refetch()
                                             setCanProcess(true)
-                                            // toast.success('Responsable modifié')
+                                            toast.success('Responsable modifié')
                                         })
                                         .catch(() => toast.error('Erreur lors de la modification du responsable'))
                                 }}
@@ -212,8 +233,8 @@ const PlanningMachinesPage: React.FC = () => {
                             }
                         }}
                     />
-                }
-            </Flex>
+                </>}
+            </VStack>
         </DashboardLayout>
     </>
 }
