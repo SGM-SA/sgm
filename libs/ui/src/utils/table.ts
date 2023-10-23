@@ -1,7 +1,7 @@
 import { Paginated, Result } from '@sgm/utils'
 import { Column, Row } from '@tanstack/react-table'
 
-type Types = 'text' | 'number' | 'date' | 'select' | 'boolean'
+type Types = 'text' | 'number' | 'date' | 'select' | 'boolean' | 'file'
 
 type Correspondances = {
     'text': string
@@ -9,6 +9,7 @@ type Correspondances = {
     'date': Date
     'select': string
     'boolean': boolean
+    'file': string
 }
 
 export type Choice = string | {

@@ -1,6 +1,7 @@
-import { Box, Input, Select } from '@chakra-ui/react'
+import { Box, Button, HStack, Icon, Input, Select } from '@chakra-ui/react'
 import { Row, Table } from '@tanstack/react-table'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { AiFillFileAdd } from 'react-icons/ai'
 import { toast } from 'react-toastify'
 import { Choice } from '../../../utils/table'
 
@@ -58,12 +59,19 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
     
     // We need to keep and update the state of the cell normally
     const [value, setValue] = useState(initialValue)
+    const [valueHasChanged, setValueHasChanged] = useState(false)
+
+    // Requirements for the file input type
+    const fileInputRef = useRef<HTMLInputElement>(null)
+    const handleFileButtonClick = () => {
+        fileInputRef.current?.click()
+    }
 
     // When the input is blurred, we'll call our table meta's updateData function
     const onUpdate = (overrideValue?: any) => {
 
         const newValue = overrideValue ?? value
-        if (newValue === initialValue) return
+        if (!valueHasChanged && newValue === initialValue) return
 
         if (meta.customValidation) {
             const result = meta.customValidation(newValue)
@@ -81,6 +89,10 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
     useEffect(() => {
         setValue(initialValue)
     }, [initialValue])
+
+    useEffect(() => {
+        if (!valueHasChanged) setValueHasChanged(true)
+    }, [value])
 
     switch (meta?.type) {
 
@@ -127,12 +139,38 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
                     }}
                     checked={value as boolean}
                     onChange={e => {
+                        console.log(e.target.checked)
                         setValue(e.target.checked)
                         onUpdate(e.target.checked)
                     }}
                     disabled={meta.disabled}
                 />
             )
+        case 'file':
+            return (
+                <HStack spacing={0}>
+                    <input
+                        type='file' 
+                        style={{
+                            display: 'none',
+                        }}
+                        ref={fileInputRef}
+                        onChange={e => {
+                            setValue(e.target.value)
+                            onUpdate(e.target.value)
+                        }}
+                    />
+                    <Button
+                        variant='unstyled'
+                        size='md'
+                        onClick={handleFileButtonClick}
+                    >
+                        <Icon as={AiFillFileAdd} aria-label='Ajouter un fichier'/>
+                    </Button> 
+                    <Box as='span' fontSize={fontSize}>{(value as string).split('\\').at(-1) || ''}</Box>  
+                </HStack>
+            )
+
         default:
             return <Input
                 variant='unstyled'
