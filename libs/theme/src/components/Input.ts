@@ -6,7 +6,7 @@ const styles: ComponentStyleConfig  = defineStyleConfig({
         field: {
             _placeholder: {
                 opacity: 0.5,
-                color: 'tertiary',
+                color: 'primary.50',
                 fontSize: '0.9em',
             }
         }

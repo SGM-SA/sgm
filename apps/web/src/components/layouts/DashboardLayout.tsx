@@ -32,9 +32,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
 			position='absolute'
 			top='0'
 			left='0'
-			w='100%'
-			h='40vh'
-			bg='primary'
+			width='100%'
+			height='40vh'
+			background='primary.100'
 			zIndex={-1}
 		/>
 
@@ -51,7 +51,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
 					justifyContent='space-between'
 					alignItems='center'
 					w='100%'
-					color='secondary'
+					color='secondary.100'
 				>
 
 					<VStack justifyContent='flex-start' alignItems='flext-start' mt='5em' mb={props.styling?.removeTitleMarginBottom ? '1em' : '5em'}>
@@ -91,7 +91,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
 					as='main'
 					w='100%'
 					padding={props.styling?.addPadding ? '2em' : '0'}
-					backgroundColor='secondary'
+					backgroundColor='secondary.100'
 					border='1px solid'
 					borderColor='gray.200'
 					alignItems='flex-start'

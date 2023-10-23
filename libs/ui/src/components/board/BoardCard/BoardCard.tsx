@@ -1,6 +1,6 @@
 import { Box, ChakraProps, Flex, Spinner } from '@chakra-ui/react'
 import { Draggable, DraggableStateSnapshot } from 'react-beautiful-dnd'
-import { BaseBoardCardType } from '../../../utils'
+import { BaseBoardCardType, cardBorderStyle } from '../../../utils'
 import { CollapsableElement } from '../../layout/CollapsableElement/CollapsableElement'
 
 
@@ -24,16 +24,16 @@ export function BoardCard<TData extends BaseBoardCardType>(props: BoardCardProps
         >
             {(provided, snapshot) => (
                 <Box ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
-                    m='1em' p='1em'
+                    m='.5em' p='1em'
                     opacity={1}
-                    bg='gray.300'
-                    borderRadius='2px'
+                    bg='secondary.100'
+                    {...cardBorderStyle}
                     {...props.chakraProps}
                     {...(props.disableSortingAnimation ? {
                         style: getStyle(provided.draggableProps.style, snapshot)
                     } : {})}
                 >
-                    {props.card.isLoading && 
+                    {props.card.isLoading &&
                         <Flex w='100%' justifyContent='center'>
                             <Spinner />
                         </Flex>
@@ -42,6 +42,7 @@ export function BoardCard<TData extends BaseBoardCardType>(props: BoardCardProps
                         <CollapsableElement
                             title={props.title || props.card.title}
                             collapsable={props.collapse ?? false}
+                            fontSize='sm'
                         >
                             {props.renderCardBody?.(props.card)}
                         </CollapsableElement>
@@ -57,7 +58,7 @@ const getStyle = (style: any, snapshot: DraggableStateSnapshot) => {
     if (!snapshot.isDropAnimating) {
       return style;
     }
-  
+
     return {
       ...style,
       // cannot be 0, but make it super tiny

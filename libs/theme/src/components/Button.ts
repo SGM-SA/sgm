@@ -5,8 +5,8 @@ const styles: ComponentStyleConfig  = defineStyleConfig({
     variants: {
 
         primary: {
-            backgroundColor: 'primary',
-            color: 'secondary',
+            backgroundColor: 'primary.100',
+            color: 'secondary.100',
         }
     }
 })

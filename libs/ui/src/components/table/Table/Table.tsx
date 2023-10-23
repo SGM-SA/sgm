@@ -150,7 +150,7 @@ export function Table<TData>(props: TableProps<TData>) {
                     isChecked={table.getIsAllRowsSelected()}
                     isIndeterminate={table.getIsSomeRowsSelected()}
                     onChange={table.getToggleAllRowsSelectedHandler()}
-                    borderColor='tertiary'
+                    borderColor='primary.50'
                 />
             ),
             cell: ({ row }) => (
@@ -160,7 +160,7 @@ export function Table<TData>(props: TableProps<TData>) {
                         isIndeterminate={row.getIsSomeSelected()}
                         onChange={row.getToggleSelectedHandler()}
                         disabled={!row.getCanSelect()}
-                        borderColor='tertiary'
+                        borderColor='primary.50'
                     />
                 </div>
             ),

@@ -12,12 +12,12 @@ export const SideBarSection: React.FC<SideBarSectionProps> = (props) => {
 	return <>
         <VStack alignItems='flex-start' w='100%' gap='1rem'>
 
-            {props.title && 
+            {props.title &&
                 <Heading as='h3'
                     fontSize='.9rem'
                     textTransform='uppercase'
                     fontWeight='bold'
-                    color='tertiary'
+                    color='primary.50'
                     mb='.5rem'
                 >
                     {props.title}
@@ -26,7 +26,7 @@ export const SideBarSection: React.FC<SideBarSectionProps> = (props) => {
 
             {props.children}
         </VStack>
-        
+
         {props.separator !== false && <Divider my='2rem' />}
     </>
 }

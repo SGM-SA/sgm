@@ -17,10 +17,10 @@ export const SideBar: React.FC<SideBarProps> = () => {
 
 	return <>
 
-        <IconButton 
-            onClick={onOpen} 
-            icon={<HiOutlineMenu />} 
-            aria-label='Menu' 
+        <IconButton
+            onClick={onOpen}
+            icon={<HiOutlineMenu />}
+            aria-label='Menu'
             position='fixed'
             top='1rem'
             left='1rem'
@@ -48,7 +48,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
                     <SideBarSection title='Zones'>
                         <SideBarLink icon={BsGearFill} text='Gestion' to='/zones' />
                     </SideBarSection>
-                
+
                     <SideBarSection title='Planning'>
                         <SideBarLink icon={RiComputerLine} text='Machines' to='/planning/machines' />
                         <SideBarLink icon={BsFillCalendar2WeekFill} text='Zones' to='/' />
@@ -67,7 +67,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
                 <DrawerFooter justifyContent='center'>
                     <Button as='a'
                         colorScheme='blue'
-                        backgroundColor='primary'
+                        backgroundColor='primary.100'
                         w='100%'
                         href='mailto:contact@cloudflow.info'
                         target='_blank'

@@ -2,7 +2,7 @@ import { Box, ChakraProps, HStack, Heading, VStack } from '@chakra-ui/react'
 import { useState } from 'react'
 import { Droppable } from 'react-beautiful-dnd'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-import { BaseBoardCardType, BoardColumnType } from '../../../utils'
+import { BaseBoardCardType, BoardColumnType, cardBorderStyle } from '../../../utils'
 
 type BoardColumnProps<TData extends BaseBoardCardType> = {
     column: BoardColumnType<TData>
@@ -22,9 +22,10 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
         return <>
             <VStack
                 minH='75vh'
-                bg='gray.100'
                 width='2em'
                 padding='1em'
+                bg='secondary.100'
+                {...cardBorderStyle}
                 {...props.chakraProps}
             >
                 <FaChevronRight onClick={e => setCollapsed(false)} cursor='pointer'/>
@@ -53,12 +54,12 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                         width='400px'
                         minWidth='400px'
                         minH='75vh' maxH='75vh'
-                        bg='gray.100'
+                        bg='secondary.150'
                         padding='1em'
-                        borderRadius='2px'
                         overflowX='hidden'
                         overflowY='auto'
                         opacity={snapshot.isDraggingOver ? 0.8 : 1}
+                        {...cardBorderStyle}
                         {...props.chakraProps}
                         {...provided.droppableProps}
                     >
@@ -67,7 +68,7 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                             {props.renderHeader !== undefined ?
                                 props.renderHeader(props.column)
                                 :
-                                <HStack w='100%' justifyContent='space-between'>
+                                <HStack w='100%' justifyContent='space-between' mb='1em'>
                                     <Heading as='h3' fontSize='1em'>{props.column.title}</Heading>
                                     {props.collapsable && <FaChevronLeft onClick={e => setCollapsed(true)} cursor='pointer'/>}
                                 </HStack>

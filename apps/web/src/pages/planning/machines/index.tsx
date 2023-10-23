@@ -196,7 +196,8 @@ const PlanningMachinesPage: React.FC = () => {
                         }}
                         renderCardBody={(card) => <Box mt='1em'>
                             <Select
-                                size='sm'
+                                // @ts-ignore
+                                size='xs'
                                 placeholder='Choisir responsable'
                                 defaultValue={card.responsible !== undefined ? {
                                     label: (() => {
@@ -232,8 +233,8 @@ const PlanningMachinesPage: React.FC = () => {
                             column: (column) => {
                                 if (column.meta?.fonctionnelle === false) {
                                     return {
-                                        border: '3px solid',
-                                        borderColor: 'red.200'
+                                        border: '2px solid',
+                                        borderColor: 'red.300 !important'
                                     }
                                 }
                             }
