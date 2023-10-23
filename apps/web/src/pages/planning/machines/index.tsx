@@ -31,7 +31,6 @@ const PlanningMachinesPage: React.FC = () => {
     const employees = useLoaderData<typeof Loader>()
 
     const [date, setDate] = useState(dayjs())
-    // const [dateHasChanged, setDateHasChanged] = useState(false)
     const machines = useApiPlanningMachineList({ queryParams: { date: date.format('YYYY-MM-DD') } })
     const itemsToPlan = useApiFichesMachineAPlanifierList({})
     const [canProcess, setCanProcess] = useState(true)
@@ -98,6 +97,23 @@ const PlanningMachinesPage: React.FC = () => {
 	  return <>
         <DashboardLayout
             title='Planning machines'
+            customHeader={
+                <Flex h='100%' alignContent='flex-end' flexWrap='wrap' mb='1em'>
+                  <Input
+                      type='date'
+                      value={date.format('YYYY-MM-DD')}
+                      onChange={(e) => setDate(dayjs(e.target.value))}
+                      p='.5em'
+                      w='auto'
+                      variant='filled'
+                      fontSize='sm'
+                      color='black'
+                  />
+                </Flex>
+            }
+            styling={{
+                removeTitleMarginBottom: true
+            }}
         >
             <VStack
                 p='1em'
@@ -110,17 +126,6 @@ const PlanningMachinesPage: React.FC = () => {
                     </Flex>
                 }
                 {columns && <>
-
-                    <Input
-                        type='date'
-                        value={date.format('YYYY-MM-DD')}
-                        onChange={(e) => setDate(dayjs(e.target.value))}
-                        p='.5em'
-                        w='auto'
-                        variant='filled'
-                        fontSize='sm'
-                    />
-
 
                     <Board
                         columns={columns || []}
@@ -227,7 +232,8 @@ const PlanningMachinesPage: React.FC = () => {
                             column: (column) => {
                                 if (column.meta?.fonctionnelle === false) {
                                     return {
-                                        backgroundColor: 'red.200'
+                                        border: '3px solid',
+                                        borderColor: 'red.200'
                                     }
                                 }
                             }

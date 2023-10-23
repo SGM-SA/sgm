@@ -21,7 +21,7 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
     if (isCollapsed) {
         return <>
             <VStack
-                minH='80vh'
+                minH='75vh'
                 bg='gray.100'
                 width='2em'
                 padding='1em'
@@ -43,7 +43,7 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
     } else {
 
         return (
-            <Droppable 
+            <Droppable
                 droppableId={String(props.column.id)}
                 key={String(props.column.id)}
             >
@@ -52,17 +52,19 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                         ref={provided.innerRef}
                         width='400px'
                         minWidth='400px'
-                        minHeight='80vh'
+                        minH='75vh' maxH='75vh'
                         bg='gray.100'
                         padding='1em'
                         borderRadius='2px'
+                        overflowX='hidden'
+                        overflowY='auto'
                         opacity={snapshot.isDraggingOver ? 0.8 : 1}
                         {...props.chakraProps}
                         {...provided.droppableProps}
                     >
                         {/* Header */}
                         <VStack>
-                            {props.renderHeader !== undefined ? 
+                            {props.renderHeader !== undefined ?
                                 props.renderHeader(props.column)
                                 :
                                 <HStack w='100%' justifyContent='space-between'>
@@ -71,7 +73,7 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                                 </HStack>
                             }
                         </VStack>
-                        
+
                         {/* Cards */}
                         {!isCollapsed && <>
                             {props.children}

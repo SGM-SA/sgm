@@ -9,7 +9,7 @@ type PlanningNestedEtapeColumnProps = BaseBoardColumnProps<PlanningMachineCard>
 export const PlanningNestedEtapeColumn: React.FC<PlanningNestedEtapeColumnProps> = (props) => {
 
 	return <>
-            <Droppable 
+            <Droppable
                 droppableId={String(props.column.id)}
                 key={String(props.column.id)}
             >
@@ -18,10 +18,12 @@ export const PlanningNestedEtapeColumn: React.FC<PlanningNestedEtapeColumnProps>
                         ref={provided.innerRef}
                         width='400px'
                         minWidth='400px'
-                        minHeight='80vh'
+                        minHeight='75vh' maxHeight='75vh'
                         bg='gray.100'
                         padding='1em'
                         borderRadius='5px'
+                        overflowX='hidden'
+                        overflowY='auto'
                         opacity={snapshot.isDraggingOver ? 0.8 : 1}
                         {...provided.droppableProps}
                     >
@@ -45,7 +47,7 @@ export const PlanningNestedEtapeColumn: React.FC<PlanningNestedEtapeColumnProps>
                                 borderRadius='2px'
                             >
                                 {affaire.fiches.map(fiche => (
-                                    
+
                                     <CollapsableElement
                                         key={fiche.id}
                                         title={fiche.name || fiche.id}
@@ -56,7 +58,7 @@ export const PlanningNestedEtapeColumn: React.FC<PlanningNestedEtapeColumnProps>
                                     >
                                         {fiche.etapes.map(etape => (
 
-                                            <BoardCard 
+                                            <BoardCard
                                                 key={etape.id}
                                                 index={props.column.cards.findIndex(item => item.id === etape.id)}
                                                 card={etape}
