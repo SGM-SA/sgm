@@ -23,16 +23,16 @@ const useSkipper = () => {
 
     const shouldSkipRef = React.useRef(true)
     const shouldSkip = shouldSkipRef.current
-  
+
     // Wrap a function with this to skip a pagination reset temporarily
     const skip = React.useCallback(() => {
         shouldSkipRef.current = false
     }, [])
-  
+
     React.useEffect(() => {
         shouldSkipRef.current = true
     })
-  
+
     return [shouldSkip, skip] as const
 }
 
@@ -63,7 +63,7 @@ type BaseTableProps<TData> = {
     }
     /**
      * If set to a boolean, the table will be sorted locally
-     * 
+     *
      * If set to an object with the state and setter from the `useTableQueryHelper` hook, the table will be sorted server side
      */
     sortable?: boolean | {
@@ -142,7 +142,7 @@ export function Table<TData>(props: TableProps<TData>) {
     )
 
     const [internalSorting, setInternalSorting] = useState<SortingState>([])
-    
+
     const rowSelectionColumn: ColumnDef<TData> | undefined = props.rowSelection?.enabled ? {
         id: 'select',
             header: ({ table }) => (
@@ -235,7 +235,7 @@ export function Table<TData>(props: TableProps<TData>) {
     })
 
     useEffect(() => {
-        
+
         if (internalSorting[0] && isServerSorted(props.sortable)) {
             const [{ id, desc }] = internalSorting
             props.sortable.setState(`${desc ? '-' : ''}${id}`)
@@ -257,7 +257,7 @@ export function Table<TData>(props: TableProps<TData>) {
                 <Box className='Toastify__toast-container Toastify__toast-container--bottom-center'
                     w='80%'
                     background='gray.50'
-                    // justifyContent='center' alignItems='center' 
+                    // justifyContent='center' alignItems='center'
                     // transition='all .5s ease-in-out'
                     // background='gray.50'
                     // borderRadius='5px'
@@ -276,7 +276,7 @@ export function Table<TData>(props: TableProps<TData>) {
                         <Text>
                             {`${selectedRowsCount} lignes sélectionnée${selectedRowsCount > 1 ? 's' : ''}`}
                         </Text>
-                        <props.rowSelection.selectionActionComponent 
+                        <props.rowSelection.selectionActionComponent
                             checkedItems={table.getIsAllRowsSelected() ? table.getRowModel().rows : table.getRowModel().rows.filter(row => row.getIsSelected())}
                             resetSelection={() => table.toggleAllPageRowsSelected(false)}
                         />
@@ -286,22 +286,21 @@ export function Table<TData>(props: TableProps<TData>) {
 
             <ChakraTable
                 size='sm'
-                // mb='auto'
                 {...props.styling?.table}
             >
-                
+
                 <Thead>
                     {table.getHeaderGroups().map(headerGroup => (
 
                         <Tr key={headerGroup.id}>
-                        
+
                             {props.rowExpansion?.enabled && <Th></Th>}
-                        
+
                             {headerGroup.headers.map(header => (
                                 <Th key={header.id} colSpan={header.colSpan}>
                                     <Box
                                         {...(
-                                            header.column.getCanSort() && 
+                                            header.column.getCanSort() &&
                                             (
                                                 (isServerSorted(props.sortable) && getMetaFromColumn(header.column)?.sortable)
                                                 || isLocalSorted(props.sortable)
@@ -344,17 +343,17 @@ export function Table<TData>(props: TableProps<TData>) {
                         {table.getRowModel().rows.map(row => {
 
                             return (<Fragment key={row.id}>
-                    
+
                                 <Tr {...getTrProps(row)} {...getRowStyleProps(row, props.styling?.row)}>
-    
+
                                     {props.rowExpansion?.enabled && (
-                                        props.loading ? 
+                                        props.loading ?
                                         <Td></Td>
                                         :
                                         <Td onClick={row.getCanExpand() ? row.getToggleExpandedHandler() : undefined}
                                             _hover={{ cursor: row.getCanExpand() ? 'pointer' : undefined }}
                                         >
-                                            {row.getIsExpanded() ? 
+                                            {row.getIsExpanded() ?
                                                 <Icon as={FaChevronDown} fontSize='xs'/>
                                                 :
                                                 <Icon as={FaChevronRight} fontSize='xs'/>
@@ -366,6 +365,8 @@ export function Table<TData>(props: TableProps<TData>) {
                                             {...getMetaFromColumn(cell.column)?.cellHoverText ? {
                                                 title: String(cell.getValue() as any)
                                             } : {}}
+                                            // width='100%'
+                                            whiteSpace='nowrap'
                                         >
                                             {flexRender(
                                                 cell.column.columnDef.cell,
@@ -374,10 +375,10 @@ export function Table<TData>(props: TableProps<TData>) {
                                         </Td>
                                     ))}
                                 </Tr>
-    
+
                                 {(row.getIsExpanded() && props.rowExpansion?.renderComponent) && (
                                     <Tr {...getTrProps(row)}>
-                                        <Td 
+                                        <Td
                                             colSpan={row.getVisibleCells().length + 2}
                                             p={0}
                                         >
@@ -395,11 +396,11 @@ export function Table<TData>(props: TableProps<TData>) {
             </ChakraTable>
 
             {props.newRow &&
-                
-                <IconButton 
-                    onClick={props.newRow} 
-                    icon={<FaPlus />} 
-                    aria-label='Ajouter un élément' 
+
+                <IconButton
+                    onClick={props.newRow}
+                    icon={<FaPlus />}
+                    aria-label='Ajouter un élément'
                     size='xs'
                     w='100%'
                     variant='ghost'
@@ -407,7 +408,7 @@ export function Table<TData>(props: TableProps<TData>) {
                 />
             }
 
-            {props.pagination && 
+            {props.pagination &&
                 <Box marginTop='auto' w='100%'>
                     <Pagination
                         table={table}

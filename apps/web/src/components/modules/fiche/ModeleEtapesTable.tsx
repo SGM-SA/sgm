@@ -27,7 +27,7 @@ export const ModeleEtapesTable: React.FC<ModeleEtapesTableProps> = (props) => {
         }),
         columnHelper.accessor('groupe_machine', {
             header: 'Groupe machine',
-            cell: (cell) => 
+            cell: (cell) =>
                 <DefaultTableCell {...cell}>
                     {props.groupesMachines.find(groupeMachine => groupeMachine.id === cell.getValue())?.nom_groupe || ''}
                 </DefaultTableCell>,
@@ -55,8 +55,7 @@ export const ModeleEtapesTable: React.FC<ModeleEtapesTableProps> = (props) => {
             header: 'Plan',
             meta: createColumnMeta({
                 editable: true,
-                type: 'text',
-                sortable: true,
+                type: 'file',
             })
         }),
         columnHelper.accessor('quantite', {
@@ -83,11 +82,17 @@ export const ModeleEtapesTable: React.FC<ModeleEtapesTableProps> = (props) => {
                 sortable: true,
             })
         }),
+        columnHelper.accessor('cout_etape', {
+          header: 'Coût',
+          meta: createColumnMeta({
+              sortable: true,
+          })
+      })
     ]
 
 
 	return <Box className='not-striped' w='100%'>
-        
+
         <TableLayout
             header={{
                 title: 'Etapes',
@@ -115,7 +120,7 @@ export const ModeleEtapesTable: React.FC<ModeleEtapesTableProps> = (props) => {
                 sortable
                 newRow={() => {
                     fetchApiModelesEtapesCreate({
-                        body: { 
+                        body: {
                             fiche_modele: props.ficheModeleId,
                             num_etape: (data?.etapes_modele.length || 0) + 1
                         }
@@ -126,7 +131,7 @@ export const ModeleEtapesTable: React.FC<ModeleEtapesTableProps> = (props) => {
                 }}
                 rowSelection={{
                     enabled: true,
-                    selectionActionComponent: ({ checkedItems, resetSelection }) => <Button 
+                    selectionActionComponent: ({ checkedItems, resetSelection }) => <Button
                         size='sm'
                         colorScheme='red'
                         borderRadius='4px'
@@ -143,7 +148,7 @@ export const ModeleEtapesTable: React.FC<ModeleEtapesTableProps> = (props) => {
                     >Supprimer</Button>
                 }}
                 loadingSkeletonRowsCount={3}
-            />  
+            />
 
         </TableLayout>
 

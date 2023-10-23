@@ -32,7 +32,7 @@ export function RawTableCell<TData>(props: DefaultTableCellProps<TData>) {
     switch(meta?.type) {
 
         case 'boolean':
-            return <input 
+            return <input
                 type='checkbox'
                 style={{
                     fontSize: fontSize,
@@ -42,7 +42,7 @@ export function RawTableCell<TData>(props: DefaultTableCellProps<TData>) {
             />
             break
         default:
-            return <Box as='span' 
+            return <Box as='span'
                 fontSize={fontSize}
                 onDoubleClick={doubleClickHandler}
             >
@@ -56,7 +56,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
     const initialValue = props.getValue()
     const meta = props.column.columnDef.meta // not typed on purpose
     const accessorKey = props.column.columnDef.accessorKey
-    
+
     // We need to keep and update the state of the cell normally
     const [value, setValue] = useState(initialValue)
     const [valueHasChanged, setValueHasChanged] = useState(false)
@@ -113,8 +113,8 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
             break
         case 'select':
             return (
-                <Select 
-                    size={fontSize} 
+                <Select
+                    size={fontSize}
                     value={value as string || ''}
                     onChange={e => {
                         setValue(e.target.value)
@@ -130,7 +130,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
                 </Select>
             )
             break
-        case 'boolean': 
+        case 'boolean':
             return (
                 <input
                     type='checkbox'
@@ -150,7 +150,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
             return (
                 <HStack spacing={0}>
                     <input
-                        type='file' 
+                        type='file'
                         style={{
                             display: 'none',
                         }}
@@ -166,8 +166,8 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
                         onClick={handleFileButtonClick}
                     >
                         <Icon as={AiFillFileAdd} aria-label='Ajouter un fichier'/>
-                    </Button> 
-                    <Box as='span' fontSize={fontSize}>{(value as string).split('\\').at(-1) || ''}</Box>  
+                    </Button>
+                    <Box as='span' fontSize={fontSize}>{(value as string)?.split('\\')?.at(-1) || ''}</Box>
                 </HStack>
             )
 
