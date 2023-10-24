@@ -4356,15 +4356,23 @@ components:
         nom_machine:
           type: string
           maxLength: 100
+        fonctionnelle:
+          type: boolean
+        heures_travail_dispo:
+          type: integer
+          readOnly: true
+        heures_travail_affectees:
+          type: integer
+          readOnly: true
         affectations:
           type: array
           items:
             $ref: '#/components/schemas/TotalAffaire'
           readOnly: true
-        fonctionnelle:
-          type: boolean
       required:
       - affectations
+      - heures_travail_affectees
+      - heures_travail_dispo
       - id
       - nom_machine
     PlanningZone:
@@ -4377,6 +4385,12 @@ components:
         nom:
           type: string
           maxLength: 200
+        heures_travail_dispo:
+          type: integer
+          readOnly: true
+        heures_travail_affectees:
+          type: integer
+          readOnly: true
         affectations:
           type: array
           items:
@@ -4384,6 +4398,8 @@ components:
           readOnly: true
       required:
       - affectations
+      - heures_travail_affectees
+      - heures_travail_dispo
       - id
       - nom
     Pointage:
