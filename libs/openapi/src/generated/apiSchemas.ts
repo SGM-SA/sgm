@@ -1382,8 +1382,10 @@ export type PlanningMachine = {
 	 * @maxLength 100
 	 */
 	nom_machine: string
-	affectations: TotalAffaire[]
 	fonctionnelle?: boolean
+	heures_travail_dispo: number
+	heures_travail_affectees: number
+	affectations: TotalAffaire[]
 }
 
 /**
@@ -1395,6 +1397,8 @@ export type PlanningZone = {
 	 * @maxLength 200
 	 */
 	nom: string
+	heures_travail_dispo: number
+	heures_travail_affectees: number
 	affectations: TotalAffaireAjustage[]
 }
 
