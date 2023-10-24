@@ -72,7 +72,12 @@ AUTH_USER_MODEL = "api.CustomUser"
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 CONSTANCE_CONFIG = {
     "GROUPE_MACHINE_AJUSTAGE_ID": (1, "ID du groupe machine ajustage"),
-    "COULEUR_AFFAIRE_RETARD": ("#FED7D7", "Couleur d'affichage d'une affaire en retard")
+    "COULEUR_AFFAIRE_RETARD": (
+        "#FED7D7",
+        "Couleur d'affichage d'une affaire en retard",
+    ),
+    "TEMPS_MACHINE_JOUR": (21, "Durée de fonctionnement d'une machine"),
+    "JOUR_OUVRE_MACHINE": (5, "Nombre de jours qu'une machine fonctionne par semaine"),
 }
 
 
