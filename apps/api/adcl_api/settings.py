@@ -68,7 +68,7 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = "api.CustomUser"
 
-# constance
+# constance (constantes modifiables dans l'admin)
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 CONSTANCE_CONFIG = {
     "GROUPE_MACHINE_AJUSTAGE_ID": (1, "ID du groupe machine ajustage"),
@@ -78,6 +78,10 @@ CONSTANCE_CONFIG = {
     ),
     "TEMPS_MACHINE_JOUR": (21, "Durée de fonctionnement d'une machine"),
     "JOUR_OUVRE_MACHINE": (5, "Nombre de jours qu'une machine fonctionne par semaine"),
+    "JOUR_OUVRE_ZONE": (5, "Jour zones"),
+    "TEMPS_ZONE_MATIN": (7, "Temps travail matiné"),
+    "TEMPS_ZONE_APREM": (8, "Temps travail après-midi"),
+    "NB_PERS_ZONES": (7, "Nombre de personnes par zone"),
 }
 
 
