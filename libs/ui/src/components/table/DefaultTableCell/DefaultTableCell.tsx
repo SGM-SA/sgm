@@ -1,6 +1,7 @@
-import { Box, Input, Select } from '@chakra-ui/react'
+import { Box, Button, HStack, Icon, Input, Select } from '@chakra-ui/react'
 import { Row, Table } from '@tanstack/react-table'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { AiFillFileAdd } from 'react-icons/ai'
 import { toast } from 'react-toastify'
 import { Choice } from '../../../utils/table'
 
@@ -31,7 +32,7 @@ export function RawTableCell<TData>(props: DefaultTableCellProps<TData>) {
     switch(meta?.type) {
 
         case 'boolean':
-            return <input 
+            return <input
                 type='checkbox'
                 style={{
                     fontSize: fontSize,
@@ -41,7 +42,7 @@ export function RawTableCell<TData>(props: DefaultTableCellProps<TData>) {
             />
             break
         default:
-            return <Box as='span' 
+            return <Box as='span'
                 fontSize={fontSize}
                 onDoubleClick={doubleClickHandler}
             >
@@ -55,15 +56,22 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
     const initialValue = props.getValue()
     const meta = props.column.columnDef.meta // not typed on purpose
     const accessorKey = props.column.columnDef.accessorKey
-    
+
     // We need to keep and update the state of the cell normally
     const [value, setValue] = useState(initialValue)
+    const [valueHasChanged, setValueHasChanged] = useState(false)
+
+    // Requirements for the file input type
+    const fileInputRef = useRef<HTMLInputElement>(null)
+    const handleFileButtonClick = () => {
+        fileInputRef.current?.click()
+    }
 
     // When the input is blurred, we'll call our table meta's updateData function
     const onUpdate = (overrideValue?: any) => {
 
         const newValue = overrideValue ?? value
-        if (newValue === initialValue) return
+        if (!valueHasChanged && newValue === initialValue) return
 
         if (meta.customValidation) {
             const result = meta.customValidation(newValue)
@@ -82,6 +90,10 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
         setValue(initialValue)
     }, [initialValue])
 
+    useEffect(() => {
+        if (!valueHasChanged) setValueHasChanged(true)
+    }, [value])
+
     switch (meta?.type) {
 
         case 'text':
@@ -90,6 +102,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
             return (
                 <Input
                     type={meta.type}
+                    disabled={meta.disabled}
                     variant='unstyled'
                     fontSize={fontSize}
                     value={value as string || ''}
@@ -100,13 +113,14 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
             break
         case 'select':
             return (
-                <Select 
-                    size={fontSize} 
+                <Select
+                    size={fontSize}
                     value={value as string || ''}
                     onChange={e => {
                         setValue(e.target.value)
                         onUpdate(e.target.value)
                     }}
+                    disabled={meta.disabled}
                 >
                     {meta.nullable !== false && <option value={''}></option>}
                     {meta.choices?.map((choice: Choice) => typeof choice === 'string' ?
@@ -116,7 +130,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
                 </Select>
             )
             break
-        case 'boolean': 
+        case 'boolean':
             return (
                 <input
                     type='checkbox'
@@ -125,11 +139,38 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
                     }}
                     checked={value as boolean}
                     onChange={e => {
+                        console.log(e.target.checked)
                         setValue(e.target.checked)
                         onUpdate(e.target.checked)
                     }}
+                    disabled={meta.disabled}
                 />
             )
+        case 'file':
+            return (
+                <HStack spacing={0}>
+                    <input
+                        type='file'
+                        style={{
+                            display: 'none',
+                        }}
+                        ref={fileInputRef}
+                        onChange={e => {
+                            setValue(e.target.value)
+                            onUpdate(e.target.value)
+                        }}
+                    />
+                    <Button
+                        variant='unstyled'
+                        size='md'
+                        onClick={handleFileButtonClick}
+                    >
+                        <Icon as={AiFillFileAdd} aria-label='Ajouter un fichier'/>
+                    </Button>
+                    <Box as='span' fontSize={fontSize}>{(value as string)?.split('\\')?.at(-1) || ''}</Box>
+                </HStack>
+            )
+
         default:
             return <Input
                 variant='unstyled'
@@ -137,6 +178,7 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
                 fontSize={fontSize}
                 onChange={e => setValue(e.target.value)}
                 onBlur={() => onUpdate()}
+                disabled={meta.disabled}
             />
     }
 }

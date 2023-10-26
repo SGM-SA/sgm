@@ -4,6 +4,7 @@ import { DefaultTableCell, Table, TableLayout, createColumnMeta } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { toast } from 'react-toastify'
+import { PrintFicheButton } from './PrintFicheButton'
 
 type EtapesTableProps = {
     ficheId: number
@@ -18,9 +19,10 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
 
     const columns = [
         columnHelper.accessor('num_etape', {
-            id: 'num_etape',
             header: 'Numéro',
             meta: createColumnMeta({
+                editable: true,
+                type: 'number',
                 sortable: true,
                 disableWarnings: true
             })
@@ -55,10 +57,9 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
             header: 'Plan',
             meta: createColumnMeta({
                 editable: true,
-                type: 'text',
-                sortable: true,
+                type: 'file',
             })
-        }),
+        }), 
         columnHelper.accessor('quantite', {
             header: 'Quantité',
             meta: createColumnMeta({
@@ -83,6 +84,12 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                 sortable: true,
             })
         }),
+        columnHelper.accessor('cout_etape', {
+            header: 'Coût',
+            meta: createColumnMeta({
+                sortable: true,
+            })
+        })
     ]
     
 	return <>
@@ -90,18 +97,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
             header={{
                 title: 'Liste des étapes',
                 customComponent: <HStack>
-                    <Button
-                        size='sm'
-                        colorScheme='blue'
-                        borderRadius='4px'
-                        variant='outline'
-                        onClick={() => {
-                            // TODO: implement
-                            window.print() // temporary
-                        }}
-                    >
-                        Imprimer
-                    </Button>
+                    <PrintFicheButton ficheId={props.ficheId}/>
                 </HStack>
             }}
         >
