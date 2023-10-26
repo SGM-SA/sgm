@@ -83,7 +83,7 @@ const columns = [
         }),
     }),
     columnHelper.accessor('validation_ingenieur', {
-        header: 'Validation ingénieur',
+        header: 'Vali. ingé.',
         meta: createColumnMeta({
             editable: true,
             type: 'boolean',
