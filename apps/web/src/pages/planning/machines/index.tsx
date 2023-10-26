@@ -59,7 +59,11 @@ const PlanningMachinesPage: React.FC = () => {
                 id: machine.id,
                 title: machine.nom_machine,
                 meta: {
-                    fonctionnelle: machine.fonctionnelle
+                    fonctionnelle: machine.fonctionnelle,
+                    heuresTravail: {
+                      dispo: machine.heures_travail_dispo,
+                      affectees: machine.heures_travail_affectees,
+                    }
                 },
                 cards: machine.affectations?.flatMap(affaire => affaire.fiches?.flatMap(fiche => fiche.etapes.map(etape => ({
                     id: etape.id,
@@ -189,13 +193,16 @@ const PlanningMachinesPage: React.FC = () => {
                                     .catch(() => toast.error('Erreur lors de la modification de l\'affectation'))
                             }
                         }}
-                        firstColumnComponent={PlanningNestedEtapeColumn}
-                        collapsable={{
-                            cards: true,
-                            columns: true
-                        }}
-                        renderCardBody={(card) => <Box mt='1em'>
-                            <Select
+                        custom={{
+                          columnFooter: (column) => {
+                            return <Text fontSize='sm'>
+                              {column.meta.heuresTravail.affectees} / {column.meta.heuresTravail.dispo}h
+                            </Text>
+                          },
+                          firstColumn: PlanningNestedEtapeColumn,
+                          cardBody: (card) => {
+                            return <Box mt='1em'>
+                              <Select
                                 // @ts-ignore
                                 size='xs'
                                 placeholder='Choisir responsable'
@@ -227,8 +234,14 @@ const PlanningMachinesPage: React.FC = () => {
                                         })
                                         .catch(() => toast.error('Erreur lors de la modification du responsable'))
                                 }}
-                            />
-                        </Box>}
+                              />
+                            </Box>
+                          },
+                        }}
+                        collapsable={{
+                            columns: true,
+                            cards: true
+                        }}
                         styling={{
                             column: (column) => {
                                 if (column.meta?.fonctionnelle === false) {

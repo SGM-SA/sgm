@@ -17,20 +17,16 @@ type BoardProps<TData extends BaseBoardCardType> = {
 	 * @param to The column and index the card was moved to
 	 */
 	onCardMove?: OnCardMoveSignature<TData>
-	/**
-	 * Render the card body
-	 * @optional
-	 */
-	renderCardBody?: (card: TData) => JSX.Element
-	/**
-	 * Render the column header
-	 * @optional
-	 */
-	renderColumnHeader?: (column: BoardColumnType<TData>) => JSX.Element
-	/**
-	 * 
-	 */
-	firstColumnComponent?: React.FC<BaseBoardColumnProps<TData>>
+  /**
+   * Custom render components
+   * @optional
+   */
+  custom?: {
+    firstColumn: React.FC<BaseBoardColumnProps<TData>>
+    cardBody?: (card: TData) => JSX.Element
+    columnHeader?: (column: BoardColumnType<TData>) => JSX.Element
+    columnFooter?: (column: BoardColumnType<TData>) => JSX.Element
+  }
 	/**
 	 * Collapse columns and/or cards
 	 * @optional
@@ -56,7 +52,7 @@ type BoardProps<TData extends BaseBoardCardType> = {
 
 export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>) {
 
-	const { firstColumnComponent: FirstColumnComponent } = props
+	const FirstColumnComponent = props.custom?.firstColumn
 
 	return (
 		<DragDropContext
@@ -65,23 +61,26 @@ export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>)
 			<HStack w='100%' gap='1em' overflowX='scroll'>
 
 				{props.columns.map((column, index) => (
-					
+
 					index === 0 && FirstColumnComponent !== undefined ?
-						<FirstColumnComponent 
+						<FirstColumnComponent
 							key={column.id}
 							column={column}
-							renderCard={props.renderCardBody}
+							renderCard={props.custom?.cardBody}
 							collapsable={props.collapsable}
 						/>
 						:
 						<BoardColumn<TData>
 							key={column.id}
 							column={column}
-							renderHeader={props.renderColumnHeader}
+							custom={{
+                header: props.custom?.columnHeader,
+                footer: props.custom?.columnFooter
+              }}
 							chakraProps={{
 								...getColumnStyleProps(column, props.styling?.column),
-								...(props.pinFirstColumn && index === 0 ? { 
-									position: 'sticky', 
+								...(props.pinFirstColumn && index === 0 ? {
+									position: 'sticky',
 									left: 0,
 									zIndex: 2
 								} : {})
@@ -90,11 +89,11 @@ export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>)
 						>
 
 							{column.cards.map((card, index) => (
-								<BoardCard 
+								<BoardCard
 									key={card.id}
-									card={card} 
+									card={card}
 									index={index}
-									renderCardBody={props.renderCardBody}
+									renderCardBody={props.custom?.cardBody}
 									chakraProps={getCardStyleProps(card, props.styling?.card)}
 									collapse={props.collapsable?.cards}
 								/>

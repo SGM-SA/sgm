@@ -7,7 +7,10 @@ import { BaseBoardCardType, BoardColumnType, cardBorderStyle } from '../../../ut
 type BoardColumnProps<TData extends BaseBoardCardType> = {
     column: BoardColumnType<TData>
     children: React.ReactNode
-    renderHeader?: (column: BoardColumnType<TData>) => JSX.Element
+    custom?: {
+      header?: (column: BoardColumnType<TData>) => JSX.Element
+      footer?: (column: BoardColumnType<TData>) => JSX.Element
+    }
     chakraProps?: ChakraProps
     collapsable?: boolean
 }
@@ -48,7 +51,7 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                 droppableId={String(props.column.id)}
                 key={String(props.column.id)}
             >
-                {(provided, snapshot) => (
+                {(provided, snapshot) => (<VStack>
                     <Box
                         ref={provided.innerRef}
                         width='400px'
@@ -65,8 +68,8 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                     >
                         {/* Header */}
                         <VStack>
-                            {props.renderHeader !== undefined ?
-                                props.renderHeader(props.column)
+                            {props.custom?.header !== undefined ?
+                                props.custom.header(props.column)
                                 :
                                 <HStack w='100%' justifyContent='space-between' mb='1em'>
                                     <Heading as='h3' fontSize='1em'>{props.column.title}</Heading>
@@ -82,7 +85,11 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                         </>}
 
                     </Box>
-                )}
+                        {/* Footer */}
+                        <VStack justifySelf='flex-end' alignSelf='flex-start'>
+                            {props.custom?.footer !== undefined && props.custom.footer(props.column)}
+                        </VStack>
+                </VStack>)}
 
             </Droppable>
         )
