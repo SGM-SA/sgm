@@ -10,15 +10,18 @@ type PrintFicheButtonProps = {
 export const PrintFicheButton: React.FC<PrintFicheButtonProps> = (props) => {
 
   const handleClick = async () => {
-    const res = (await fetchApiFichesExportRetrieve({ queryParams: { fiche_id: props.ficheId }})) as string | undefined
+    const res = (await fetchApiFichesExportRetrieve({ queryParams: { fiche_id: props.ficheId }})) as { data: string ; headers: { 'content-disposition': string } } | undefined
     if (!res) return
 
     // cursed technique but hey, it works
-    const url = window.URL.createObjectURL(new Blob([res]))
-    const link = document.createElement('a');
+    const url = window.URL.createObjectURL(new Blob([res.data])),
+          fileName = res.headers['content-disposition'].split('filename=')[1].split(';')[0].replace(/"/g, '')
+
+          const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', new Date().toISOString()); //
+    link.setAttribute('download', fileName); //
     document.body.appendChild(link);
+
     link.click();
   }
 
