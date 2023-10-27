@@ -16,11 +16,11 @@ const refreshAuthLogic = async () => {
 
 	const token = AuthService.getToken()
 	const refreshToken = AuthService.getRefreshToken()
-	
+
 	if (!refreshToken || !token) {
 		return Promise.reject()
 	}
-	
+
 	try {
 
 		// We need to use the default Fetch API here to not trigger the interceptor
@@ -37,7 +37,7 @@ const refreshAuthLogic = async () => {
 
 		const { access: newToken } = await response.json()
 		AuthService.login(newToken, refreshToken, false)
-	
+
 		return newToken
 
 	} catch (e) {
@@ -63,7 +63,14 @@ axiosInstance.interceptors.response.use(
 	(response: AxiosResponse) => {
 		if (response.headers['content-type']?.includes('json')) {
 			return response.data
-		} else {
+		}
+    else if (response.headers['content-type']?.includes('pdf')) {
+      return {
+        data: response.data,
+        headers: response.headers
+      }
+    }
+    else {
 			// If it's not a JSON response, assume it's a blob and cast it
 			return response.data as unknown
 		}
@@ -89,7 +96,7 @@ axiosInstance.interceptors.response.use(
 					AuthService.logout()
 				}
 				else {
-			
+
 					originalConfig._retry = true
 
 					return refreshAuthLogic()
