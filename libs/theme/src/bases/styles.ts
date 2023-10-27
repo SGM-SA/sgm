@@ -3,13 +3,13 @@ import { ChakraProps } from "@chakra-ui/react"
 type Styles = Record<string, Record<string, ChakraProps> | ((props: any) => Record<string, ChakraProps>)>
 
 export const styles: Styles = {
- 
+
     global: (props: any) => ({
 
         'body': {
             padding: 0,
 	        margin: 0,
-            backgroundColor: 'secondary'
+            backgroundColor: 'secondary.100'
         },
 
         'table': {
@@ -18,6 +18,10 @@ export const styles: Styles = {
 
         '.not-striped tr:nth-of-type(odd) td': {
             background: 'transparent !important',
+        },
+
+        '.full-width': {
+            width: '100%',
         },
 
         /**
@@ -29,7 +33,7 @@ export const styles: Styles = {
             padding: 0,
             boxSizing: 'border-box',
         },
-        
+
         'a': {
             color: 'inherit',
             textDecoration: 'none',
@@ -38,10 +42,10 @@ export const styles: Styles = {
         /**
          * Scrollbar
          */
-        
+
         '::-webkit-scrollbar': {
             width: '5px',
-            height: '5px'   
+            height: '5px'
         },
         '::-webkit-scrollbar-thumb': {
             borderRadius: '10px',

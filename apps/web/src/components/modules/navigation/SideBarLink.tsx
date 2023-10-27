@@ -15,7 +15,7 @@ export const SideBarLink: React.FC<SideBarLinkProps> = (props) => {
 	return <>
         <Link to={{ pathname: props.to }}>
             <HStack color={props.color || 'unset'}>
-                <Icon color={props.color || 'tertiary'} as={props.icon}/>
+                <Icon color={props.color || 'primary.50'} as={props.icon}/>
                 <Text textTransform='uppercase' fontSize='.8rem' fontWeight='bold'>{props.text}</Text>
             </HStack>
         </Link>

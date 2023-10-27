@@ -1,11 +1,34 @@
 from drf_spectacular.utils import extend_schema
-from rest_framework import generics, status
+from rest_framework import generics, mixins, status
 from rest_framework.response import Response
+
 from api.affectation.models import AffectationMachine, AffectationAjustage
 from api.affectation.serializer import (
-    AffectationMachineSerializer,
-    AffectationAjustageSerializer,
+    AffectationMachineCreateSerializer,
+    AffectationMachineUpdateSerializer,
+    AffectationAjustageCreateSerializer,
+    AffectationAjustageUpdateSerializer,
 )
+from api.affectation.utils import delete_affectation
+
+
+class AffectationAbstractUpdateDelete(
+    mixins.DestroyModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView
+):
+    queryset = None
+    serializer_class = None
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+    def perform_destroy(self, instance):
+        delete_affectation(instance)
 
 
 @extend_schema(
@@ -14,66 +37,16 @@ from api.affectation.serializer import (
 )
 class AffectationMachineCreate(generics.CreateAPIView):
     queryset = AffectationMachine.objects.all()
-    serializer_class = AffectationMachineSerializer
-
-    def create(self, request, *args, **kwargs):
-        # affectation uses a previous field wich indicates the previous affectation (order to be handled)
-        # if the revious field is null, we need to search for the affectation wich has null as previous field
-        # and set this affectation as the previous ofthe new affectation
-        serializer: AffectationMachineSerializer = self.get_serializer(
-            data=request.data
-        )
-        serializer.is_valid(raise_exception=True)
-
-        current: AffectationMachine = serializer.create(serializer.validated_data)
-
-        # Récupération du champ 'previous' et 'date_affectation' depuis les données de la requête
-        previous_field = serializer.validated_data.get("previous", None)
-        date_affectation = serializer.validated_data.get("semaine_affectation")
-        machine = serializer.validated_data.get("machine")
-
-        # si le champ 'previous' est null, on veut insérer en tête de liste
-        if previous_field is None:
-            head = (
-                AffectationMachine.objects.filter(
-                    previous__isnull=True,
-                    semaine_affectation=date_affectation,
-                    machine=machine,
-                )
-                .exclude(id=current.id)
-                .first()
-            )
-            # si la liste n'est pas vide, on insère en tête de liste
-            if head is not None:
-                head.previous = current
-                head.save()
-
-        else:
-            # on récupère l'objet affectation précédent
-            previous = AffectationMachine.objects.get(id=previous_field.id)
-
-            # on récupère l'objet affectation suivant
-            next = (
-                AffectationMachine.objects.filter(previous=previous)
-                .exclude(id=current.id)
-                .first()
-            )
-            if next is not None:
-                # on met à jour l'objet affectation précédent
-                next.previous = current
-                next.save()
-
-        serializer = AffectationMachineSerializer(current)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    serializer_class = AffectationMachineCreateSerializer
 
 
 @extend_schema(
     tags=["Affectation Machine"],
-    description="Récupérer, mettre à jour et supprimer une affectation machine",
+    description="Supprimer et mettre à jour une affectation machine",
 )
-class AffectationMachineCRUD(generics.RetrieveUpdateDestroyAPIView):
+class AffectationMachineUpdateDelete(AffectationAbstractUpdateDelete):
     queryset = AffectationMachine.objects.all()
-    serializer_class = AffectationMachineSerializer
+    serializer_class = AffectationMachineUpdateSerializer
 
 
 @extend_schema(
@@ -82,63 +55,13 @@ class AffectationMachineCRUD(generics.RetrieveUpdateDestroyAPIView):
 )
 class AffectationAjustageCreate(generics.CreateAPIView):
     queryset = AffectationAjustage.objects.all()
-    serializer_class = AffectationAjustageSerializer
-
-    def create(self, request, *args, **kwargs):
-        # affectation uses a previous field wich indicates the previous affectation (order to be handled)
-        # if the revious field is null, we need to search for the affectation wich has null as previous field
-        # and set this affectation as the previous ofthe new affectation
-        serializer: AffectationAjustageSerializer = self.get_serializer(
-            data=request.data
-        )
-        serializer.is_valid(raise_exception=True)
-
-        current: AffectationAjustage = serializer.create(serializer.validated_data)
-
-        # Récupération du champ 'previous' et 'date_affectation' depuis les données de la requête
-        previous_field = serializer.validated_data.get("previous", None)
-        date_affectation = serializer.validated_data.get("semaine_affectation")
-        zone = serializer.validated_data.get("zone")
-
-        # si le champ 'previous' est null, on veut insérer en tête de liste
-        if previous_field is None:
-            head = (
-                AffectationAjustage.objects.filter(
-                    previous__isnull=True,
-                    semaine_affectation=date_affectation,
-                    zone=zone,
-                )
-                .exclude(id=current.id)
-                .first()
-            )
-            # si la liste n'est pas vide, on insère en tête de liste
-            if head is not None:
-                head.previous = current
-                head.save()
-
-        else:
-            # on récupère l'objet affectation précédent
-            previous = AffectationAjustage.objects.get(id=previous_field.id)
-
-            # on récupère l'objet affectation suivant
-            next = (
-                AffectationAjustage.objects.filter(previous=previous)
-                .exclude(id=current.id)
-                .first()
-            )
-            if next is not None:
-                # on met à jour l'objet affectation précédent
-                next.previous = current
-                next.save()
-
-        serializer = AffectationAjustageSerializer(current)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    serializer_class = AffectationAjustageCreateSerializer
 
 
 @extend_schema(
     tags=["Affectation Ajustage"],
-    description="Récupérer, mettre à jour et supprimer une affectation ajustage",
+    description="Supprimer et mettre à jour une affectation ajustage",
 )
-class AffectationAjustageCRUD(generics.RetrieveUpdateDestroyAPIView):
+class AffectationAjustageUpdateDelete(AffectationAbstractUpdateDelete):
     queryset = AffectationAjustage.objects.all()
-    serializer_class = AffectationAjustageSerializer
+    serializer_class = AffectationAjustageUpdateSerializer

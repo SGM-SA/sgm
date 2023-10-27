@@ -1,21 +1,21 @@
 import { environment as devEnvironment } from './environment.dev'
 import { environment as prodEnvironment } from './environment.prod'
 import { environment as stagingEnvironment } from './environment.staging'
-import {EnvironmentConfig} from "./type";
+import {EnvironmentConfig} from "./type"
 
-let environment: EnvironmentConfig;
+let environment: EnvironmentConfig
 
 switch (process.env.NODE_ENV) {
   case 'production':
-    environment = prodEnvironment;
-    break;
+    environment = prodEnvironment
+    break
   case 'staging':
-    environment = stagingEnvironment;
-    break;
+    environment = stagingEnvironment
+    break
   case 'development':
   default:
-    environment = devEnvironment;
-    break;
+    environment = devEnvironment
+    break
 }
 
-export { environment };
+export { environment }

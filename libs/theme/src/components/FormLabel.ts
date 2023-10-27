@@ -6,7 +6,7 @@ const styles: ComponentStyleConfig  = defineStyleConfig({
         textTransform: 'uppercase',
         fontWeight: 'bold',
         fontSize: '0.8rem',
-        color: 'tertiary'
+        color: 'primary.50'
     }
 })
 

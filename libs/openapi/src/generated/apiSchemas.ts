@@ -171,7 +171,7 @@ export type AffaireStatsGlobal = {
 /**
  * Serializer pour l'affectation d'un ajustage à une étape
  */
-export type AffectationAjustage = {
+export type AffectationAjustageCreate = {
 	id: number
 	etape?: number
 	zone?: number
@@ -185,7 +185,7 @@ export type AffectationAjustage = {
 /**
  * Serializer pour l'affectation d'un ajustage à une étape
  */
-export type AffectationAjustageRequest = {
+export type AffectationAjustageCreateRequest = {
 	etape?: number
 	zone?: number
 	/**
@@ -196,32 +196,52 @@ export type AffectationAjustageRequest = {
 }
 
 /**
- * Serializer pour l'affectation d'une machine à une étape
+ * Serializer pour la mise à jour d'une affectation d'ajustage
  */
-export type AffectationMachine = {
+export type AffectationAjustageUpdate = {
 	id: number
-	/**
-	 * @format date
-	 */
-	semaine_affectation: string
-	etape?: number
 	user?: number | null
+	zone?: number
 	previous?: number | null
-	machine?: number
 }
 
 /**
  * Serializer pour l'affectation d'une machine à une étape
  */
-export type AffectationMachineRequest = {
+export type AffectationMachineCreate = {
+	id: number
 	/**
 	 * @format date
 	 */
 	semaine_affectation: string
-	etape?: number
 	user?: number | null
 	previous?: number | null
 	machine?: number
+	etape?: number
+}
+
+/**
+ * Serializer pour l'affectation d'une machine à une étape
+ */
+export type AffectationMachineCreateRequest = {
+	/**
+	 * @format date
+	 */
+	semaine_affectation: string
+	user?: number | null
+	previous?: number | null
+	machine?: number
+	etape?: number
+}
+
+/**
+ * Serializer pour la mise à jour d'une affectation de machine
+ */
+export type AffectationMachineUpdate = {
+	id: number
+	user?: number | null
+	machine?: number
+	previous?: number | null
 }
 
 export type BulkDeleteRequest = {
@@ -369,7 +389,6 @@ export type EtapeCreateRequest = {
 export type EtapeDetail = {
 	id: number
 	machine: MachineDetail
-	affectation_id: number
 	/**
 	 * @format double
 	 */
@@ -694,7 +713,7 @@ export type FicheDetail = {
 	/**
 	 * Serializer pour l'affectation d'un ajustage à une étape
 	 */
-	affectation_zone: AffectationAjustage
+	affectation_zone: AffectationAjustageCreate
 	affaire_description: string | null
 	/**
 	 * @minimum 0
@@ -747,7 +766,7 @@ export type FicheEtEtapes = {
 	/**
 	 * Serializer pour l'affectation d'un ajustage à une étape
 	 */
-	affectation_zone: AffectationAjustage
+	affectation_zone: AffectationAjustageCreate
 	affaire_description: string | null
 	/**
 	 * @minimum 0
@@ -801,7 +820,7 @@ export type FicheEtEtapesAjustage = {
 	/**
 	 * Serializer pour l'affectation d'un ajustage à une étape
 	 */
-	affectation_zone: AffectationAjustage
+	affectation_zone: AffectationAjustageCreate
 	affaire_description: string | null
 	/**
 	 * @minimum 0
@@ -1213,30 +1232,21 @@ export type PatchedAffaireDetailsRequest = {
 }
 
 /**
- * Serializer pour l'affectation d'un ajustage à une étape
+ * Serializer pour la mise à jour d'une affectation d'ajustage
  */
-export type PatchedAffectationAjustageRequest = {
-	etape?: number
+export type PatchedAffectationAjustageUpdateRequest = {
+	user?: number | null
 	zone?: number
-	/**
-	 * @format date
-	 */
-	semaine_affectation?: string
 	previous?: number | null
 }
 
 /**
- * Serializer pour l'affectation d'une machine à une étape
+ * Serializer pour la mise à jour d'une affectation de machine
  */
-export type PatchedAffectationMachineRequest = {
-	/**
-	 * @format date
-	 */
-	semaine_affectation?: string
-	etape?: number
+export type PatchedAffectationMachineUpdateRequest = {
 	user?: number | null
-	previous?: number | null
 	machine?: number
+	previous?: number | null
 }
 
 export type PatchedEtapeCreateRequest = {
