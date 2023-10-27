@@ -58,7 +58,7 @@ export function Board<TData extends BaseBoardCardType>(props: BoardProps<TData>)
 		<DragDropContext
             onDragEnd={result => onDragEnd(result, props.columns, props.setColumns, props.onCardMove)}
 		>
-			<HStack w='100%' gap='1em' overflowX='scroll'>
+			<HStack w='100%' gap='1em' overflowX='scroll' alignItems='flex-start'>
 
 				{props.columns.map((column, index) => (
 

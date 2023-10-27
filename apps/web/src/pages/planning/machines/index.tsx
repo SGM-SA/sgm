@@ -3,13 +3,13 @@ import { fetchApiAffectationsMachinesCreate, fetchApiAffectationsMachinesDestroy
 import { BaseBoardCardType, Board, BoardColumnType, CUSTOM_FIRST_COLUMN_ID, TextLink } from '@sgm/ui'
 import { Link } from '@sgm/web/router'
 import { Select } from 'chakra-react-select'
+import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { LoaderFunction } from 'react-router-dom'
 import { useLoaderData } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
 import { DashboardLayout } from '../../../components/layouts'
 import { PlanningNestedEtapeColumn } from '../../../components/modules'
-import dayjs from 'dayjs'
 
 export const Loader = (() => {
     return fetchApiSalariesFormOptionsList({})
@@ -150,6 +150,7 @@ const PlanningMachinesPage: React.FC = () => {
                                         machine: to.column.id,
                                         etape: card.id,
                                         semaine_affectation: mockedSemaineAffectation,
+                                        previous: to.index === 0 ? null : to.column.cards[to.index - 1].affectationId,
                                     }
                                 })
                                     .then(async () => {
@@ -158,7 +159,7 @@ const PlanningMachinesPage: React.FC = () => {
                                             itemsToPlan.refetch()
                                         ])
                                         setCanProcess(true)
-                                        toast.success('Affectation créée')
+                                        // toast.success('Affectation créée')
                                     })
                                     .catch(() => toast.error('Erreur lors de la création de l\'affectation'))
 
@@ -172,23 +173,31 @@ const PlanningMachinesPage: React.FC = () => {
                                             itemsToPlan.refetch()
                                         ])
                                         setCanProcess(true)
-                                        toast.success('Affectation supprimée')
+                                        // toast.success('Affectation supprimée')
                                     })
                                     .catch(() => toast.error('Erreur lors de la suppression de l\'affectation'))
                             } else {
                                 if (!card.affectationId) return
 
+                                let previousIndex: number
+                                if (to.column.id === from.column.id) {
+                                    if (to.index > from.index) previousIndex = to.index
+                                    else previousIndex = to.index - 1
+                                } else {
+                                    previousIndex = to.index - 1
+                                }
+
                                 fetchApiAffectationsMachinesPartialUpdate({
                                     pathParams: { id: card.affectationId },
                                     body: {
-                                        previous: to.index === 0 ? null : to.column.cards[to.index - 1].affectationId,
+                                        previous: to.index === 0 ? null : to.column.cards[previousIndex].affectationId,
                                         machine: toUnplan ? undefined : to.column.id,
                                     }
                                 })
                                     .then(async () => {
                                         await machines.refetch()
                                         setCanProcess(true)
-                                        toast.success('Affectation modifiée')
+                                        // toast.success('Affectation modifiée')
                                     })
                                     .catch(() => toast.error('Erreur lors de la modification de l\'affectation'))
                             }
@@ -230,7 +239,7 @@ const PlanningMachinesPage: React.FC = () => {
                                         .then(async () => {
                                             await machines.refetch()
                                             setCanProcess(true)
-                                            toast.success('Responsable modifié')
+                                            // toast.success('Responsable modifié')
                                         })
                                         .catch(() => toast.error('Erreur lors de la modification du responsable'))
                                 }}
