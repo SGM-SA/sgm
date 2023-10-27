@@ -44,6 +44,11 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = ["https://sgm-staging-api.cloudflow.info"]
+
+# Exposistion du header filename pour le téléchargement des fichiers
+CORS_EXPOSE_HEADERS = ["filename"]
+
+
 # Application definition
 
 INSTALLED_APPS = [
