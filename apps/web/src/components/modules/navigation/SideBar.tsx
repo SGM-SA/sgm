@@ -51,7 +51,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
 
                     <SideBarSection title='Planning'>
                         <SideBarLink icon={RiComputerLine} text='Machines' to='/planning/machines' />
-                        <SideBarLink icon={BsFillCalendar2WeekFill} text='Zones' to='/' />
+                        <SideBarLink icon={BsFillCalendar2WeekFill} text='Zones' to='/planning/zones' />
                     </SideBarSection>
 
                     <SideBarSection title='Modèles'>

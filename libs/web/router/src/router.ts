@@ -13,6 +13,7 @@ export type Path =
 	| `/machines`
 	| `/modeles`
 	| `/planning/machines`
+	| `/planning/zones`
 	| `/zones`
 
 export type Params = {
