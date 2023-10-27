@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Input, Spinner, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, Flex, HStack, Icon, Input, Spinner, Text, VStack } from '@chakra-ui/react'
 import { fetchApiAffectationsMachinesCreate, fetchApiAffectationsMachinesDestroy, fetchApiAffectationsMachinesPartialUpdate, fetchApiSalariesFormOptionsList, useApiFichesMachineAPlanifierList, useApiPlanningMachineList } from '@sgm/openapi'
 import { BaseBoardCardType, Board, BoardColumnType, CUSTOM_FIRST_COLUMN_ID, TextLink } from '@sgm/ui'
 import { Link } from '@sgm/web/router'
@@ -10,6 +10,7 @@ import { useLoaderData } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
 import { DashboardLayout } from '../../../components/layouts'
 import { PlanningNestedEtapeColumn } from '../../../components/modules'
+import { FiTrash2 } from 'react-icons/fi'
 
 export const Loader = (() => {
     return fetchApiSalariesFormOptionsList({})
@@ -210,10 +211,11 @@ const PlanningMachinesPage: React.FC = () => {
                           },
                           firstColumn: PlanningNestedEtapeColumn,
                           cardBody: (card) => {
-                            return <Box mt='1em'>
+                            return <HStack mt='1em' w='100%' alignItems='center'>
                               <Select
                                 // @ts-ignore
                                 size='xs'
+                                className='full-width'
                                 placeholder='Choisir responsable'
                                 defaultValue={card.responsible !== undefined ? {
                                     label: (() => {
@@ -244,7 +246,28 @@ const PlanningMachinesPage: React.FC = () => {
                                         .catch(() => toast.error('Erreur lors de la modification du responsable'))
                                 }}
                               />
-                            </Box>
+                              <Icon as={FiTrash2}
+                                width='2.5em'
+                                ml='.5em'
+                                height='1.25em'
+                                color='red'
+                                cursor='pointer'
+                                onClick={() => {
+                                  if (!card.affectationId) return
+
+                                  fetchApiAffectationsMachinesDestroy({ pathParams: { id: card.affectationId } })
+                                      .then(async () => {
+                                          await Promise.all([
+                                              machines.refetch(),
+                                              itemsToPlan.refetch()
+                                          ])
+                                          setCanProcess(true)
+                                          // toast.success('Affectation supprimée')
+                                      })
+                                      .catch(() => toast.error('Erreur lors de la suppression de l\'affectation'))
+                                }}
+                              />
+                            </HStack>
                           },
                         }}
                         collapsable={{

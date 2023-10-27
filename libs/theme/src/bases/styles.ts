@@ -20,6 +20,10 @@ export const styles: Styles = {
             background: 'transparent !important',
         },
 
+        '.full-width': {
+            width: '100%',
+        },
+
         /**
          * Resets
          */
