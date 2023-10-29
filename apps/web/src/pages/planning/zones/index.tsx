@@ -1,5 +1,5 @@
 import { Flex, HStack, Icon, Input, Spinner, Text, VStack } from '@chakra-ui/react'
-import { fetchApiAffectationsMachinesCreate, fetchApiAffectationsMachinesDestroy, fetchApiAffectationsMachinesPartialUpdate, fetchApiSalariesFormOptionsList, useApiFichesMachineAPlanifierList, useApiPlanningMachineList } from '@sgm/openapi'
+import { fetchApiAffectationsAjustagesCreate, fetchApiAffectationsAjustagesDestroy, fetchApiAffectationsAjustagesPartialUpdate, fetchApiSalariesFormOptionsList, useApiFichesAjustageAPlanifierList, useApiPlanningZoneList } from '@sgm/openapi'
 import { BaseBoardCardType, Board, BoardColumnType, CUSTOM_FIRST_COLUMN_ID, TextLink } from '@sgm/ui'
 import { Link } from '@sgm/web/router'
 import { Select } from 'chakra-react-select'
@@ -16,7 +16,7 @@ export const Loader = (() => {
     return fetchApiSalariesFormOptionsList({})
 }) satisfies LoaderFunction
 
-export type PlanningMachineCard = BaseBoardCardType & {
+export type PlanningZoneCard = BaseBoardCardType & {
     numEtape: number
     affectationId?: number
     numAffaire?: number | null
@@ -25,22 +25,22 @@ export type PlanningMachineCard = BaseBoardCardType & {
     responsible?: number
 }
 
-const PlanningMachinesPage: React.FC = () => {
+const PlanningZonesPage: React.FC = () => {
 
     const employees = useLoaderData<typeof Loader>()
 
     const [date, setDate] = useState(dayjs())
-    const machines = useApiPlanningMachineList({ queryParams: { date: date.format('YYYY-MM-DD') } })
-    const itemsToPlan = useApiFichesMachineAPlanifierList({})
+    const zones = useApiPlanningZoneList({ queryParams: { date: date.format('YYYY-MM-DD') } })
+    const itemsToPlan = useApiFichesAjustageAPlanifierList({})
     const [canProcess, setCanProcess] = useState(true)
 
-    const [columns, setColumns] = useState<BoardColumnType<PlanningMachineCard>[] | undefined>(undefined)
+    const [columns, setColumns] = useState<BoardColumnType<PlanningZoneCard>[] | undefined>(undefined)
 
     useEffect(() => {
 
-        if (machines.data && itemsToPlan.data && canProcess) {
+        if (zones.data && itemsToPlan.data && canProcess) {
 
-            const itemsToPlanColumn: BoardColumnType<PlanningMachineCard> = {
+            const itemsToPlanColumn: BoardColumnType<PlanningZoneCard> = {
                 id: CUSTOM_FIRST_COLUMN_ID,
                 title: 'A planifier',
                 cards: itemsToPlan.data.flatMap(affaire => affaire.fiches.flatMap(fiche => fiche.etapes.map(etape => ({
@@ -54,17 +54,16 @@ const PlanningMachinesPage: React.FC = () => {
                 }))))
             }
 
-            const machineColumns: BoardColumnType<PlanningMachineCard>[] = machines.data.map((machine) => ({
-                id: machine.id,
-                title: machine.nom_machine,
+            const zoneColumns: BoardColumnType<PlanningZoneCard>[] = zones.data.map((zone) => ({
+                id: zone.id,
+                title: zone.nom,
                 meta: {
-                    fonctionnelle: machine.fonctionnelle,
                     heuresTravail: {
-                      dispo: machine.heures_travail_dispo,
-                      affectees: machine.heures_travail_affectees,
+                      dispo: zone.heures_travail_dispo,
+                      affectees: zone.heures_travail_affectees,
                     }
                 },
-                cards: machine.affectations?.flatMap(affaire => affaire.fiches?.flatMap(fiche => fiche.etapes.map(etape => ({
+                cards: zone.affectations?.flatMap(affaire => affaire.fiches?.flatMap(fiche => fiche.etapes.map(etape => ({
                     id: etape.id,
                     title: <VStack alignItems='flex-start' gap={0}>
                         <HStack justifyContent='flex-start'>
@@ -87,11 +86,11 @@ const PlanningMachinesPage: React.FC = () => {
                 }))) || [])
             })) || []
 
-            setColumns([itemsToPlanColumn].concat(machineColumns))
+            setColumns([itemsToPlanColumn].concat(zoneColumns))
             setCanProcess(false)
         }
 
-    }, [machines, itemsToPlan])
+    }, [zones, itemsToPlan])
 
     useEffect(() => {
         setCanProcess(true) // TODO: check if it is still working with network latency
@@ -99,7 +98,7 @@ const PlanningMachinesPage: React.FC = () => {
 
 	  return <>
         <DashboardLayout
-            title='Planning machines'
+            title='Planning zones'
             customHeader={
                 <Flex h='100%' alignContent='flex-end' flexWrap='wrap' mb='1em'>
                   <Input
@@ -107,9 +106,9 @@ const PlanningMachinesPage: React.FC = () => {
                       value={date.format('YYYY-MM-DD')}
                       onChange={(e) => setDate(dayjs(e.target.value))}
                       p='.5em'
-                      bg='white !important'
                       w='auto'
                       variant='filled'
+                      bg='white !important'
                       fontSize='sm'
                       color='black'
                   />
@@ -145,9 +144,9 @@ const PlanningMachinesPage: React.FC = () => {
 
                             if (toPlan) {
 
-                                fetchApiAffectationsMachinesCreate({
+                                fetchApiAffectationsAjustagesCreate({
                                     body: {
-                                        machine: to.column.id,
+                                        zone: to.column.id,
                                         etape: card.id,
                                         semaine_affectation: date.format('YYYY-MM-DD'),
                                         previous: to.index === 0 ? null : to.column.cards[to.index - 1].affectationId,
@@ -155,7 +154,7 @@ const PlanningMachinesPage: React.FC = () => {
                                 })
                                     .then(async () => {
                                         await Promise.all([
-                                            machines.refetch(),
+                                            zones.refetch(),
                                             itemsToPlan.refetch()
                                         ])
                                         setCanProcess(true)
@@ -166,10 +165,10 @@ const PlanningMachinesPage: React.FC = () => {
                             } else if (toUnplan) {
                                 if (!card.affectationId) return
 
-                                fetchApiAffectationsMachinesDestroy({ pathParams: { id: card.affectationId } })
+                                fetchApiAffectationsAjustagesDestroy({ pathParams: { id: card.affectationId } })
                                     .then(async () => {
                                         await Promise.all([
-                                            machines.refetch(),
+                                            zones.refetch(),
                                             itemsToPlan.refetch()
                                         ])
                                         setCanProcess(true)
@@ -187,15 +186,15 @@ const PlanningMachinesPage: React.FC = () => {
                                     previousIndex = to.index - 1
                                 }
 
-                                fetchApiAffectationsMachinesPartialUpdate({
+                                fetchApiAffectationsAjustagesPartialUpdate({
                                     pathParams: { id: card.affectationId },
                                     body: {
                                         previous: to.index === 0 ? null : to.column.cards[previousIndex].affectationId,
-                                        machine: toUnplan ? undefined : to.column.id,
+                                        zone: toUnplan ? undefined : to.column.id,
                                     }
                                 })
                                     .then(async () => {
-                                        await machines.refetch()
+                                        await zones.refetch()
                                         setCanProcess(true)
                                         // toast.success('Affectation modifiée')
                                     })
@@ -231,14 +230,14 @@ const PlanningMachinesPage: React.FC = () => {
                                 onChange={(data) => {
                                     if (!data?.value || data.value === card.responsible || !card.affectationId) return
 
-                                    fetchApiAffectationsMachinesPartialUpdate({
+                                    fetchApiAffectationsAjustagesPartialUpdate({
                                         pathParams: { id: card.affectationId },
                                         body: {
                                             user: data.value
                                         }
                                     })
                                         .then(async () => {
-                                            await machines.refetch()
+                                            await zones.refetch()
                                             setCanProcess(true)
                                             // toast.success('Responsable modifié')
                                         })
@@ -254,10 +253,10 @@ const PlanningMachinesPage: React.FC = () => {
                                 onClick={() => {
                                   if (!card.affectationId) return
 
-                                  fetchApiAffectationsMachinesDestroy({ pathParams: { id: card.affectationId } })
+                                  fetchApiAffectationsAjustagesDestroy({ pathParams: { id: card.affectationId } })
                                       .then(async () => {
                                           await Promise.all([
-                                              machines.refetch(),
+                                              zones.refetch(),
                                               itemsToPlan.refetch()
                                           ])
                                           setCanProcess(true)
@@ -290,4 +289,4 @@ const PlanningMachinesPage: React.FC = () => {
     </>
 }
 
-export default PlanningMachinesPage
+export default PlanningZonesPage

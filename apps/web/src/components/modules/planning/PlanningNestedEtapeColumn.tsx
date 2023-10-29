@@ -3,8 +3,9 @@ import { BaseBoardColumnProps, BoardCard, CollapsableElement, cardBorderStyle } 
 import React from 'react'
 import { Droppable } from 'react-beautiful-dnd'
 import { PlanningMachineCard } from '../../../pages/planning/machines'
+import { PlanningZoneCard } from '../../../pages/planning/zones'
 
-type PlanningNestedEtapeColumnProps = BaseBoardColumnProps<PlanningMachineCard>
+type PlanningNestedEtapeColumnProps = BaseBoardColumnProps<PlanningMachineCard | PlanningZoneCard>
 
 export const PlanningNestedEtapeColumn: React.FC<PlanningNestedEtapeColumnProps> = (props) => {
 
