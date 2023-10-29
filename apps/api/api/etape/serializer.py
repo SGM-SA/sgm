@@ -15,6 +15,8 @@ class EtapeDetail(serializers.ModelSerializer):
 
     cout_etape = serializers.FloatField(read_only=True)
 
+    deja_planifiee = serializers.BooleanField(read_only=True)
+
     class Meta:
         model = Etape
         fields = "__all__"
@@ -24,6 +26,7 @@ class EtapeDetailAjustage(serializers.ModelSerializer):
     affectation_id = serializers.IntegerField(read_only=True)
     user_id = serializers.IntegerField(read_only=True)
     cout_etape = serializers.FloatField(read_only=True)
+    deja_planifiee = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Etape
@@ -33,6 +36,7 @@ class EtapeDetailAjustage(serializers.ModelSerializer):
 class EtapeDetailMachine(serializers.ModelSerializer):
     affectation_id = serializers.IntegerField(read_only=True)
     user_id = serializers.IntegerField(read_only=True)
+    deja_planifiee = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Etape
