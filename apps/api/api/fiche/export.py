@@ -23,7 +23,7 @@ styleN.alignment = 1
 def export_pdf(fiche: Fiche):
 
     # ---------------------- DATA ----------------------
-    fiche_title_pdf = f"{fiche.affaire.num_affaire}_{fiche.titre}.pdf"
+    fiche_title_pdf = f"{fiche.affaire.num_affaire}_{fiche.titre}.pdf".replace(" ", "_").replace("-", "")
     etapes = Etape.objects.filter(fiche=fiche).order_by("num_etape")
 
     # ---------------------- GLOBAL  ----------------------
@@ -197,4 +197,4 @@ def table_content(etapes, qr_size):
             ]
         )
 
-        return liste_etapes
+    return liste_etapes
