@@ -2832,6 +2832,9 @@ components:
           type: number
           format: double
           readOnly: true
+        deja_planifiee:
+          type: boolean
+          readOnly: true
         num_etape:
           type: integer
           title: N°Étape
@@ -2888,6 +2891,7 @@ components:
       - cout_etape
       - date_creation
       - date_modification
+      - deja_planifiee
       - fiche
       - id
       - machine

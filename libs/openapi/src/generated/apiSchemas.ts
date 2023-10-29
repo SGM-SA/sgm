@@ -393,6 +393,7 @@ export type EtapeDetail = {
 	 * @format double
 	 */
 	cout_etape: number
+	deja_planifiee: boolean
 	num_etape: number
 	terminee?: boolean
 	/**
