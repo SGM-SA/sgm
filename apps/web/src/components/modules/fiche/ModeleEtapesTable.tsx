@@ -1,4 +1,4 @@
-import { Box, Button } from '@chakra-ui/react'
+import { Box, Button, Textarea } from '@chakra-ui/react'
 import { EtapeModeleDetail, GroupeMachine, fetchApiModelesEtapesCreate, fetchApiModelesEtapesDeleteCreate, fetchApiModelesEtapesPartialUpdate, useApiModelesFichesRetrieve } from '@sgm/openapi'
 import { DefaultTableCell, Table, TableLayout, createColumnMeta } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
@@ -146,6 +146,28 @@ export const ModeleEtapesTable: React.FC<ModeleEtapesTableProps> = (props) => {
                             .catch(() => toast.error('Erreur lors de la suppression des étapes'))
                         }}
                     >Supprimer</Button>
+                }}
+                rowExpansion={{
+                    enabled: true,
+                    expandedByDefault: true,
+                    renderComponent: ({ row }) => {
+
+                        const handleUpdate = (newDescription: string) => {
+                            
+                            if (row.original.description !== newDescription) {
+                                fetchApiModelesEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: { description: newDescription } })
+                                    .then(() => toast.success('Description mise à jour'))
+                                    .catch(() => toast.error('Erreur lors de la mise à jour de la description'))
+                            }
+                        }
+
+                        return <Textarea 
+                            defaultValue={row.original.description || ''}
+                            onBlur={(e) => handleUpdate(e.target.value)}
+                            rows={2}
+                            fontSize='sm'
+                        />
+                    }
                 }}
                 loadingSkeletonRowsCount={3}
             />
