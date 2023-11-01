@@ -9,6 +9,15 @@ import { toast } from 'react-toastify'
 import { DashboardLayout } from '../../components/layouts'
 import { AffaireNotesDrawer, AffairesFilters, FichesTable } from '../../components/modules'
 
+const statusColors = {
+    'green': ['E00'],
+    'yellow': ['EAA', 'EAC'],
+    'orange': ['ECC'],
+    'purple': ['ECH'],
+    'blue': ['ED'],
+    'red': ['EHA', 'EST', 'ECA'],
+}
+
 const columnHelper = createColumnHelper<AffaireDetails>()
 
 const columns = [
@@ -76,6 +85,17 @@ const columns = [
     columnHelper.accessor('statut', {
         id: 'statut',
         header: 'Statut',
+        cell: cell =>  cell.getValue() ? <Box
+            as='span'
+            px='.75em'
+            py='.25em'
+            borderRadius='15px'
+            fontSize='.8em'
+            color={`${Object.entries(statusColors).find(([_, value]) => value.includes(cell.getValue()!))?.[0] || 'gray'}.700`}
+            bg={`${Object.entries(statusColors).find(([_, value]) => value.includes(cell.getValue()!))?.[0] || 'gray'}.100`}
+        >
+            {cell.getValue()}
+        </Box> : <Box></Box>,
         meta: createColumnMeta({
             editable: true,
             type: 'select',
