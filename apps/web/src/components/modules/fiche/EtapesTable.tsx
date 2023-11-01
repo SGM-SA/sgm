@@ -40,7 +40,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                     label: groupeMachine.nom_groupe,
                     value: groupeMachine.id
                 })) || [],
-                nullable: false,
+                nullable: true,
                 sortable: true,
                 disableWarnings: true
             })
