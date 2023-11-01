@@ -258,29 +258,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AffaireStatsGlobal'
           description: ''
-  /api/affaires/stats/{id}:
-    get:
-      operationId: api_affaires_stats_retrieve_2
-      description: Permet de récupérer les statistiques d'une affaire spécifique
-      summary: Stats Affaire
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: integer
-        required: true
-      tags:
-      - Affaire
-      security:
-      - jwtAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AffaireStats'
-          description: ''
   /api/affectations/ajustages:
     post:
       operationId: api_affectations_ajustages_create
@@ -2314,6 +2291,18 @@ components:
           type: number
           format: double
           readOnly: true
+        temps_ajustage:
+          type: integer
+          readOnly: true
+        temps_machine:
+          type: integer
+          readOnly: true
+        temps_restant:
+          type: integer
+          readOnly: true
+        nombre_fiches:
+          type: integer
+          readOnly: true
       required:
       - avancement_affaire
       - charge_affaire_detail
@@ -2322,6 +2311,10 @@ components:
       - date_modification
       - en_retard
       - id
+      - nombre_fiches
+      - temps_ajustage
+      - temps_machine
+      - temps_restant
     AffaireDetailsRequest:
       type: object
       description: Serializer pour l'affichage des affaires
@@ -2448,28 +2441,6 @@ components:
             de SGM
       required:
       - id
-    AffaireStats:
-      type: object
-      description: |-
-        Serializer pour les statistiques d'une affaire précise
-          on y retrouve
-            - temps ajustage total (théorique)
-            - temps machine total (théorique)
-            - temps restant total
-      properties:
-        temps_ajustage:
-          type: integer
-          readOnly: true
-        temps_machine:
-          type: integer
-          readOnly: true
-        temps_restant:
-          type: integer
-          readOnly: true
-      required:
-      - temps_ajustage
-      - temps_machine
-      - temps_restant
     AffaireStatsGlobal:
       type: object
       description: |-
@@ -3530,6 +3501,12 @@ components:
           items:
             $ref: '#/components/schemas/EtapeDetailAjustage'
           readOnly: true
+        nombre_etapes:
+          type: integer
+          readOnly: true
+        temps_total:
+          type: integer
+          readOnly: true
         titre:
           type: string
           maxLength: 100
@@ -3578,7 +3555,9 @@ components:
       - date_modification
       - etapes
       - id
+      - nombre_etapes
       - num_affaire
+      - temps_total
     FicheModeleDetail:
       type: object
       properties:
