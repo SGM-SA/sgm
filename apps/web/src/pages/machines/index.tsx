@@ -65,8 +65,7 @@ const MachinesPage: React.FC = () => {
                         onRowUpdate: async (row, newData) => {
                             fetchApiMachinesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
                                 .then(() => {
-                                    row.original = { ...row.original, ...newData }
-                                    if (newData.fonctionnelle !== undefined) refetch()
+                                    refetch()
                                     toast.success('Machine mise à jour')
                                 })
                                 .catch(() => toast.error('Erreur lors de la mise à jour de la machine'))

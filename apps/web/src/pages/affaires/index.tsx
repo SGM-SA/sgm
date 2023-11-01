@@ -132,7 +132,7 @@ const AffairesPage: React.FC = () => {
     const { pagination, setPagination, sorting, setSorting, filters, setFilters, fetchDataOptions } = useTableQueryHelper()
     const navigate = useNavigate()
 
-    const { data, isLoading } = useApiAffairesList(fetchDataOptions)
+    const { data, isLoading, refetch } = useApiAffairesList(fetchDataOptions)
 
 	return <>
     	<DashboardLayout title="Affaires">
@@ -157,7 +157,7 @@ const AffairesPage: React.FC = () => {
                         onRowUpdate: async (row, newData) => {
                             fetchApiAffairesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
                                 .then(() => {
-                                    row.original = { ...row.original, ...newData }
+                                    refetch()
                                     toast.success('Affaire mise à jour')
                                 })
                                 .catch(() => toast.error('Erreur lors de la mise à jour de l\'affaire'))

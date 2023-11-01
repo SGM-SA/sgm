@@ -111,7 +111,7 @@ export const ModeleEtapesTable: React.FC<ModeleEtapesTableProps> = (props) => {
                     onRowUpdate: async (row, newData) => {
                         fetchApiModelesEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
                             .then(() => {
-                                row.original = { ...row.original, ...newData }
+                                refetch()
                                 toast.success('Etape modèle mise à jour')
                             })
                             .catch(() => toast.error('Erreur lors de la mise à jour de l\'étape modèle'))

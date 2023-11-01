@@ -78,7 +78,7 @@ const ModelesPagePage: React.FC = () => {
                         onRowUpdate: async (row, newData) => {
                             fetchApiModelesFichesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
                                 .then(() => {
-                                    row.original = { ...row.original, ...newData }
+                                    refetch()
                                     toast.success('Fiche modèle mise à jour')
                                 })
                                 .catch(() => toast.error('Erreur lors de la mise à jour de la fiche modèle'))
