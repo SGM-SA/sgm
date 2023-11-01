@@ -528,67 +528,6 @@ export const useApiAffairesStatsRetrieve = <TData = Schemas.AffaireStatsGlobal>(
 	})
 }
 
-export type ApiAffairesStatsRetrieve2PathParams = {
-	id: number
-}
-
-export type ApiAffairesStatsRetrieve2Error = Fetcher.ErrorWrapper<undefined>
-
-export type ApiAffairesStatsRetrieve2Variables = {
-	pathParams: ApiAffairesStatsRetrieve2PathParams
-} & ApiContext['fetcherOptions']
-
-/**
- * Permet de récupérer les statistiques d'une affaire spécifique
- */
-export const fetchApiAffairesStatsRetrieve2 = (
-	variables: ApiAffairesStatsRetrieve2Variables,
-	signal?: AbortSignal
-) =>
-	apiFetch<
-		Schemas.AffaireStats,
-		ApiAffairesStatsRetrieve2Error,
-		undefined,
-		{},
-		{},
-		ApiAffairesStatsRetrieve2PathParams
-	>({ url: '/api/affaires/stats/{id}', method: 'get', ...variables, signal })
-
-/**
- * Permet de récupérer les statistiques d'une affaire spécifique
- */
-export const useApiAffairesStatsRetrieve2 = <TData = Schemas.AffaireStats>(
-	variables: ApiAffairesStatsRetrieve2Variables,
-	options?: Omit<
-		reactQuery.UseQueryOptions<
-			Schemas.AffaireStats,
-			ApiAffairesStatsRetrieve2Error,
-			TData
-		>,
-		'queryKey' | 'queryFn'
-	>
-) => {
-	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
-	return reactQuery.useQuery<
-		Schemas.AffaireStats,
-		ApiAffairesStatsRetrieve2Error,
-		TData
-	>({
-		queryKey: queryKeyFn({
-			path: '/api/affaires/stats/{id}',
-			operationId: 'apiAffairesStatsRetrieve2',
-			variables,
-		}),
-		queryFn: ({ signal }) =>
-			fetchApiAffairesStatsRetrieve2(
-				{ ...fetcherOptions, ...variables },
-				signal
-			),
-		...options,
-		...queryOptions,
-	})
-}
-
 export type ApiAffectationsAjustagesCreateError =
 	Fetcher.ErrorWrapper<undefined>
 
@@ -4651,11 +4590,6 @@ export type QueryOperation =
 			path: '/api/affaires/stats/'
 			operationId: 'apiAffairesStatsRetrieve'
 			variables: ApiAffairesStatsRetrieveVariables
-	  }
-	| {
-			path: '/api/affaires/stats/{id}'
-			operationId: 'apiAffairesStatsRetrieve2'
-			variables: ApiAffairesStatsRetrieve2Variables
 	  }
 	| {
 			path: '/api/etapes/{id}'

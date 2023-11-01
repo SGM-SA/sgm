@@ -46,6 +46,14 @@ class FicheEtEtapesSerializer(FicheDetailSerializer):
 
 class FicheEtEtapesAjustageSerializer(FicheDetailSerializer):
     etapes = EtapeDetailAjustage(Etape, many=True, read_only=True)
+    nombre_etapes = serializers.SerializerMethodField()
+    temps_total = serializers.SerializerMethodField()
+
+    def get_nombre_etapes(self, fiche: Fiche) -> int:
+        return fiche.etapes.count()
+
+    def get_temps_total(self, fiche: Fiche) -> int:
+        return fiche.temps_machine() + fiche.temps_ajustage()
 
 
 class FicheEtEtapesMachineSerializer(FicheDetailSerializer):

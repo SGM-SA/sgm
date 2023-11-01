@@ -37,6 +37,23 @@ class AffaireDetailsSerializer(serializers.ModelSerializer):
         read_only=True,
     )
 
+    temps_ajustage = serializers.SerializerMethodField()
+    temps_machine = serializers.SerializerMethodField()
+    temps_restant = serializers.SerializerMethodField()
+    nombre_fiches = serializers.SerializerMethodField()
+
+    def get_temps_ajustage(self, affaire: Affaire) -> int:
+        return affaire.temps_ajustage()
+
+    def get_temps_machine(self, affaire: Affaire) -> int:
+        return affaire.temps_machine()
+
+    def get_temps_restant(self, affaire: Affaire) -> int:
+        return affaire.temps_restant()
+
+    def get_nombre_fiches(self, affaire: Affaire) -> int:
+        return affaire.fiches.count()
+
     class Meta:
         model = Affaire
         fields = [
@@ -56,6 +73,10 @@ class AffaireDetailsSerializer(serializers.ModelSerializer):
             "charge_affaire_detail",
             "avancement_affaire",
             "cout_affaire",
+            "temps_ajustage",
+            "temps_machine",
+            "temps_restant",
+            "nombre_fiches",
         ]
 
 
@@ -206,17 +227,3 @@ class AffaireStatsSerializer(serializers.Serializer):
         - temps machine total (théorique)
         - temps restant total
     """
-
-    temps_ajustage = serializers.SerializerMethodField()
-    temps_machine = serializers.SerializerMethodField()
-    temps_restant = serializers.SerializerMethodField()
-
-    def get_temps_ajustage(self, affaire: Affaire) -> int:
-        # pour chaque fiches prendre etapes.temps
-        return affaire.temps_ajustage()
-
-    def get_temps_machine(self, affaire: Affaire) -> int:
-        return affaire.temps_machine()
-
-    def get_temps_restant(self, affaire: Affaire) -> int:
-        return affaire.temps_restant()
