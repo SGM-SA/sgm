@@ -125,10 +125,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
 								body: newData,
 							})
 								.then(() => {
-									row.original = {
-										...row.original,
-										...newData,
-									}
+									fiches.refetch()
 									toast.success('Fiche mise à jour')
 								})
 								.catch(() =>
