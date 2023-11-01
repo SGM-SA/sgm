@@ -16,5 +16,5 @@ urlpatterns = [
     path("<int:pk>", AffaireDetail.as_view()),
     path("<int:pk>/fiches", AffaireDetailFiches.as_view()),
     path("stats/", AffaireStatsGlobalView.as_view(), name="affaires-stats"),
-    path("stats/<int:pk>", AffaireStatsView.as_view(), name="affaire-stats"),
+    # path("stats/<int:pk>", AffaireStatsView.as_view(), name="affaire-stats"), plus besoin de cette route incluse dans AffaireNumAffaire
 ]
