@@ -40,5 +40,15 @@ class Etape(models.Model):
 
         return self.quantite * self.temps * self.groupe_machine.prix_theorique
 
+    def deja_planifiee(self) -> bool:
+        """
+        Vérifie si l'étape a déjà été planifiée. Utile dans la planification pour prévenir qu'elle n'a pas été terminée à temps
+        :return: bool
+        """
+        return (
+            self.affectationajustage.all().exists()
+            or self.affectationmachine.all().exists()
+        )
+
     def __str__(self):
         return f"Fiche : {self.fiche.id} - etape : {self.num_etape} - terminée : {self.terminee}"

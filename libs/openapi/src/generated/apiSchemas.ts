@@ -384,6 +384,7 @@ export type EtapeDetail = {
 	 * @format double
 	 */
 	cout_etape: number
+	deja_planifiee: boolean
 	num_etape: number
 	terminee?: boolean
 	/**
@@ -432,6 +433,7 @@ export type EtapeDetailAjustage = {
 	 * @format double
 	 */
 	cout_etape: number
+	deja_planifiee: boolean
 	num_etape: number
 	terminee?: boolean
 	/**
@@ -476,6 +478,7 @@ export type EtapeDetailMachine = {
 	id: number
 	affectation_id: number
 	user_id: number
+	deja_planifiee: boolean
 	num_etape: number
 	terminee?: boolean
 	/**
