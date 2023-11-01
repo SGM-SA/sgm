@@ -57,6 +57,10 @@ export type AffaireDetails = {
 	 * @format double
 	 */
 	cout_affaire: number
+	temps_ajustage: number
+	temps_machine: number
+	temps_restant: number
+	nombre_fiches: number
 }
 
 /**
@@ -137,19 +141,6 @@ export type AffaireNumAffaire = {
 	 * @minimum 0
 	 */
 	num_affaire?: number | null
-}
-
-/**
- * Serializer pour les statistiques d'une affaire précise
- *   on y retrouve
- *     - temps ajustage total (théorique)
- *     - temps machine total (théorique)
- *     - temps restant total
- */
-export type AffaireStats = {
-	temps_ajustage: number
-	temps_machine: number
-	temps_restant: number
 }
 
 /**
@@ -833,6 +824,8 @@ export type FicheEtEtapesAjustage = {
 	 */
 	cout_fiche: number
 	etapes: EtapeDetailAjustage[]
+	nombre_etapes: number
+	temps_total: number
 	/**
 	 * @maxLength 100
 	 */

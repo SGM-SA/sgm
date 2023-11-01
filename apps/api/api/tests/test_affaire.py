@@ -128,7 +128,11 @@ class StatsAffaireIndTestCase(APITestCase):
         )
 
         Etape.objects.create(
-            fiche=self.fiche1, groupe_machine=self.groupe_machine, num_etape=1, temps=4
+            fiche=self.fiche1,
+            groupe_machine=self.groupe_machine,
+            num_etape=1,
+            temps=4,
+            quantite=2,
         )
 
         Etape.objects.create(
@@ -136,6 +140,7 @@ class StatsAffaireIndTestCase(APITestCase):
             groupe_machine=self.groupe_machine,
             num_etape=2,
             temps=8,
+            quantite=2,
             terminee=True,
         )
 
@@ -148,11 +153,13 @@ class StatsAffaireIndTestCase(APITestCase):
         )
 
     def test_stats_affaire_ind(self):
-        response = self.client.get(f"/api/affaires/stats/{self.affaire.id}")
+        response = self.client.get(f"/api/affaires/nums/{self.affaire.num_affaire}")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         data = response.json()
 
-        self.assertEqual(data["temps_ajustage"], 12)
+        self.assertEqual(data["temps_ajustage"], 24)
         self.assertEqual(data["temps_machine"], 15)
-        self.assertEqual(data["temps_restant"], 19)
+        self.assertEqual(data["temps_restant"], 23)
+        self.assertEqual(data["nombre_fiches"], 2)
+        self.assertEqual(data["cout_affaire"], 100 * 24 + 20 * 15)
