@@ -142,8 +142,7 @@ class Affaire(models.Model):
         nombre_heures_jusqua_delai = (
             self.jours_ouvrables_restants() * 21
         )  # 21 heures par jour
-        print(nombre_heures_jusqua_delai, "tempsr")
-        print(self.temps_restant())
+
         return self.temps_restant() > nombre_heures_jusqua_delai
 
     def jours_ouvrables_restants(self):
