@@ -1,0 +1,32 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cloudflow-api-certificate
+  namespace: sgm-staging
+spec:
+  # certificats
+  dnsNames:
+  - 'sgm-staging-api.cloudflow.info'
+
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-manager-acme-issuer #notre issuer
+  # Secret pour stocker les certificats
+  secretName: cloudflow-api-certificate
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cloudflow-web-certificate
+  namespace: sgm-staging
+spec:
+  # certificats
+  dnsNames:
+  - 'sgm.cloudflow.info'
+
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-manager-acme-issuer #notre issuer
+  # Secret pour stocker les certificats
+  secretName: cloudflow-web-certificate

@@ -1,0 +1,9 @@
+{
+	"name": "@sgm/openapi",
+	"version": "0.0.1",
+	"main": "./index.js",
+	"types": "./index.d.ts",
+	"scripts": {
+		"generate": "openapi-codegen gen api"
+	}
+}

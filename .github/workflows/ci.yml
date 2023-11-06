@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+
+jobs:
+
+  affected:
+    uses: ./.github/workflows/_affected.yml
+
+  build:
+    uses: ./.github/workflows/_build.yml
+    with:
+      affected_projects: ${{ needs.affected.outputs.affected_projects }}
+      should_upload_artifacts: false
+      node_env: development
+    needs: affected

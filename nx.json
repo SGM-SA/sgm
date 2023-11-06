@@ -71,5 +71,6 @@
 				"unitTestRunner": "vitest"
 			}
 		}
-	}
+	},
+	"plugins": ["@nxlv/python"]
 }

@@ -1,0 +1,107 @@
+{
+	"name": "api",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "application",
+	"sourceRoot": "apps/api/api",
+	"targets": {
+		"lock": {
+			"executor": "@nxlv/python:run-commands",
+			"options": {
+				"command": "poetry lock --no-update",
+				"cwd": "apps/api"
+			}
+		},
+		"add": {
+			"executor": "@nxlv/python:add",
+			"options": {}
+		},
+		"update": {
+			"executor": "@nxlv/python:update",
+			"options": {}
+		},
+		"remove": {
+			"executor": "@nxlv/python:remove",
+			"options": {}
+		},
+		"build": {
+			"executor": "@nxlv/python:build",
+			"outputs": ["{projectRoot}/dist"],
+			"options": {
+				"outputPath": "dist/apps/api",
+				"publish": false,
+				"lockedVersions": true,
+				"bundleLocalDependencies": true
+			}
+		},
+		"install": {
+			"executor": "@nxlv/python:install",
+			"options": {
+				"silent": false,
+				"args": "",
+				"cacheDir": ".cache/pypoetry",
+				"verbose": false,
+				"debug": false
+			}
+		},
+		"lint": {
+			"executor": "@nxlv/python:flake8",
+			"outputs": ["{workspaceRoot}/reports/apps/api/pylint.txt"],
+			"options": {
+				"outputFile": "reports/apps/api/pylint.txt"
+			}
+		},
+		"test": {
+			"executor": "@nxlv/python:run-commands",
+			"outputs": [
+				"{workspaceRoot}/reports/apps/api/unittests",
+				"{workspaceRoot}/coverage/apps/api"
+			],
+			"options": {
+				"command": "poetry run python manage.py test",
+				"cwd": "apps/api"
+			}
+		},
+		"start": {
+			"executor": "@nxlv/python:run-commands",
+			"options": {
+				"command": "poetry run ./manage.py runserver",
+				"cwd": "apps/api"
+			}
+		},
+		"dev": {
+			"executor": "@nxlv/python:run-commands",
+			"options": {
+				"command": "nx run-many -t start watch:openapi -p api",
+				"cwd": "apps/api"
+			}
+		},
+		"watch:openapi": {
+			"executor": "nx:run-commands",
+			"options": {
+			  	"command": "nodemon --watch /home/coder/sgm/apps/api -e py --exec \"nx run openapi:generate\" --delay 5 > /dev/null 2>&1"
+			}
+		},
+		"generate:spec": {
+			"executor": "@nxlv/python:run-commands",
+			"options": {
+				"command": "poetry run ./manage.py spectacular --file ../../libs/openapi/src/spec.yml",
+				"cwd": "apps/api"
+			}
+		},
+    "makemigrations": {
+			"executor": "@nxlv/python:run-commands",
+			"options": {
+				"command": "poetry run ./manage.py makemigrations",
+				"cwd": "apps/api"
+			}
+		},
+		"migrate": {
+			"executor": "@nxlv/python:run-commands",
+			"options": {
+				"command": "poetry run ./manage.py migrate",
+				"cwd": "apps/api"
+			}
+		}
+	},
+	"tags": []
+}

@@ -1,0 +1,35 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'release/**'
+  workflow_dispatch:
+
+jobs:
+
+  affected:
+    uses: ./.github/workflows/_affected.yml
+    with:
+      all_projects: true
+
+  build:
+    uses: ./.github/workflows/_build.yml
+    with:
+      affected_projects: ${{ needs.affected.outputs.affected_projects }}
+      should_upload_artifacts: true
+      node_env: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+    needs:
+      - affected
+
+  deploy:
+    uses: ./.github/workflows/_deploy.yml
+    with:
+      affected_projects: ${{ needs.affected.outputs.affected_projects }}
+    secrets:
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }} 
+    needs:
+      - affected 
+      - build
