@@ -169,7 +169,7 @@ const AffairesPage: React.FC = () => {
                     }}
                     rowExpansion={{
                         enabled: true,
-                        renderComponent: ({ row }) => <FichesTable affaireId={row.original.id} groupesMachines={groupesMachines?.results || []}/>
+                        renderComponent: ({ row }) => <FichesTable affaireId={row.original.id} groupesMachines={groupesMachines?.results || []} refetches={[refetch]}/>
                     }}
                     rowAction={{
                         enableCtrlClick: true,

@@ -9,6 +9,7 @@ import { PrintFicheButton } from './PrintFicheButton'
 type EtapesTableProps = {
     ficheId: number
     groupesMachines: GroupeMachine[]
+    refetches?: Array<() => void>
 }
 
 const columnHelper = createColumnHelper<EtapeDetail>()
@@ -16,6 +17,11 @@ const columnHelper = createColumnHelper<EtapeDetail>()
 export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
 
     const { data, isLoading, refetch } = useApiFichesEtapesRetrieve({ pathParams: { id: props.ficheId }})
+
+    const refetchAll = () => {
+        refetch()
+        props.refetches?.forEach(refetch => refetch())
+    }
 
     const columns = [
         columnHelper.accessor('num_etape', {
@@ -111,7 +117,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                     onRowUpdate: async (row, newData) => {
                         fetchApiEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
                             .then(() => {
-                                refetch()
+                                refetchAll()
                                 toast.success('Etape mise à jour')
                             })
                             .catch(() => toast.error('Erreur lors de la mise à jour de l\'étape'))
@@ -127,7 +133,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                         }
                     })
                         .then(() => {
-                            refetch()
+                            refetchAll()
                             toast.success('Etape créée')
                         })
                         .catch(() => toast.error('Erreur lors de la création de l\'étape'))
@@ -144,7 +150,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                                 fetchApiEtapesDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
                                     .then(() => {
                                         resetSelection()
-                                        refetch()
+                                        refetchAll()
                                         toast.success('Etapes supprimées avec succès')
                                     })
                                     .catch(() => toast.error('Erreur lors de la suppression des étapes'))
