@@ -83,7 +83,7 @@ const columns = [
 type FichesTableProps = {
 	affaireId: number
 	groupesMachines: GroupeMachine[]
-	refetches: Array<() => void>
+	refetches?: Array<() => void>
 }
 
 export const FichesTable: React.FC<FichesTableProps> = (props) => {
@@ -210,7 +210,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
 								groupesMachines={props.groupesMachines}
 								refetches={[
 									fiches.refetch,
-									...props.refetches,
+									...(props.refetches || []),
 								]}
 							/>
 						),
