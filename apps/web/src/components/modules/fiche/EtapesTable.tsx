@@ -35,7 +35,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
         }),
         columnHelper.accessor('groupe_machine', {
             header: 'Groupe machine',
-            cell: (cell) => 
+            cell: (cell) =>
                 <DefaultTableCell {...cell}>
                     {props.groupesMachines?.find(groupeMachine => groupeMachine.id === cell.getValue())?.nom_groupe || ''}
                 </DefaultTableCell>,
@@ -65,7 +65,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                 editable: true,
                 type: 'file',
             })
-        }), 
+        }),
         columnHelper.accessor('quantite', {
             header: 'Quantité',
             meta: createColumnMeta({
@@ -97,7 +97,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
             })
         })
     ]
-    
+
 	return <>
         <TableLayout
             header={{
@@ -141,7 +141,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                 rowSelection={{
                     enabled: true,
                     selectionActionComponent: ({ checkedItems, resetSelection }) => <Box>
-                        <Button 
+                        <Button
                             size='sm'
                             colorScheme='red'
                             borderRadius='4px'
@@ -164,7 +164,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                     renderComponent: ({ row }) => {
 
                         const handleUpdate = (newDescription: string) => {
-                            
+
                             if (row.original.description !== newDescription) {
                                 fetchApiEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: { description: newDescription } })
                                     .then(() => toast.success('Description mise à jour'))
@@ -172,7 +172,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                             }
                         }
 
-                        return <Textarea 
+                        return <Textarea
                             defaultValue={row.original.description || ''}
                             onBlur={(e) => handleUpdate(e.target.value)}
                             rows={2}
