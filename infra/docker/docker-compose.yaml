@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - data-db-gestion-prod:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+    restart: unless-stopped
+  web:
+    image: aimerisson/sgm-api-staging:latest
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=${POSTGRES_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_ENGINE=django.db.backends.postgresql
+      - POSTGRES_HOST=db
+      - ENV=PROD
+    depends_on:
+      db:
+        condition: service_started
+    restart: unless-stopped
+
+volumes:
+  data-db-gestion-prod:

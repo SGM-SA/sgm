@@ -25,9 +25,6 @@ export const Catch = () => <Navigate to='/affaires' />
 const AffairePage: React.FC = () => {
 	const { groupesMachines, affaire } = useLoaderData<typeof Loader>()
 
-	console.log('groupesMachines', groupesMachines)
-	console.log('affaire', affaire)
-
 	return (
 		<>
 			<DashboardLayout title={`Détails affaire n°${affaire.num_affaire}`}>

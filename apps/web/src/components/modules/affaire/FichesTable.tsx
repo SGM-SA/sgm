@@ -83,6 +83,7 @@ const columns = [
 type FichesTableProps = {
 	affaireId: number
 	groupesMachines: GroupeMachine[]
+	refetches?: Array<() => void>
 }
 
 export const FichesTable: React.FC<FichesTableProps> = (props) => {
@@ -90,6 +91,11 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
 	const fiches = useApiAffairesFichesRetrieve({
 		pathParams: { id: props.affaireId },
 	})
+
+	const refetchAll = () => {
+		fiches.refetch()
+		props.refetches?.forEach((refetch) => refetch())
+	}
 
 	return (
 		<Box
@@ -125,7 +131,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
 								body: newData,
 							})
 								.then(() => {
-									fiches.refetch()
+									refetchAll()
 									toast.success('Fiche mise à jour')
 								})
 								.catch(() =>
@@ -145,7 +151,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
 								} - `,
 							},
 						}).then(() => {
-							fiches.refetch()
+							refetchAll()
 							toast.success('Fiche créée')
 						})
 					}}
@@ -170,7 +176,7 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
 									})
 										.then(() => {
 											resetSelection()
-											fiches.refetch()
+											refetchAll()
 											toast.success(
 												'Etapes supprimées avec succès'
 											)
@@ -202,6 +208,10 @@ export const FichesTable: React.FC<FichesTableProps> = (props) => {
 							<EtapesTable
 								ficheId={row.original.id}
 								groupesMachines={props.groupesMachines}
+								refetches={[
+									fiches.refetch,
+									...(props.refetches || []),
+								]}
 							/>
 						),
 					}}

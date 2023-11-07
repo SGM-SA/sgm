@@ -1,4 +1,4 @@
-name: Component / Build & Test 
+name: Component / Build & Test
 
 on:
   # Allows you to include this workflow in other workflows
@@ -67,7 +67,7 @@ jobs:
               ${{ runner.os }}-pnpm-store-
 
       - name: Install Node dependencies
-        run: pnpm install
+        run: NODE_ENV=development pnpm install
 
       #---------------------------
       #       Python

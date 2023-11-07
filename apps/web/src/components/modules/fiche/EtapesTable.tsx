@@ -9,6 +9,7 @@ import { PrintFicheButton } from './PrintFicheButton'
 type EtapesTableProps = {
     ficheId: number
     groupesMachines: GroupeMachine[]
+    refetches?: Array<() => void>
 }
 
 const columnHelper = createColumnHelper<EtapeDetail>()
@@ -16,6 +17,11 @@ const columnHelper = createColumnHelper<EtapeDetail>()
 export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
 
     const { data, isLoading, refetch } = useApiFichesEtapesRetrieve({ pathParams: { id: props.ficheId }})
+
+    const refetchAll = () => {
+        refetch()
+        props.refetches?.forEach(refetch => refetch())
+    }
 
     const columns = [
         columnHelper.accessor('num_etape', {
@@ -29,7 +35,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
         }),
         columnHelper.accessor('groupe_machine', {
             header: 'Groupe machine',
-            cell: (cell) => 
+            cell: (cell) =>
                 <DefaultTableCell {...cell}>
                     {props.groupesMachines?.find(groupeMachine => groupeMachine.id === cell.getValue())?.nom_groupe || ''}
                 </DefaultTableCell>,
@@ -59,7 +65,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                 editable: true,
                 type: 'file',
             })
-        }), 
+        }),
         columnHelper.accessor('quantite', {
             header: 'Quantité',
             meta: createColumnMeta({
@@ -91,7 +97,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
             })
         })
     ]
-    
+
 	return <>
         <TableLayout
             header={{
@@ -111,7 +117,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                     onRowUpdate: async (row, newData) => {
                         fetchApiEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
                             .then(() => {
-                                refetch()
+                                refetchAll()
                                 toast.success('Etape mise à jour')
                             })
                             .catch(() => toast.error('Erreur lors de la mise à jour de l\'étape'))
@@ -127,7 +133,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                         }
                     })
                         .then(() => {
-                            refetch()
+                            refetchAll()
                             toast.success('Etape créée')
                         })
                         .catch(() => toast.error('Erreur lors de la création de l\'étape'))
@@ -135,7 +141,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                 rowSelection={{
                     enabled: true,
                     selectionActionComponent: ({ checkedItems, resetSelection }) => <Box>
-                        <Button 
+                        <Button
                             size='sm'
                             colorScheme='red'
                             borderRadius='4px'
@@ -144,7 +150,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                                 fetchApiEtapesDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
                                     .then(() => {
                                         resetSelection()
-                                        refetch()
+                                        refetchAll()
                                         toast.success('Etapes supprimées avec succès')
                                     })
                                     .catch(() => toast.error('Erreur lors de la suppression des étapes'))
@@ -158,7 +164,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                     renderComponent: ({ row }) => {
 
                         const handleUpdate = (newDescription: string) => {
-                            
+
                             if (row.original.description !== newDescription) {
                                 fetchApiEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: { description: newDescription } })
                                     .then(() => toast.success('Description mise à jour'))
@@ -166,7 +172,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                             }
                         }
 
-                        return <Textarea 
+                        return <Textarea
                             defaultValue={row.original.description || ''}
                             onBlur={(e) => handleUpdate(e.target.value)}
                             rows={2}
