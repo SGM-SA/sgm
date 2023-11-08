@@ -7,7 +7,7 @@ import React from 'react'
 import { LoaderFunction, useLoaderData } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
 import { DashboardLayout } from '../../components/layouts'
-import { AffaireNotesDrawer, AffaireStats, AffairesFilters, FichesTable } from '../../components/modules'
+import { AffaireNotesDrawer, AffairesStats, AffairesFilters, FichesTable } from '../../components/modules'
 
 export const statusColors = {
     'green': ['E00'],
@@ -137,7 +137,7 @@ const AffairesPage: React.FC = () => {
 	return <>
     	<DashboardLayout 
             title='Affaires'
-            customHeader={<AffaireStats />}    
+            customHeader={<AffairesStats />}    
         >
 
             <TableLayout

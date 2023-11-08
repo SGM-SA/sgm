@@ -1,18 +1,16 @@
-import { Box, Button, Grid, HStack, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, StatGroup, Text, VStack, useDisclosure } from '@chakra-ui/react'
-import { useApiAffairesStatsRetrieve } from '@sgm/openapi'
+import { HStack, Icon, Spinner, Text, VStack } from '@chakra-ui/react'
+import { useApiAffairesNumsRetrieve } from '@sgm/openapi'
 import { Stat } from '@sgm/ui'
 import React from 'react'
 import { TbReload } from 'react-icons/tb'
-import { statusColors } from '../../../pages/affaires'
 
-type AffaireStatsProps = {}
+type AffaireStatsProps = {
+    numAffaire: number
+}
 
-export const AffaireStats: React.FC<AffaireStatsProps> = () => {
+export const AffaireStats: React.FC<AffaireStatsProps> = (props) => {
 
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const { data, isLoading, isFetching, refetch } = useApiAffairesStatsRetrieve({})
-
-    const evolution = data ? (Math.round((((data.terminees_cette_semaine - data.terminees_semaine_der) / (data.terminees_semaine_der || 1)) * 100)) / 100) : 0
+    const { data, isLoading, isFetching, refetch } = useApiAffairesNumsRetrieve({ pathParams: { numAffaire: props.numAffaire } })
 
 	return <>
         <VStack 
@@ -25,7 +23,7 @@ export const AffaireStats: React.FC<AffaireStatsProps> = () => {
             // borderRadius='md'
         >
             <HStack>
-                <Text fontWeight='bold'>Statistiques</Text>
+                <Text fontWeight='bold'>    Statistiques</Text>
                 {isFetching ? 
                     <Spinner opacity='0.5' size='xs'/>
                     :
@@ -35,66 +33,43 @@ export const AffaireStats: React.FC<AffaireStatsProps> = () => {
             
             {isLoading && <Spinner />}
             {data && <>
-                    <StatGroup alignItems='flex-end'>
-                        <Stat 
-                            label='Terminé'
-                            value={data.terminees_cette_semaine}
-                            subTitle='cette semaine'
-                            evolution={evolution}
+                    <HStack alignItems='flex-start' spacing='2em'>
+                        <Stat
+                            label='Nb. fiches'
+                            value={data.nombre_fiches}
                         />
                         
                         <Stat 
-                            label='En retard'
-                            value={data.en_retard}
+                            label='Temps machine'
+                            value={data.temps_machine}
                         />
 
-                        <Button
-                            onClick={onOpen}
-                            size='xs'
-                        >
-                            Par statut
-                        </Button>
-                    </StatGroup>
+                        <Stat 
+                            label='Temps ajustage'
+                            value={data.temps_ajustage}
+                        />
+
+                        <Stat 
+                            label='Temps restant'
+                            value={data.temps_restant}
+                        />
+
+                        <Stat 
+                            label='Délais'
+                            value={data.date_rendu}
+                        />
+
+                        
+                        <Stat 
+                            label='Coût affaire'
+                            value={data.cout_affaire}
+                        />
+                    </HStack>
             </>}
             <VStack h='100%'>
                 
             </VStack>
 
         </VStack>
-    
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-                <ModalHeader>
-                    Affaires par statut
-                </ModalHeader>
-                <ModalCloseButton />
-
-                <ModalBody>
-                    <Grid
-                        templateColumns='repeat(3, 1fr)'
-                        gap={6}
-                        padding='1em'
-                    >
-                        {data && Object.entries(data.par_statut).map(([statut, amount]) => (
-                            <HStack spacing='1em' key={statut}>
-                                <Box
-                                    as='span'
-                                    px='.75em'
-                                    py='.25em'
-                                    borderRadius='15px'
-                                    fontSize='.8em'
-                                    color={`${Object.entries(statusColors).find(([_, value]) => value.includes(statut))?.[0] || 'gray'}.700`}
-                                    bg={`${Object.entries(statusColors).find(([_, value]) => value.includes(statut))?.[0] || 'gray'}.100`}
-                                >
-                                    {statut}
-                                </Box>
-                                <Text>{amount}</Text>
-                            </HStack>
-                        ))}
-                    </Grid>
-                </ModalBody>
-            </ModalContent>
-        </Modal>
     </>
 }
