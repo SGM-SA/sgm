@@ -14,3 +14,5 @@ export * from './fiche/CopyFicheModele'
 export * from './fiche/EtapesTable'
 export * from './fiche/PrintFicheButton'
 export * from './planning/PlanningNestedEtapeColumn'
+
+export * from './affaire/AffaireStats'

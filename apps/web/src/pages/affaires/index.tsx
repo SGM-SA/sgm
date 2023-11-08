@@ -7,9 +7,9 @@ import React from 'react'
 import { LoaderFunction, useLoaderData } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
 import { DashboardLayout } from '../../components/layouts'
-import { AffaireNotesDrawer, AffairesFilters, FichesTable } from '../../components/modules'
+import { AffaireNotesDrawer, AffaireStats, AffairesFilters, FichesTable } from '../../components/modules'
 
-const statusColors = {
+export const statusColors = {
     'green': ['E00'],
     'yellow': ['EAA', 'EAC'],
     'orange': ['ECC'],
@@ -135,7 +135,10 @@ const AffairesPage: React.FC = () => {
     const { data, isLoading, refetch } = useApiAffairesList(fetchDataOptions)
 
 	return <>
-    	<DashboardLayout title="Affaires">
+    	<DashboardLayout 
+            title='Affaires'
+            customHeader={<AffaireStats />}    
+        >
 
             <TableLayout
                 header={{
