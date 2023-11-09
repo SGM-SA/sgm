@@ -17,3 +17,4 @@ export * from './planning/PlanningNestedEtapeColumn'
 export * from './zone/ZoneCreateForm'
 
 export * from './affaire/AffaireStats'
+export * from './fiche/FicheStats'
