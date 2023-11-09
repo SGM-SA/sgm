@@ -1,21 +1,28 @@
-import { Box, Flex, HStack, Heading, VStack, Link as ChakraLink } from '@chakra-ui/react'
-import React, { JSXElementConstructor, ReactElement } from 'react'
-import { SideBar } from '../modules'
-import useReactRouterBreadcrumbs from 'use-react-router-breadcrumbs'
+import { Box, Link as ChakraLink, Flex, HStack, Heading, Text, VStack } from '@chakra-ui/react'
 import { Link } from '@sgm/web/router'
+import React, { JSXElementConstructor, ReactElement } from 'react'
+import useReactRouterBreadcrumbs from 'use-react-router-breadcrumbs'
+import { SideBar } from '../modules'
 
-const ignoredRoutes = [
+type RouteMatcher = string | RegExp
+
+const breadcrumbHiddenRoutes: RouteMatcher[] = [
 	'/'
+]
+
+const breadcrumbUnlickableRoutes: RouteMatcher[] = [
+	'/planning',
+	/\/affaires\/.*\/fiches/g,
 ]
 
 type DashboardLayoutProps = {
 	title: React.ReactNode
 	children: React.ReactNode
-  styling?: {
-    addPadding?: boolean
-    removeTitleMarginBottom?: boolean
-  }
 	customHeader?: React.ReactNode
+	styling?: {
+		addPadding?: boolean
+		removeTitleMarginBottom?: boolean
+	}
 }
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
@@ -60,14 +67,24 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
 							{breadcrumbs
 								.map<React.ReactNode>(({ breadcrumb, key }) => {
 
-									if (ignoredRoutes.includes(key)) return null
+									if (breadcrumbHiddenRoutes.includes(key)) return null
 									const name = (breadcrumb as ReactElement<any, string | JSXElementConstructor<any>>).props.children
 
-									return (
+									const clickable = !breadcrumbUnlickableRoutes.some(route => {
+										if (typeof route === 'string') return route === key
+										else return route.test(key)
+									})
+
+									if (clickable) return (
 										// @ts-ignore
 										<ChakraLink key={key} as={Link} to={key} mx='.2em'>
 											{name}
 										</ChakraLink>
+									)
+									else return (
+										<Text key={key} as='span' mx='.2em'>
+											{name}
+										</Text>
 									)
 								})
 								.filter(segment => segment !== null)
