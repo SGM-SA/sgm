@@ -67,12 +67,17 @@ const PlanningZonesPage: React.FC = () => {
                     id: etape.id,
                     title: <VStack alignItems='flex-start' gap={0}>
                         <HStack justifyContent='flex-start'>
-                            {affaire.num_affaire &&
+                            {affaire.num_affaire && <>
                                 <Link to='/affaires/:numAffaire' params={{ numAffaire: String(affaire.num_affaire) }}>
-                                    <TextLink>{affaire.num_affaire} /</TextLink>
+                                    <TextLink>{affaire.num_affaire}</TextLink>
+                                </Link>
+                                /
+                            </>}
+                            {fiche.titre &&
+                                <Link to='/affaires/:numAffaire/fiches/:id' params={{ numAffaire: String(affaire.num_affaire), id: String(fiche.id) }}>
+                                    <TextLink>{fiche.titre}</TextLink>
                                 </Link>
                             }
-                            {fiche.titre && <Text as='span'>{fiche.titre}</Text>}
                         </HStack>
                         <Text>n°{etape.num_etape} - {etape.temps}(h)</Text>
                     </VStack>,
