@@ -52,3 +52,6 @@ class Etape(models.Model):
 
     def __str__(self):
         return f"Fiche : {self.fiche.id} - etape : {self.num_etape} - terminée : {self.terminee}"
+
+    class Meta:
+        ordering = ["num_etape", "pk"]

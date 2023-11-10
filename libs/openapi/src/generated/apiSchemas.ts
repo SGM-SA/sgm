@@ -425,6 +425,9 @@ export type EtapeDetail = {
 	groupe_machine?: number | null
 }
 
+/**
+ * Serializer pour les étapes, dans l'ordre num_etape
+ */
 export type EtapeDetailAjustage = {
 	id: number
 	affectation_id: number
