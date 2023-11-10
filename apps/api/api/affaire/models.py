@@ -96,8 +96,8 @@ class Affaire(models.Model):
         "date de clôture de l'affaire (terminée)", null=True, blank=True
     )
 
-    charge_affaire = models.ForeignKey(
-        CustomUser, on_delete=models.PROTECT, null=True, blank=True
+    charge_affaire = models.CharField(
+        "nom du chargé d'affaire", max_length=2000, null=True, blank=True
     )
 
     hash_sgm_bd = models.CharField(

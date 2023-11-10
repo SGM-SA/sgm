@@ -45,7 +45,7 @@ from api.utils.view import LargeResultsSetPagination
             ),
             OpenApiParameter(
                 name="search",
-                description="Recherche dans les champs num_affaire, client, description",
+                description="Recherche dans les champs num_affaire, client, description, chargé d'affaire",
             ),
             OpenApiParameter(
                 name="page",
@@ -73,7 +73,7 @@ class AffaireList(generics.ListAPIView):
         "date_rendu",
         "num_affaire",
     ]
-    search_fields = ["num_affaire", "client", "description"]
+    search_fields = ["num_affaire", "client", "description", "charge_affaire"]
 
 
 @extend_schema(
