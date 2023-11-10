@@ -3,7 +3,7 @@ import { useParams } from '@sgm/web/router'
 import React from 'react'
 import { LoaderFunction, useLoaderData } from 'react-router-typesafe'
 import { DashboardLayout } from '../../../../components/layouts'
-import { EtapesTable } from '../../../../components/modules'
+import { EtapesTable, FicheStats } from '../../../../components/modules'
 
 export const Loader = (() => {
     return fetchApiGroupeMachineList({})
@@ -21,11 +21,12 @@ const FichePage: React.FC = () => {
     const groupesMachines = useLoaderData<typeof Loader>()
 
 	return <>
-        <DashboardLayout title={'Fiche'} >
+        <DashboardLayout 
+            title={'Fiche'}
+            customHeader={<FicheStats ficheId={ficheId}/>}
+        >
 
             <EtapesTable ficheId={ficheId} groupesMachines={groupesMachines?.results || []}/>
-
-
         </DashboardLayout>
     </>
 }
