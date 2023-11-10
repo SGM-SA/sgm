@@ -376,6 +376,7 @@ def sgm_data_to_local(data):
                     "observation": data[str(affaire)]["observation"],
                     "ref_doc": data[str(affaire)]["refdoc"],
                     "client": data[str(affaire)]["raison"],
+                    "charge_affaire": data[str(affaire)]["LOGIN"],
                 }
             )
 
