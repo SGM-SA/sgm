@@ -1,10 +1,9 @@
-import { Box, Button, HStack, Textarea } from '@chakra-ui/react'
+import { Box, Button, Textarea } from '@chakra-ui/react'
 import { EtapeDetail, EtapeDetailAjustage, GroupeMachine, fetchApiEtapesCreate, fetchApiEtapesDeleteCreate, fetchApiEtapesPartialUpdate, useApiFichesEtapesRetrieve } from '@sgm/openapi'
 import { DefaultTableCell, Table, TableLayout, createColumnMeta } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { toast } from 'react-toastify'
-import { PrintFicheButton } from './PrintFicheButton'
 
 type EtapesTableProps = {
     ficheId: number
@@ -101,10 +100,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
 	return <>
         <TableLayout
             header={{
-                title: 'Liste des étapes',
-                customComponent: <HStack>
-                    <PrintFicheButton ficheId={props.ficheId}/>
-                </HStack>
+                title: 'Liste des étapes'
             }}
         >
 
