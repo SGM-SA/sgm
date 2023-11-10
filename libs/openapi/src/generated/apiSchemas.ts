@@ -45,7 +45,10 @@ export type AffaireDetails = {
 	 * @format date
 	 */
 	date_cloture?: string | null
-	charge_affaire_detail: CustomUserDetail
+	/**
+	 * @maxLength 2000
+	 */
+	charge_affaire?: string | null
 	/**
 	 * @format double
 	 * @maximum 1
@@ -98,6 +101,10 @@ export type AffaireDetailsRequest = {
 	 * @format date
 	 */
 	date_cloture?: string | null
+	/**
+	 * @maxLength 2000
+	 */
+	charge_affaire?: string | null
 }
 
 /**
@@ -111,7 +118,10 @@ export type AffaireFiches = {
 	num_affaire?: number | null
 	validation_ingenieur?: boolean
 	fiches: FicheDetail[]
-	charge_affaire_detail: CustomUserDetail
+	/**
+	 * @maxLength 2000
+	 */
+	charge_affaire?: string | null
 }
 
 /**
@@ -129,7 +139,10 @@ export type AffaireFichesEtapes = {
 	 */
 	description?: string | null
 	fiches: FicheEtEtapes[]
-	charge_affaire_detail: CustomUserDetail
+	/**
+	 * @maxLength 2000
+	 */
+	charge_affaire?: string | null
 }
 
 /**
@@ -246,23 +259,6 @@ export type CustomUserDetail = {
 	id: number
 	/**
 	 * @format email
-	 * @maxLength 254
-	 */
-	email: string
-	/**
-	 * @maxLength 200
-	 */
-	name?: string | null
-	/**
-	 * @maxLength 200
-	 */
-	surname?: string | null
-}
-
-export type CustomUserDetailRequest = {
-	/**
-	 * @format email
-	 * @minLength 1
 	 * @maxLength 254
 	 */
 	email: string
@@ -1225,6 +1221,10 @@ export type PatchedAffaireDetailsRequest = {
 	 * @format date
 	 */
 	date_cloture?: string | null
+	/**
+	 * @maxLength 2000
+	 */
+	charge_affaire?: string | null
 }
 
 /**

@@ -2276,10 +2276,11 @@ components:
           format: date
           nullable: true
           title: Date de clôture de l'affaire (terminée)
-        charge_affaire_detail:
-          allOf:
-          - $ref: '#/components/schemas/CustomUserDetail'
-          readOnly: true
+        charge_affaire:
+          type: string
+          nullable: true
+          title: Nom du chargé d'affaire
+          maxLength: 2000
         avancement_affaire:
           type: number
           format: double
@@ -2305,7 +2306,6 @@ components:
           readOnly: true
       required:
       - avancement_affaire
-      - charge_affaire_detail
       - couleur_affichage
       - cout_affaire
       - date_modification
@@ -2363,6 +2363,11 @@ components:
           format: date
           nullable: true
           title: Date de clôture de l'affaire (terminée)
+        charge_affaire:
+          type: string
+          nullable: true
+          title: Nom du chargé d'affaire
+          maxLength: 2000
     AffaireFiches:
       type: object
       description: Serializer pour récupérer une affaire avec ses fiches
@@ -2384,12 +2389,12 @@ components:
           items:
             $ref: '#/components/schemas/FicheDetail'
           readOnly: true
-        charge_affaire_detail:
-          allOf:
-          - $ref: '#/components/schemas/CustomUserDetail'
-          readOnly: true
+        charge_affaire:
+          type: string
+          nullable: true
+          title: Nom du chargé d'affaire
+          maxLength: 2000
       required:
-      - charge_affaire_detail
       - fiches
       - id
     AffaireFichesEtapes:
@@ -2418,12 +2423,12 @@ components:
           items:
             $ref: '#/components/schemas/FicheEtEtapes'
           readOnly: true
-        charge_affaire_detail:
-          allOf:
-          - $ref: '#/components/schemas/CustomUserDetail'
-          readOnly: true
+        charge_affaire:
+          type: string
+          nullable: true
+          title: Nom du chargé d'affaire
+          maxLength: 2000
       required:
-      - charge_affaire_detail
       - fiches
       - id
     AffaireNumAffaire:
@@ -2618,26 +2623,6 @@ components:
       required:
       - email
       - id
-    CustomUserDetailRequest:
-      type: object
-      properties:
-        email:
-          type: string
-          format: email
-          minLength: 1
-          title: Adresse électronique
-          maxLength: 254
-        name:
-          type: string
-          nullable: true
-          title: Nom
-          maxLength: 200
-        surname:
-          type: string
-          nullable: true
-          maxLength: 200
-      required:
-      - email
     CustomUserGroups:
       type: object
       description: test
@@ -4058,6 +4043,11 @@ components:
           format: date
           nullable: true
           title: Date de clôture de l'affaire (terminée)
+        charge_affaire:
+          type: string
+          nullable: true
+          title: Nom du chargé d'affaire
+          maxLength: 2000
     PatchedAffectationAjustageUpdateRequest:
       type: object
       description: Serializer pour la mise à jour d'une affectation d'ajustage
