@@ -2869,6 +2869,7 @@ components:
       - num_etape
     EtapeDetailAjustage:
       type: object
+      description: Serializer pour les étapes, dans l'ordre num_etape
       properties:
         id:
           type: integer
