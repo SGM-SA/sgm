@@ -1,5 +1,5 @@
 import { EnvironmentConfig } from './type'
 
 export const environment: EnvironmentConfig = {
-    apiBaseUrl: 'http://localhost:8000',
+    apiBaseUrl: 'http://192.168.100.101:8000',
 }
