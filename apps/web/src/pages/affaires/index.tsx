@@ -1,15 +1,21 @@
-import { Box, Progress } from '@chakra-ui/react'
-import { AffaireDetails, affaireStatus, fetchApiAffairesPartialUpdate, fetchApiGroupeMachineList, useApiAffairesList } from '@sgm/openapi'
-import { DefaultTableCell, Table, TableLayout, TextLink, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
-import { Link, useNavigate } from '@sgm/web/router'
-import { createColumnHelper } from '@tanstack/react-table'
+import {Box, Progress} from '@chakra-ui/react'
+import {
+    AffaireDetails,
+    affaireStatus,
+    fetchApiAffairesPartialUpdate,
+    fetchApiGroupeMachineList,
+    useApiAffairesList
+} from '@sgm/openapi'
+import {DefaultTableCell, Table, TableLayout, TextLink, createColumnMeta, useTableQueryHelper} from '@sgm/ui'
+import {Link, useNavigate} from '@sgm/web/router'
+import {createColumnHelper} from '@tanstack/react-table'
 import React from 'react'
-import { LoaderFunction, useLoaderData } from 'react-router-typesafe'
-import { toast } from 'react-toastify'
-import { DashboardLayout } from '../../components/layouts'
-import { AffaireNotesDrawer, AffairesFilters, FichesTable } from '../../components/modules'
+import {LoaderFunction, useLoaderData} from 'react-router-typesafe'
+import {toast} from 'react-toastify'
+import {DashboardLayout} from '../../components/layouts'
+import {AffaireNotesDrawer, AffairesStats, AffairesFilters, FichesTable} from '../../components/modules'
 
-const statusColors = {
+export const statusColors = {
     'green': ['E00'],
     'yellow': ['EAA', 'EAC'],
     'orange': ['ECC'],
@@ -54,17 +60,17 @@ const columns = [
         cell: value => <Box>
             <Box as='span' fontSize='xs'>{value.getValue()}%</Box>
             <Progress value={value.getValue()}
-                background='#c7d2fe'
-                borderRadius='10px'
-                size='sm'
-                mt='.5em'
+                      background='#c7d2fe'
+                      borderRadius='10px'
+                      size='sm'
+                      mt='.5em'
             />
         </Box>
     }),
     columnHelper.accessor('client', {
         header: 'Client',
     }),
-    columnHelper.accessor(row => row.charge_affaire_detail ? `${row.charge_affaire_detail.surname} ${row.charge_affaire_detail.name}` : null, {
+    columnHelper.accessor(row => row.charge_affaire, {
         id: 'charge_affaire',
         header: 'Chargé d\'affaire',
     }),
@@ -85,7 +91,7 @@ const columns = [
     columnHelper.accessor('statut', {
         id: 'statut',
         header: 'Statut',
-        cell: cell =>  cell.getValue() ? <Box
+        cell: cell => cell.getValue() ? <Box
             as='span'
             px='.75em'
             py='.25em'
@@ -118,29 +124,40 @@ const columns = [
 ]
 
 export const Loader = (() => {
-  return fetchApiGroupeMachineList({})
+    return fetchApiGroupeMachineList({})
 }) satisfies LoaderFunction
 
 export const Catch = (() => {
-  return <div>Erreur</div>
+    return <div>Erreur</div>
 })
 
 const AffairesPage: React.FC = () => {
 
     const groupesMachines = useLoaderData<typeof Loader>()
 
-    const { pagination, setPagination, sorting, setSorting, filters, setFilters, fetchDataOptions } = useTableQueryHelper()
+    const {
+        pagination,
+        setPagination,
+        sorting,
+        setSorting,
+        filters,
+        setFilters,
+        fetchDataOptions
+    } = useTableQueryHelper()
     const navigate = useNavigate()
 
-    const { data, isLoading, refetch } = useApiAffairesList(fetchDataOptions)
+    const {data, isLoading, refetch} = useApiAffairesList(fetchDataOptions)
 
-	return <>
-    	<DashboardLayout title="Affaires">
+    return <>
+        <DashboardLayout
+            title='Affaires'
+            customHeader={<AffairesStats/>}
+        >
 
             <TableLayout
                 header={{
                     title: 'Liste des affaires',
-                    customComponent: <AffairesFilters filters={filters} setFilters={setFilters} />
+                    customComponent: <AffairesFilters filters={filters} setFilters={setFilters}/>
                 }}
             >
 
@@ -155,7 +172,7 @@ const AffairesPage: React.FC = () => {
                     editable={{
                         enabled: true,
                         onRowUpdate: async (row, newData) => {
-                            fetchApiAffairesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
+                            fetchApiAffairesPartialUpdate({pathParams: {id: row.original.id}, body: newData})
                                 .then(() => {
                                     refetch()
                                     toast.success('Affaire mise à jour')
@@ -169,7 +186,10 @@ const AffairesPage: React.FC = () => {
                     }}
                     rowExpansion={{
                         enabled: true,
-                        renderComponent: ({ row }) => <FichesTable affaireId={row.original.id} groupesMachines={groupesMachines?.results || []} refetches={[refetch]}/>
+                        renderComponent: ({row}) => <FichesTable affaireId={row.original.id}
+                                                                 groupesMachines={groupesMachines?.results || []}
+                                                                 refetches={[refetch]}/>
+
                     }}
                     rowAction={{
                         enableCtrlClick: true,
@@ -180,7 +200,7 @@ const AffairesPage: React.FC = () => {
                         })
                     }}
                     styling={{
-                        table: { variant: 'simple' },
+                        table: {variant: 'simple'},
                         row: (row) => {
                             if (row.original.en_retard) return {
                                 background: row.original.couleur_affichage

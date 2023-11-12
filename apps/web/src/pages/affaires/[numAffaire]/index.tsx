@@ -7,7 +7,7 @@ import { Navigate } from '@sgm/web/router'
 import React from 'react'
 import { LoaderFunction, useLoaderData } from 'react-router-typesafe'
 import { DashboardLayout } from '../../../components/layouts'
-import { FichesTable } from '../../../components/modules'
+import { AffaireStats, FichesTable } from '../../../components/modules'
 
 export const Loader = (async ({ params }) => {
 	if (!params.numAffaire) throw new Error('numAffaire is required')
@@ -27,7 +27,10 @@ const AffairePage: React.FC = () => {
 
 	return (
 		<>
-			<DashboardLayout title={`Détails affaire n°${affaire.num_affaire}`}>
+			<DashboardLayout 
+				title={`Détails affaire n°${affaire.num_affaire}`}
+				customHeader={affaire.num_affaire ? <AffaireStats numAffaire={affaire.num_affaire}/> : undefined}	
+			>
 				<Box
 					minH='70vh'
 					w='100%'

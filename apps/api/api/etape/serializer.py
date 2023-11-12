@@ -23,6 +23,10 @@ class EtapeDetail(serializers.ModelSerializer):
 
 
 class EtapeDetailAjustage(serializers.ModelSerializer):
+    """
+    Serializer pour les étapes, dans l'ordre num_etape
+    """
+
     affectation_id = serializers.IntegerField(read_only=True)
     user_id = serializers.IntegerField(read_only=True)
     cout_etape = serializers.FloatField(read_only=True)

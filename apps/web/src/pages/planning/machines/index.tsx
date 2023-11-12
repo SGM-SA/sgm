@@ -1,5 +1,5 @@
 import { Flex, HStack, Icon, Input, Spinner, Text, VStack } from '@chakra-ui/react'
-import { fetchApiAffectationsMachinesCreate, fetchApiAffectationsMachinesDestroy, fetchApiAffectationsMachinesPartialUpdate, fetchApiSalariesFormOptionsList, useApiFichesMachineAPlanifierList, useApiPlanningMachineList } from '@sgm/openapi'
+import { fetchApiAffectationsMachinesCreate, fetchApiAffectationsMachinesDestroy, fetchApiAffectationsMachinesPartialUpdate, fetchApiGroupeMachineList, fetchApiSalariesFormOptionsList, useApiFichesMachineAPlanifierList, useApiPlanningMachineList } from '@sgm/openapi'
 import { BaseBoardCardType, Board, BoardColumnType, CUSTOM_FIRST_COLUMN_ID, TextLink } from '@sgm/ui'
 import { Link } from '@sgm/web/router'
 import { Select } from 'chakra-react-select'
@@ -13,7 +13,10 @@ import { DashboardLayout } from '../../../components/layouts'
 import { PlanningNestedEtapeColumn } from '../../../components/modules'
 
 export const Loader = (() => {
-    return fetchApiSalariesFormOptionsList({})
+    return Promise.all([
+        fetchApiSalariesFormOptionsList({}),
+        fetchApiGroupeMachineList({})
+    ])
 }) satisfies LoaderFunction
 
 export type PlanningMachineCard = BaseBoardCardType & {
@@ -27,7 +30,7 @@ export type PlanningMachineCard = BaseBoardCardType & {
 
 const PlanningMachinesPage: React.FC = () => {
 
-    const employees = useLoaderData<typeof Loader>()
+    const [employees, groupesMachines] = useLoaderData<typeof Loader>()
 
     const [date, setDate] = useState(dayjs())
     const machines = useApiPlanningMachineList({ queryParams: { date: date.format('YYYY-MM-DD') } })
@@ -43,15 +46,20 @@ const PlanningMachinesPage: React.FC = () => {
             const itemsToPlanColumn: BoardColumnType<PlanningMachineCard> = {
                 id: CUSTOM_FIRST_COLUMN_ID,
                 title: 'A planifier',
-                cards: itemsToPlan.data.flatMap(affaire => affaire.fiches.flatMap(fiche => fiche.etapes.map(etape => ({
-                    id: etape.id,
-                    title: `Etape n°${etape.num_etape}${etape.temps ? ` - ${etape.temps}(h)` : ''}${etape.groupe_machine ? ` - ${etape.groupe_machine}` : ''}`,
-                    isLoading: false,
-                    numEtape: etape.num_etape,
-                    numAffaire: affaire.num_affaire,
-                    ficheId: fiche.id,
-                    ficheName: fiche.titre,
-                }))))
+                cards: itemsToPlan.data.flatMap(affaire => affaire.fiches.flatMap(fiche => fiche.etapes.map(etape => {
+
+                    const groupeMachine = groupesMachines.results?.find(groupeMachine => groupeMachine.id === etape.groupe_machine)
+
+                    return {
+                        id: etape.id,
+                        title: `Etape n°${etape.num_etape}${etape.temps ? ` - ${etape.temps}(h)` : ''}${groupeMachine ? ` - ${groupeMachine.nom_groupe}` : ''}`,
+                        isLoading: false,
+                        numEtape: etape.num_etape,
+                        numAffaire: affaire.num_affaire,
+                        ficheId: fiche.id,
+                        ficheName: fiche.titre,
+                    }
+                })))
             }
 
             const machineColumns: BoardColumnType<PlanningMachineCard>[] = machines.data.map((machine) => ({
@@ -68,12 +76,17 @@ const PlanningMachinesPage: React.FC = () => {
                     id: etape.id,
                     title: <VStack alignItems='flex-start' gap={0}>
                         <HStack justifyContent='flex-start'>
-                            {affaire.num_affaire &&
+                            {affaire.num_affaire && <>
                                 <Link to='/affaires/:numAffaire' params={{ numAffaire: String(affaire.num_affaire) }}>
-                                    <TextLink>{affaire.num_affaire} /</TextLink>
+                                    <TextLink>{affaire.num_affaire}</TextLink>
+                                </Link>
+                                /
+                            </>}
+                            {fiche.titre &&
+                                <Link to='/affaires/:numAffaire/fiches/:id' params={{ numAffaire: String(affaire.num_affaire), id: String(fiche.id) }}>
+                                    <TextLink>{fiche.titre}</TextLink>
                                 </Link>
                             }
-                            {fiche.titre && <Text as='span'>{fiche.titre}</Text>}
                         </HStack>
                         <Text>n°{etape.num_etape} - {etape.temps}(h)</Text>
                     </VStack>,

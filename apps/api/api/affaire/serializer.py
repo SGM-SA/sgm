@@ -32,11 +32,6 @@ class AffaireDetailsSerializer(serializers.ModelSerializer):
 
     couleur_affichage = serializers.CharField(read_only=True)
 
-    charge_affaire_detail = CustomUserDetailSerializer(
-        source="charge_affaire",
-        read_only=True,
-    )
-
     temps_ajustage = serializers.SerializerMethodField()
     temps_machine = serializers.SerializerMethodField()
     temps_restant = serializers.SerializerMethodField()
@@ -70,7 +65,7 @@ class AffaireDetailsSerializer(serializers.ModelSerializer):
             "date_rendu",
             "date_modification",
             "date_cloture",
-            "charge_affaire_detail",
+            "charge_affaire",
             "avancement_affaire",
             "cout_affaire",
             "temps_ajustage",
@@ -87,11 +82,6 @@ class AffaireFichesSerializer(serializers.ModelSerializer):
 
     fiches = FicheDetailSerializer(Fiche, many=True, read_only=True)
 
-    charge_affaire_detail = CustomUserDetailSerializer(
-        source="charge_affaire",
-        read_only=True,
-    )
-
     class Meta:
         model = Affaire
         fields = [
@@ -99,7 +89,7 @@ class AffaireFichesSerializer(serializers.ModelSerializer):
             "num_affaire",
             "validation_ingenieur",
             "fiches",
-            "charge_affaire_detail",
+            "charge_affaire",
         ]
 
 
@@ -109,10 +99,6 @@ class AffaireFichesEtapesSerializer(serializers.ModelSerializer):
     """
 
     fiches = FicheEtEtapesSerializer(Fiche, many=True, read_only=True)
-    charge_affaire_detail = CustomUserDetailSerializer(
-        source="charge_affaire",
-        read_only=True,
-    )
 
     class Meta:
         model = Affaire
@@ -122,7 +108,7 @@ class AffaireFichesEtapesSerializer(serializers.ModelSerializer):
             "validation_ingenieur",
             "description",
             "fiches",
-            "charge_affaire_detail",
+            "charge_affaire",
         ]
 
 
@@ -132,7 +118,6 @@ class AffaireFichesEtapesMachineSerializer(serializers.ModelSerializer):
     """
 
     fiches = FicheEtEtapesMachineSerializer(Fiche, many=True, read_only=True)
-    charge_affaire = serializers.SlugRelatedField(read_only=True, slug_field="name")
 
     class Meta:
         model = Affaire
@@ -152,7 +137,6 @@ class AffaireFichesEtapesAjustageSerializer(serializers.ModelSerializer):
     """
 
     fiches = FicheEtEtapesAjustageSerializer(Fiche, many=True, read_only=True)
-    charge_affaire = serializers.SlugRelatedField(read_only=True, slug_field="name")
 
     class Meta:
         model = Affaire
