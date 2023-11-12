@@ -189,7 +189,6 @@ const AffairesPage: React.FC = () => {
                         renderComponent: ({row}) => <FichesTable affaireId={row.original.id}
                                                                  groupesMachines={groupesMachines?.results || []}
                                                                  refetches={[refetch]}/>
-
                     }}
                     rowAction={{
                         enableCtrlClick: true,
