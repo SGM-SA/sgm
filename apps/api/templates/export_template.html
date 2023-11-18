@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+         @page {
+    size: A4 landscape;
+    margin: 30mm;
+}
+        body {
+    font-family: Arial, sans-serif;
+}
+
+header h1, header h2 {
+    text-align: center;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 8px;
+    text-align: center;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+table {
+    page-break-inside: avoid;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SGM Affaire: {{ fiche.affaire.num_affaire }}</h1>
+        <h2>{{ fiche.titre }}</h2>
+    </header>
+    <table>
+        <thead>
+            <tr>
+                <th>N°etape</th>
+                <th>Plan</th>
+                <th>GP Machine</th>
+                <th>Description</th>
+                <th>Quantité</th>
+                <th>Temps</th>
+                <th>QR Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for etape in etapes %}
+            <tr>
+                <td>{{ etape.num_etape }}</td>
+                <td>{{ etape.plan }}</td>
+                <td>{{ etape.groupe_machine }}</td>
+                <td>{{ etape.description }}</td>
+                <td>{{ etape.quantite }}</td>
+                <td>{{ etape.temps }}</td>
+                <td><img src="data:image/png;base64,{{ etape.qr_code_base64 }}" alt="QR Code"></td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

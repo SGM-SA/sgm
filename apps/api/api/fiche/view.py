@@ -7,7 +7,7 @@ from api.fiche.models import Fiche
 from api.affaire.models import Affaire
 from api.affaire.serializer import AffaireFichesEtapesSerializer
 from api.fiche.serializer import FicheEtEtapesAjustageSerializer, FicheCRUDSerializer
-from api.fiche.export import export_pdf
+from api.fiche.exports.export import export_pdf
 from rest_framework import generics, status
 from drf_spectacular.utils import (
     extend_schema_view,
