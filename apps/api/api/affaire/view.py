@@ -59,7 +59,6 @@ from api.utils.view import LargeResultsSetPagination
     )
 )
 class AffaireList(generics.ListAPIView):
-    queryset = Affaire.objects.all().order_by("date_rendu")
     serializer_class = AffaireDetailsSerializer
     pagination_class = LargeResultsSetPagination
     filter_backends = [
@@ -74,6 +73,17 @@ class AffaireList(generics.ListAPIView):
         "num_affaire",
     ]
     search_fields = ["num_affaire", "client", "description", "charge_affaire"]
+
+    def get_queryset(self):
+        queryset = Affaire.objects.all().order_by("date_rendu")
+
+        # S'il n'y a pas de filtre sur le statut ou s'il est à null, on applique un filtre par défaut
+        status_filter = self.request.query_params.get("statut", None)
+        if status_filter is None:
+            # Applique un filtre par défaut sur les affaires en cours
+            queryset = queryset.filter(statut__in=Affaire.STATUS_EN_COURS)
+
+        return queryset
 
 
 @extend_schema(

@@ -33,6 +33,19 @@ class Affaire(models.Model):
         ("ECH", "chantier"),
     )
 
+    # tous les status Exx sont des affaires en cours
+    STATUS_EN_COURS = [
+        "EHA",
+        "E00",
+        "EAA",
+        "EAC",
+        "ECC",
+        "ECA",
+        "ED",
+        "EST",
+        "ECH",
+    ]
+
     num_affaire = models.IntegerField(
         "Numéro d'affaire correspondant à l'affaire dans la base de données de SGM",
         unique=True,
@@ -133,7 +146,7 @@ class Affaire(models.Model):
         :return: bool - True si en retard, False sinon.
         """
 
-        if self.avancement_affaire() == 100:
+        if self.avancement_affaire() == 100 or self.statut not in self.STATUS_EN_COURS:
             return False
 
         if self.date_rendu is None or self.date_rendu < datetime.date(datetime.now()):
