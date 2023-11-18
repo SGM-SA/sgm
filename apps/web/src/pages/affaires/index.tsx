@@ -81,13 +81,6 @@ const columns = [
             sortable: true
         })
     }),
-    columnHelper.accessor('cout_affaire', {
-        id: 'cout_affaire',
-        header: 'Coût',
-        meta: createColumnMeta({
-            sortable: true
-        })
-    }),
     columnHelper.accessor('statut', {
         id: 'statut',
         header: 'Statut',
