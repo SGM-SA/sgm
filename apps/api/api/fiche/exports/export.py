@@ -1,4 +1,5 @@
 import base64
+from datetime import datetime
 
 import qrcode
 from django.contrib.staticfiles import finders
@@ -45,13 +46,11 @@ def export_pdf(fiche: Fiche):
     context = {
         "fiche": fiche,
         "etapes": etapes,
+        "date": datetime.now(),
     }
 
     # Créez un document HTML à partir du template
     html_string = render_to_string("export_template.html", context)
-
-    print(html_string)
-    pdf = HTML(string=html_string).write_pdf("./test.pdf")
 
     # Générez le PDF
 
