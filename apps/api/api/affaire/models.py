@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import datetime, timedelta
 from django.core.validators import MinValueValidator
+from django.db.models import Q
+
 from api.user.models import CustomUser
 from constance import config
 
@@ -146,17 +148,10 @@ class Affaire(models.Model):
         :return: bool - True si en retard, False sinon.
         """
 
-        if self.avancement_affaire() == 100 or self.statut not in self.STATUS_EN_COURS:
-            return False
-
-        if self.date_rendu is None or self.date_rendu < datetime.date(datetime.now()):
-            return True
-
-        nombre_heures_jusqua_delai = (
-            self.jours_ouvrables_restants() * 21
-        )  # 21 heures par jour
-
-        return self.temps_restant() > nombre_heures_jusqua_delai
+        return Affaire.objects.filter(en_retard_filter, id=self.id).exists() or (
+            Affaire.objects.filter(en_retard_filter, id=self.id).exists()
+            and self.temps_restant() > self.jours_ouvrables_restants() * 21
+        )
 
     def jours_ouvrables_restants(self):
         """
@@ -217,3 +212,8 @@ class Affaire(models.Model):
 
     def __str__(self):
         return f"{self.num_affaire} - {self.statut} - {self.date_creation} - {self.date_rendu} - {self.date_cloture}"
+
+
+filter_avancement_statut = Q(statut__in=Affaire.STATUS_EN_COURS)
+filter_date_rendu = Q(date_rendu=None) | Q(date_rendu__lt=datetime.date(datetime.now()))
+en_retard_filter = filter_avancement_statut  # pour l'instant on ne met pas

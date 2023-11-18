@@ -1,6 +1,7 @@
+from django.db.models import Case, When, Value, BooleanField
 from django.http import Http404
 
-from api.affaire.models import Affaire
+from api.affaire.models import Affaire, en_retard_filter
 from api.affaire.serializer import (
     AffaireDetailsSerializer,
     AffaireFichesSerializer,
@@ -75,7 +76,16 @@ class AffaireList(generics.ListAPIView):
     search_fields = ["num_affaire", "client", "description", "charge_affaire"]
 
     def get_queryset(self):
-        queryset = Affaire.objects.all().order_by("date_rendu")
+
+        is_en_retard = Case(
+            When(en_retard_filter, then=Value(True)),
+            default=Value(False),
+            output_field=BooleanField(),
+        )
+
+        queryset = Affaire.objects.annotate(is_en_retard=is_en_retard).order_by(
+            "-is_en_retard", "date_rendu", "num_affaire"
+        )
 
         # S'il n'y a pas de filtre sur le statut ou s'il est à null, on applique un filtre par défaut
         status_filter = self.request.query_params.get("statut", None)
