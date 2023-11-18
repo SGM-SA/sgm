@@ -1,8 +1,9 @@
 from datetime import timedelta
+
 from rest_framework import serializers
+from api.affaire.filters import en_retard_filter
 from api.fiche.models import Fiche
 from api.affaire.models import Affaire
-from api.user.serializer import CustomUserDetailSerializer
 from api.fiche.serializer import (
     FicheEtEtapesMachineSerializer,
     FicheDetailSerializer,
@@ -198,9 +199,14 @@ class AffaireStatsGlobalSerializer(serializers.Serializer):
         ).count()
 
     def get_en_retard(self, obj) -> int:
-        return Affaire.objects.filter(
-            date_rendu__lt=timezone.now(), date_cloture=None
-        ).count()
+        affaire_count = len(
+            [
+                affaire
+                for affaire in Affaire.objects.filter(en_retard_filter)
+                if affaire.avancement_affaire() != 100
+            ]
+        )
+        return affaire_count
 
 
 class AffaireStatsSerializer(serializers.Serializer):
