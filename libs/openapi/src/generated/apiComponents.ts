@@ -27,7 +27,7 @@ export type ApiAffairesListQueryParams = {
 	 */
 	per_page?: string
 	/**
-	 * Recherche dans les champs num_affaire, client, description
+	 * Recherche dans les champs num_affaire, client, description, chargé d'affaire
 	 */
 	search?: string
 	/**

@@ -34,7 +34,8 @@ paths:
         name: search
         schema:
           type: string
-        description: Recherche dans les champs num_affaire, client, description
+        description: Recherche dans les champs num_affaire, client, description, chargé
+          d'affaire
       - in: query
         name: statut
         schema:
