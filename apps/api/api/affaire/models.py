@@ -147,11 +147,13 @@ class Affaire(models.Model):
         On travaille 21h par jour, 5j/semaine.
         :return: bool - True si en retard, False sinon.
         """
-
-        return Affaire.objects.filter(en_retard_filter, id=self.id).exists() or (
+        if (
             Affaire.objects.filter(en_retard_filter, id=self.id).exists()
-            and self.temps_restant() > self.jours_ouvrables_restants() * 21
-        )
+            and self.temps_restant() < self.jours_ouvrables_restants() * 21
+        ):
+            return False
+        else:
+            return Affaire.objects.filter(en_retard_filter, id=self.id).exists()
 
     def jours_ouvrables_restants(self):
         """
