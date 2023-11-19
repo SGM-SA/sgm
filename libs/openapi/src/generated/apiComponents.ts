@@ -27,7 +27,7 @@ export type ApiAffairesListQueryParams = {
 	 */
 	per_page?: string
 	/**
-	 * Recherche dans les champs num_affaire, client, description
+	 * Recherche dans les champs num_affaire, client, description, chargé d'affaire
 	 */
 	search?: string
 	/**
@@ -3699,6 +3699,76 @@ export const useApiPlanningMachineList = <
 	})
 }
 
+export type ApiPlanningMachinePdfRetrieveQueryParams = {
+	/**
+	 * id
+	 */
+	id: number
+	/**
+	 * semaine_affectation
+	 *
+	 * @format date
+	 */
+	semaine_affectation: string
+}
+
+export type ApiPlanningMachinePdfRetrieveError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiPlanningMachinePdfRetrieveVariables = {
+	queryParams: ApiPlanningMachinePdfRetrieveQueryParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Exporte le planning machine en pdf
+ */
+export const fetchApiPlanningMachinePdfRetrieve = (
+	variables: ApiPlanningMachinePdfRetrieveVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		undefined,
+		ApiPlanningMachinePdfRetrieveError,
+		undefined,
+		{},
+		ApiPlanningMachinePdfRetrieveQueryParams,
+		{}
+	>({ url: '/api/planning/machine/pdf', method: 'get', ...variables, signal })
+
+/**
+ * Exporte le planning machine en pdf
+ */
+export const useApiPlanningMachinePdfRetrieve = <TData = undefined>(
+	variables: ApiPlanningMachinePdfRetrieveVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			undefined,
+			ApiPlanningMachinePdfRetrieveError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		undefined,
+		ApiPlanningMachinePdfRetrieveError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/planning/machine/pdf',
+			operationId: 'apiPlanningMachinePdfRetrieve',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiPlanningMachinePdfRetrieve(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
 export type ApiPlanningZoneListQueryParams = {
 	/**
 	 * date
@@ -3759,6 +3829,76 @@ export const useApiPlanningZoneList = <TData = ApiPlanningZoneListResponse>(
 		}),
 		queryFn: ({ signal }) =>
 			fetchApiPlanningZoneList(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
+export type ApiPlanningZonePdfRetrieveQueryParams = {
+	/**
+	 * id
+	 */
+	id: number
+	/**
+	 * semaine_affectation
+	 *
+	 * @format date
+	 */
+	semaine_affectation: string
+}
+
+export type ApiPlanningZonePdfRetrieveError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiPlanningZonePdfRetrieveVariables = {
+	queryParams: ApiPlanningZonePdfRetrieveQueryParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Exporte le planning zone en pdf
+ */
+export const fetchApiPlanningZonePdfRetrieve = (
+	variables: ApiPlanningZonePdfRetrieveVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		undefined,
+		ApiPlanningZonePdfRetrieveError,
+		undefined,
+		{},
+		ApiPlanningZonePdfRetrieveQueryParams,
+		{}
+	>({ url: '/api/planning/zone/pdf', method: 'get', ...variables, signal })
+
+/**
+ * Exporte le planning zone en pdf
+ */
+export const useApiPlanningZonePdfRetrieve = <TData = undefined>(
+	variables: ApiPlanningZonePdfRetrieveVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			undefined,
+			ApiPlanningZonePdfRetrieveError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		undefined,
+		ApiPlanningZonePdfRetrieveError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/planning/zone/pdf',
+			operationId: 'apiPlanningZonePdfRetrieve',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiPlanningZonePdfRetrieve(
 				{ ...fetcherOptions, ...variables },
 				signal
 			),
@@ -4682,9 +4822,19 @@ export type QueryOperation =
 			variables: ApiPlanningMachineListVariables
 	  }
 	| {
+			path: '/api/planning/machine/pdf'
+			operationId: 'apiPlanningMachinePdfRetrieve'
+			variables: ApiPlanningMachinePdfRetrieveVariables
+	  }
+	| {
 			path: '/api/planning/zone'
 			operationId: 'apiPlanningZoneList'
 			variables: ApiPlanningZoneListVariables
+	  }
+	| {
+			path: '/api/planning/zone/pdf'
+			operationId: 'apiPlanningZonePdfRetrieve'
+			variables: ApiPlanningZonePdfRetrieveVariables
 	  }
 	| {
 			path: '/api/pointages/export'

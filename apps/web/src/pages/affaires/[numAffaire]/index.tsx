@@ -27,9 +27,9 @@ const AffairePage: React.FC = () => {
 
 	return (
 		<>
-			<DashboardLayout 
+			<DashboardLayout
 				title={`Détails affaire n°${affaire.num_affaire}`}
-				customHeader={affaire.num_affaire ? <AffaireStats numAffaire={affaire.num_affaire}/> : undefined}	
+				customHeader={affaire.num_affaire ? <AffaireStats numAffaire={affaire.num_affaire}/> : undefined}
 			>
 				<Box
 					minH='70vh'

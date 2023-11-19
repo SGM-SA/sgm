@@ -18,3 +18,6 @@ class GroupeMachine(models.Model):
     prix_theorique = models.IntegerField(
         "Prix théorique / heure", blank=False, null=False, default=0
     )
+
+    def __str__(self):
+        return self.nom_groupe

@@ -34,7 +34,8 @@ paths:
         name: search
         schema:
           type: string
-        description: Recherche dans les champs num_affaire, client, description
+        description: Recherche dans les champs num_affaire, client, description, chargé
+          d'affaire
       - in: query
         name: statut
         schema:
@@ -1810,6 +1811,35 @@ paths:
                 items:
                   $ref: '#/components/schemas/PlanningMachine'
           description: ''
+  /api/planning/machine/pdf:
+    get:
+      operationId: api_planning_machine_pdf_retrieve
+      description: Exporte le planning machine en pdf
+      summary: Planning machine PDF
+      parameters:
+      - in: query
+        name: id
+        schema:
+          type: integer
+        description: id
+        required: true
+      - in: query
+        name: semaine_affectation
+        schema:
+          type: string
+          format: date
+        description: semaine_affectation
+        required: true
+      tags:
+      - Planning
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+        '400':
+          description: No response body
   /api/planning/zone:
     get:
       operationId: api_planning_zone_list
@@ -1837,6 +1867,35 @@ paths:
                 items:
                   $ref: '#/components/schemas/PlanningZone'
           description: ''
+  /api/planning/zone/pdf:
+    get:
+      operationId: api_planning_zone_pdf_retrieve
+      description: Exporte le planning zone en pdf
+      summary: Planning zone PDF
+      parameters:
+      - in: query
+        name: id
+        schema:
+          type: integer
+        description: id
+        required: true
+      - in: query
+        name: semaine_affectation
+        schema:
+          type: string
+          format: date
+        description: semaine_affectation
+        required: true
+      tags:
+      - Planning
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+        '400':
+          description: No response body
   /api/pointages/:
     post:
       operationId: api_pointages_create

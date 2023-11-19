@@ -52,7 +52,7 @@ const PlanningZonesPage: React.FC = () => {
 
                     return {
                         id: etape.id,
-                        title: `Etape n°${etape.num_etape}${etape.temps ? ` - ${etape.temps}(h)` : ''}${groupeMachine ? ` - ${groupeMachine.nom_groupe}` : ''}`,
+                        title: `Etape n°${etape.num_etape}${etape.temps ? ` - ${etape.temps * etape.quantite!}h` : ''}${groupeMachine ? ` - ${groupeMachine.nom_groupe}` : ''}`,
                         isLoading: false,
                         numEtape: etape.num_etape,
                         numAffaire: affaire.num_affaire,
@@ -87,7 +87,7 @@ const PlanningZonesPage: React.FC = () => {
                                 </Link>
                             }
                         </HStack>
-                        <Text>n°{etape.num_etape} - {etape.temps}(h)</Text>
+                        <Text>n°{etape.num_etape} - {etape.temps! * etape.quantite!}h</Text>
                     </VStack>,
                     isLoading: false,
                     affectationId: etape.affectation_id,

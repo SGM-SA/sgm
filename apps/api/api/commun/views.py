@@ -1,3 +1,7 @@
+from typing import Callable
+
+from django.db.models import QuerySet
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -51,3 +55,32 @@ class BulkDeleteView(APIView):
                 return Response(status=HTTP_204_NO_CONTENT)
             except Exception as e:
                 return Response(status=HTTP_400_BAD_REQUEST, data={"error": str(e)})
+
+
+class ExportPdfView(APIView):
+    """
+    Export pdf d'un objet
+
+    queryset: queryset des objets à exporter
+    export_pdf: fonction qui exporte l'objet en pdf
+    """
+
+    queryset: QuerySet
+    export_pdf: Callable
+    extra_query_params: dict = {}
+
+    def get(self, request, *args, **kwargs):
+        """
+        Exporte un objet en pdf
+        """
+        obj_id = request.query_params.get("id")
+
+        # check if obj exists
+        try:
+            obj = self.queryset.get(id=obj_id)
+        except self.queryset.model.DoesNotExist:
+            return Response(
+                {"detail": "L'objet n'existe pas"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return self.export_pdf(obj, **self.extra_query_params)

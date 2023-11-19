@@ -1,5 +1,6 @@
 import { Button, ThemeComponentProps } from '@chakra-ui/react'
-import { fetchApiFichesExportRetrieve } from '@sgm/openapi'
+import { environment } from '@sgm/web/environments'
+
 import React from 'react'
 
 type PrintFicheButtonProps = {
@@ -10,19 +11,14 @@ type PrintFicheButtonProps = {
 export const PrintFicheButton: React.FC<PrintFicheButtonProps> = (props) => {
 
   const handleClick = async () => {
-    const res = (await fetchApiFichesExportRetrieve({ queryParams: { fiche_id: props.ficheId }})) as { data: string ; headers: { 'content-disposition': string } } | undefined
-    if (!res) return
+    // Note: this is a hack to download the file, i could not use blob because of codegen
+      const link = document.createElement('a')
+      link.href = `${environment.apiBaseUrl}${"/api/fiches/export"}?fiche_id=${props.ficheId}`
+      link.target = '_blank'
+      link.download = 'fiche.pdf'
+    link.click()
+      link.remove()
 
-    // cursed technique but hey, it works
-    const url = window.URL.createObjectURL(new Blob([res.data])),
-          fileName = res.headers['content-disposition'].split('filename=')[1].split(';')[0].replace(/"/g, '')
-
-          const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', fileName); //
-    document.body.appendChild(link);
-
-    link.click();
   }
 
 	return <>
