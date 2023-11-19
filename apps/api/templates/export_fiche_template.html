@@ -44,9 +44,9 @@
             background-color: #f2f2f2;
         }
 
-        table {
-            page-break-inside: avoid;
-        }
+       .cell {
+            page-break-inside: auto;
+       }
 
         .description-row td {
             text-align: left;
@@ -80,17 +80,19 @@
         </thead>
         <tbody>
             {% for etape in etapes %}
-            <tr>
-                <td>{{ etape.num_etape }}</td>
-                <td>{{ etape.plan }}</td>
-                <td>{{ etape.groupe_machine }}</td>
-                <td>{{ etape.quantite }}</td>
-                <td>{{ etape.temps }}</td>
-                <td><img src="data:image/png;base64,{{ etape.qr_code_base64 }}" alt="QR Code"></td>
-            </tr>
-            <tr class="description-row">
-                <td colspan="6">{{ etape.description|linebreaksbr }}</td>
-            </tr>
+
+                <tr>
+                    <td>{{ etape.num_etape }}</td>
+                    <td>{{ etape.plan }}</td>
+                    <td>{{ etape.groupe_machine }}</td>
+                    <td>{{ etape.quantite }}</td>
+                    <td>{{ etape.temps }}</td>
+                    <td><img src="data:image/png;base64,{{ etape.qr_code_base64 }}" alt="QR Code"></td>
+                </tr>
+                <tr class="description-row">
+                    <td colspan="6">{{ etape.description|linebreaks }}</td>
+                </tr>
+
             {% endfor %}
         </tbody>
     </table>
