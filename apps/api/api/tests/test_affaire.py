@@ -14,11 +14,13 @@ class AffaireListTestCase(APITestCase):
             num_affaire=1,
             description="Test affaire 1",
             observation="Observation affaire 1",
+            statut="E00",
         )
         self.affaire2 = Affaire.objects.create(
             num_affaire=2,
             description="Test affaire 2",
             observation="Observation affaire 2",
+            statut="E00",
         )
 
     def test_list_affaires(self):
@@ -49,25 +51,27 @@ class AffaireListTestCase(APITestCase):
 
 class AffaireStatsGlobalTestCase(APITestCase):
     def setUp(self) -> None:
+        # une affaire en cours doit avoir Exx comme statut
         Affaire.objects.create(
             num_affaire=1,
             description="Test affaire 1",
             observation="Observation affaire 1",
-            statut="S00",
+            statut="P00",
         )
 
         Affaire.objects.create(
             num_affaire=2,
             description="Test affaire 2",
             observation="Observation affaire 2",
-            statut="A00",
+            statut="P00",
         )
 
+        # terminée
         Affaire.objects.create(
             num_affaire=3,
             description="Test affaire 3",
             observation="Observation affaire 3",
-            statut="T00",
+            statut="P00",
             date_cloture=timezone.now(),
         )
 
@@ -76,7 +80,7 @@ class AffaireStatsGlobalTestCase(APITestCase):
             num_affaire=10,
             description="Test affaire 1",
             observation="Observation affaire 1",
-            statut="S00",
+            statut="E00",
             date_rendu=timezone.now() - timezone.timedelta(days=7),
         )
 
@@ -86,9 +90,8 @@ class AffaireStatsGlobalTestCase(APITestCase):
 
         data = response.json()
 
-        self.assertEqual(data["par_statut"]["S00"], 2)
-        self.assertEqual(data["par_statut"]["A00"], 1)
-        self.assertEqual(data["par_statut"]["T00"], 1)
+        self.assertEqual(data["par_statut"]["P00"], 3)
+        self.assertEqual(data["par_statut"]["E00"], 1)
         self.assertEqual(data["par_statut"]["INT"], 0)
 
         self.assertEqual(data["terminees_cette_semaine"], 1)

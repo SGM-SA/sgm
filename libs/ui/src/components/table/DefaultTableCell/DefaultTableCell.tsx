@@ -156,8 +156,10 @@ export function EditableTableCell<TData>(props: DefaultTableCellProps<TData>) {
                         }}
                         ref={fileInputRef}
                         onChange={e => {
-                            setValue(e.target.value)
-                            onUpdate(e.target.value)
+                            const fileName = e.target.files?.[0].name || e.target.value.replace('C:\\fakepath\\', '')
+
+                            setValue(fileName)
+                            onUpdate(fileName)
                         }}
                     />
                     <Button

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 10mm;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333333;
+        }
+
+        header h1, header h2 {
+            text-align: center;
+            color: #0056b3; /* Dark blue color for titles */
+        }
+
+        img {
+            width: 30%; /* Adjusted size for QR code */
+            height: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 5px;
+        }
+
+        table, th, td {
+            border: 1px solid #dddddd;
+            /* rounded corners */
+
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        thead {
+            background-color: #f2f2f2;
+        }
+
+       .cell {
+            page-break-inside: auto;
+       }
+
+        .description-row td {
+            text-align: left;
+            padding: 10px;
+            border-top: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: small;
+            color: #555555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SGM Affaire: {{ fiche.affaire.num_affaire }}</h1>
+        <h2>{{ fiche.titre }}</h2>
+    </header>
+    <table>
+        <thead>
+            <tr>
+                <th>N°etape</th>
+                <th>Plan</th>
+                <th>GP Machine</th>
+                <th>Quantité</th>
+                <th>Temps</th>
+                <th>QR Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for etape in etapes %}
+
+                <tr>
+                    <td>{{ etape.num_etape }}</td>
+                    <td>{{ etape.plan }}</td>
+                    <td>{{ etape.groupe_machine }}</td>
+                    <td>{{ etape.quantite }}</td>
+                    <td>{{ etape.temps }}</td>
+                    <td><img src="data:image/png;base64,{{ etape.qr_code_base64 }}" alt="QR Code"></td>
+                </tr>
+                <tr class="description-row">
+                    <td colspan="6">{{ etape.description|linebreaks }}</td>
+                </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+    <footer>
+        <p>Imprimé le {{ date|date:"d/m/Y" }} à {{ date|date:"H:i" }}</p>
+    </footer>
+</body>
+</html>
