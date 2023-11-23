@@ -7,6 +7,7 @@ from api.affectation.models import AffectationAjustage
 from api.etape.models import Etape
 from api.fiche.models import Fiche
 from api.groupe_machine.models import GroupeMachine
+from api.user.models import CustomUser
 from api.zone.models import Zone
 
 
@@ -15,6 +16,8 @@ class AffectationAjustageTest(APITestCase):
         self.groupe_machine_ajustage = GroupeMachine.objects.create(
             nom_groupe="Ajustage", prix_theorique=100
         )
+
+        self.user = CustomUser.objects.create_user(email="test@test.fr", password="")
 
         self.zone = Zone.objects.create(nom="Zone test", description="Description test")
         self.zone2 = Zone.objects.create(
@@ -258,6 +261,54 @@ class AffectationAjustageTest(APITestCase):
         self.assertEqual(affectation1.previous.id, affectation3.id)
         self.assertEqual(affectation2.previous.id, affectation1.id)
         self.assertEqual(affectation3.previous, None)
+
+    def test_update_affectation_ajustage_sans_previous(self):
+        """
+        Teste la mise à jour du field user de l'affectation.
+
+        """
+
+        affectation1 = AffectationAjustage.objects.create(
+            etape=self.etape1,
+            zone=self.zone,
+            semaine_affectation="2021-01-01",
+        )
+
+        affectation2 = AffectationAjustage.objects.create(
+            etape=self.etape2,
+            zone=self.zone,
+            semaine_affectation="2021-01-01",
+            previous=affectation1,
+        )
+
+        etape3 = Etape.objects.create(
+            fiche=self.fiche,
+            zone=self.zone,
+            num_etape=3,
+        )
+
+        affectation3 = AffectationAjustage.objects.create(
+            etape=etape3,
+            zone=self.zone,
+            semaine_affectation="2021-01-01",
+            previous=affectation2,
+        )
+
+        url = f"/api/affectations/ajustages/{affectation3.id}"
+        data = {
+            "user": self.user.id,
+        }
+        response = self.client.patch(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        affectation3.refresh_from_db()
+        affectation2.refresh_from_db()
+        affectation1.refresh_from_db()
+
+        self.assertEqual(affectation1.previous, None)
+        self.assertEqual(affectation2.previous.id, affectation1.id)
+        self.assertEqual(affectation3.user, self.user)
+        self.assertEqual(affectation3.previous, affectation2)
 
     def test_update_previous_affectation_ajustage_de_haut_vers_bas_liste(self):
         """
