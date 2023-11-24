@@ -885,6 +885,105 @@ export const useApiAffectationsMachinesDestroy = (
 	})
 }
 
+export type ApiConfigListError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiConfigListResponse = Schemas.Constance[]
+
+export type ApiConfigListVariables = ApiContext['fetcherOptions']
+
+/**
+ * Traite la requête LIST : Liste toutes les configurations.
+ */
+export const fetchApiConfigList = (
+	variables: ApiConfigListVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<ApiConfigListResponse, ApiConfigListError, undefined, {}, {}, {}>({
+		url: '/api/config/',
+		method: 'get',
+		...variables,
+		signal,
+	})
+
+/**
+ * Traite la requête LIST : Liste toutes les configurations.
+ */
+export const useApiConfigList = <TData = ApiConfigListResponse>(
+	variables: ApiConfigListVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			ApiConfigListResponse,
+			ApiConfigListError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		ApiConfigListResponse,
+		ApiConfigListError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/config/',
+			operationId: 'apiConfigList',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiConfigList({ ...fetcherOptions, ...variables }, signal),
+		...options,
+		...queryOptions,
+	})
+}
+
+export type ApiConfigPartialUpdateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiConfigPartialUpdateVariables = {
+	body?: Schemas.PatchedConstanceUpdateRequest
+} & ApiContext['fetcherOptions']
+
+/**
+ * Traite la requête POST : Met à jour un paramètre de configuration spécifique.
+ */
+export const fetchApiConfigPartialUpdate = (
+	variables: ApiConfigPartialUpdateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.Constance,
+		ApiConfigPartialUpdateError,
+		Schemas.PatchedConstanceUpdateRequest,
+		{},
+		{},
+		{}
+	>({ url: '/api/config/', method: 'patch', ...variables, signal })
+
+/**
+ * Traite la requête POST : Met à jour un paramètre de configuration spécifique.
+ */
+export const useApiConfigPartialUpdate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			Schemas.Constance,
+			ApiConfigPartialUpdateError,
+			ApiConfigPartialUpdateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		Schemas.Constance,
+		ApiConfigPartialUpdateError,
+		ApiConfigPartialUpdateVariables
+	>({
+		mutationFn: (variables: ApiConfigPartialUpdateVariables) =>
+			fetchApiConfigPartialUpdate({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
 export type ApiEtapesCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiEtapesCreateVariables = {
@@ -4730,6 +4829,11 @@ export type QueryOperation =
 			path: '/api/affaires/stats/'
 			operationId: 'apiAffairesStatsRetrieve'
 			variables: ApiAffairesStatsRetrieveVariables
+	  }
+	| {
+			path: '/api/config/'
+			operationId: 'apiConfigList'
+			variables: ApiConfigListVariables
 	  }
 	| {
 			path: '/api/etapes/{id}'

@@ -415,6 +415,55 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/config/:
+    get:
+      operationId: api_config_list
+      description: 'Traite la requête LIST : Liste toutes les configurations.'
+      tags:
+      - Configuration
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Constance'
+          description: ''
+        '400':
+          description: No response body
+    patch:
+      operationId: api_config_partial_update
+      description: 'Traite la requête POST : Met à jour un paramètre de configuration
+        spécifique.'
+      tags:
+      - Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedConstanceUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedConstanceUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedConstanceUpdateRequest'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Constance'
+          description: ''
+        '400':
+          description: No response body
   /api/etapes/:
     post:
       operationId: api_etapes_create
@@ -2659,6 +2708,22 @@ components:
           description: Liste des ids des objets à supprimer
       required:
       - ids
+    Constance:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          oneOf:
+          - type: integer
+          - type: number
+            format: double
+          - type: boolean
+          - type: string
+          readOnly: true
+      required:
+      - key
+      - value
     CustomUserDetail:
       type: object
       properties:
@@ -4132,6 +4197,15 @@ components:
         previous:
           type: integer
           nullable: true
+    PatchedConstanceUpdateRequest:
+      type: object
+      properties:
+        key:
+          type: string
+          minLength: 1
+        value:
+          type: object
+          additionalProperties: {}
     PatchedEtapeCreateRequest:
       type: object
       properties:
