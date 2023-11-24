@@ -255,6 +255,11 @@ export type BulkDeleteRequest = {
 	ids: number[]
 }
 
+export type Constance = {
+	key: string
+	value: number | number | boolean | string
+}
+
 export type CustomUserDetail = {
 	id: number
 	/**
@@ -1246,6 +1251,16 @@ export type PatchedAffectationMachineUpdateRequest = {
 	user?: number | null
 	machine?: number
 	previous?: number | null
+}
+
+export type PatchedConstanceUpdateRequest = {
+	/**
+	 * @minLength 1
+	 */
+	key?: string
+	value?: {
+		[key: string]: any
+	}
 }
 
 export type PatchedEtapeCreateRequest = {

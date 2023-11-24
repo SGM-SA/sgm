@@ -8,8 +8,12 @@ from rest_framework.status import (
     HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST,
 )
-from drf_spectacular.utils import extend_schema
-from .serializer import BulkDeleteSerializer
+from drf_spectacular.utils import extend_schema, extend_schema_view
+from .serializer import (
+    BulkDeleteSerializer,
+    ConstanceSerializer,
+    ConstanceUpdateSerializer,
+)
 
 
 class BulkDeleteView(APIView):
@@ -84,3 +88,41 @@ class ExportPdfView(APIView):
             )
 
         return self.export_pdf(obj, **self.extra_query_params)
+
+
+class ConfigConstanceView(APIView):
+    """
+    Vue API pour les paramètres de configuration Constance
+    """
+
+    @extend_schema(
+        responses={200: ConstanceSerializer(many=True), 400: None},
+        tags=["Configuration"],
+    )
+    def get(self, request, *args, **kwargs):
+        """
+        Traite la requête LIST : Liste toutes les configurations.
+        """
+        all_config = ConstanceSerializer.list_config()
+        return Response(all_config)
+
+    @extend_schema(
+        request=ConstanceUpdateSerializer,
+        responses={200: ConstanceSerializer, 400: None},
+        tags=["Configuration"],
+    )
+    def patch(self, request, *args, **kwargs):
+        """
+        Traite la requête POST : Met à jour un paramètre de configuration spécifique.
+        """
+        serializer = ConstanceSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                config_mise_a_jour = serializer.update({}, serializer.validated_data)
+                return Response(config_mise_a_jour)
+            except AttributeError:
+                return Response(
+                    {"erreur": "Clé ou valeur invalide"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
