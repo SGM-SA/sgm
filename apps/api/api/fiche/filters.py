@@ -119,7 +119,7 @@ class EtapeAjustagePlanifierFilter(filters.BaseFilterBackend):
 
         # on exclut les étapes affectées à la semaine en cours pour ne pas les afficher dans la liste des étapes à planifier
         filter_affectation_semaine_actuelle = ~Q(
-            affectationmachine__semaine_affectation__range=week_to_date_range(
+            affectationajustage__semaine_affectation__range=week_to_date_range(
                 datetime.now().strftime("%Y-%m-%d")
             )
         )
