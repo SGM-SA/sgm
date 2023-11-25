@@ -2227,6 +2227,75 @@ export const useApiGroupeMachineDeleteCreate = (
 	})
 }
 
+export type ApiGroupeMachineMachinesRetrievePathParams = {
+	id: number
+}
+
+export type ApiGroupeMachineMachinesRetrieveError =
+	Fetcher.ErrorWrapper<undefined>
+
+export type ApiGroupeMachineMachinesRetrieveVariables = {
+	pathParams: ApiGroupeMachineMachinesRetrievePathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Cette opération permet de récupérer la liste des machines d'un GroupeMachine.
+ */
+export const fetchApiGroupeMachineMachinesRetrieve = (
+	variables: ApiGroupeMachineMachinesRetrieveVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.GroupeMachineListMachine,
+		ApiGroupeMachineMachinesRetrieveError,
+		undefined,
+		{},
+		{},
+		ApiGroupeMachineMachinesRetrievePathParams
+	>({
+		url: '/api/groupe_machine/machines/{id}/',
+		method: 'get',
+		...variables,
+		signal,
+	})
+
+/**
+ * Cette opération permet de récupérer la liste des machines d'un GroupeMachine.
+ */
+export const useApiGroupeMachineMachinesRetrieve = <
+	TData = Schemas.GroupeMachineListMachine
+>(
+	variables: ApiGroupeMachineMachinesRetrieveVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			Schemas.GroupeMachineListMachine,
+			ApiGroupeMachineMachinesRetrieveError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		Schemas.GroupeMachineListMachine,
+		ApiGroupeMachineMachinesRetrieveError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/groupe_machine/machines/{id}/',
+			operationId: 'apiGroupeMachineMachinesRetrieve',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiGroupeMachineMachinesRetrieve(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
+	})
+}
+
 export type ApiMachinesListQueryParams = {
 	/**
 	 * A page number within the paginated result set.
@@ -4874,6 +4943,11 @@ export type QueryOperation =
 			path: '/api/groupe_machine/{id}/'
 			operationId: 'apiGroupeMachineRetrieve'
 			variables: ApiGroupeMachineRetrieveVariables
+	  }
+	| {
+			path: '/api/groupe_machine/machines/{id}/'
+			operationId: 'apiGroupeMachineMachinesRetrieve'
+			variables: ApiGroupeMachineMachinesRetrieveVariables
 	  }
 	| {
 			path: '/api/machines/'

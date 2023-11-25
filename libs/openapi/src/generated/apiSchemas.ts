@@ -933,6 +933,16 @@ export type GroupeMachine = {
 	prix_theorique?: number
 }
 
+export type GroupeMachineListMachine = {
+	id: number
+	/**
+	 * @maxLength 300
+	 */
+	nom_groupe: string
+	machines: MachineDetail[]
+	prix_theorique?: number
+}
+
 export type GroupeMachineRequest = {
 	/**
 	 * @minLength 1
