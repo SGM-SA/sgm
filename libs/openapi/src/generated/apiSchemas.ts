@@ -255,6 +255,11 @@ export type BulkDeleteRequest = {
 	ids: number[]
 }
 
+export type Constance = {
+	key: string
+	value: number | number | boolean | string
+}
+
 export type CustomUserDetail = {
 	id: number
 	/**
@@ -928,6 +933,16 @@ export type GroupeMachine = {
 	prix_theorique?: number
 }
 
+export type GroupeMachineListMachine = {
+	id: number
+	/**
+	 * @maxLength 300
+	 */
+	nom_groupe: string
+	machines: MachineDetail[]
+	prix_theorique?: number
+}
+
 export type GroupeMachineRequest = {
 	/**
 	 * @minLength 1
@@ -1246,6 +1261,16 @@ export type PatchedAffectationMachineUpdateRequest = {
 	user?: number | null
 	machine?: number
 	previous?: number | null
+}
+
+export type PatchedConstanceUpdateRequest = {
+	/**
+	 * @minLength 1
+	 */
+	key?: string
+	value?: {
+		[key: string]: any
+	}
 }
 
 export type PatchedEtapeCreateRequest = {

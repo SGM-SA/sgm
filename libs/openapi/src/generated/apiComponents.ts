@@ -885,6 +885,105 @@ export const useApiAffectationsMachinesDestroy = (
 	})
 }
 
+export type ApiConfigListError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiConfigListResponse = Schemas.Constance[]
+
+export type ApiConfigListVariables = ApiContext['fetcherOptions']
+
+/**
+ * Traite la requête LIST : Liste toutes les configurations.
+ */
+export const fetchApiConfigList = (
+	variables: ApiConfigListVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<ApiConfigListResponse, ApiConfigListError, undefined, {}, {}, {}>({
+		url: '/api/config/',
+		method: 'get',
+		...variables,
+		signal,
+	})
+
+/**
+ * Traite la requête LIST : Liste toutes les configurations.
+ */
+export const useApiConfigList = <TData = ApiConfigListResponse>(
+	variables: ApiConfigListVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			ApiConfigListResponse,
+			ApiConfigListError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		ApiConfigListResponse,
+		ApiConfigListError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/config/',
+			operationId: 'apiConfigList',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiConfigList({ ...fetcherOptions, ...variables }, signal),
+		...options,
+		...queryOptions,
+	})
+}
+
+export type ApiConfigPartialUpdateError = Fetcher.ErrorWrapper<undefined>
+
+export type ApiConfigPartialUpdateVariables = {
+	body?: Schemas.PatchedConstanceUpdateRequest
+} & ApiContext['fetcherOptions']
+
+/**
+ * Traite la requête POST : Met à jour un paramètre de configuration spécifique.
+ */
+export const fetchApiConfigPartialUpdate = (
+	variables: ApiConfigPartialUpdateVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.Constance,
+		ApiConfigPartialUpdateError,
+		Schemas.PatchedConstanceUpdateRequest,
+		{},
+		{},
+		{}
+	>({ url: '/api/config/', method: 'patch', ...variables, signal })
+
+/**
+ * Traite la requête POST : Met à jour un paramètre de configuration spécifique.
+ */
+export const useApiConfigPartialUpdate = (
+	options?: Omit<
+		reactQuery.UseMutationOptions<
+			Schemas.Constance,
+			ApiConfigPartialUpdateError,
+			ApiConfigPartialUpdateVariables
+		>,
+		'mutationFn'
+	>
+) => {
+	const { fetcherOptions } = useApiContext()
+	return reactQuery.useMutation<
+		Schemas.Constance,
+		ApiConfigPartialUpdateError,
+		ApiConfigPartialUpdateVariables
+	>({
+		mutationFn: (variables: ApiConfigPartialUpdateVariables) =>
+			fetchApiConfigPartialUpdate({ ...fetcherOptions, ...variables }),
+		...options,
+	})
+}
+
 export type ApiEtapesCreateError = Fetcher.ErrorWrapper<undefined>
 
 export type ApiEtapesCreateVariables = {
@@ -2125,6 +2224,75 @@ export const useApiGroupeMachineDeleteCreate = (
 				...variables,
 			}),
 		...options,
+	})
+}
+
+export type ApiGroupeMachineMachinesRetrievePathParams = {
+	id: number
+}
+
+export type ApiGroupeMachineMachinesRetrieveError =
+	Fetcher.ErrorWrapper<undefined>
+
+export type ApiGroupeMachineMachinesRetrieveVariables = {
+	pathParams: ApiGroupeMachineMachinesRetrievePathParams
+} & ApiContext['fetcherOptions']
+
+/**
+ * Cette opération permet de récupérer la liste des machines d'un GroupeMachine.
+ */
+export const fetchApiGroupeMachineMachinesRetrieve = (
+	variables: ApiGroupeMachineMachinesRetrieveVariables,
+	signal?: AbortSignal
+) =>
+	apiFetch<
+		Schemas.GroupeMachineListMachine,
+		ApiGroupeMachineMachinesRetrieveError,
+		undefined,
+		{},
+		{},
+		ApiGroupeMachineMachinesRetrievePathParams
+	>({
+		url: '/api/groupe_machine/machines/{id}/',
+		method: 'get',
+		...variables,
+		signal,
+	})
+
+/**
+ * Cette opération permet de récupérer la liste des machines d'un GroupeMachine.
+ */
+export const useApiGroupeMachineMachinesRetrieve = <
+	TData = Schemas.GroupeMachineListMachine
+>(
+	variables: ApiGroupeMachineMachinesRetrieveVariables,
+	options?: Omit<
+		reactQuery.UseQueryOptions<
+			Schemas.GroupeMachineListMachine,
+			ApiGroupeMachineMachinesRetrieveError,
+			TData
+		>,
+		'queryKey' | 'queryFn'
+	>
+) => {
+	const { fetcherOptions, queryOptions, queryKeyFn } = useApiContext(options)
+	return reactQuery.useQuery<
+		Schemas.GroupeMachineListMachine,
+		ApiGroupeMachineMachinesRetrieveError,
+		TData
+	>({
+		queryKey: queryKeyFn({
+			path: '/api/groupe_machine/machines/{id}/',
+			operationId: 'apiGroupeMachineMachinesRetrieve',
+			variables,
+		}),
+		queryFn: ({ signal }) =>
+			fetchApiGroupeMachineMachinesRetrieve(
+				{ ...fetcherOptions, ...variables },
+				signal
+			),
+		...options,
+		...queryOptions,
 	})
 }
 
@@ -4732,6 +4900,11 @@ export type QueryOperation =
 			variables: ApiAffairesStatsRetrieveVariables
 	  }
 	| {
+			path: '/api/config/'
+			operationId: 'apiConfigList'
+			variables: ApiConfigListVariables
+	  }
+	| {
 			path: '/api/etapes/{id}'
 			operationId: 'apiEtapesRetrieve'
 			variables: ApiEtapesRetrieveVariables
@@ -4770,6 +4943,11 @@ export type QueryOperation =
 			path: '/api/groupe_machine/{id}/'
 			operationId: 'apiGroupeMachineRetrieve'
 			variables: ApiGroupeMachineRetrieveVariables
+	  }
+	| {
+			path: '/api/groupe_machine/machines/{id}/'
+			operationId: 'apiGroupeMachineMachinesRetrieve'
+			variables: ApiGroupeMachineMachinesRetrieveVariables
 	  }
 	| {
 			path: '/api/machines/'

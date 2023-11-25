@@ -1,9 +1,7 @@
-from rest_framework import generics, status
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from rest_framework import generics
+from rest_framework.generics import RetrieveAPIView
 from api.groupe_machine.models import GroupeMachine
-from .serializer import GroupeMachineSerializer
-from api.commun.serializer import BulkDeleteSerializer
+from .serializer import GroupeMachineSerializer, GroupeMachineListMachineSerializer
 from api.commun.views import BulkDeleteView
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
@@ -23,6 +21,18 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 class GroupeMachineListCreateView(generics.ListCreateAPIView):
     queryset = GroupeMachine.objects.all()
     serializer_class = GroupeMachineSerializer
+
+
+@extend_schema_view(
+    get=extend_schema(
+        summary="Lister les machines d'un GroupeMachine",
+        description="Cette opération permet de récupérer la liste des machines d'un GroupeMachine.",
+        tags=["GroupeMachine"],
+    )
+)
+class GroupeMachineMachinesListView(RetrieveAPIView):
+    queryset = GroupeMachine.objects.all()
+    serializer_class = GroupeMachineListMachineSerializer
 
 
 @extend_schema_view(

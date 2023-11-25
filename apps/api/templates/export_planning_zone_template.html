@@ -13,14 +13,39 @@
             color: #333333;
         }
 
-        header h1, header h2 {
-            text-align: center;
-            color: #0056b3; /* Dark blue color for titles */
+        header {
+            border: 1px solid #dddddd;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            display: table; /* Changed to table */
+            width: 100%; /* Full width */
         }
 
-        img {
-            width: 30%; /* Adjusted size for QR code */
-            height: auto;
+        .header-cell {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+            padding: 10px;
+        }
+
+        .header-cell:not(:last-child) {
+            border-right: 1px solid #dddddd; /* Simple border between cells */
+        }
+        header h1, header h2 {
+            text-align: center;
+            font-size: medium;
+            color: #0056b3; /* Dark blue color for titles */
+
+        }
+
+        header img {
+            width: 100px;
+            height: 100px;
+        }
+        td img {
+            width: 70px;
+            height: 70px;
         }
 
         table {
@@ -60,9 +85,15 @@
 </head>
 <body>
     <header>
-        <h1>Zone: {{ zone.nom }}</h1>
-        <h2>Planification semaine du {{ debut|date:"d/m/Y" }} au {{ fin|date:"d/m/Y" }}  </h2>
-    </header>
+        <div class="header-cell">
+            <h1>Zone: {{ zone.nom }}</h1>
+        </div>
+        <div class="header-cell">
+            <h2>Planification semaine du {{ debut|date:"d/m/Y" }} au {{ fin|date:"d/m/Y" }}  </h2>
+        </div>
+
+   </header>
+
     <table>
         <thead>
             <tr>

@@ -14,6 +14,7 @@ from api.synchro.view import resync_data_sgm
 from api.note.urls import urlpatterns as note_patterns
 from api.groupe_machine.urls import urlpatterns as groupe_machine_patterns
 from api.pointage.urls import urlpatterns as pointage_patterns
+from api.commun.views import ConfigConstanceView
 
 urlpatterns = [
     path("affaires/", include(affaire_patters)),
@@ -32,4 +33,5 @@ urlpatterns = [
     path("modeles/", include(etape_modele_patterns)),
     path("modeles/", include(fiche_modele_patterns)),
     path("tasks/resync_data_sgm", resync_data_sgm, name="resync_data_sgm"),
+    path("config/", ConfigConstanceView.as_view()),
 ]

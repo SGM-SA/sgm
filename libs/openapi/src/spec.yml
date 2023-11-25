@@ -415,6 +415,55 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/config/:
+    get:
+      operationId: api_config_list
+      description: 'Traite la requête LIST : Liste toutes les configurations.'
+      tags:
+      - Configuration
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Constance'
+          description: ''
+        '400':
+          description: No response body
+    patch:
+      operationId: api_config_partial_update
+      description: 'Traite la requête POST : Met à jour un paramètre de configuration
+        spécifique.'
+      tags:
+      - Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedConstanceUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedConstanceUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedConstanceUpdateRequest'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Constance'
+          description: ''
+        '400':
+          description: No response body
   /api/etapes/:
     post:
       operationId: api_etapes_create
@@ -1019,6 +1068,30 @@ paths:
           description: No response body
         '400':
           description: No response body
+  /api/groupe_machine/machines/{id}/:
+    get:
+      operationId: api_groupe_machine_machines_retrieve
+      description: Cette opération permet de récupérer la liste des machines d'un
+        GroupeMachine.
+      summary: Lister les machines d'un GroupeMachine
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - GroupeMachine
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupeMachineListMachine'
+          description: ''
   /api/machines/:
     get:
       operationId: api_machines_list
@@ -1959,6 +2032,7 @@ paths:
       - Pointage
       security:
       - jwtAuth: []
+      - {}
       responses:
         '200':
           description: No response body
@@ -1994,6 +2068,7 @@ paths:
       - Pointage
       security:
       - jwtAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -2659,6 +2734,22 @@ components:
           description: Liste des ids des objets à supprimer
       required:
       - ids
+    Constance:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          oneOf:
+          - type: integer
+          - type: number
+            format: double
+          - type: boolean
+          - type: string
+          readOnly: true
+      required:
+      - key
+      - value
     CustomUserDetail:
       type: object
       properties:
@@ -3729,6 +3820,28 @@ components:
       required:
       - id
       - nom_groupe
+    GroupeMachineListMachine:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nom_groupe:
+          type: string
+          title: Nom du groupe machine
+          maxLength: 300
+        machines:
+          type: array
+          items:
+            $ref: '#/components/schemas/MachineDetail'
+          readOnly: true
+        prix_theorique:
+          type: integer
+          title: Prix théorique / heure
+      required:
+      - id
+      - machines
+      - nom_groupe
     GroupeMachineRequest:
       type: object
       properties:
@@ -4132,6 +4245,15 @@ components:
         previous:
           type: integer
           nullable: true
+    PatchedConstanceUpdateRequest:
+      type: object
+      properties:
+        key:
+          type: string
+          minLength: 1
+        value:
+          type: object
+          additionalProperties: {}
     PatchedEtapeCreateRequest:
       type: object
       properties:

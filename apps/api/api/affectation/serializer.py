@@ -136,16 +136,18 @@ class AffectationAbstractUpdateSerializer(serializers.ModelSerializer):
             if field != "previous":
                 setattr(instance, field, validated_data[field])
 
-        new_previous = validated_data.get("previous", None)
-
-        # on récupère l'objet affectation précédent
-        previous = instance.previous
+        new_previous = None
+        if "previous" in validated_data:
+            new_previous = validated_data.get("previous", None)
+        else:
+            instance.save()
+            return instance
 
         # on récupère l'objet affectation suivant
         next = instance.next.first()
 
-        # si le champ new_previous est null, on veut insérer en tête de liste
-        if new_previous is None:
+        # si le champ new_previous est 0, on veut insérer en tête de liste
+        if new_previous == None:
             head = instance.__class__.objects.filter(
                 previous__isnull=True,
                 semaine_affectation__range=week_to_date_range(
@@ -158,6 +160,7 @@ class AffectationAbstractUpdateSerializer(serializers.ModelSerializer):
 
             # si l'objet courant est en tête de liste, on ne fait rien
             if head == instance:
+                instance.save()
                 return instance
 
             # on met à jour l'objet next

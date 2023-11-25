@@ -19,6 +19,8 @@ def export_fiche_pdf(fiche: Fiche):
 
     etapes = Etape.objects.filter(fiche=fiche).order_by("num_etape")
 
+    fiche.qr_code_base64 = generate_qr_code_base64(f"FI:{fiche.id}")
+
     for etape in etapes:
         etape.qr_code_base64 = generate_qr_code_base64(f"ET:{etape.id}")
 
