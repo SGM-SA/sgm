@@ -8,7 +8,11 @@ class Machine(models.Model):
     fonctionnelle = models.BooleanField(default=True, null=False, blank=False)
     est_active = models.BooleanField(default=True, null=False, blank=False)
     groupe_machine = models.ForeignKey(
-        "GroupeMachine", on_delete=models.PROTECT, null=True, blank=True
+        "GroupeMachine",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="machines",
     )
 
     def __str__(self):

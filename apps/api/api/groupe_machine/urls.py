@@ -3,6 +3,7 @@ from .view import (
     GroupeMachineListCreateView,
     GroupeMachineRetrieveUpdateDestroyView,
     GroupeMachineBulkDeleteView,
+    GroupeMachineMachinesListView,
 )
 
 urlpatterns = [
@@ -10,6 +11,11 @@ urlpatterns = [
         "",
         GroupeMachineListCreateView.as_view(),
         name="groupe-machine-list-create",
+    ),
+    path(
+        "machines/<int:pk>/",
+        GroupeMachineMachinesListView.as_view(),
+        name="groupe-machine-machines-list",
     ),
     path(
         "<int:pk>/",
