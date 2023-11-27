@@ -73,6 +73,10 @@ In addition to classic `nx` generators commands, the project have additionnal co
 - [Node.js](https://nodejs.org/en/) (>=18)
 - [PNPM](https://pnpm.io/) (>=8)
 - [Python](https://www.python.org/) (3.9)
+- [Pango](https://pango.gnome.org/)
+    ```bash
+    sudo apt-get install libpangocairo-1.0-0
+    ```
 - [Poetry](https://python-poetry.org/)
 
 ### Initialize the project

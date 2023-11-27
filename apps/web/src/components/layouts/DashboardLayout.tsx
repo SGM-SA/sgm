@@ -61,7 +61,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
 					color='secondary.100'
 				>
 
-					<VStack justifyContent='flex-start' alignItems='flext-start' mt='5em' mb={props.styling?.removeTitleMarginBottom ? '1em' : '5em'}>
+					<VStack justifyContent='flex-start' alignItems='flext-start' mt='5em' mb='1em'>
 
 						<Box fontSize='sm'>
 							{breadcrumbs
