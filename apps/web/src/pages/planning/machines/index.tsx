@@ -1,4 +1,4 @@
-import { Flex, HStack, Icon, Input, Spinner, Text, VStack } from '@chakra-ui/react'
+import { Button, Flex, HStack, Icon, Input, Spinner, Text, VStack } from '@chakra-ui/react'
 import { fetchApiAffectationsMachinesCreate, fetchApiAffectationsMachinesDestroy, fetchApiAffectationsMachinesPartialUpdate, fetchApiGroupeMachineList, fetchApiSalariesFormOptionsList, useApiFichesMachineAPlanifierList, useApiPlanningMachineList } from '@sgm/openapi'
 import { BaseBoardCardType, Board, BoardColumnType, CUSTOM_FIRST_COLUMN_ID, TextLink } from '@sgm/ui'
 import { Link } from '@sgm/web/router'
@@ -11,6 +11,7 @@ import { useLoaderData } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
 import { DashboardLayout } from '../../../components/layouts'
 import { PlanningNestedEtapeColumn } from '../../../components/modules'
+import { environment } from '@sgm/web/environments'
 
 export const Loader = (() => {
     return Promise.all([
@@ -220,6 +221,20 @@ const PlanningMachinesPage: React.FC = () => {
                             return <Text fontSize='sm'>
                               {column.meta.heuresTravail.affectees} / {column.meta.heuresTravail.dispo}h
                             </Text>
+                          },
+                          columnHeader: (column) => {
+                            return <HStack
+                                w='60%'
+                                justifyContent='flex-end'
+                            >
+                                <Button as='a' 
+                                    href={`${environment.apiBaseUrl}/api/planning/machine/pdf?id=${column.id}&semaine_affectation=${dayjs(date).format('YYYY-MM-DD')}`}
+                                    target='_blank'
+                                    size='sm'   
+                                >    
+                                    Imprimer
+                                </Button>
+                            </HStack>
                           },
                           firstColumn: PlanningNestedEtapeColumn,
                           cardBody: (card) => {
