@@ -68,14 +68,11 @@ export function BoardColumn<TData extends BaseBoardCardType>(props: BoardColumnP
                     >
                         {/* Header */}
                         <VStack>
-                            {props.custom?.header !== undefined ?
-                                props.custom.header(props.column)
-                                :
-                                <HStack w='100%' justifyContent='space-between' mb='1em'>
-                                    <Heading as='h3' fontSize='1em'>{props.column.title}</Heading>
-                                    {props.collapsable && <FaChevronLeft onClick={e => setCollapsed(true)} cursor='pointer'/>}
-                                </HStack>
-                            }
+                            <HStack w='100%' justifyContent='space-between' mb='1em'>
+                                <Heading as='h3' fontSize='1em'>{props.column.title}</Heading>
+                                {props.custom?.header !== undefined && props.custom.header(props.column)}
+                                {props.collapsable && <FaChevronLeft onClick={e => setCollapsed(true)} cursor='pointer'/>}
+                            </HStack>
                         </VStack>
 
                         {/* Cards */}

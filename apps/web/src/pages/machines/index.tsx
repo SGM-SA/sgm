@@ -1,34 +1,27 @@
-import { Box, Button, HStack } from '@chakra-ui/react'
-import { MachineDetail, fetchApiMachinesDeleteCreate, fetchApiMachinesPartialUpdate, useApiMachinesList } from '@sgm/openapi'
+import { Box, Button } from '@chakra-ui/react'
+import { GroupeMachine, fetchApiGroupeMachineDeleteCreate, fetchApiGroupeMachinePartialUpdate, useApiGroupeMachineList } from '@sgm/openapi'
 import { Table, TableLayout, createColumnMeta, useTableQueryHelper } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { toast } from 'react-toastify'
 import { DashboardLayout } from '../../components/layouts'
-import { MachineCreateForm } from '../../components/modules'
+import { MachinesTable } from '../../components/modules'
 
-const columnHelper = createColumnHelper<MachineDetail>()
+const columnHelper = createColumnHelper<GroupeMachine>()
 
 const columns = [
-    columnHelper.accessor('nom_machine', {
+    columnHelper.accessor('nom_groupe', {
         header: 'Nom',
         meta: createColumnMeta({
             editable: true,
             type: 'text'
         })
     }),
-    columnHelper.accessor('description', {
-        header: 'Description',
+    columnHelper.accessor('prix_theorique', {
+        header: 'Prix théorique',
         meta: createColumnMeta({
             editable: true,
-            type: 'text'
-        })
-    }),
-    columnHelper.accessor('fonctionnelle', {
-        header: 'Fonctionnelle',
-        meta: createColumnMeta({
-            editable: true,
-            type: 'boolean'
+            type: 'number'
         })
     }),
 ]
@@ -37,25 +30,21 @@ const MachinesPage: React.FC = () => {
 
     const { pagination, setPagination, fetchDataOptions } = useTableQueryHelper()
 
-    const { data, isLoading, refetch } = useApiMachinesList(fetchDataOptions)
+    const { data, isLoading, refetch } = useApiGroupeMachineList(fetchDataOptions)
 
 	return <>
         <DashboardLayout title='Machines' >
 
             <TableLayout
                 header={{
-                    title: 'Gestion des machines',
-                    customComponent: <HStack>
-                        <MachineCreateForm refetch={refetch}/>
-                    </HStack>
+                    title: 'Groupes machines',
                 }}
             >
 
-                <Table<MachineDetail> 
+                <Table<GroupeMachine> 
                     columns={columns}
                     data={data}
                     loading={isLoading}
-
                     pagination={{
                         state: pagination,
                         setState: setPagination
@@ -63,12 +52,12 @@ const MachinesPage: React.FC = () => {
                     editable={{
                         enabled: true,
                         onRowUpdate: async (row, newData) => {
-                            fetchApiMachinesPartialUpdate({ pathParams: { id: row.original.id }, body: newData })
+                            fetchApiGroupeMachinePartialUpdate({ pathParams: { id: row.original.id }, body: newData })
                                 .then(() => {
                                     refetch()
-                                    toast.success('Machine mise à jour')
+                                    toast.success('Groupe machine mise à jour')
                                 })
-                                .catch(() => toast.error('Erreur lors de la mise à jour de la machine'))
+                                .catch(() => toast.error('Erreur lors de la mise à jour du groupe machine'))
                         }
                     }}
                     rowSelection={{
@@ -80,7 +69,7 @@ const MachinesPage: React.FC = () => {
                                 borderRadius='4px'
                                 variant='outline'
                                 onClick={async () => {
-                                    fetchApiMachinesDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
+                                    fetchApiGroupeMachineDeleteCreate({ body: { ids: checkedItems.map(item => item.original.id) } })
                                         .then(() => {
                                             resetSelection()
                                             refetch()
@@ -91,14 +80,9 @@ const MachinesPage: React.FC = () => {
                             >Supprimer</Button>
                         </Box>
                     }}
-                    styling={{
-                        row: (row) => {
-                            if (row.original?.fonctionnelle === false) {
-                                return {
-                                    backgroundColor: 'red.100'
-                                }
-                            }
-                        }
+                    rowExpansion={{
+                        enabled: true,
+                        renderComponent: ({ row }) => <MachinesTable groupeMachinesId={row.original.id}/>
                     }}
                 />
             </TableLayout>

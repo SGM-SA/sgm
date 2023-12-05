@@ -90,7 +90,6 @@ class ExportPdfView(APIView):
         return self.export_pdf(obj, **self.extra_query_params)
 
 
-
 class ConfigConstanceView(APIView):
     """
     Vue API pour les paramètres de configuration Constance
