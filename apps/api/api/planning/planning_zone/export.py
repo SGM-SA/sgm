@@ -18,8 +18,8 @@ def export_planning_zone_pdf(zone: Zone, date):
 
     range_date = week_to_date_range(date)
 
-    planning_machine_title_pdf = f"{zone.nom}_{range_date[0].strftime('%d/%m/%Y')}_{range_date[1].strftime('%d/%m/%Y')}.pdf".replace(
-        " ", "-"
+    planning_machine_title_pdf = f"{zone.nom}_{range_date[0].strftime('%d-%m-%Y')}_{range_date[1].strftime('%d-%m-%Y')}.pdf".replace(
+        " ", "_"
     )
 
     affectations = AffectationAjustage.objects.filter(

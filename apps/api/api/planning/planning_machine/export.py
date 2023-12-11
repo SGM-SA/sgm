@@ -17,8 +17,8 @@ def export_planning_machine_pdf(machine: Machine, date):
 
     range_date = week_to_date_range(date)
 
-    planning_machine_title_pdf = f"{machine.nom_machine}_{range_date[0].strftime('%d/%m/%Y')}_{range_date[1].strftime('%d/%m/%Y')}.pdf".replace(
-        " ", "-"
+    planning_machine_title_pdf = f"{machine.nom_machine}_{range_date[0].strftime('%d-%m-%Y')}_{range_date[1].strftime('%d-%m-%Y')}.pdf".replace(
+        " ", "_"
     )
 
     affectations = AffectationMachine.objects.filter(
