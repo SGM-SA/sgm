@@ -97,6 +97,7 @@
     <table>
         <thead>
             <tr>
+                <th>N°Affaire</th>
                 <th>N°etape</th>
                 <th>Plan</th>
                 <th>Quantité</th>
@@ -107,6 +108,7 @@
         <tbody>
             {% for affectation in affectations %}
                 <tr>
+                    <td>{{ affectation.etape.fiche.affaire.num_affaire }}</td>
                     <td>{{ affectation.etape.num_etape }}</td>
                     <td>{{ affectation.etape.plan }}</td>
                     <td>{{ affectation.etape.quantite }}</td>
