@@ -69,7 +69,14 @@ const columns = [
 	columnHelper.accessor('cout_fiche', {
 		header: 'Coût',
 	}),
-	columnHelper.display({
+    columnHelper.accessor('fourniture', {
+        header: 'Fournitures',
+        meta: createColumnMeta({
+            editable: true,
+            type: 'boolean',
+        }),
+    }),
+    columnHelper.display({
 		id: 'print',
 		cell: (cell) => (
 			<PrintFicheButton
