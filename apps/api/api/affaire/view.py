@@ -91,7 +91,7 @@ class AffaireList(generics.ListAPIView):
 
         # S'il n'y a pas de filtre sur le statut ou s'il est à null, on applique un filtre par défaut
         status_filter = self.request.query_params.getlist("statut", None)
-        if status_filter is None:
+        if not status_filter:
             # Applique un filtre par défaut sur les affaires en cours
             queryset = queryset.filter(statut__in=Affaire.STATUS_EN_COURS)
         else:
