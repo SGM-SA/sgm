@@ -37,6 +37,7 @@ from api.utils.view import LargeResultsSetPagination
                 name="statut",
                 description="Statut de l'affaire",
                 required=False,
+                many=True,
                 enum=[i[0] for i in Affaire.STATUTS_AFFAIRE],
             ),
             OpenApiParameter(
@@ -68,7 +69,8 @@ class AffaireList(generics.ListAPIView):
         filters.SearchFilter,
     ]
 
-    filterset_fields = ["num_affaire", "statut"]
+    filterset_fields = ["num_affaire"]
+
     ordering_fields = [
         "date_rendu",
         "num_affaire",
@@ -88,11 +90,12 @@ class AffaireList(generics.ListAPIView):
         )
 
         # S'il n'y a pas de filtre sur le statut ou s'il est à null, on applique un filtre par défaut
-        status_filter = self.request.query_params.get("statut", None)
+        status_filter = self.request.query_params.getlist("statut", None)
         if status_filter is None:
             # Applique un filtre par défaut sur les affaires en cours
             queryset = queryset.filter(statut__in=Affaire.STATUS_EN_COURS)
-
+        else:
+            queryset = queryset.filter(statut__in=status_filter)
         return queryset
 
 
