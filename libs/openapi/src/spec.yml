@@ -39,25 +39,27 @@ paths:
       - in: query
         name: statut
         schema:
-          type: string
-          enum:
-          - A00
-          - D00
-          - E00
-          - EAA
-          - EAC
-          - ECA
-          - ECC
-          - ECH
-          - ED
-          - EHA
-          - EST
-          - G00
-          - INT
-          - P00
-          - S00
-          - SV0
-          - T00
+          type: array
+          items:
+            type: string
+            enum:
+            - A00
+            - D00
+            - E00
+            - EAA
+            - EAC
+            - ECA
+            - ECC
+            - ECH
+            - ED
+            - EHA
+            - EST
+            - G00
+            - INT
+            - P00
+            - S00
+            - SV0
+            - T00
         description: Statut de l'affaire
       tags:
       - Affaire
@@ -1844,7 +1846,6 @@ paths:
       - Note
       security:
       - jwtAuth: []
-      - {}
       responses:
         '200':
           content:
@@ -2032,7 +2033,6 @@ paths:
       - Pointage
       security:
       - jwtAuth: []
-      - {}
       responses:
         '200':
           description: No response body
@@ -2068,7 +2068,6 @@ paths:
       - Pointage
       security:
       - jwtAuth: []
-      - {}
       responses:
         '200':
           content:
@@ -2438,6 +2437,9 @@ components:
         nombre_fiches:
           type: integer
           readOnly: true
+        nb_notifications:
+          type: integer
+          readOnly: true
       required:
       - avancement_affaire
       - couleur_affichage
@@ -2445,6 +2447,7 @@ components:
       - date_modification
       - en_retard
       - id
+      - nb_notifications
       - nombre_fiches
       - temps_ajustage
       - temps_machine
@@ -2528,9 +2531,13 @@ components:
           nullable: true
           title: Nom du chargé d'affaire
           maxLength: 2000
+        nb_notifications:
+          type: integer
+          readOnly: true
       required:
       - fiches
       - id
+      - nb_notifications
     AffaireFichesEtapes:
       type: object
       description: Serializer pour récupérer une affaire avec ses fiches et ses étapes
