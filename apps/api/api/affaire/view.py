@@ -9,7 +9,7 @@ from api.affaire.serializer import (
     AffaireStatsGlobalSerializer,
     AffaireStatsSerializer,
 )
-from rest_framework import generics, pagination, filters, views, status
+from rest_framework import generics, pagination, filters, views, status, permissions
 from rest_framework.response import Response
 
 from drf_spectacular.utils import (
@@ -77,6 +77,8 @@ class AffaireList(generics.ListAPIView):
     ]
     search_fields = ["num_affaire", "client", "description", "charge_affaire"]
 
+    permission_classes = [permissions.IsAuthenticated]
+
     def get_queryset(self):
 
         is_en_retard = Case(
@@ -107,6 +109,7 @@ class AffaireList(generics.ListAPIView):
 class AffaireDetail(generics.RetrieveUpdateAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireDetailsSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 @extend_schema(
@@ -118,6 +121,7 @@ class AffaireEtFichesList(generics.ListAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireFichesSerializer
     pagination_class = LargeResultsSetPagination
+    permission_classes = [permissions.IsAuthenticated]
 
 
 @extend_schema(
@@ -128,6 +132,7 @@ class AffaireEtFichesList(generics.ListAPIView):
 class AffaireDetailFiches(generics.RetrieveAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireFichesSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class SmallPagination(pagination.PageNumberPagination):
@@ -149,6 +154,7 @@ class AffaireNumAffaire(generics.RetrieveAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireDetailsSerializer
     lookup_field = "num_affaire"
+    permission_classes = [permissions.IsAuthenticated]
 
 
 @extend_schema(
@@ -174,6 +180,7 @@ class AffaireNumAffaires(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ["^num_affaire"]
     ordering_fields = ["num_affaire"]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 @extend_schema(
