@@ -125,12 +125,19 @@ class Affaire(models.Model):
     def couleur_affichage(self):
         """
         Permet de définir la couleur d'affichage de l'affaire dans le tableau des affaires.
+
+        si date de délai a pour année 2000 -> rouge
+        si date de délai a pour année 2001 -> orange
+        si date de délai dépassée -> rouge
         """
 
-        # si retard rouge
-        if self.en_retard():
+        if self.date_rendu is not None:
+            if self.date_rendu.year == 2000:
+                return config.COULEUR_AFFAIRE_RETARD
+            elif self.date_rendu.year == 2001:
+                return "orange"
+        elif self.en_retard():
             return config.COULEUR_AFFAIRE_RETARD
-
         else:
             return ""
 
