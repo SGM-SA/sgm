@@ -1,4 +1,5 @@
 from django.db import models
+
 from api.user.models import CustomUser
 from api.affaire.models import Affaire
 
@@ -16,6 +17,8 @@ class Note(models.Model):
     )
     contenu = models.TextField()
     date_creation = models.DateTimeField(auto_now_add=True)
+
+    vue_par = models.ManyToManyField(CustomUser, blank=True, related_name="notes_vues")
 
     def __str__(self):
         return f"{self.user.name}: {self.contenu[:10]}..."

@@ -12,6 +12,8 @@ from api.fiche.serializer import (
 from django.utils import timezone
 from typing import Dict
 
+from api.note.models import Note
+
 
 class AffaireDefaultSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,6 +39,8 @@ class AffaireDetailsSerializer(serializers.ModelSerializer):
     temps_restant = serializers.SerializerMethodField()
     nombre_fiches = serializers.SerializerMethodField()
 
+    nb_notifications = serializers.SerializerMethodField()
+
     def get_temps_ajustage(self, affaire: Affaire) -> int:
         return affaire.temps_ajustage()
 
@@ -48,6 +52,14 @@ class AffaireDetailsSerializer(serializers.ModelSerializer):
 
     def get_nombre_fiches(self, affaire: Affaire) -> int:
         return affaire.fiches.count()
+
+    def get_nb_notifications(self, affaire) -> int:
+
+        user = self.context["request"].user
+        if user:
+            return Note.objects.filter(affaire=affaire).exclude(vue_par=user).count()
+        else:
+            return 0
 
     class Meta:
         model = Affaire
@@ -72,6 +84,7 @@ class AffaireDetailsSerializer(serializers.ModelSerializer):
             "temps_machine",
             "temps_restant",
             "nombre_fiches",
+            "nb_notifications",
         ]
 
 
@@ -81,6 +94,15 @@ class AffaireFichesSerializer(serializers.ModelSerializer):
     """
 
     fiches = FicheDetailSerializer(Fiche, many=True, read_only=True)
+    nb_notifications = serializers.SerializerMethodField()
+
+    def get_nb_notifications(self, affaire) -> int:
+
+        user = self.context["request"].user
+        if user:
+            return Note.objects.filter(affaire=affaire).exclude(vue_par=user).count()
+        else:
+            return 0
 
     class Meta:
         model = Affaire
@@ -90,6 +112,7 @@ class AffaireFichesSerializer(serializers.ModelSerializer):
             "validation_ingenieur",
             "fiches",
             "charge_affaire",
+            "nb_notifications",
         ]
 
 

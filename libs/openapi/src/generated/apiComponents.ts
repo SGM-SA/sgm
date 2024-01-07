@@ -33,7 +33,7 @@ export type ApiAffairesListQueryParams = {
 	/**
 	 * Statut de l'affaire
 	 */
-	statut?:
+	statut?: (
 		| 'A00'
 		| 'D00'
 		| 'E00'
@@ -51,6 +51,7 @@ export type ApiAffairesListQueryParams = {
 		| 'S00'
 		| 'SV0'
 		| 'T00'
+	)[]
 }
 
 export type ApiAffairesListError = Fetcher.ErrorWrapper<undefined>

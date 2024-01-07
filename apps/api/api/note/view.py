@@ -1,3 +1,4 @@
+from django.db.models import F
 from rest_framework import generics, permissions
 from .models import Note
 from api.affaire.models import Affaire
@@ -19,7 +20,7 @@ class NoteCreateAPIView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save(user=self.request.user, vue_par=[self.request.user])
 
 
 @extend_schema(
@@ -40,6 +41,8 @@ class NoteRUDAPIView(generics.RetrieveUpdateDestroyAPIView):
 )
 class AffaireNotesListView(APIView):
     serializer_class = NoteDetail(many=True)
+
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         affaire_id = self.kwargs["affaire_id"]
@@ -64,6 +67,8 @@ class AffaireNotesListView(APIView):
         if affaire.observation is not "":
             obervation_description.append(observation_as_note)
 
+        set_notes_vue_par(self.request.user, affaire_id)
+
         return NoteDetail(obervation_description + list(notes), many=True).data
 
     def get(self, request, *args, **kwargs):
@@ -77,3 +82,15 @@ class AffaireNotesListView(APIView):
         queryset = self.get_queryset()
 
         return Response(queryset)
+
+
+def set_notes_vue_par(user, affaire_id):
+    """
+    Permet de mettre à jour les notes vues par l'utilisateur
+    """
+    # Find notes related to the affaire that the user has not yet seen
+    notes_to_update = Note.objects.filter(affaire_id=affaire_id).exclude(vue_par=user)
+
+    if notes_to_update.exists():
+        for note in notes_to_update:
+            note.vue_par.add(user)

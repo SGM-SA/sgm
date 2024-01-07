@@ -1,14 +1,29 @@
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIClient
 from django.utils import timezone
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from api.affaire.models import Affaire
 from api.etape.models import Etape
 from api.fiche.models import Fiche
 from api.groupe_machine.models import GroupeMachine
+from api.user.models import CustomUser
 
 
 class AffaireListTestCase(APITestCase):
     def setUp(self):
+        # Create a test user
+        self.user = CustomUser.objects.create_user(
+            email="test@tset.fr", password="testpassword"
+        )
+
+        # Set up the client for API requests
+        self.client = APIClient()
+
+        # Authenticate the client using JWT
+        refresh = RefreshToken.for_user(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
         self.url = "/api/affaires/"
         self.affaire1 = Affaire.objects.create(
             num_affaire=1,
@@ -102,6 +117,18 @@ class AffaireStatsGlobalTestCase(APITestCase):
 
 class StatsAffaireIndTestCase(APITestCase):
     def setUp(self) -> None:
+        # Create a test user
+        self.user = CustomUser.objects.create_user(
+            email="test@tset.fr", password="testpassword"
+        )
+
+        # Set up the client for API requests
+        self.client = APIClient()
+
+        # Authenticate the client using JWT
+        refresh = RefreshToken.for_user(self.user)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
         self.affaire = Affaire.objects.create(
             num_affaire=1,
             description="Test affaire 1",

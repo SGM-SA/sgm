@@ -9,7 +9,7 @@ from api.affaire.serializer import (
     AffaireStatsGlobalSerializer,
     AffaireStatsSerializer,
 )
-from rest_framework import generics, pagination, filters, views, status
+from rest_framework import generics, pagination, filters, views, status, permissions
 from rest_framework.response import Response
 
 from drf_spectacular.utils import (
@@ -37,6 +37,7 @@ from api.utils.view import LargeResultsSetPagination
                 name="statut",
                 description="Statut de l'affaire",
                 required=False,
+                many=True,
                 enum=[i[0] for i in Affaire.STATUTS_AFFAIRE],
             ),
             OpenApiParameter(
@@ -68,12 +69,15 @@ class AffaireList(generics.ListAPIView):
         filters.SearchFilter,
     ]
 
-    filterset_fields = ["num_affaire", "statut"]
+    filterset_fields = ["num_affaire"]
+
     ordering_fields = [
         "date_rendu",
         "num_affaire",
     ]
     search_fields = ["num_affaire", "client", "description", "charge_affaire"]
+
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
 
@@ -88,11 +92,12 @@ class AffaireList(generics.ListAPIView):
         )
 
         # S'il n'y a pas de filtre sur le statut ou s'il est à null, on applique un filtre par défaut
-        status_filter = self.request.query_params.get("statut", None)
-        if status_filter is None:
+        status_filter = self.request.query_params.getlist("statut", None)
+        if not status_filter:
             # Applique un filtre par défaut sur les affaires en cours
             queryset = queryset.filter(statut__in=Affaire.STATUS_EN_COURS)
-
+        else:
+            queryset = queryset.filter(statut__in=status_filter)
         return queryset
 
 
@@ -104,6 +109,7 @@ class AffaireList(generics.ListAPIView):
 class AffaireDetail(generics.RetrieveUpdateAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireDetailsSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 @extend_schema(
@@ -115,6 +121,7 @@ class AffaireEtFichesList(generics.ListAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireFichesSerializer
     pagination_class = LargeResultsSetPagination
+    permission_classes = [permissions.IsAuthenticated]
 
 
 @extend_schema(
@@ -125,6 +132,7 @@ class AffaireEtFichesList(generics.ListAPIView):
 class AffaireDetailFiches(generics.RetrieveAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireFichesSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class SmallPagination(pagination.PageNumberPagination):
@@ -146,6 +154,7 @@ class AffaireNumAffaire(generics.RetrieveAPIView):
     queryset = Affaire.objects.all()
     serializer_class = AffaireDetailsSerializer
     lookup_field = "num_affaire"
+    permission_classes = [permissions.IsAuthenticated]
 
 
 @extend_schema(
@@ -171,6 +180,7 @@ class AffaireNumAffaires(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ["^num_affaire"]
     ordering_fields = ["num_affaire"]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 @extend_schema(

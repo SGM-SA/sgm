@@ -64,6 +64,7 @@ export type AffaireDetails = {
 	temps_machine: number
 	temps_restant: number
 	nombre_fiches: number
+	nb_notifications: number
 }
 
 /**
@@ -122,6 +123,7 @@ export type AffaireFiches = {
 	 * @maxLength 2000
 	 */
 	charge_affaire?: string | null
+	nb_notifications: number
 }
 
 /**
