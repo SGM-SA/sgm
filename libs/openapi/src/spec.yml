@@ -19,7 +19,7 @@ paths:
         name: ordering
         schema:
           type: string
-        description: Champ de tri
+        description: 'Champ de tri : date_rendu, num_affaire'
       - in: query
         name: page
         schema:
@@ -37,7 +37,7 @@ paths:
         description: Recherche dans les champs num_affaire, client, description, chargé
           d'affaire
       - in: query
-        name: statut
+        name: statuts
         schema:
           type: array
           items:

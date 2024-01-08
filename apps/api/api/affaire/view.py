@@ -34,7 +34,7 @@ from api.utils.view import LargeResultsSetPagination
                 required=False,
             ),
             OpenApiParameter(
-                name="statut",
+                name="statuts",
                 description="Statut de l'affaire",
                 required=False,
                 many=True,
@@ -42,7 +42,7 @@ from api.utils.view import LargeResultsSetPagination
             ),
             OpenApiParameter(
                 name="ordering",
-                description="Champ de tri",
+                description="Champ de tri : date_rendu, num_affaire",
                 required=False,
             ),
             OpenApiParameter(

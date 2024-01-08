@@ -15,7 +15,7 @@ export type ApiAffairesListQueryParams = {
 	 */
 	num_affaire?: string
 	/**
-	 * Champ de tri
+	 * Champ de tri : date_rendu, num_affaire
 	 */
 	ordering?: string
 	/**
@@ -33,7 +33,7 @@ export type ApiAffairesListQueryParams = {
 	/**
 	 * Statut de l'affaire
 	 */
-	statut?: (
+	statuts?: (
 		| 'A00'
 		| 'D00'
 		| 'E00'
