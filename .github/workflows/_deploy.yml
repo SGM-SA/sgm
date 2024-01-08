@@ -12,6 +12,8 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
+      KUBE_CONFIG:
+        required: true
 
 jobs:
 
