@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: sgm-web-staging
+    namespace: sgm-staging
+    labels:
+        app: sgm-web-staging
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: sgm-web-staging
+    template:
+        metadata:
+            labels:
+                app: sgm-web-staging
+        spec:
+            containers:
+                - name: sgm-web-staging
+                  image: aimerisson/sgm-web-staging:IMAGE_LABEL
+                  ports:
+                      - containerPort: 80
+
+                  imagePullPolicy: Always
+                  resources:
+                      requests:
+                          cpu: '250m'
+

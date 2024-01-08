@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: sgm-api-staging
+    namespace: sgm-staging
+    labels:
+        app: sgm-api-staging
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: sgm-api-staging
+    template:
+        metadata:
+            labels:
+                app: sgm-api-staging
+        spec:
+            containers:
+                - name: sgm-api-staging
+                  image: aimerisson/sgm-api-staging:IMAGE_LABEL
+                  ports:
+                      - containerPort: 8000
+
+                  env:
+                      - name: ENV
+                        value: "PROD"
+                      -   name: POSTGRES_ENGINE
+                          value: "django.db.backends.postgresql"
+                      -   name: POSTGRES_NAME
+                          valueFrom:
+                              secretKeyRef:
+                                  name: postgres-secret
+                                  key: POSTGRES_NAME
+                      -   name: POSTGRES_USER
+                          valueFrom:
+                              secretKeyRef:
+                                  name: postgres-secret
+                                  key: POSTGRES_USER
+                      -   name: POSTGRES_PASSWORD
+                          valueFrom:
+                              secretKeyRef:
+                                  name: postgres-secret
+                                  key: POSTGRES_PASSWORD
+                      -   name: POSTGRES_HOST
+                          valueFrom:
+                              secretKeyRef:
+                                  name: postgres-secret
+                                  key: POSTGRES_HOST
+                  imagePullPolicy: Always
+                  resources:
+                      requests:
+                          cpu: '250m'
+

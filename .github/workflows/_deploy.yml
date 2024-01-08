@@ -61,3 +61,18 @@ jobs:
           file: ./infra/docker/${{ matrix.project }}.Dockerfile
           push: true
           tags: aimerisson/sgm-${{ matrix.project }}-${{ github.ref_name == 'main' && 'prod' || 'staging' }}:${{ steps.commit.outputs.short }}
+
+      - name: Deploy to Kubernetes
+        if: startsWith(github.ref, 'refs/heads/release/')
+        uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+
+      -  name: Replace Image Label
+         if: startsWith(github.ref, 'refs/heads/release/')
+         run: sed -i'' -e 's/IMAGE_LABEL/${{ steps.commit.outputs.short }}/g' ".github/k8s/${{ matrix.project }}.deployment.yaml"
+
+      -  name: Deploy to Cluster
+         if: startsWith(github.ref, 'refs/heads/release/')
+         run: kubectl apply -f ".github/k8s/${{ matrix.project }}.deployment.yaml"
