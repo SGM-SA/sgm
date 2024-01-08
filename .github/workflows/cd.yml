@@ -29,7 +29,8 @@ jobs:
       affected_projects: ${{ needs.affected.outputs.affected_projects }}
     secrets:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }} 
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
     needs:
-      - affected 
+      - affected
       - build
