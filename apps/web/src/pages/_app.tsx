@@ -8,6 +8,7 @@ import { theme } from '../core/theme'
 
 import '@fontsource-variable/montserrat'
 import 'react-toastify/dist/ReactToastify.css'
+import { EditorProvider } from 'react-simple-wysiwyg'
 
 const queryClient = new QueryClient()
 
@@ -19,9 +20,11 @@ const App: React.FC = () => {
 		<AuthContext.Provider value={{ token, setToken }}>
 			<QueryClientProvider client={queryClient}>
 				<AuthGuard>
-					<ChakraProvider theme={theme}>
-						<Outlet />
-					</ChakraProvider>
+					<EditorProvider>
+						<ChakraProvider theme={theme}>
+							<Outlet />
+						</ChakraProvider>
+					</EditorProvider>
 				</AuthGuard>
 			</QueryClientProvider>
 		</AuthContext.Provider>

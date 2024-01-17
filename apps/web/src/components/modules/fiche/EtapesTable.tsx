@@ -1,9 +1,10 @@
-import { Box, Button, Textarea } from '@chakra-ui/react'
+import { Box, Button } from '@chakra-ui/react'
 import { EtapeDetail, EtapeDetailAjustage, GroupeMachine, fetchApiEtapesCreate, fetchApiEtapesDeleteCreate, fetchApiEtapesPartialUpdate, useApiFichesEtapesRetrieve } from '@sgm/openapi'
 import { DefaultTableCell, Table, TableLayout, createColumnMeta } from '@sgm/ui'
 import { createColumnHelper } from '@tanstack/react-table'
 import React from 'react'
 import { toast } from 'react-toastify'
+import { EtapeDescriptionEditor } from './EtapeDescriptionEditor'
 
 type EtapesTableProps = {
     ficheId: number
@@ -103,7 +104,6 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                 title: 'Liste des étapes'
             }}
         >
-
             <Table<EtapeDetailAjustage>
                 columns={columns}
                 data={data?.etapes}
@@ -157,24 +157,7 @@ export const EtapesTable: React.FC<EtapesTableProps> = (props) => {
                 rowExpansion={{
                     enabled: true,
                     expandedByDefault: true,
-                    renderComponent: ({ row }) => {
-
-                        const handleUpdate = (newDescription: string) => {
-
-                            if (row.original.description !== newDescription) {
-                                fetchApiEtapesPartialUpdate({ pathParams: { id: row.original.id }, body: { description: newDescription } })
-                                    .then(() => toast.success('Description mise à jour'))
-                                    .catch(() => toast.error('Erreur lors de la mise à jour de la description'))
-                            }
-                        }
-
-                        return <Textarea
-                            defaultValue={row.original.description || ''}
-                            onBlur={(e) => handleUpdate(e.target.value)}
-                            rows={2}
-                            fontSize='sm'
-                        />
-                    }
+                    renderComponent: ({ row }) => <EtapeDescriptionEditor row={row} />
                 }}
             />
 
