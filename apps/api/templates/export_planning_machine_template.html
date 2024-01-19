@@ -116,7 +116,7 @@
                     <td><img src="data:image/png;base64,{{ affectation.etape.qr_code_base64 }}" alt="QR Code"></td>
                 </tr>
                 <tr class="description-row">
-                    <td colspan="5">{{ affectation.etape.description|linebreaks }}</td>
+                    <td colspan="5">{{ affectation.etape.description|safe }}</td>
                 </tr>
             {% endfor %}
         </tbody>
