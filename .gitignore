@@ -3,6 +3,9 @@
 # Secrets
 .env
 
+# NX
+.nx
+
 # Compiled output
 dist
 tmp
