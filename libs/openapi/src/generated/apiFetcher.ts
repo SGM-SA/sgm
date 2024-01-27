@@ -56,7 +56,7 @@ export async function apiFetch<
 
 	const config: AxiosRequestConfig = {
 		method: method.toUpperCase(),
-		url: resolveUrl(url, queryParams, pathParams),
+		url: resolveUrl(url, queryParams, pathParams, processedHeaders),
 		data: body instanceof FormData ? body : JSON.stringify(body),
 		signal: signal,
 		headers: processedHeaders
@@ -68,7 +68,8 @@ export async function apiFetch<
 const resolveUrl = (
 	url: string,
 	queryParams: Record<string, string> = {},
-	pathParams: Record<string, string> = {}
+	pathParams: Record<string, string> = {},
+	headers: Record<string, string> = {},
 ) => {
 	let query = new URLSearchParams(queryParams).toString()
 	if (query) query = `?${query}`

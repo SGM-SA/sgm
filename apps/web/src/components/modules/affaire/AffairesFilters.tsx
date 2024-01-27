@@ -1,6 +1,7 @@
-import { Flex, HStack, Input, Select } from '@chakra-ui/react'
+import { Flex, HStack, Input } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { affaireStatus } from '@sgm/openapi'
+import { MultiSelect } from 'chakra-multiselect'
 import debounce from 'debounce'
 import React, { BaseSyntheticEvent } from 'react'
 import { useForm } from 'react-hook-form'
@@ -9,7 +10,7 @@ import { z } from 'zod'
 const affairesFiltersFormSchema = z.object({
     search: z.string(),
     num_affaire: z.number(),
-    statut: z.string(),
+    statuts: z.array(z.string())
 })
 
 export type AffairesFiltersFormSchema = z.infer<typeof affairesFiltersFormSchema>
@@ -41,18 +42,14 @@ export const AffairesFilters: React.FC<AffairesFiltersProps> = (props) => {
         >
             <HStack>
 
-                <Select
-                    placeholder='Status'
+                <MultiSelect
+                    placeholder='Statuts'
                     size='sm'
-                    variant='outline'
-                    {...register('statut', { 
-                        value: props.filters?.statut,
-                        onChange: onChange('statut') 
-                    })}
-                    color='gray.500'
-                >
-                    {affaireStatus.map(status => <option key={status} value={status}>{status}</option>)}
-                </Select>
+                    options={affaireStatus.map(status => ({ label: status, value: status }))}
+                    value={props.filters?.statuts}
+                    // @ts-ignore
+                    onChange={(values) => onChange('statuts')({ target: { value: values } })}
+                /> 
                 
                 <Input 
                     placeholder='N° Affaire'

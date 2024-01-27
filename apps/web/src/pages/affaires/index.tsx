@@ -136,7 +136,8 @@ const AffairesPage: React.FC = () => {
         filters,
         setFilters,
         fetchDataOptions
-    } = useTableQueryHelper()
+    } = useTableQueryHelper(undefined, { 'Filter-Split-Key': 'statuts' })
+
     const navigate = useNavigate()
 
     const {data, isLoading, refetch} = useApiAffairesList(fetchDataOptions)

@@ -1,10 +1,13 @@
 import { PaginationState } from '@tanstack/react-table'
 import { useState } from 'react'
 
-const defaultPageIndex = 0
-const defaultPageSize = 10
+export const defaultPageIndex = 0
+export const defaultPageSize = 10
 
-export const useTableQueryHelper = (initialData: PaginationState = { pageIndex: defaultPageIndex, pageSize: defaultPageSize }) => {
+export const useTableQueryHelper = (
+    initialData: PaginationState = { pageIndex: defaultPageIndex, pageSize: defaultPageSize }, 
+    headers: any = {}    
+) => {
 
     const [pagination, setPagination] = useState<PaginationState>(initialData)
     const [sorting, setSorting] = useState<string>('')
@@ -16,7 +19,8 @@ export const useTableQueryHelper = (initialData: PaginationState = { pageIndex: 
             per_page: pagination.pageSize.toString(),
             ordering: sorting,
             ...filters
-        }
+        },
+        headers
     }
 
     return {
