@@ -1,6 +1,8 @@
 import { Button, Flex, HStack, Icon, Input, Spinner, Text, VStack } from '@chakra-ui/react'
 import { fetchApiAffectationsMachinesCreate, fetchApiAffectationsMachinesDestroy, fetchApiAffectationsMachinesPartialUpdate, fetchApiGroupeMachineList, fetchApiSalariesFormOptionsList, useApiFichesMachineAPlanifierList, useApiPlanningMachineList } from '@sgm/openapi'
 import { BaseBoardCardType, Board, BoardColumnType, CUSTOM_FIRST_COLUMN_ID, TextLink } from '@sgm/ui'
+import { getDateFromIsoWeek, getIsoWeekFromDate } from '@sgm/utils'
+import { environment } from '@sgm/web/environments'
 import { Link } from '@sgm/web/router'
 import { Select } from 'chakra-react-select'
 import dayjs from 'dayjs'
@@ -11,7 +13,6 @@ import { useLoaderData } from 'react-router-typesafe'
 import { toast } from 'react-toastify'
 import { DashboardLayout } from '../../../components/layouts'
 import { PlanningNestedEtapeColumn } from '../../../components/modules'
-import { environment } from '@sgm/web/environments'
 
 export const Loader = (() => {
     return Promise.all([
@@ -110,23 +111,29 @@ const PlanningMachinesPage: React.FC = () => {
     useEffect(() => {
         setCanProcess(true) // TODO: check if it is still working with network latency
     }, [date])
-
-	  return <>
+    
+    return <>
         <DashboardLayout
             title='Planning machines'
             customHeader={
                 <Flex h='100%' alignContent='flex-end' flexWrap='wrap' mb='1em'>
-                  <Input
-                      type='date'
-                      value={date.format('YYYY-MM-DD')}
-                      onChange={(e) => setDate(dayjs(e.target.value))}
-                      p='.5em'
-                      bg='white !important'
-                      w='auto'
-                      variant='filled'
-                      fontSize='sm'
-                      color='black'
-                  />
+                    <Input
+                        type='week'
+                        value={getIsoWeekFromDate(date.toDate())}
+                        onChange={(e) => {
+                            const value = e.target.value
+                            const year = Number(value.substring(0, 4))
+                            const week = Number(value.substring(6, 8))
+                            const date = getDateFromIsoWeek(week, year)
+                            setDate(dayjs(date))
+                        }}
+                        p='.5em'
+                        bg='white !important'
+                        w='auto'
+                        variant='filled'
+                        fontSize='sm'
+                        color='black'
+                    />
                 </Flex>
             }
             styling={{
